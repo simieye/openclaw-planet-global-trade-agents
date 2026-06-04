@@ -361,9 +361,13 @@ class AgentBrain:
         ]
 
         llm_config = self.config.get("agent", {}).get("llm", {})
+        # 优先使用 Ollama 本地模型（如果环境变量配置了）
+        import os as _os
+        default_provider = _os.environ.get("LLM_PROVIDER", llm_config.get("provider", "ollama"))
+        default_model = _os.environ.get("LLM_MODEL", llm_config.get("model", "qwen3-coder:480b-cloud"))
         response = await self.llm.chat(
-            provider=llm_config.get("provider", "claude"),
-            model=llm_config.get("model", "claude-sonnet-4-20250514"),
+            provider=llm_config.get("provider", default_provider),
+            model=llm_config.get("model", default_model),
             messages=messages,
             temperature=llm_config.get("temperature", 0.5),
             max_tokens=llm_config.get("max_tokens", 4096),

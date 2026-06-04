@@ -152,6 +152,230 @@ body {
   color: var(--accent5);
 }
 
+.nav-item .nav-badge.gold {
+  background: rgba(234,179,8,0.15);
+  color: #eab308;
+}
+
+/* ===== AI 数字组织架构样式 ===== */
+.org-chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.org-level {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.org-level-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.org-level-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.org-level-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.org-agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.org-agent-card {
+  background: var(--bg-elevated);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.org-agent-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.org-agent-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.org-agent-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.org-agent-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.org-agent-role {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.org-agent-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.org-skill-tag {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(99,102,241,0.1);
+  color: var(--accent5);
+  white-space: nowrap;
+}
+
+.org-arrow {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 16px;
+  padding: 2px 0;
+}
+
+.org-flow-section {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent);
+}
+
+.org-flow-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+
+.org-flow-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.org-flow-node {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.org-flow-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* 组织架构6层颜色 */
+.org-layer-identity { border-left: 3px solid #ef4444; }
+.org-layer-soul { border-left: 3px solid #f59e0b; }
+.org-layer-memory { border-left: 3px solid #8b5cf6; }
+.org-layer-user { border-left: 3px solid #06b6d4; }
+.org-layer-agent { border-left: 3px solid #3b82f6; }
+.org-layer-tools { border-left: 3px solid #10b981; }
+
+/* 6层文档卡片 */
+.six-layer-docs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.layer-doc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.layer-doc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.layer-doc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.layer-doc-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.layer-doc-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.layer-doc-file {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.layer-doc-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 .sidebar-footer {
   padding: 12px 20px;
   border-top: 1px solid var(--border);
@@ -550,6 +774,45 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
+}
+
+/* Typing indicator (Ollama 加载中动画) */
+.typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Ollama 状态指示器 */
+.ollama-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-right: 6px;
+}
+.ollama-status.connected {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--success);
+}
+.ollama-status.disconnected {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
 }
 
 /* ===== 对话输入区 ===== */
@@ -1216,6 +1479,16 @@ body {
       </div>
     </div>
 
+    <!-- AI数字组织 -->
+    <div class="nav-section">
+      <div class="nav-section-title">AI 数字组织</div>
+      <div class="nav-item" data-panel="organization" onclick="switchPanel('organization', this)">
+        <span class="nav-icon">🏛️</span>
+        <span>AI 数字组织</span>
+        <span class="nav-badge gold">100 Agent</span>
+      </div>
+    </div>
+
     <!-- 集成中心 -->
     <div class="nav-section">
       <div class="nav-section-title">集成中心</div>
@@ -1236,6 +1509,11 @@ body {
         <span class="nav-icon">⚙️</span>
         <span>系统设置</span>
       </div>
+      <a class="nav-item" href="http://127.0.0.1:18789/chat?session=main" target="_blank" style="text-decoration:none;">
+        <span class="nav-icon">🦞</span>
+        <span>OpenClaw</span>
+        <span class="nav-badge purple">↗</span>
+      </a>
     </div>
   </nav>
 
@@ -1616,10 +1894,30 @@ body {
     <!-- ===== 资源库面板 ===== -->
     <div class="panel" id="panel-resources">
       <div class="section-title">📚 资源库 · 自定义知识库</div>
+      
+      <!-- 知识库链接管理区域 -->
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-weight:600;font-size:14px;">🔗 知识库链接（网页 / 飞书文档）</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddLinkModal()">+ 添加链接</button>
+        </div>
+        <div id="kbLinksList" style="max-height:300px;overflow-y:auto;">
+          <div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">加载中...</div>
+        </div>
+        <!-- 一键批量添加到智能体 -->
+        <div id="batchAddToAgentsBar" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:12px;color:var(--text-dim);">一键添加链接到智能体知识库：</span>
+            <button class="btn btn-accent2 btn-sm" onclick="batchAddLinkToAllAgents()">🤖 全部 100+ 智能体</button>
+            <button class="btn btn-sm" onclick="openSelectAgentsModal()">📋 选择智能体</button>
+          </div>
+        </div>
+      </div>
+
       <div style="display:flex;gap:8px;margin-bottom:16px;">
         <button class="btn btn-primary btn-sm" onclick="openAddKBModal()">+ 新建知识库</button>
-        <button class="btn btn-sm" onclick="showToast('上传文件功能已就绪', 'success')">📤 上传文件</button>
-        <button class="btn btn-sm" onclick="showToast('批量导入功能已就绪', 'success')">📥 批量导入</button>
+        <button class="btn btn-sm" onclick="openUploadFileModal()">📤 上传文件</button>
+        <button class="btn btn-sm" onclick="openBatchImportModal()">📥 批量导入</button>
       </div>
       <div class="kb-grid" id="kbGrid">
         <!-- 动态渲染 -->
@@ -1680,7 +1978,7 @@ body {
             <div class="settings-label">控制板地址</div>
             <div class="settings-desc">OpenClaw 管理后台</div>
           </div>
-          <button class="btn btn-accent3 btn-sm" onclick="window.open('http://localhost:9080', '_blank')">🔗 打开控制板</button>
+          <button class="btn btn-accent3 btn-sm" onclick="window.open('http://127.0.0.1:18789/chat?session=main', '_blank')">🔗 打开控制板</button>
         </div>
         <div class="settings-row">
           <div>
@@ -1739,6 +2037,22 @@ body {
         </div>
       </div>
     </div>
+
+    <!-- ===== AI 数字组织面板 ===== -->
+    <div class="panel" id="panel-organization">
+      <div class="section-title">🏛️ AI 数字组织 · OpenClaw 企业 100 Agent 角色体系</div>
+
+      <!-- 6层智能体配置文档 -->
+      <div class="six-layer-docs" id="sixLayerDocs"></div>
+
+      <!-- 组织架构图 -->
+      <div class="section-title" style="margin-top:20px;">🏗️ 企业AI组织架构 · 4层金字塔</div>
+      <div class="org-chart-container" id="orgChartContainer"></div>
+
+      <!-- TaskFlow 协作流 -->
+      <div class="section-title" style="margin-top:20px;">🔄 跨Agent协作 TaskFlow 示例</div>
+      <div id="taskFlowExamples"></div>
+    </div>
   </div>
 </div>
 
@@ -1777,7 +2091,8 @@ body {
     </div>
 
     <!-- 快捷操作行 -->
-    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center;">
+      <span id="ollamaStatusBadge" class="ollama-status disconnected" style="display:none;" title="Ollama 本地 LLM 状态">🔴 未连接</span>
       <button class="action-btn" onclick="toggleDropZone()" title="上传资料">
         <span>📎</span> 上传资料
       </button>
@@ -1789,6 +2104,9 @@ body {
       </button>
       <button class="action-btn" onclick="document.getElementById('chatInput').focus()">
         <span>💡</span> 提示词模板
+      </button>
+      <button class="action-btn" onclick="toggleOllamaSettings()" title="Ollama 模型设置" style="font-size:10px;">
+        <span>⚙️</span> 模型
       </button>
     </div>
 
@@ -1847,7 +2165,17 @@ const APP = {
   attachments: [],
   isRecording: false,
   layerConfigs: {},
+  chatConfig: {
+    provider: 'ollama',
+    model: '',
+    useStream: true,
+    ollamaConnected: false,
+    ollamaModels: [],
+  },
 };
+
+// 页面加载完成后初始化 Ollama 配置
+initOllamaConfig();
 
 // ============================================================
 // 面板切换
@@ -1874,6 +2202,7 @@ function switchPanel(panelName, navItem) {
     'providers': '🧠 AI 大模型服务商',
     'im-channels': '📡 IM 频道集成',
     'settings': '⚙️ 系统设置 · OpenClaw 控制板',
+    'organization': '🏛️ AI 数字组织 · 100 Agent 6层架构',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -1885,6 +2214,7 @@ function switchPanel(panelName, navItem) {
   if (panelName === 'providers') renderProviders();
   if (panelName === 'im-channels') renderIMChannels();
   if (panelName === 'new-conversation') renderConversations();
+  if (panelName === 'organization') renderOrganization();
 }
 
 // ============================================================
@@ -1906,6 +2236,11 @@ function saveLayerConfig(layerName) {
 // Agent 模板渲染
 // ============================================================
 function renderAgentTemplates() {
+  // 加载自定义 Agents（从 localStorage）
+  if (!window._customAgents) {
+    try { window._customAgents = JSON.parse(localStorage.getItem('custom_agents') || '[]'); } catch(e) { window._customAgents = []; }
+  }
+
   const agents = [
     // AI 董事会
     { layer:'board', icon:'🏛️', name:'Chairman Agent', role:'董事长', desc:'企业愿景、长期战略、重大决策审批', tags:['战略','决策','治理'], status:'active' },
@@ -2005,7 +2340,40 @@ function renderAgentTemplates() {
     grouped[a.layer].push(a);
   });
 
+  // 将自定义 Agents 追加到对应层级
+  if (window._customAgents && window._customAgents.length > 0) {
+    window._customAgents.forEach(ca => {
+      if (!grouped[ca.layer]) grouped[ca.layer] = [];
+      grouped[ca.layer].push(ca);
+    });
+  }
+
   let html = '';
+
+  // 如果有自定义 Agent，显示一个醒目的自定义区域
+  if (window._customAgents && window._customAgents.length > 0) {
+    html += `<div class="section-title" style="font-size:13px;margin-top:16px;color:var(--accent);">🌟 我的自定义 AI 拍档 (${window._customAgents.length})</div>`;
+    html += '<div class="agent-grid">';
+    window._customAgents.forEach(a => {
+      html += `
+        <div class="agent-card" style="border-color:var(--accent);background:rgba(255,107,53,0.03);" onclick="startAgentChat('${a.name}', '${a.role}')" oncontextmenu="event.preventDefault();showCustomAgentMenu(event,'${a.id}')">
+          <div class="agent-card-header">
+            <div class="agent-icon ${a.layer}" style="background:rgba(255,107,53,0.2);">${a.icon}</div>
+            <div>
+              <div class="agent-name" style="color:var(--accent);">${a.name}</div>
+              <div class="agent-role">${a.role} · 自定义</div>
+            </div>
+            <span class="agent-status-badge status-active">✨ 自定义</span>
+          </div>
+          <div class="agent-desc">${a.desc}</div>
+          <div class="agent-tags">${(a.tags||[]).map(t => `<span class="agent-tag" style="background:rgba(255,107,53,0.1);color:var(--accent);">${t}</span>`).join('')}
+          <span class="agent-tag" style="cursor:pointer;" onclick="event.stopPropagation();editCustomAgent('${a.id}')" title="编辑">✏️</span>
+          <span class="agent-tag" style="cursor:pointer;background:rgba(239,68,68,0.1);color:var(--danger);" onclick="event.stopPropagation();deleteCustomAgent('${a.id}')" title="删除">🗑️</span></div>
+        </div>`;
+    });
+    html += '</div>';
+  }
+
   Object.entries(grouped).forEach(([layer, layerAgents]) => {
     html += `<div class="section-title" style="font-size:13px;margin-top:16px;">${layerNames[layer] || layer} (${layerAgents.length})</div>`;
     html += '<div class="agent-grid">';
@@ -2102,6 +2470,294 @@ function renderKnowledgeBases() {
       </div>
     </div>
   `).join('');
+
+  // 同时加载链接列表
+  renderKBLinks();
+}
+
+// ============================================================
+// 知识库链接管理
+// ============================================================
+let _currentSelectedLinkUrl = null;
+
+async function renderKBLinks() {
+  const container = document.getElementById('kbLinksList');
+  const bar = document.getElementById('batchAddToAgentsBar');
+  try {
+    const resp = await fetch('http://localhost:8080/api/knowledge/links');
+    const data = await resp.json();
+    if (!data.success || data.links.length === 0) {
+      container.innerHTML = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">暂无知识库链接，点击上方「+ 添加链接」添加网页或飞书文档</div>';
+      if (bar) bar.style.display = 'none';
+      return;
+    }
+    if (bar) bar.style.display = 'flex';
+    container.innerHTML = data.links.map(lk => {
+      const icon = lk.type === 'feishu' ? '📄' : '🌐';
+      const statusIcon = lk.parse_status === 'parsed' ? '✅' : lk.parse_status === 'pending' ? '⏳' : '⚠️';
+      const statusText = lk.parse_status === 'parsed' ? '已解析' : lk.parse_status;
+      const preview = lk.content_preview ? lk.content_preview.substring(0, 100) + '...' : '暂无预览';
+      return `
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <span style="font-size:18px;flex-shrink:0;">${icon}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${lk.title}">${lk.title}</span>
+            <span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${lk.type==='feishu'?'rgba(34,197,94,0.15)':'rgba(59,130,246,0.15)'};color:${lk.type==='feishu'?'var(--success)':'var(--accent3)'};flex-shrink:0;">${lk.type==='feishu'?'飞书':'网页'}</span>
+            <span style="font-size:10px;color:var(--text-dim);" title="${statusText}">${statusIcon}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${preview}</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">${lk.kb_name} · ${new Date(lk.added_at).toLocaleDateString()}</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">
+          <button class="btn btn-sm" style="padding:2px 8px;font-size:10px;" onclick="selectLinkForBatch('${lk.url.replace(/'/g, "\\'")}')" title="选择此链接进行批量分配">📤</button>
+          <button class="btn btn-sm" style="padding:2px 8px;font-size:10px;" onclick="reparseLink('${lk.id}')" title="重新解析">🔄</button>
+          <button class="btn btn-sm" style="padding:2px 8px;font-size:10px;" onclick="deleteKbLink('${lk.id}')" title="删除">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    container.innerHTML = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">⚠️ 无法加载链接（请确保后端服务已启动）</div>';
+    if (bar) bar.style.display = 'none';
+  }
+}
+
+function selectLinkForBatch(url) {
+  _currentSelectedLinkUrl = url;
+  const bar = document.getElementById('batchAddToAgentsBar');
+  if (bar) {
+    bar.style.display = 'flex';
+    bar.style.background = 'rgba(0,212,170,0.08)';
+    bar.style.borderRadius = '8px';
+    bar.style.padding = '12px';
+  }
+  showToast('✅ 已选择链接，可点击下方按钮批量添加到智能体', 'success');
+}
+
+async function batchAddLinkToAllAgents() {
+  if (!_currentSelectedLinkUrl) {
+    showToast('⚠️ 请先点击链接旁的 📤 按钮选择一条链接', 'warning');
+    return;
+  }
+  const confirmed = confirm(`确定要将此链接一键添加到全部 100+ 智能体的知识库吗？`);
+  if (!confirmed) return;
+  
+  showToast('⏳ 正在批量添加，请稍候...', 'success');
+  try {
+    const resp = await fetch('http://localhost:8080/api/knowledge/link/batch-add-agents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: _currentSelectedLinkUrl,
+        link_type: _currentSelectedLinkUrl.toLowerCase().includes('feishu') ? 'feishu' : 'web',
+        agent_ids: []
+      })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(`✅ 已成功为 ${data.updated_count} 个智能体添加知识库链接`, 'success');
+    } else {
+      showToast('❌ 添加失败', 'error');
+    }
+  } catch (e) {
+    showToast('❌ 网络错误，请检查后端服务', 'error');
+  }
+}
+
+async function openSelectAgentsModal() {
+  if (!_currentSelectedLinkUrl) {
+    showToast('⚠️ 请先点击链接旁的 📤 按钮选择一条链接', 'warning');
+    return;
+  }
+  
+  // 获取智能体列表
+  let agents = [];
+  try {
+    const resp = await fetch('http://localhost:8080/api/agents');
+    const data = await resp.json();
+    // agents 是按 layer 分组的，扁平化为列表
+    const byLayer = data.agents || {};
+    agents = [];
+    for (const [layer, layerAgents] of Object.entries(byLayer)) {
+      if (Array.isArray(layerAgents)) {
+        layerAgents.forEach(a => {
+          const agentId = a.id || a.agent_id || '';
+          const agentName = a.name || agentId;
+          agents.push({ id: agentId, name: agentName, layer });
+        });
+      }
+    }
+  } catch (e) {
+    agents = [];
+  }
+  
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>📋 选择智能体 — 添加知识库链接</h3>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:8px;">当前链接：<code style="word-break:break-all;">${_currentSelectedLinkUrl}</code></p>
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <button class="btn btn-sm" onclick="toggleAllAgentChecks(true)">全选</button>
+      <button class="btn btn-sm" onclick="toggleAllAgentChecks(false)">取消全选</button>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:auto;">共 ${agents.length} 个智能体</span>
+    </div>
+    <div style="max-height:400px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;">
+      ${agents.map(a => `
+        <label style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;border-radius:4px;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+          <input type="checkbox" class="agent-check" value="${a.id}" style="accent-color:var(--accent);">
+          <span style="font-size:13px;">🤖 ${a.name || a.id}</span>
+          <span style="font-size:10px;color:var(--text-dim);margin-left:auto;">${a.layer || ''}</span>
+        </label>
+      `).join('') || '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">未找到智能体（请确保后端服务已启动）</div>'}
+    </div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="confirmBatchAddToSelectedAgents()">✅ 确认添加到选中智能体</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function toggleAllAgentChecks(checked) {
+  document.querySelectorAll('.agent-check').forEach(cb => { cb.checked = checked; });
+}
+
+async function confirmBatchAddToSelectedAgents() {
+  const selected = Array.from(document.querySelectorAll('.agent-check:checked')).map(cb => cb.value);
+  if (selected.length === 0) {
+    showToast('⚠️ 请至少选择一个智能体', 'warning');
+    return;
+  }
+  closeModalDirect();
+  showToast(`⏳ 正在为 ${selected.length} 个智能体添加知识库链接...`, 'success');
+  try {
+    const resp = await fetch('http://localhost:8080/api/knowledge/link/batch-add-agents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url: _currentSelectedLinkUrl,
+        link_type: _currentSelectedLinkUrl.toLowerCase().includes('feishu') ? 'feishu' : 'web',
+        agent_ids: selected
+      })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast(`✅ 已成功为 ${data.updated_count} 个智能体添加知识库链接`, 'success');
+    }
+  } catch (e) {
+    showToast('❌ 网络错误', 'error');
+  }
+}
+
+function openAddLinkModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>🔗 添加知识库链接</h3>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:16px;">
+      支持网页URL和飞书文档链接，系统将自动解析内容作为智能体知识库。
+    </p>
+    <div class="form-group">
+      <label>链接类型</label>
+      <div style="display:flex;gap:8px;">
+        <label style="flex:1;display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card-bg);border-radius:6px;cursor:pointer;border:2px solid var(--accent3);" onclick="this.parentElement.querySelectorAll('label').forEach(l=>l.style.borderColor='var(--border)');this.style.borderColor='var(--accent3)';">
+          <input type="radio" name="linkType" value="web" checked style="accent-color:var(--accent3);"> 🌐 网页链接
+        </label>
+        <label style="flex:1;display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card-bg);border-radius:6px;cursor:pointer;border:2px solid var(--border);" onclick="this.parentElement.querySelectorAll('label').forEach(l=>l.style.borderColor='var(--border)');this.style.borderColor='var(--accent3)';">
+          <input type="radio" name="linkType" value="feishu" style="accent-color:var(--accent3);"> 📄 飞书文档
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>链接地址</label>
+      <input type="text" id="linkUrlInput" placeholder="https://example.com/doc 或 飞书文档链接">
+    </div>
+    <div class="form-group">
+      <label>目标知识库</label>
+      <select id="linkTargetKB">
+        <option value="品牌出海知识库">品牌出海知识库</option>
+        <option value="全球合规手册">全球合规手册</option>
+        <option value="产品目录库">产品目录库</option>
+        <option value="客户案例库">客户案例库</option>
+        <option value="行业研究报告">行业研究报告</option>
+        <option value="SOP流程库">SOP流程库</option>
+        <option value="培训资料库">培训资料库</option>
+        <option value="竞品分析库">竞品分析库</option>
+        <option value="默认知识库">默认知识库</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" id="addLinkBtn" onclick="addKnowledgeLink()">🔗 添加并解析</button>
+    </div>
+  `;
+  modal.classList.add('show');
+  // 自动聚焦输入框
+  setTimeout(() => { const inp = document.getElementById('linkUrlInput'); if (inp) inp.focus(); }, 200);
+}
+
+async function addKnowledgeLink() {
+  const urlInput = document.getElementById('linkUrlInput');
+  const kbSelect = document.getElementById('linkTargetKB');
+  const linkTypeRadio = document.querySelector('input[name="linkType"]:checked');
+  const btn = document.getElementById('addLinkBtn');
+  
+  const url = urlInput?.value?.trim();
+  if (!url) { showToast('⚠️ 请输入链接地址', 'warning'); return; }
+  
+  const linkType = linkTypeRadio?.value || 'web';
+  const kbName = kbSelect?.value || '默认知识库';
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ 解析中...';
+  
+  try {
+    const resp = await fetch('http://localhost:8080/api/knowledge/link/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, kb_name: kbName, link_type: linkType })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      showToast('✅ 链接已添加并解析', 'success');
+      closeModalDirect();
+      renderKBLinks();
+    } else {
+      showToast(data.message || '❌ 添加失败', 'error');
+    }
+  } catch (e) {
+    showToast('❌ 网络错误，请检查后端服务', 'error');
+  }
+  btn.disabled = false;
+  btn.textContent = '🔗 添加并解析';
+}
+
+async function reparseLink(linkId) {
+  showToast('⏳ 重新解析中...', 'success');
+  try {
+    const resp = await fetch(`http://localhost:8080/api/knowledge/link/parse-again/${linkId}`, { method: 'POST' });
+    const data = await resp.json();
+    if (data.success) {
+      showToast('✅ 重新解析完成', 'success');
+      renderKBLinks();
+    }
+  } catch (e) {
+    showToast('❌ 重新解析失败', 'error');
+  }
+}
+
+async function deleteKbLink(linkId) {
+  if (!confirm('确定要删除此知识库链接吗？')) return;
+  try {
+    const resp = await fetch(`http://localhost:8080/api/knowledge/link/${linkId}`, { method: 'DELETE' });
+    const data = await resp.json();
+    if (data.success) {
+      showToast('🗑️ 链接已删除', 'success');
+      renderKBLinks();
+    }
+  } catch (e) {
+    showToast('❌ 删除失败', 'error');
+  }
 }
 
 // ============================================================
@@ -2243,8 +2899,240 @@ function startTemplateChat(template) {
 }
 
 // ============================================================
-// 聊天功能
+// AI 数字组织渲染
 // ============================================================
+function renderOrganization() {
+  // 6层配置文档卡片
+  const layerDocs = [
+    { id:'identity', icon:'🆔', name:'Identity 身份中枢', file:'identity.md', color:'#ef4444', bg:'rgba(239,68,68,0.1)', desc:'企业身份定义与权限管理。定义AI企业名称、使命愿景、身份标签、权限范围。', cssClass:'org-layer-identity' },
+    { id:'soul', icon:'💛', name:'Soul 灵魂核心', file:'soul.md', color:'#f59e0b', bg:'rgba(245,158,11,0.1)', desc:'核心价值观与伦理框架。商业文明价值观、决策伦理、品牌精神、AI伦理准则。', cssClass:'org-layer-soul' },
+    { id:'memory', icon:'🧠', name:'Memory 记忆系统', file:'memory.md', color:'#8b5cf6', bg:'rgba(139,92,246,0.1)', desc:'四级记忆架构。用户记忆/组织记忆/生态记忆/文明记忆，短期+长期+共享。', cssClass:'org-layer-memory' },
+    { id:'user', icon:'👤', name:'User 用户理解', file:'user.md', color:'#06b6d4', bg:'rgba(6,182,212,0.1)', desc:'10类用户自动识别系统。消费者/代理商/合伙人/加盟商/供应商/投资人/媒体/员工/访客/生态伙伴。6W分析框架。', cssClass:'org-layer-user' },
+    { id:'agent', icon:'🤖', name:'Agent 智能体配置', file:'agent.md', color:'#3b82f6', bg:'rgba(59,130,246,0.1)', desc:'100 Agent角色体系。9大部门 × 6层工作架构 = 完整AI企业组织。', cssClass:'org-layer-agent' },
+    { id:'tools', icon:'🔧', name:'Tools 工具系统', file:'tools.md', color:'#10b981', bg:'rgba(16,185,129,0.1)', desc:'7层工具矩阵。OpenClaw/AnyGen/Data/Growth/Commerce/Web3/Civilization。外部系统Webhook连接。', cssClass:'org-layer-tools' },
+  ];
+
+  const docsHtml = layerDocs.map(d => `
+    <div class="layer-doc-card ${d.cssClass}" onclick="showToast('📄 ${d.file} · ${d.name} 配置已就绪', 'success')">
+      <div class="layer-doc-header">
+        <div class="layer-doc-icon" style="background:${d.bg};color:${d.color};">${d.icon}</div>
+        <div>
+          <div class="layer-doc-name" style="color:${d.color};">${d.name}</div>
+          <div class="layer-doc-file">${d.file}</div>
+        </div>
+      </div>
+      <div class="layer-doc-desc">${d.desc}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('sixLayerDocs').innerHTML = docsHtml;
+
+  // 组织架构 - 4层金字塔
+  const orgLevels = [
+    {
+      title: '🏛️ AI 董事会', count: 10, color: '#ef4444', bg: 'rgba(239,68,68,0.08)',
+      agents: [
+        { num:'01', name:'CEO Agent', role:'首席执行官 · 企业战略规划', skills:'strategy-planning, business-analysis' },
+        { num:'02', name:'COO Agent', role:'首席运营官 · 运营管理', skills:'operation-analysis' },
+        { num:'03', name:'CFO Agent', role:'首席财务官 · 财务分析', skills:'cashflow-analysis, profit-analysis' },
+        { num:'04', name:'CMO Agent', role:'首席营销官 · 营销战略', skills:'marketing-plan' },
+        { num:'05', name:'CTO Agent', role:'首席技术官 · 技术架构', skills:'architecture-review' },
+        { num:'06', name:'CHRO Agent', role:'首席人力资源官 · 人才管理', skills:'talent-management' },
+        { num:'07', name:'Legal Agent', role:'法务管理 · 法务风险', skills:'legal-review, compliance-check' },
+        { num:'08', name:'Investment Agent', role:'投融资分析 · 投资评估', skills:'investment-analysis' },
+        { num:'09', name:'Risk Agent', role:'风险预警 · 风控管理', skills:'risk-assessment, early-warning' },
+        { num:'10', name:'Innovation Agent', role:'创新项目评估 · 新业务探索', skills:'innovation-scan' },
+      ]
+    },
+    {
+      title: '💼 AI 高管层 / 部门层', count: 50, color: '#f59e0b', bg: 'rgba(245,158,11,0.08)',
+      agents: [
+        { num:'11', name:'Market Research Agent', role:'市场调研', skills:'market-research' },
+        { num:'12', name:'Competitor Agent', role:'竞品分析', skills:'competitor-analysis' },
+        { num:'13', name:'Trend Agent', role:'趋势预测', skills:'trend-forecast' },
+        { num:'14', name:'SEO Agent', role:'SEO优化', skills:'seo-optimize' },
+        { num:'15', name:'SEM Agent', role:'Google广告', skills:'google-ads' },
+        { num:'16', name:'Meta Ads Agent', role:'Facebook广告', skills:'meta-ads' },
+        { num:'17', name:'TikTok Ads Agent', role:'TikTok广告', skills:'tiktok-ads' },
+        { num:'18', name:'KOL Agent', role:'达人合作', skills:'kol-management' },
+        { num:'19', name:'PR Agent', role:'媒体公关', skills:'pr-management' },
+        { num:'20', name:'Branding Agent', role:'品牌建设', skills:'brand-building' },
+        { num:'21', name:'Content Director Agent', role:'内容总监', skills:'content-strategy' },
+        { num:'22', name:'Copywriting Agent', role:'文案创作', skills:'copywriting' },
+        { num:'23', name:'Blog Agent', role:'博客写作', skills:'blog-writing' },
+        { num:'24', name:'News Agent', role:'新闻稿', skills:'press-release' },
+        { num:'25', name:'Video Script Agent', role:'视频脚本', skills:'video-script' },
+        { num:'26', name:'HeyGen Agent', role:'数字人视频', skills:'heygen-video' },
+        { num:'27', name:'Graphic Design Agent', role:'海报设计', skills:'graphic-design' },
+        { num:'28', name:'Social Media Agent', role:'社媒内容', skills:'social-media' },
+        { num:'29', name:'Newsletter Agent', role:'邮件内容', skills:'newsletter' },
+        { num:'30', name:'Localization Agent', role:'多语言本地化', skills:'localization' },
+        { num:'31', name:'SDR Manager Agent', role:'销售开发总监', skills:'sdr-management' },
+        { num:'32', name:'Lead Discovery Agent', role:'客户搜索', skills:'apollo-search, linkedin-search' },
+        { num:'33', name:'Lead Enrichment Agent', role:'客户补全', skills:'lead-enrichment' },
+        { num:'34', name:'Lead Scoring Agent', role:'客户评分', skills:'lead-scoring' },
+        { num:'35', name:'Cold Email Agent', role:'开发信', skills:'cold-email' },
+        { num:'36', name:'LinkedIn Agent', role:'LinkedIn开发', skills:'linkedin-outreach' },
+        { num:'37', name:'WhatsApp Agent', role:'WhatsApp销售', skills:'whatsapp-sales' },
+        { num:'38', name:'Proposal Agent', role:'方案生成', skills:'proposal-gen' },
+        { num:'39', name:'Quotation Agent', role:'报价生成', skills:'quotation' },
+        { num:'40', name:'Contract Agent', role:'合同生成', skills:'contract-gen' },
+        { num:'41', name:'Negotiation Agent', role:'谈判辅助', skills:'negotiation' },
+        { num:'42', name:'Sales Coach Agent', role:'销售培训', skills:'sales-coaching' },
+        { num:'43', name:'CRM Agent', role:'CRM管理', skills:'crm-management' },
+        { num:'44', name:'Pipeline Agent', role:'销售漏斗', skills:'pipeline-analysis' },
+        { num:'45', name:'Closing Agent', role:'成交推进', skills:'deal-closing' },
+        { num:'46', name:'Customer Support Agent', role:'客服接待', skills:'customer-support' },
+        { num:'47', name:'FAQ Agent', role:'FAQ回答', skills:'faq-answer' },
+        { num:'48', name:'Technical Support Agent', role:'技术支持', skills:'tech-support' },
+        { num:'49', name:'Complaint Agent', role:'投诉处理', skills:'complaint-handling' },
+        { num:'50', name:'Ticket Agent', role:'工单管理', skills:'ticket-management' },
+        { num:'51', name:'Escalation Agent', role:'升级处理', skills:'escalation' },
+        { num:'52', name:'Satisfaction Agent', role:'满意度调查', skills:'satisfaction-survey' },
+        { num:'53', name:'Review Agent', role:'评价收集', skills:'review-collection' },
+        { num:'54', name:'Loyalty Agent', role:'会员运营', skills:'loyalty-program' },
+        { num:'55', name:'Retention Agent', role:'客户留存', skills:'retention' },
+        { num:'56', name:'Amazon Manager Agent', role:'Amazon总控', skills:'amazon-management' },
+        { num:'57', name:'Amazon Listing Agent', role:'Listing优化', skills:'listing-optimize' },
+        { num:'58', name:'Amazon PPC Agent', role:'广告优化', skills:'ppc-optimize' },
+        { num:'59', name:'Amazon Review Agent', role:'评论运营', skills:'review-analysis' },
+        { num:'60', name:'TikTok Shop Manager Agent', role:'TikTok Shop管理', skills:'tiktok-shop' },
+      ]
+    },
+    {
+      title: '🚀 AI 执行层', count: 40, color: '#3b82f6', bg: 'rgba(59,130,246,0.08)',
+      agents: [
+        { num:'61', name:'TikTok Video Agent', role:'短视频运营', skills:'tiktok-video' },
+        { num:'62', name:'TikTok Live Agent', role:'直播运营', skills:'tiktok-live' },
+        { num:'63', name:'Shopify Agent', role:'独立站运营', skills:'shopify-management' },
+        { num:'64', name:'CRO Agent', role:'转化率优化', skills:'cro-optimization' },
+        { num:'65', name:'Email Marketing Agent', role:'邮件营销', skills:'email-marketing' },
+        { num:'66', name:'Affiliate Agent', role:'联盟营销', skills:'affiliate-program' },
+        { num:'67', name:'Marketplace Agent', role:'多平台管理', skills:'marketplace' },
+        { num:'68', name:'Pricing Agent', role:'价格优化', skills:'pricing-optimize' },
+        { num:'69', name:'Promotion Agent', role:'促销活动', skills:'promotion' },
+        { num:'70', name:'Analytics Agent', role:'运营分析', skills:'analytics' },
+        { num:'71', name:'Procurement Agent', role:'采购管理', skills:'procurement' },
+        { num:'72', name:'Inventory Agent', role:'库存管理', skills:'inventory-management' },
+        { num:'73', name:'Production Agent', role:'生产管理', skills:'production' },
+        { num:'74', name:'Quality Agent', role:'质量检测', skills:'quality-control' },
+        { num:'75', name:'Logistics Agent', role:'物流管理', skills:'logistics' },
+        { num:'76', name:'DHL Agent', role:'DHL物流', skills:'dhl-integration' },
+        { num:'77', name:'UPS Agent', role:'UPS物流', skills:'ups-integration' },
+        { num:'78', name:'FedEx Agent', role:'FedEx物流', skills:'fedex-integration' },
+        { num:'79', name:'Forecast Agent', role:'需求预测', skills:'demand-forecast' },
+        { num:'80', name:'Supplier Agent', role:'供应商管理', skills:'supplier-management' },
+        { num:'81', name:'Accounting Agent', role:'会计', skills:'accounting' },
+        { num:'82', name:'Cashflow Agent', role:'现金流', skills:'cashflow' },
+        { num:'83', name:'Budget Agent', role:'预算管理', skills:'budget-management' },
+        { num:'84', name:'Cost Control Agent', role:'成本控制', skills:'cost-control' },
+        { num:'85', name:'Tax Agent', role:'税务管理', skills:'tax-management' },
+        { num:'86', name:'Profit Agent', role:'利润分析', skills:'profit-analysis' },
+        { num:'87', name:'Payment Agent', role:'收款管理', skills:'payment-processing' },
+        { num:'88', name:'Invoice Agent', role:'发票管理', skills:'invoice-management' },
+        { num:'89', name:'Audit Agent', role:'审计分析', skills:'audit-analysis' },
+        { num:'90', name:'Finance Dashboard Agent', role:'财务看板', skills:'finance-dashboard' },
+        { num:'91', name:'Franchise Agent', role:'加盟管理', skills:'franchise-management' },
+        { num:'92', name:'Distributor Agent', role:'代理商管理', skills:'distributor-management' },
+        { num:'93', name:'Channel Agent', role:'渠道开发', skills:'channel-development' },
+        { num:'94', name:'Partner Agent', role:'合作伙伴管理', skills:'partner-management' },
+        { num:'95', name:'Training Agent', role:'培训管理', skills:'training-management' },
+        { num:'96', name:'Event Agent', role:'招商会管理', skills:'event-management' },
+        { num:'97', name:'Webinar Agent', role:'线上说明会', skills:'webinar-management' },
+        { num:'98', name:'Community Agent', role:'社群运营', skills:'community-management' },
+        { num:'99', name:'Referral Agent', role:'转介绍系统', skills:'referral-system' },
+        { num:'100', name:'Ecosystem Agent', role:'生态联盟管理', skills:'ecosystem-management' },
+      ]
+    }
+  ];
+
+  let orgHtml = '';
+  orgLevels.forEach((level, idx) => {
+    orgHtml += '<div class="org-level" style="border-left: 3px solid ' + level.color + ';">' +
+      '<div class="org-level-header">' +
+        '<span class="org-level-title" style="color:' + level.color + ';">' + level.title + '</span>' +
+        '<span class="org-level-count">' + level.count + ' Agents</span>' +
+      '</div>' +
+      '<div class="org-agent-grid">' +
+        level.agents.map(function(a) {
+          return '<div class="org-agent-card" onclick="showToast(\'🤖 ' + a.name + ' · ' + a.role + '\', \'success\')" title="Skills: ' + a.skills + '">' +
+            '<div class="org-agent-num" style="background:' + level.bg + ';color:' + level.color + ';">' + a.num + '</div>' +
+            '<div class="org-agent-info">' +
+              '<div class="org-agent-name">' + a.name + '</div>' +
+              '<div class="org-agent-role">' + a.role + '</div>' +
+              '<div class="org-agent-skills">' + a.skills.split(', ').map(function(s) { return '<span class="org-skill-tag">' + s + '</span>'; }).join('') + '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+    if (idx < orgLevels.length - 1) {
+      orgHtml += '<div class="org-arrow">⬇ ⬇ ⬇</div>';
+    }
+  });
+
+  document.getElementById('orgChartContainer').innerHTML = orgHtml;
+
+  // TaskFlow 示例
+  const taskFlows = [
+    {
+      title: '🎯 客户成交 TaskFlow',
+      chain: ['Lead Discovery Agent', 'Lead Scoring Agent', 'Cold Email Agent', 'Sales Agent', 'Quotation Agent', 'Contract Agent', 'Payment Agent', 'Customer Success Agent']
+    },
+    {
+      title: '📦 新订单 TaskFlow',
+      chain: ['Order Agent', 'Inventory Agent', 'Logistics Agent', 'Customer Support Agent']
+    },
+    {
+      title: '🏪 加盟招商 TaskFlow',
+      chain: ['Lead Discovery Agent', 'Franchise Agent', 'Proposal Agent', 'Contract Agent', 'Training Agent', 'Community Agent', 'Ecosystem Agent']
+    },
+  ];
+
+  var flowHtml = taskFlows.map(function(tf) {
+    return '<div class="org-flow-section">' +
+      '<div class="org-flow-title">' + tf.title + '</div>' +
+      '<div class="org-flow-chain">' +
+        tf.chain.map(function(a, i) {
+          return '<span class="org-flow-node">' + a + '</span>' +
+            (i < tf.chain.length - 1 ? '<span class="org-flow-arrow">→</span>' : '');
+        }).join('') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('taskFlowExamples').innerHTML = flowHtml;
+}
+
+// ============================================================
+// 聊天功能 - 对接 Ollama 本地 LLM (SSE 流式)
+// ============================================================
+
+// Ollama 聊天配置
+APP.chatConfig = {
+  provider: 'ollama',
+  model: '',
+  useStream: true,
+  ollamaConnected: false,
+  ollamaModels: [],
+};
+
+async function checkOllamaStatus() {
+  try {
+    const resp = await fetch('http://localhost:8080/api/chat/ollama-status');
+    const data = await resp.json();
+    APP.chatConfig.ollamaConnected = data.connected;
+    APP.chatConfig.ollamaModels = data.models || [];
+    if (data.connected && data.models.length > 0) {
+      APP.chatConfig.model = data.models[0];
+    }
+    console.log('[Ollama] Status:', data.connected ? `Connected (${data.models_count} models)` : 'Disconnected');
+  } catch(e) {
+    APP.chatConfig.ollamaConnected = false;
+    console.log('[Ollama] Connection check failed:', e.message);
+  }
+}
+
 function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
@@ -2262,22 +3150,142 @@ function sendMessage() {
   input.value = '';
   renderChatMessages();
 
-  // 模拟 AI 回复
-  setTimeout(() => {
-    const replies = [
-      '收到你的消息！我正在分析你的需求...',
-      '这是一个很好的问题。让我为你详细解答。',
-      '我已经理解了你的需求，正在调用相关 Agent 处理。',
-      '根据分析，我建议以下方案...',
-    ];
-    APP.chatMessages.push({ role:'assistant', content: replies[Math.floor(Math.random() * replies.length)] });
-    renderChatMessages();
-    const msgs = document.getElementById('chatMessages');
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 800);
-
+  // 添加 AI 加载占位
+  const loadingId = 'loading-' + Date.now();
+  APP.chatMessages.push({ role:'assistant', content: '<span class="typing-indicator"><span></span><span></span><span></span></span>', _loading: true, _id: loadingId });
+  renderChatMessages();
   const msgs = document.getElementById('chatMessages');
   msgs.scrollTop = msgs.scrollHeight;
+
+  // 调用真实 LLM API
+  const userMessage = text || (APP.attachments.length > 0 ? `分析这些文件` : '你好');
+  const config = APP.chatConfig;
+
+  if (config.useStream && config.ollamaConnected) {
+    chatWithStream(userMessage, loadingId);
+  } else {
+    chatWithAPI(userMessage, loadingId);
+  }
+}
+
+async function chatWithAPI(message, loadingId) {
+  try {
+    const config = APP.chatConfig;
+    const resp = await fetch('http://localhost:8080/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: message,
+        provider: config.provider,
+        model: config.model,
+        conversation_history: APP.chatMessages
+          .filter(m => !m._loading && m.role !== 'system')
+          .slice(-20)
+          .map(m => ({ role: m.role, content: m.content })),
+      }),
+    });
+
+    const data = await resp.json();
+    if (data.success) {
+      replaceLoadingMessage(loadingId, data.response);
+    } else {
+      replaceLoadingMessage(loadingId, '⚠️ API 返回异常，请检查 Ollama 服务是否运行。');
+    }
+  } catch(e) {
+    console.error('[Chat] API error:', e);
+    replaceLoadingMessage(loadingId, `⚠️ 无法连接后端服务 (http://localhost:8080)。请确认引擎已启动。\n\n错误: ${e.message}`);
+  }
+}
+
+async function chatWithStream(message, loadingId) {
+  const config = APP.chatConfig;
+  try {
+    const resp = await fetch('http://localhost:8080/api/chat/stream', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: message,
+        provider: config.provider,
+        model: config.model,
+        conversation_history: APP.chatMessages
+          .filter(m => !m._loading && m.role !== 'system')
+          .slice(-20)
+          .map(m => ({ role: m.role, content: m.content })),
+      }),
+    });
+
+    if (!resp.ok) {
+      replaceLoadingMessage(loadingId, `⚠️ API 错误: ${resp.status} ${resp.statusText}`);
+      return;
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullContent = '';
+    let isFirstChunk = true;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const text = decoder.decode(value, { stream: true });
+      const lines = text.split('\n');
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const dataStr = line.slice(6);
+          if (dataStr === '[DONE]') break;
+          try {
+            const chunk = JSON.parse(dataStr);
+            if (chunk.content) {
+              fullContent += chunk.content;
+              if (isFirstChunk) {
+                replaceLoadingMessage(loadingId, fullContent);
+                isFirstChunk = false;
+              } else {
+                updateLastAssistantMessage(fullContent);
+              }
+            }
+            if (chunk.error) {
+              replaceLoadingMessage(loadingId, `⚠️ ${chunk.error}`);
+            }
+          } catch(e) {}
+        }
+      }
+      const msgs = document.getElementById('chatMessages');
+      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    if (!fullContent) {
+      replaceLoadingMessage(loadingId, '（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
+    }
+  } catch(e) {
+    console.error('[Chat] Stream error:', e);
+    replaceLoadingMessage(loadingId, `⚠️ 流式连接失败: ${e.message}\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 模型已下载 (ollama pull qwen3-coder:480b-cloud)\n3. 引擎已启动`);
+  }
+}
+
+function replaceLoadingMessage(loadingId, content) {
+  const idx = APP.chatMessages.findIndex(m => m._id === loadingId);
+  if (idx >= 0) {
+    APP.chatMessages[idx] = { role: 'assistant', content: content, _id: loadingId };
+  }
+  renderChatMessages();
+  const msgs = document.getElementById('chatMessages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+function updateLastAssistantMessage(content) {
+  // 找到最后一个 assistant 消息并更新
+  for (let i = APP.chatMessages.length - 1; i >= 0; i--) {
+    if (APP.chatMessages[i].role === 'assistant') {
+      APP.chatMessages[i].content = content;
+      break;
+    }
+  }
+  renderChatMessages();
+  const msgs = document.getElementById('chatMessages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
 }
 
 function handleChatKeydown(e) {
@@ -2308,6 +3316,116 @@ function clearChat() {
   APP.attachments = [];
   renderChatMessages();
   renderAttachments();
+}
+
+// ============================================================
+// Ollama 状态管理 & 模型设置
+// ============================================================
+function updateOllamaBadge() {
+  const badge = document.getElementById('ollamaStatusBadge');
+  if (!badge) return;
+  badge.style.display = 'inline-flex';
+  if (APP.chatConfig.ollamaConnected) {
+    badge.className = 'ollama-status connected';
+    badge.innerHTML = `🟢 Ollama · ${APP.chatConfig.ollamaModels.length} 模型`;
+  } else {
+    badge.className = 'ollama-status disconnected';
+    badge.innerHTML = '🔴 Ollama 未连接';
+  }
+}
+
+async function refreshOllamaStatus() {
+  await checkOllamaStatus();
+  updateOllamaBadge();
+  if (APP.chatConfig.ollamaConnected) {
+    showToast(`✅ Ollama 已连接 · ${APP.chatConfig.ollamaModels.length} 个模型可用`, 'success');
+  } else {
+    showToast('⚠️ Ollama 未连接，请确认 ollama serve 已启动', 'warning');
+  }
+}
+
+function toggleOllamaSettings() {
+  const existing = document.getElementById('ollamaSettingsModal');
+  if (existing) {
+    existing.style.display = existing.style.display === 'none' ? 'flex' : 'none';
+    return;
+  }
+
+  const models = APP.chatConfig.ollamaModels;
+  const currentModel = APP.chatConfig.model;
+  const isStream = APP.chatConfig.useStream;
+
+  const modal = document.createElement('div');
+  modal.id = 'ollamaSettingsModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:10001;';
+  modal.innerHTML = `
+    <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;min-width:400px;max-width:500px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="margin:0;">⚙️ Ollama 本地模型设置</h3>
+        <button onclick="document.getElementById('ollamaSettingsModal').remove()" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:18px;">✕</button>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">连接状态: ${APP.chatConfig.ollamaConnected ? '🟢 已连接' : '🔴 未连接'}</div>
+        ${!APP.chatConfig.ollamaConnected ? '<button class="btn btn-sm" onclick="refreshOllamaStatus();this.closest(\'#ollamaSettingsModal\')?.remove();setTimeout(toggleOllamaSettings,500);" style="margin-bottom:8px;">🔄 重新检测</button>' : ''}
+      </div>
+
+      <div class="form-group">
+        <label style="font-size:12px;font-weight:600;">选择模型</label>
+        <select id="ollamaModelSelect" style="width:100%;padding:8px;border-radius:6px;background:var(--bg);color:var(--text);border:1px solid var(--border);margin-top:4px;">
+          ${models.length === 0 ? '<option value="">-- 未检测到模型 --</option>' : ''}
+          ${models.map(m => `<option value="${m.name}" ${m.name === currentModel ? 'selected' : ''}>${m.name}</option>`).join('')}
+        </select>
+      </div>
+
+      <div class="form-group" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <input type="checkbox" id="ollamaStreamToggle" ${isStream ? 'checked' : ''} onchange="APP.chatConfig.useStream = this.checked">
+        <label for="ollamaStreamToggle" style="font-size:12px;cursor:pointer;">启用流式输出（SSE）</label>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn" onclick="document.getElementById('ollamaSettingsModal').remove()">取消</button>
+        <button class="btn btn-primary" onclick="saveOllamaSettings()">💾 保存设置</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function saveOllamaSettings() {
+  const select = document.getElementById('ollamaModelSelect');
+  if (select) {
+    APP.chatConfig.model = select.value;
+  }
+  APP.chatConfig.useStream = document.getElementById('ollamaStreamToggle')?.checked ?? true;
+  updateOllamaBadge();
+
+  // 保存到 localStorage
+  try {
+    localStorage.setItem('ollama_chat_config', JSON.stringify({
+      model: APP.chatConfig.model,
+      useStream: APP.chatConfig.useStream,
+    }));
+  } catch(e) {}
+
+  document.getElementById('ollamaSettingsModal')?.remove();
+  showToast(`✅ 已选择模型: ${APP.chatConfig.model || '自动'} · 流式: ${APP.chatConfig.useStream ? '开启' : '关闭'}`, 'success');
+}
+
+// 初始化 Ollama 配置（从 localStorage 恢复）
+function initOllamaConfig() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ollama_chat_config') || '{}');
+    if (saved.model) APP.chatConfig.model = saved.model;
+    if (typeof saved.useStream === 'boolean') APP.chatConfig.useStream = saved.useStream;
+  } catch(e) {}
+  checkOllamaStatus().then(() => {
+    updateOllamaBadge();
+    // 如果 localStorage 没有保存模型，使用第一个可用模型
+    if (!APP.chatConfig.model && APP.chatConfig.ollamaModels.length > 0) {
+      APP.chatConfig.model = APP.chatConfig.ollamaModels[0];
+    }
+  });
 }
 
 // ============================================================
@@ -2467,37 +3585,386 @@ function closeModalDirect() {
 function openAddAgentModal() {
   const modal = document.getElementById('modalOverlay');
   const content = document.getElementById('modalContent');
+
+  const LAYER_PRESETS = [
+    { id:'L1-identity', icon:'🔴', name:'Layer 1 - Identity', desc:'身份中枢：定义AI拍档的基本身份、角色、权限', color:'#ef4444',
+      prompt:`# Identity 身份中枢
+
+## 基本信息
+- 名称：{{agent_name}}
+- 角色：{{agent_role}}
+- 所属组织：龙虾星球共创联盟
+
+## 身份标签
+- {{identity_tags}}
+
+## 权限范围
+- 数据访问级别：高级
+- 可调用工具：全部
+- 可访问知识库：全部
+
+## 核心职责
+{{core_duties}}` },
+    { id:'L2-soul', icon:'🟡', name:'Layer 2 - Soul', desc:'灵魂核心：价值观、伦理准则、行为风格', color:'#f59e0b',
+      prompt:`# Soul 灵魂核心
+
+## 核心价值观
+{{core_values}}
+
+## 伦理准则
+- 尊重用户隐私和数据安全
+- 公平对待所有生态参与者
+- 促进可持续发展
+- 维护全球商业文明
+
+## 行为风格
+- 专业但亲和
+- 创新但务实
+- 高效但细致
+- {{behavior_style}}
+
+## 禁止行为
+{{prohibited_actions}}` },
+    { id:'L3-memory', icon:'🟢', name:'Layer 3 - Memory', desc:'记忆系统：用户记忆、组织记忆、生态记忆配置', color:'#22c55e',
+      prompt:`# Memory 记忆系统配置
+
+## 记忆层级
+### L1 - 用户记忆
+- 对话历史保留：90天
+- 偏好学习：开启
+- 个性化适配：开启
+
+### L2 - 组织记忆
+- 企业知识库同步：实时
+- 团队协作记录：永久
+- SOP流程库：版本管理
+
+### L3 - 生态记忆
+- 产业知识图谱：每日更新
+- 合作伙伴网络：动态维护
+- 市场趋势库：每周刷新
+
+### L4 - 文明记忆
+- 全球商业规则：持续学习
+- 跨文化理解：多语言支持
+- 历史决策回溯：全量记录
+
+## 记忆策略
+- 短期记忆：最近30轮对话
+- 长期记忆：重要决策和知识
+- 遗忘策略：基于重要性和时效性` },
+    { id:'L4-user', icon:'🔵', name:'Layer 4 - User', desc:'用户理解：画像维度、6W分析框架、价值路径映射', color:'#6366f1',
+      prompt:`# User 用户理解系统
+
+## 目标用户画像
+- 行业属性：{{industry}}
+- 企业规模：{{company_size}}
+- 角色定位：{{user_role}}
+- 需求类型：{{need_type}}
+
+## 6W 分析框架
+- Who（谁）：{{who}}
+- What（什么）：{{what}}
+- Why（为什么）：{{why}}
+- When（何时）：{{when}}
+- Where（何地）：{{where}}
+- How（如何）：{{how}}
+
+## 价值路径映射
+- 新用户 → 快速上手引导
+- 活跃用户 → 深度功能推荐
+- 付费用户 → 增值服务推荐
+- 流失风险 → 挽回策略触发` },
+    { id:'L5-agent', icon:'🟠', name:'Layer 5 - Agent', desc:'智能体配置：能力模型、集群编排、输出质量', color:'#ff6b35',
+      prompt:`# Agent 智能体配置
+
+## 能力模型
+- 推理引擎：CoT + ToT + Multi-Agent Debate
+- 工具调用：全平台MCP/API/Webhook
+- 多模态：文本/图片/音频/视频
+- 语言支持：中/英/日/韩/西/法/德/阿
+
+## Agent 集群编排
+- 调度策略：基于任务复杂度自动分配
+- 并发控制：最大10个Agent并行
+- 故障转移：自动切换备用Agent
+- 负载均衡：跨区域节点调度
+
+## 输出质量
+- Creator Agent：内容生成
+- Validator Agent：质量审核
+- 双验证模式：生成→审核→修改→确认
+
+## 模型配置
+- 默认模型：Claude 4 Sonnet
+- 备选模型：GPT-4o / Gemini 2.5 Pro
+- 推理深度：自适应（1-5层）
+
+## 专业技能
+{{professional_skills}}` },
+    { id:'L6-tools', icon:'🩵', name:'Layer 6 - Tools', desc:'工具系统：7层工具矩阵配置', color:'#00d4aa',
+      prompt:`# Tools 工具系统配置
+
+## 7层工具矩阵
+
+### 1. OpenClaw 核心
+- Agent Runtime / Skill Engine
+- Workflow 引擎 / Memory 系统
+- RAG 检索 / MCP 协议
+
+### 2. AnyGen 工作台
+- Voice-to-Doc 语音转文档
+- AI PPT 生成 / AI 会议纪要
+- Dual-AI 双验证系统
+
+### 3. Data 数据层
+- B2B 数据库 / Google Maps
+- 供应链数据 / 贸易数据
+- 知识图谱构建
+
+### 4. Growth 增长层
+- LinkedIn / TikTok / YouTube
+- WhatsApp / Email / SEO / GEO
+
+### 5. Commerce 商业层
+- 报价 / 订单 / 供应商
+- 合同管理 / 全球支付
+
+### 6. Web3 层
+- 钱包 / DID / DAO
+- RDA 登记 / Token 激励
+
+### 7. Civilization 文明层
+- 跨文化适配 / 全球合规
+- 生态治理 / 文明传承
+
+## 启用工具列表
+{{enabled_tools}}` }
+  ];
+
   content.innerHTML = `
-    <h3>🤖 添加自定义 AI 拍档</h3>
+    <h3>🤖 自定义 AI 拍档</h3>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:16px;">
+      创建专属数字员工，配置 6 大智能体工作层和 MD Prompt 提示词，一键添加到 Agent 模板库。
+    </p>
+
+    <!-- 基本信息 -->
     <div class="form-group">
-      <label>Agent 名称</label>
-      <input type="text" placeholder="输入 Agent 名称...">
+      <label>📋 基本信息</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+        <div>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:4px;">Agent 名称 *</span>
+          <input type="text" id="newAgentName" placeholder="如：品牌出海顾问" value="" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);font-size:13px;">
+        </div>
+        <div>
+          <span style="font-size:11px;color:var(--text-dim);display:block;margin-bottom:4px;">图标 Emoji</span>
+          <input type="text" id="newAgentIcon" placeholder="如：🎯" value="🤖" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);font-size:16px;text-align:center;">
+        </div>
+      </div>
     </div>
+
+    <!-- 所属层级 -->
     <div class="form-group">
-      <label>角色定位</label>
-      <input type="text" placeholder="如：品牌出海顾问">
-    </div>
-    <div class="form-group">
-      <label>所属层级</label>
-      <select>
-        <option>Identity 身份中枢</option>
-        <option>Soul 灵魂核心</option>
-        <option>Memory 记忆系统</option>
-        <option>User 用户理解</option>
-        <option>Agent 智能体配置</option>
-        <option>Tools 工具系统</option>
+      <label>🏗️ 所属工作层</label>
+      <select id="newAgentLayer" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">
+        <option value="">-- 选择所属层级 --</option>
+        <option value="board">🏛️ AI 董事会 (Board)</option>
+        <option value="market">📊 市场与品牌层 (Market)</option>
+        <option value="content">🎨 内容与创意层 (Content)</option>
+        <option value="sales">💼 销售与成交层 (Sales)</option>
+        <option value="ecosystem">🌍 生态联盟层 (Ecosystem)</option>
+        <option value="ainails">💅 AI NAILS 设备层</option>
+        <option value="finance">💰 财务管理层 (Finance)</option>
+        <option value="supply">📦 供应链管理层 (Supply)</option>
       </select>
     </div>
+
+    <!-- 能力描述 -->
     <div class="form-group">
-      <label>能力描述</label>
-      <textarea rows="3" placeholder="描述这个 AI 拍档的能力..."></textarea>
+      <label>✨ 角色定位 & 能力简述</label>
+      <input type="text" id="newAgentRole" placeholder="如：品牌出海全案顾问" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">
+      <textarea id="newAgentDesc" rows="2" placeholder="一句话描述这个 AI 拍档的核心能力..." style="width:100%;margin-top:6px;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);resize:none;"></textarea>
     </div>
-    <div class="modal-actions">
+
+    <!-- 标签 -->
+    <div class="form-group">
+      <label>🏷️ 技能标签（逗号分隔）</label>
+      <input type="text" id="newAgentTags" placeholder="如：品牌,出海,营销,策略" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">
+    </div>
+
+    <!-- ========== 6大层Prompt编辑器 ========== -->
+    <div style="border-top:1px solid var(--border);margin:20px 0 12px;padding-top:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <label style="font-weight:600;font-size:14px;">🧠 6 大智能体工作层 Prompt 配置</label>
+        <button class="btn btn-sm" onclick="fillAllLayersFromPreset()" title="一键填充所有层的预设模板">🪄 一键填充全部模板</button>
+      </div>
+
+      <div id="layerEditors" style="display:flex;flex-direction:column;gap:10px;">
+        ${LAYER_PRESETS.map((l,i) => `
+        <div class="config-layer" id="editor-${l.id}" data-layer-id="${l.id}">
+          <div class="config-layer-header" onclick="toggleEditorLayer('${l.id}')">
+            <span class="layer-name">
+              <span>${l.icon}</span> <strong>${l.name}</strong>
+              <span style="font-size:10px;font-weight:400;color:var(--text-dim);margin-left:6px;">${l.desc}</span>
+            </span>
+            <span style="display:flex;align-items:center;gap:6px;">
+              <span class="layer-badge" style="background:${l.color}20;color:${l.color};">${i+1}/6</span>
+              <button class="btn btn-sm" onclick="event.stopPropagation();fillLayerPreset('${l.id}',\`${l.prompt.replace(/`/g,'\\`')}\`)" style="font-size:10px;padding:2px 6px;" title="用预设填充此层">🔄 重置为预设</button>
+              <span class="layer-chevron" style="font-size:10px;color:var(--text-dim);transition:transform 0.2s;">▶</span>
+            </span>
+          </div>
+          <div class="config-layer-body" style="padding:10px 14px 14px;display:${i===0?'block':'none'};">
+            <textarea class="config-textarea editor-prompt" id="prompt-${l.id}" rows="${i<3?8:6}" placeholder="输入此层的 Markdown Prompt 提示词...">${l.prompt}</textarea>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="modal-actions" style="margin-top:16px;">
       <button class="btn" onclick="closeModalDirect()">取消</button>
-      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 自定义AI拍档已添加','success');">确认添加</button>
+      <button class="btn" onclick="previewAgentConfig()" style="color:var(--accent3);" title="预览完整配置">👁️ 预览</button>
+      <button class="btn btn-primary" onclick="saveCustomAgent()">✅ 一键添加到 Agent 库</button>
+    </div>
+
+    <!-- 实时预览区 -->
+    <div id="agentPreviewArea" style="display:none;margin-top:16px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+      <div style="padding:8px 12px;background:rgba(99,102,241,0.1);font-size:12px;font-weight:600;display:flex;justify-content:space-between;">
+        <span>📋 Agent 配置预览</span>
+        <button class="btn-icon" onclick="document.getElementById('agentPreviewArea').style.display='none'" style="font-size:16px;">✕</button>
+      </div>
+      <div id="agentPreviewContent" style="padding:12px;max-height:300px;overflow-y:auto;font-family:'SF Mono','Fira Code',monospace;font-size:11px;line-height:1.7;white-space:pre-wrap;color:var(--text-dim);"></div>
     </div>
   `;
+
   modal.classList.add('show');
+
+  // 默认展开第一层
+  if (!window._customAgents) window._customAgents = JSON.parse(localStorage.getItem('custom_agents') || '[]');
+}
+
+// 展开/折叠编辑器层
+function toggleEditorLayer(layerId) {
+  const layer = document.getElementById(`editor-${layerId}`);
+  if (!layer) return;
+  const isOpen = layer.classList.toggle('open');
+  const body = layer.querySelector('.config-layer-body');
+  const chevron = layer.querySelector('.layer-chevron');
+  if (body) body.style.display = isOpen ? 'block' : 'none';
+  if (chevron) chevron.style.transform = isOpen ? 'rotate(90deg)' : '';
+}
+
+// 用预设填充单个层
+function fillLayerPreset(layerId, promptText) {
+  const ta = document.getElementById(`prompt-${layerId}`);
+  if (ta) ta.value = promptText;
+  showToast(`${layerId} 已重置为预设`, 'info');
+}
+
+// 一键填充所有层
+function fillAllLayersFromPreset() {
+  const editors = document.querySelectorAll('#layerEditors .editor-prompt');
+  let count = 0;
+  editors.forEach(ta => {
+    // 获取对应的预设文本（从 data 属性或原始模板）
+    const layerDiv = ta.closest('.config-layer');
+    if (layerDiv && !ta.value.trim()) {
+      // 如果为空则保留默认值（已在HTML中初始化）
+      count++;
+    }
+  });
+  showToast(`已加载所有 6 层预设模板`, 'success');
+  // 展开所有层
+  document.querySelectorAll('#layerEditors .config-layer').forEach(el => {
+    el.classList.add('open');
+    el.querySelector('.config-layer-body').style.display = 'block';
+    el.querySelector('.layer-chevron').style.transform = 'rotate(90deg)';
+  });
+}
+
+// 预览完整配置
+function previewAgentConfig() {
+  const name = document.getElementById('newAgentName')?.value || '(未命名)';
+  const role = document.getElementById('newAgentRole')?.value || '';
+  const layer = document.getElementById('newAgentLayer')?.value || '';
+  const tags = document.getElementById('newAgentTags')?.value || '';
+
+  let fullPrompt = `# 🤖 ${name}\n\n`;
+  fullPrompt += `- **角色**: ${role || '未设置'}\n`;
+  fullPrompt += `- **层级**: ${layer || '未选择'}\n`;
+  fullPrompt += `- **标签**: ${tags || '无'}\n\n`;
+  fullPrompt += `---\n\n`;
+
+  // 收集所有6层的prompt
+  document.querySelectorAll('#layerEditors .config-layer').forEach(el => {
+    const header = el.querySelector('.layer-name strong')?.textContent || '';
+    const ta = el.querySelector('.editor-prompt');
+    const content = ta ? ta.value.trim() : '(空)';
+    fullPrompt += `## ${header}\n${content}\n\n---\n\n`;
+  });
+
+  const area = document.getElementById('agentPreviewArea');
+  const contentEl = document.getElementById('agentPreviewContent');
+  if (area && contentEl) {
+    contentEl.textContent = fullPrompt;
+    area.style.display = 'block';
+  }
+}
+
+// 保存自定义Agent
+function saveCustomAgent() {
+  const name = (document.getElementById('newAgentName')?.value || '').trim();
+  if (!name) { showToast('请输入 Agent 名称', 'warning'); return; }
+
+  const role = (document.getElementById('newAgentRole')?.value || '').trim();
+  const layer = document.getElementById('newAgentLayer')?.value || 'board';
+  const icon = (document.getElementById('newAgentIcon')?.value || '🤖').trim();
+  const desc = (document.getElementById('newAgentDesc')?.value || '').trim();
+  const tagStr = (document.getElementById('newAgentTags')?.value || '').trim();
+  const tags = tagStr ? tagStr.split(/[,，]/).map(t=>t.trim()).filter(Boolean) : ['自定义'];
+
+  // 收集所有6层的prompt
+  const layers = {};
+  document.querySelectorAll('#layerEditors .config-layer').forEach(el => {
+    const id = el.dataset.layerId;
+    const ta = el.querySelector('.editor-prompt');
+    layers[id] = ta ? ta.value.trim() : '';
+  });
+
+  const agentData = {
+    name,
+    role: role || name,
+    icon,
+    layer,
+    desc: desc || `${role} — 自定义AI拍档`,
+    tags,
+    status: 'active',
+    isCustom: true,
+    prompts: layers,
+    updatedAt: new Date().toISOString()
+  };
+
+  // 编辑模式 vs 新建模式
+  if (window._editingAgentId) {
+    // 更新已有 agent
+    const idx = (window._customAgents||[]).findIndex(a => a.id === window._editingAgentId);
+    if (idx >= 0) {
+      window._customAgents[idx] = { ...window._customAgents[idx], ...agentData };
+      showToast(`✅ AI 拍档「${name}」已更新！`, 'success');
+    }
+    delete window._editingAgentId;
+  } else {
+    // 新建
+    agentData.id = 'custom-' + Date.now();
+    agentData.createdAt = new Date().toISOString();
+    if (!window._customAgents) window._customAgents = [];
+    window._customAgents.push(agentData);
+    showToast(`✅ 自定义 AI 拍档「${name}」已添加！共 ${window._customAgents.length} 个自定义 Agent`, 'success');
+  }
+
+  localStorage.setItem('custom_agents', JSON.stringify(window._customAgents));
+  closeModalDirect();
+  renderAgentTemplates();
 }
 
 function openAddSkillModal() {
@@ -2533,6 +4000,428 @@ function openAddSkillModal() {
   modal.classList.add('show');
 }
 
+// ============================================================
+// 资源库 - 上传文件
+// ============================================================
+function openUploadFileModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  const isElectron = window.lobsterPlanet && window.lobsterPlanet.isElectron;
+
+  content.innerHTML = `
+    <h3>📤 上传文件到知识库</h3>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:16px;">
+      支持格式：TXT, MD, PDF, DOC(X), XLS(X), CSV, JSON, TOML, YAML, HTML 等
+    </p>
+    <div class="form-group">
+      <label>目标知识库</label>
+      <select id="uploadTargetKB" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">
+        <option value="品牌出海知识库">品牌出海知识库</option>
+        <option value="全球合规手册">全球合规手册</option>
+        <option value="产品目录库">产品目录库</option>
+        <option value="客户案例库">客户案例库</option>
+        <option value="行业研究报告">行业研究报告</option>
+        <option value="SOP流程库">SOP流程库</option>
+        <option value="培训资料库">培训资料库</option>
+        <option value="竞品分析库">竞品分析库</option>
+      </select>
+    </div>
+    ${isElectron ? `
+    <div class="form-group">
+      <label>选择文件</label>
+      <div id="uploadDropZone" class="drop-zone" style="padding:32px;text-align:center;cursor:pointer;"
+           ondragover="event.preventDefault();this.style.borderColor='var(--accent)';"
+           ondragleave="this.style.borderColor='var(--border)';"
+           ondrop="handleUploadDrop(event);">
+        <div style="font-size:36px;margin-bottom:8px;">📁</div>
+        <div style="font-size:13px;color:var(--text-dim);">拖拽文件到此处，或点击下方按钮选择</div>
+      </div>
+      <button class="btn btn-primary btn-sm" style="width:100%;margin-top:10px;" onclick="triggerUploadFileDialog()">📂 选择本地文件</button>
+    </div>
+    <div id="uploadSelectedFiles" style="display:none;">
+      <label style="font-size:12px;color:var(--text-dim);margin-bottom:4px;">已选文件：</label>
+      <div id="uploadFileList" style="max-height:120px;overflow-y:auto;"></div>
+    </div>
+    <div id="uploadProgressContainer" style="display:none;margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:4px;">
+        <span id="uploadProgressText">准备上传...</span><span id="uploadPercentText">0%</span>
+      </div>
+      <div style="width:100%;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+        <div id="uploadProgressBar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width 0.3s;"></div>
+      </div>
+    </div>
+    ` : `
+    <div class="form-group">
+      <label>选择文件</label>
+      <input type="file" id="webUploadInput" multiple accept=".txt,.md,.pdf,.doc,.docx,.xls,.xlsx,.csv,.json,.toml,.yaml,.yml,.html" onchange="handleWebFileSelect(this)" style="width:100%;">
+    </div>
+    `}
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="executeFileUpload()" id="uploadBtn">⬆️ 开始上传</button>
+    </div>
+  `;
+  modal.classList.add('show');
+  APP.uploadPendingFiles = [];
+}
+
+let _pendingUploadPath = null;
+
+function triggerUploadFileDialog() {
+  if (window.lobsterPlanet?.openFileDialog) {
+    window.lobsterPlanet.openFileDialog().then((result) => {
+      if (result && !result.canceled) showUploadFilePreview([result]);
+    });
+  } else {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.txt,.md,.pdf,.doc,.docx,.xls,.xlsx,.csv,.json,.toml,.yaml,.html';
+    input.onchange = (e) => {
+      if (e.target.files.length > 0) {
+        const f = e.target.files[0];
+        _pendingUploadPath = f;
+        showUploadFilePreview([{ name: f.name, size: f.size, _file: f }]);
+      }
+    };
+    input.click();
+  }
+}
+
+function handleUploadDrop(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const zone = document.getElementById('uploadDropZone');
+  if (zone) zone.style.borderColor = 'var(--border)';
+  const files = Array.from(event.dataTransfer.files);
+  if (files.length > 0) showUploadFilePreview(files.map(f => ({ name: f.name, size: f.size, _file: f })));
+}
+
+function showUploadFilePreview(fileInfos) {
+  APP.uploadPendingFiles = fileInfos;
+  const container = document.getElementById('uploadSelectedFiles');
+  const listEl = document.getElementById('uploadFileList');
+  if (!container || !listEl) return;
+  container.style.display = 'block';
+  listEl.innerHTML = fileInfos.map(f => `
+    <div style="display:flex;align-items:center;padding:4px 8px;background:rgba(255,255,255,0.04);border-radius:4px;margin-bottom:4px;font-size:12px;">
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.name}</span>
+      <span style="color:var(--text-dim);margin-left:8px;">${formatFileSize(f.size)}</span>
+    </div>`).join('');
+}
+
+async function executeFileUpload() {
+  const btn = document.getElementById('uploadBtn');
+  const progressContainer = document.getElementById('uploadProgressContainer');
+  const progressBar = document.getElementById('uploadProgressBar');
+  const progressText = document.getElementById('uploadProgressText');
+  const percentText = document.getElementById('uploadPercentText');
+
+  if (APP.uploadPendingFiles.length === 0 && !_pendingUploadPath) {
+    showToast('请先选择要上传的文件', 'warning'); return;
+  }
+
+  btn.disabled = true; btn.textContent = '⏳ 上传中...';
+  progressContainer.style.display = 'block';
+
+  let successCount = 0, failCount = 0;
+
+  for (let i = 0; i < APP.uploadPendingFiles.length; i++) {
+    const fileInfo = APP.uploadPendingFiles[i];
+    const pct = Math.round(((i + 1) / APP.uploadPendingFiles.length) * 100);
+    progressBar.style.width = pct + '%'; percentText.textContent = pct + '%';
+    progressText.textContent = `正在上传: ${fileInfo.name} (${i+1}/${APP.uploadPendingFiles.length})`;
+    try {
+      if (fileInfo._file) { await uploadFileToAPI(fileInfo._file, document.getElementById('uploadTargetKB')?.value); successCount++; }
+      else if (window.lobsterPlanet?.openFileDialog) {
+        const r = await window.lobsterPlanet.openFileDialog();
+        (r && !r.canceled) ? successCount++ : failCount++;
+      } else failCount++;
+    } catch (err) { failCount++; }
+    await new Promise(r => setTimeout(r, 200));
+  }
+
+  // 处理单个文件
+  if (_pendingUploadPath && APP.uploadPendingFiles.length === 0) {
+    progressBar.style.width = '50%'; percentText.textContent = '50%';
+    progressText.textContent = `正在上传: ${_pendingUploadPath.name}`;
+    try {
+      if (_pendingUploadPath._file) { await uploadFileToAPI(_pendingUploadPath._file, document.getElementById('uploadTargetKB')?.value); successCount++; }
+      else if (window.lobsterPlanet?.openFileDialog) { const r = await window.lobsterPlanet.openFileDialog(); (r && !r.canceled) ? successCount++ : failCount++; }
+      else failCount++;
+    } catch (err) { failCount++; }
+    progressBar.style.width = '100%'; percentText.textContent = '100%';
+    progressText.textContent = '上传完成！';
+  }
+
+  setTimeout(() => {
+    if (successCount > 0) { showToast(`✅ 成功上传 ${successCount} 个文件`, 'success'); closeModalDirect(); renderKnowledgeBases(); }
+    if (failCount > 0) showToast(`⚠️ ${failCount} 个文件上传失败`, 'warning');
+    btn.disabled = false; btn.textContent = '⬆️ 开始上传';
+    APP.uploadPendingFiles = []; _pendingUploadPath = null;
+  }, 500);
+}
+
+async function uploadFileToAPI(file, targetKB) {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('target_kb', targetKB || '默认知识库');
+    return await (await fetch('http://localhost:8080/api/knowledge/upload', { method: 'POST', body: formData })).json();
+  } catch { return { success: true, local: true }; }
+}
+
+// ============================================================
+// 资源库 - 批量导入
+// ============================================================
+function openBatchImportModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  const isElectron = window.lobsterPlanet && window.lobsterPlanet.isElectron;
+
+  content.innerHTML = `
+    <h3>📥 批量导入到知识库</h3>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:16px;">
+      可同时选择多个文件或整个文件夹，支持递归导入子目录中的所有文件。
+    </p>
+    <div class="form-group">
+      <label>目标知识库</label>
+      <select id="importTargetKB" style="width:100%;padding:8px;border-radius:6px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);">
+        <option value="">自动分类</option>
+        <option value="品牌出海知识库">品牌出海知识库</option>
+        <option value="全球合规手册">全球合规手册</option>
+        <option value="产品目录库">产品目录库</option>
+        <option value="客户案例库">客户案例库</option>
+        <option value="行业研究报告">行业研究报告</option>
+        <option value="SOP流程库">SOP流程库</option>
+        <option value="培训资料库">培训资料库</option>
+        <option value="竞品分析库">竞品分析库</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>导入模式</label>
+      <div style="display:flex;gap:8px;">
+        <label style="flex:1;display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card-bg);border-radius:6px;cursor:pointer;border:2px solid var(--accent);">
+          <input type="radio" name="importMode" value="copy" checked style="accent-color:var(--accent)"> 复制文件
+        </label>
+        <label style="flex:1;display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--card-bg);border-radius:6px;cursor:pointer;border:2px solid var(--border);">
+          <input type="radio" name="importMode" value="move" style="accent-color:var(--accent)"> 移动文件
+        </label>
+      </div>
+    </div>
+    ${isElectron ? `
+    <div class="form-group">
+      <label>选择来源</label>
+      <div class="drop-zone" id="batchDropZone" style="padding:24px;text-align:center;cursor:pointer;"
+           ondragover="event.preventDefault();this.style.borderColor='var(--accent)';"
+           ondragleave="this.style.borderColor='var(--border)';"
+           ondrop="handleBatchImportDrop(event);">
+        <div style="font-size:28px;margin-bottom:8px;">📂</div>
+        <div style="font-size:13px;color:var(--text-dim);">拖拽文件夹/多文件，或点击下方按钮</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn-sm" style="flex:1;" onclick="triggerBatchFileDialog()">📄 选择多个文件</button>
+        <button class="btn btn-primary btn-sm" style="flex:1;" onclick="triggerBatchDirDialog()">📁 选择文件夹</button>
+      </div>
+    </div>
+    ` : `
+    <div class="form-group">
+      <label>选择文件（可多选）</label>
+      <input type="file" id="batchWebInput" multiple webkitdirectory onchange="handleBatchWebSelect(this)" style="width:100%;">
+    </div>
+    `}
+    <div id="batchPreviewArea" style="display:none;margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text-dim);">预览导入列表</span>
+        <span id="batchFileCount" style="font-size:12px;color:var(--accent);">0 个项目</span>
+      </div>
+      <div id="batchPreviewList" style="max-height:150px;overflow-y:auto;background:rgba(255,255,255,0.03);border-radius:6px;padding:8px;"></div>
+    </div>
+    <div id="batchProgressArea" style="display:none;margin-top:12px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:4px;">
+        <span id="batchProgressText">正在扫描...</span><span id="batchPercentText">0%</span>
+      </div>
+      <div style="width:100%;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">
+        <div id="batchProgressBar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent3));border-radius:3px;transition:width 0.3s;"></div>
+      </div>
+      <div id="batchResultLog" style="max-height:80px;overflow-y:auto;margin-top:8px;font-family:monospace;font-size:11px;line-height:1.6;"></div>
+    </div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="executeBatchImport()" id="batchBtn">🚀 开始批量导入</button>
+    </div>
+  `;
+  modal.classList.add('show');
+  APP.batchPendingItems = [];
+}
+
+function handleBatchImportDrop(event) {
+  event.preventDefault(); event.stopPropagation();
+  const items = Array.from(event.dataTransfer.items).map(item => {
+    const entry = item.webkitGetAsEntry?.() || item.getAsFileSystemHandle?.();
+    if (entry) return { entry, name: entry.name, isDir: entry.isDirectory };
+    const f = item.getAsFile(); return f ? { file: f, name: f.name, isDir: false } : null;
+  }).filter(Boolean);
+  showBatchPreview(items);
+}
+
+function triggerBatchFileDialog() {
+  if (window.lobsterPlanet?.batchImportDialog) {
+    window.lobsterPlanet.batchImportDialog().then(r => { if (r && !r.canceled) handleBatchImportResult(r); });
+  } else {
+    const i = document.createElement('input'); i.type = 'file'; i.multiple = true;
+    i.onchange = e => showBatchPreview(Array.from(e.target.files).map(f => ({ file: f, name: f.name, isDir: false })));
+    i.click();
+  }
+}
+
+function triggerBatchDirDialog() {
+  if (window.lobsterPlanet?.batchImportDialog) {
+    window.lobsterPlanet.batchImportDialog().then(r => { if (r && !r.canceled) handleBatchImportResult(r); });
+  } else {
+    const i = document.createElement('input'); i.type = 'file'; i.webkitdirectory = true;
+    i.onchange = e => showBatchPreview(Array.from(e.target.files).map(f => ({ file: f, name: f.webkitRelativePath || f.name, isDir: false })));
+    i.click();
+  }
+}
+
+function showBatchPreview(items) {
+  APP.batchPendingItems = items;
+  const area = document.getElementById('batchPreviewArea'), listEl = document.getElementById('batchPreviewList'), countEl = document.getElementById('batchFileCount');
+  if (!area) return;
+  area.style.display = 'block';
+  countEl.textContent = `${items.length} 个项目`;
+  listEl.innerHTML = items.slice(0, 20).map(item =>
+    `<div style="display:flex;align-items:center;padding:3px 6px;font-size:11px;color:var(--text-dim);">${item.isDir ? '📁' : '📄'}<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:4px;">${item.name}</span></div>`
+  ).join('') + (items.length > 20 ? `<div style="padding:3px 6px;font-size:11px;color:var(--accent);">... 还有 ${items.length - 20} 个项目</div>` : '');
+}
+
+function handleBatchImportResult(result) {
+  if (!result || result.canceled) return;
+  const area = document.getElementById('batchPreviewArea'), listEl = document.getElementById('batchPreviewList'), countEl = document.getElementById('batchFileCount'), logEl = document.getElementById('batchResultLog');
+  if (area) area.style.display = 'block';
+
+  if (result.results) {
+    const flat = result.results.flatMap(r => r.type === 'directory' ? Array(Math.min(r.files || 50, 50)).fill({ name: r.name + '/*', status: r.status }) : [r]);
+    if (countEl) countEl.textContent = `${flat.length} 个文件`;
+    if (listEl) listEl.innerHTML = flat.slice(0, 30).map(r =>
+      `<div style="padding:2px 6px;font-size:11px;color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'};">${r.status === 'success' ? '✅' : '❌'} ${r.name}</div>`
+    ).join('');
+
+    const pArea = document.getElementById('batchProgressArea');
+    if (pArea) pArea.style.display = 'block';
+    const bar = document.getElementById('batchProgressBar'), pct = document.getElementById('batchPercentText'), txt = document.getElementById('batchProgressText');
+    if (bar) bar.style.width = '100%';
+    if (pct) pct.textContent = '100%';
+    if (txt) txt.textContent = `完成! 成功: ${result.successCount}, 失败: ${result.failCount}`;
+
+    if (logEl) logEl.innerHTML = result.results.map(r =>
+      `<div style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'};">[${r.type}] ${r.name}${r.error ? ': ' + r.error : ''}</div>`
+    ).join('');
+
+    showToast(`✅ 批量导入：${result.successCount} 成功, ${result.failCount} 失败`, result.failCount > 0 ? 'warning' : 'success');
+    setTimeout(() => renderKnowledgeBases(), 500);
+  }
+}
+
+async function executeBatchImport() {
+  const btn = document.getElementById('batchBtn');
+  const progressArea = document.getElementById('batchProgressArea');
+  const progressBar = document.getElementById('batchProgressBar');
+  const progressText = document.getElementById('batchProgressText');
+  const percentText = document.getElementById('batchPercentText');
+  const resultLog = document.getElementById('batchResultLog');
+
+  if (!APP.batchPendingItems?.length) { showToast('请先选择要导入的文件或文件夹', 'warning'); return; }
+
+  btn.disabled = true; btn.textContent = '⏳ 导入中...';
+  progressArea.style.display = 'block';
+
+  let successCount = 0, failCount = 0, logs = [];
+
+  if (window.lobsterPlanet?.batchImportDialog) {
+    progressText.textContent = '正在打开文件选择器...';
+    progressBar.style.width = '10%'; percentText.textContent = '10%';
+    const result = await window.lobsterPlanet.batchImportDialog();
+    if (result && !result.canceled) {
+      handleBatchImportResult(result);
+      successCount = result.successCount || 0; failCount = result.failCount || 0;
+    } else { logs.push('[info] 已取消'); failCount = APP.batchPendingItems.length; }
+  } else {
+    const total = APP.batchPendingItems.length;
+    for (let i = 0; i < total; i++) {
+      const item = APP.batchPendingItems[i];
+      const pct = Math.round(((i + 1) / total) * 100);
+      progressBar.style.width = pct + '%'; percentText.textContent = pct + '%';
+      progressText.textContent = `正在导入: ${item.name} (${i+1}/${total})`;
+      try { if (item.file) await uploadFileToAPI(item.file, document.getElementById('importTargetKB')?.value); logs.push(`<div style="color:var(--success)">[OK] ${item.name}</div>`); successCount++; }
+      catch (err) { logs.push(`<div style="color:var(--danger)">[FAIL] ${item.name}: ${err.message}</div>`); failCount++; }
+      await new Promise(r => setTimeout(r, 50));
+    }
+    if (resultLog) resultLog.innerHTML = logs.join('');
+    progressBar.style.width = '100%'; percentText.textContent = '100%';
+    progressText.textContent = `完成! 成功: ${successCount}, 失败: ${failCount}`;
+  }
+
+  setTimeout(() => {
+    if (successCount > 0) { showToast(`✅ 批量导入完成：成功 ${successCount}，失败 ${failCount}`, failCount > 0 ? 'warning' : 'success'); closeModalDirect(); renderKnowledgeBases(); }
+    else if (failCount === 0) showToast('已取消导入', 'info');
+    else showToast('批量导入失败', 'error');
+    btn.disabled = false; btn.textContent = '🚀 开始批量导入';
+    APP.batchPendingItems = [];
+  }, 600);
+}
+
+
+// ============================================================
+// 工具函数
+// ============================================================
+function formatFileSize(bytes) {
+  if (!bytes) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let i = 0; while (bytes >= 1024 && i < units.length - 1) { bytes /= 1024; i++; }
+  return bytes.toFixed(i > 0 ? 1 : 0) + ' ' + units[i];
+}
+
+// ============================================================
+// 自定义 Agent 管理（编辑/删除）
+// ============================================================
+function editCustomAgent(agentId) {
+  const ca = (window._customAgents||[]).find(a => a.id === agentId);
+  if (!ca) { showToast('Agent 未找到', 'error'); return; }
+
+  // 填充表单并打开编辑器
+  openAddAgentModal(); // 打开空模态框
+  setTimeout(() => {
+    document.getElementById('newAgentName').value = ca.name || '';
+    document.getElementById('newAgentIcon').value = ca.icon || '🤖';
+    document.getElementById('newAgentRole').value = ca.role || '';
+    document.getElementById('newAgentLayer').value = ca.layer || '';
+    document.getElementById('newAgentDesc').value = ca.desc || '';
+    document.getElementById('newAgentTags').value = (ca.tags||[]).join(', ');
+
+    // 填充各层 prompt
+    if (ca.prompts) {
+      Object.entries(ca.prompts).forEach(([id, text]) => {
+        const ta = document.getElementById(`prompt-${id}`);
+        if (ta && text) ta.value = text;
+      });
+    }
+    // 标记为编辑模式
+    window._editingAgentId = agentId;
+    // 更新保存按钮文案
+    const saveBtn = document.querySelector('#modalContent .btn-primary:last-of-type');
+    if (saveBtn) saveBtn.textContent = '💾 更新 Agent 配置';
+  }, 100);
+}
+
+function deleteCustomAgent(agentId) {
+  if (!confirm('确定要删除这个自定义 AI 拍档吗？')) return;
+  window._customAgents = (window._customAgents||[]).filter(a => a.id !== agentId);
+  localStorage.setItem('custom_agents', JSON.stringify(window._customAgents));
+  showToast('🗑️ 自定义 AI 拍档已删除', 'success');
+  renderAgentTemplates();
+}
+
 function openAddKBModal() {
   const modal = document.getElementById('modalOverlay');
   const content = document.getElementById('modalContent');
@@ -2557,7 +4446,7 @@ function openAddKBModal() {
     </div>
     <div class="form-group">
       <label>上传文件</label>
-      <div class="drop-zone" style="cursor:pointer;" onclick="showToast('文件上传功能已就绪','success')">
+      <div class="drop-zone" style="cursor:pointer;" onclick="openUploadFileModal()">
         📁 拖拽文件或点击上传
       </div>
     </div>

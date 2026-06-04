@@ -8,6 +8,11 @@ contextBridge.exposeInMainWorld('lobsterPlanet', {
   stopEngine: () => ipcRenderer.invoke('stop-engine'),
   runTest: () => ipcRenderer.invoke('run-test'),
 
+  // 文件上传与批量导入
+  openFileDialog: () => ipcRenderer.invoke('upload-file-dialog'),
+  batchImportDialog: () => ipcRenderer.invoke('batch-import-dialog'),
+  listUploadedFiles: () => ipcRenderer.invoke('list-uploaded-files'),
+
   // 平台信息
   platform: process.platform,
   isElectron: true,

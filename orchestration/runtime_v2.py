@@ -55,13 +55,19 @@ logger = logging.getLogger("openclaw.runtime_v2")
 # ============================================================
 
 class LLMClient:
-    """多模型LLM客户端"""
+    """多模型LLM客户端 - 支持 OpenAI / Claude / DeepSeek / Qwen / Ollama"""
+
+    # Ollama 默认配置
+    OLLAMA_BASE_URL = "http://localhost:11434/v1"
+    OLLAMA_DEFAULT_MODEL = "qwen3-coder:480b-cloud"
 
     async def chat(self, provider: str, model: str, messages: list, temperature: float = 0.5,
                    max_tokens: int = 4096, tools: list = None, api_key: str = "", api_base: str = "") -> "LLMResponse":
         try:
             if provider in ("openai", "deepseek", "qwen"):
                 return await self._call_openai_compatible(model, messages, temperature, max_tokens, api_key, api_base)
+            elif provider == "ollama":
+                return await self._call_ollama(model, messages, temperature, max_tokens)
             elif provider == "claude":
                 return await self._call_claude(model, messages, temperature, max_tokens, api_key, api_base)
             else:
@@ -118,6 +124,90 @@ class LLMClient:
             )
         except ImportError:
             return await self._mock_response("claude", model, messages)
+
+    async def _call_ollama(self, model, messages, temperature, max_tokens):
+        """通过 Ollama OpenAI 兼容 API 调用本地模型"""
+        import os
+        import httpx
+        base = os.environ.get("OLLAMA_BASE_URL", self.OLLAMA_BASE_URL)
+        ollama_model = model or os.environ.get("OLLAMA_MODEL", self.OLLAMA_DEFAULT_MODEL)
+
+        try:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
+                resp = await client.post(
+                    f"{base}/chat/completions",
+                    json={
+                        "model": ollama_model,
+                        "messages": messages,
+                        "temperature": temperature,
+                        "max_tokens": max_tokens,
+                        "stream": False,
+                    },
+                    headers={"Content-Type": "application/json"},
+                )
+                if resp.status_code != 200:
+                    logger.warning(f"Ollama API error {resp.status_code}: {resp.text[:200]}")
+                    return await self._mock_response("ollama", ollama_model, messages)
+
+                data = resp.json()
+                choice = data.get("choices", [{}])[0]
+                content = choice.get("message", {}).get("content", "")
+                usage = data.get("usage", {})
+                return LLMResponse(
+                    content=content,
+                    model=ollama_model,
+                    tokens_used=usage.get("total_tokens", 0),
+                )
+        except Exception as e:
+            logger.warning(f"Ollama connection failed: {e}")
+            return await self._mock_response("ollama", ollama_model, messages)
+
+    async def chat_stream(self, provider: str, model: str, messages: list,
+                          temperature: float = 0.5, max_tokens: int = 4096):
+        """流式聊天 - 返回异步生成器"""
+        import os
+        import httpx
+
+        if provider == "ollama":
+            base = os.environ.get("OLLAMA_BASE_URL", self.OLLAMA_BASE_URL)
+            ollama_model = model or os.environ.get("OLLAMA_MODEL", self.OLLAMA_DEFAULT_MODEL)
+            try:
+                async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
+                    async with client.stream(
+                        "POST",
+                        f"{base}/chat/completions",
+                        json={
+                            "model": ollama_model,
+                            "messages": messages,
+                            "temperature": temperature,
+                            "max_tokens": max_tokens,
+                            "stream": True,
+                        },
+                        headers={"Content-Type": "application/json"},
+                    ) as resp:
+                        if resp.status_code != 200:
+                            body = await resp.aread()
+                            yield f"[Ollama error {resp.status_code}]: {body.decode()[:200]}"
+                            return
+                        async for line in resp.aiter_lines():
+                            if line.startswith("data: "):
+                                data_str = line[6:]
+                                if data_str == "[DONE]":
+                                    break
+                                try:
+                                    chunk = json.loads(data_str)
+                                    delta = chunk.get("choices", [{}])[0].get("delta", {})
+                                    content = delta.get("content", "")
+                                    if content:
+                                        yield content
+                                except json.JSONDecodeError:
+                                    continue
+            except Exception as e:
+                yield f"\n[连接 Ollama 失败: {e}]"
+        else:
+            # 其他 provider 降级为非流式
+            resp = await self.chat(provider, model, messages, temperature, max_tokens)
+            yield resp.content
 
     async def _mock_response(self, provider, model, messages):
         last_msg = messages[-1].get("content", "") if messages else ""

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "e26b19f6",
+    "url": "https://www.example.com",
+    "title": "Example Domain",
+    "content_preview": "Example Domain Example Domain This domain is for use in documentation examples without needing permission. Avoid use in operations. Learn more",
+    "content_length": 142,
+    "type": "web",
+    "kb_name": "测试知识库",
+    "parse_status": "parsed",
+    "added_at": "2026-06-04T22:00:51.905640"
+  }
+]

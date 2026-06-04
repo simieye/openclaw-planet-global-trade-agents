@@ -220,7 +220,12 @@ function createMenu() {
           accelerator: 'Cmd+,',
           click: () => {
             if (mainWindow) {
-              mainWindow.webContents.executeJavaScript('alert("偏好设置面板开发中...");');
+              mainWindow.show();
+              mainWindow.webContents.executeJavaScript(`
+                if (typeof switchPanel === 'function') {
+                  switchPanel('settings');
+                }
+              `);
             }
           }
         },
@@ -480,6 +485,204 @@ ipcMain.handle('download-update', async () => {
     return { success: true };
   } catch (err) {
     return { error: err.message };
+  }
+});
+
+// ============================================================
+// 文件操作 IPC
+// ============================================================
+const KNOWLEDGE_DIR = path.join(resourcesPath, 'knowledge', 'uploads');
+
+// 确保上传目录存在
+function ensureUploadDir() {
+  if (!fs.existsSync(KNOWLEDGE_DIR)) {
+    fs.mkdirSync(KNOWLEDGE_DIR, { recursive: true });
+  }
+}
+
+// 选择并上传单个文件
+ipcMain.handle('upload-file-dialog', async () => {
+  ensureUploadDir();
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title: '选择要上传的文件',
+    properties: ['openFile'],
+    filters: [
+      { name: '支持的文档', extensions: ['txt', 'md', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'json', 'toml', 'yaml', 'yml', 'html', 'htm', 'xml', 'rtf', 'odt'] },
+      { name: '所有文件', extensions: ['*'] },
+    ],
+  });
+
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true };
+  }
+
+  const srcPath = result.filePaths[0];
+  const fileName = path.basename(srcPath);
+  const destPath = path.join(KNOWLEDGE_DIR, fileName);
+
+  // 防止覆盖同名文件，添加时间戳后缀
+  const finalDestPath = !fs.existsSync(destPath) ? destPath :
+    path.join(KNOWLEDGE_DIR, `${path.parse(fileName).name}_${Date.now()}${path.extname(fileName)}`);
+
+  try {
+    fs.copyFileSync(srcPath, finalDestPath);
+    const stats = fs.statSync(finalDestPath);
+    return {
+      success: true,
+      fileName,
+      filePath: finalDestPath,
+      size: stats.size,
+      uploadTime: new Date().toISOString(),
+    };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// 批量导入文件/文件夹
+ipcMain.handle('batch-import-dialog', async () => {
+  ensureUploadDir();
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title: '选择要批量导入的文件或文件夹',
+    properties: ['openFile', 'multiSelections', 'openDirectory'],
+    filters: [
+      { name: '支持的文档', extensions: ['txt', 'md', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'json', 'toml', 'yaml', 'yml', 'html', 'htm', 'xml', 'rtf', 'odt', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'mp3', 'mp4'] },
+      { name: '所有文件', extensions: ['*'] },
+    ],
+  });
+
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true };
+  }
+
+  const results = [];
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const srcPath of result.filePaths) {
+    const stat = fs.statSync(srcPath);
+    
+    if (stat.isDirectory()) {
+      // 目录：递归复制所有文件
+      const dirName = path.basename(srcPath);
+      const destDir = path.join(KNOWLEDGE_DIR, dirName);
+      
+      try {
+        copyDirectory(srcPath, destDir);
+        const fileCount = countFiles(destDir);
+        successCount += fileCount;
+        results.push({ type: 'directory', name: dirName, files: fileCount, status: 'success' });
+      } catch (err) {
+        failCount++;
+        results.push({ type: 'directory', name: dirName, status: 'failed', error: err.message });
+      }
+    } else {
+      // 单个文件
+      const fileName = path.basename(srcPath);
+      const finalDestPath = path.join(KNOWLEDGE_DIR, fileName);
+
+      if (!fs.existsSync(finalDestPath)) {
+        try {
+          fs.copyFileSync(srcPath, finalDestPath);
+          successCount++;
+          results.push({
+            type: 'file', name: fileName,
+            size: fs.statSync(finalDestPath).size,
+            status: 'success'
+          });
+        } catch (err) {
+          failCount++;
+          results.push({ type: 'file', name: fileName, status: 'failed', error: err.message });
+        }
+      } else {
+        // 同名文件加时间戳后缀
+        const safeName = `${path.parse(fileName).name}_${Date.now()}${path.extname(fileName)}`;
+        const safePath = path.join(KNOWLEDGE_DIR, safeName);
+        try {
+          fs.copyFileSync(srcPath, safePath);
+          successCount++;
+          results.push({
+            type: 'file', name: safeName,
+            size: fs.statSync(safePath).size,
+            status: 'success', renamed: true
+          });
+        } catch (err) {
+          failCount++;
+          results.push({ type: 'file', name: fileName, status: 'failed', error: err.message });
+        }
+      }
+    }
+  }
+
+  return {
+    success: true,
+    totalFiles: successCount + failCount,
+    successCount,
+    failCount,
+    results,
+    importTime: new Date().toISOString(),
+  };
+});
+
+// 递归复制目录
+function copyDirectory(src, dest) {
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(entry.path || src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+// 统计目录中的文件数
+function countFiles(dir) {
+  let count = 0;
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isFile()) count++;
+    else if (entry.isDirectory()) count += countFiles(path.join(dir, entry.name));
+  }
+  return count;
+}
+
+// 获取已上传的文件列表
+ipcMain.handle('list-uploaded-files', async () => {
+  ensureUploadDir();
+  
+  function listFilesRecursive(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = [];
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isFile()) {
+        const stats = fs.statSync(fullPath);
+        files.push({
+          name: entry.name,
+          path: fullPath.replace(resourcesPath + path.sep, ''),
+          size: stats.size,
+          modified: stats.mtime.toISOString(),
+        });
+      } else if (entry.isDirectory() && entry.name !== '__pycache__') {
+        files.push(...listFilesRecursive(fullPath));
+      }
+    }
+    return files;
+  }
+
+  try {
+    const files = listFilesRecursive(KNOWLEDGE_DIR);
+    return { success: true, files, total: files.length };
+  } catch (err) {
+    return { success: false, error: err.message };
   }
 });
 

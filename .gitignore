@@ -13,6 +13,7 @@ venv/
 # Node / Electron
 node_modules/
 dist-electron/
+dist-electron-new/
 release/
 *.dmg
 *.zip
