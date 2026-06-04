@@ -1,7 +1,7 @@
 {
   "name": "lobster-planet-global-trade-agents",
   "productName": "龙虾星球共创联盟",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "OpenClaw + AnyGen + HeyGen 跨境电商品牌出海智能体集群桌面应用",
   "main": "main.js",
   "scripts": {
