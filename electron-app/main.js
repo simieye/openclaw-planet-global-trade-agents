@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, shell, dialog, ipcMain, Tray, nativeImage, Not
 const path = require('path');
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
+const { autoUpdater } = require('electron-updater');
 
 // ============================================================
 // 龙虾星球共创联盟 - macOS 桌面应用
@@ -463,6 +464,96 @@ ipcMain.handle('run-test', async () => {
   });
 });
 
+ipcMain.handle('check-for-updates', async () => {
+  if (!app.isPackaged) return { dev: true };
+  try {
+    const result = await autoUpdater.checkForUpdates();
+    return { updateInfo: result?.updateInfo || null };
+  } catch (err) {
+    return { error: err.message };
+  }
+});
+
+ipcMain.handle('download-update', async () => {
+  try {
+    await autoUpdater.downloadUpdate();
+    return { success: true };
+  } catch (err) {
+    return { error: err.message };
+  }
+});
+
+// ============================================================
+// 自动更新
+// ============================================================
+function setupAutoUpdater() {
+  if (!app.isPackaged) {
+    console.log('Auto-updater disabled in dev mode');
+    return;
+  }
+
+  autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      title: '发现新版本',
+      message: `龙虾星球共创联盟 v${info.version} 可用！`,
+      detail: '是否立即下载更新？',
+      buttons: ['立即下载', '稍后提醒'],
+      defaultId: 0,
+      cancelId: 1,
+    }).then(({ response }) => {
+      if (response === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    });
+  });
+
+  autoUpdater.on('update-not-available', () => {
+    console.log('Current version is up-to-date');
+  });
+
+  autoUpdater.on('download-progress', (progress) => {
+    if (mainWindow) {
+      mainWindow.webContents.send('update-progress', progress);
+    }
+  });
+
+  autoUpdater.on('update-downloaded', () => {
+    dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      title: '更新已下载',
+      message: '新版本已下载完成，重启应用即可安装更新。',
+      buttons: ['立即重启', '稍后'],
+      defaultId: 0,
+    }).then(({ response }) => {
+      if (response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('Auto-updater error:', err);
+  });
+
+  // 每6小时检查一次更新
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, 6 * 60 * 60 * 1000);
+
+  // 启动时延迟检查
+  setTimeout(() => {
+    autoUpdater.checkForUpdates();
+  }, 10000);
+}
+
 // ============================================================
 // App 生命周期
 // ============================================================
@@ -479,6 +570,9 @@ app.whenReady().then(() => {
 
   // 启动引擎
   startEngine();
+
+  // 设置自动更新
+  setupAutoUpdater();
 
   app.on('activate', () => {
     if (mainWindow === null) {
