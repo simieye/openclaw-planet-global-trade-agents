@@ -555,7 +555,10 @@ class OrchestrationEngine:
         # 初始化定时调度器
         if with_scheduler:
             try:
-                from .scheduler import AgentScheduleLoader
+                try:
+                    from .scheduler import AgentScheduleLoader
+                except ImportError:
+                    from scheduler import AgentScheduleLoader
                 loader = AgentScheduleLoader(self.scheduler, self.runtime)
                 for agent in self.registry.list_all():
                     loader.load_from_agent(agent.config)
@@ -581,7 +584,10 @@ class OrchestrationEngine:
 
         # 启动 HTTP Server
         if with_server:
-            from .server import run_server
+            try:
+                from .server import run_server
+            except ImportError:
+                from server import run_server
             webhook_secret = self.cluster_config.get("webhook", {}).get("webhook_secret", "")
             self._tasks.append(asyncio.create_task(
                 asyncio.to_thread(run_server, self, host, port, webhook_secret)

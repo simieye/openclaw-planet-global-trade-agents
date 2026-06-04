@@ -545,3 +545,109 @@ description = "质检管理、品控追踪"
 config = "agents/supply_chain/quality_agent.toml"
 priority = 5
 triggers = ["quality_inspection", "defect_reported"]
+
+# ============================================================
+# 九、6-Layer Workspace Architecture（6个Agent）
+# OpenClaw × AnyGen × HeyGen × WOPC
+# ============================================================
+[[agents]]
+id = "identity_agent"
+name = "Identity Agent 身份中枢"
+layer = "workspace_architecture/identity"
+description = "Workspace 统一身份系统：用户/企业/项目/Agent/Skill 身份管理"
+config = "agents/workspace_architecture/identity/identity_agent.toml"
+priority = 0
+triggers = ["workspace_init", "user_register", "enterprise_onboarding"]
+
+[[agents]]
+id = "memory_agent"
+name = "Memory Agent 记忆中枢"
+layer = "workspace_architecture/memory"
+description = "企业级共享记忆系统：长期/短期/项目/企业记忆"
+config = "agents/workspace_architecture/memory/memory_agent.toml"
+priority = 0
+triggers = ["task_complete", "decision_made", "knowledge_update"]
+
+[[agents]]
+id = "thinking_agent"
+name = "Thinking Agent 推理中枢"
+layer = "workspace_architecture/thinking"
+description = "AI Reasoning Core：CoT/ToT/Multi-Agent Debate 决策大脑"
+config = "agents/workspace_architecture/thinking/thinking_agent.toml"
+priority = 0
+triggers = ["problem_submitted", "strategy_review", "decision_required"]
+
+[[agents]]
+id = "orchestrator_agent"
+name = "Orchestrator Agent 集群编排器"
+layer = "workspace_architecture/agent_cluster"
+description = "Agent Cluster Orchestrator：AI 数字员工组织调度中心"
+config = "agents/workspace_architecture/agent_cluster/orchestrator_agent.toml"
+priority = 0
+triggers = ["task_assigned", "agent_health_check", "cluster_scale"]
+
+[[agents]]
+id = "skill_agent"
+name = "Skill Runtime Agent 技能运行时"
+layer = "workspace_architecture/skill_runtime"
+description = "Skill Runtime：10 大类技能 + Creator/Validator 双验证"
+config = "agents/workspace_architecture/skill_runtime/skill_agent.toml"
+priority = 0
+triggers = ["skill_execute", "skill_register", "quality_check"]
+
+[[agents]]
+id = "workspace_agent"
+name = "Workspace OS Agent 工作空间操作系统"
+layer = "workspace_architecture/workspace_os"
+description = "Workspace OS：Voice→Idea→Output 全链路企业数字操作系统"
+config = "agents/workspace_architecture/workspace_os/workspace_agent.toml"
+priority = 0
+triggers = ["voice_input", "workspace_init", "output_request"]
+
+# ============================================================
+# 十、Global Commercial Civilization OS（5个Agent）
+# ============================================================
+[[agents]]
+id = "civilization_identity_agent"
+name = "Civilization Identity 文明身份"
+layer = "civilization_os/identity"
+description = "全球商业文明生态系统核心：OpenClaw + AnyGen + RDA + OPC + 龙虾星球"
+config = "agents/civilization_os/identity/civilization_identity.toml"
+priority = 0
+triggers = ["civilization_init", "ecosystem_governance"]
+
+[[agents]]
+id = "civilization_soul_agent"
+name = "Civilization Soul 文明灵魂"
+layer = "civilization_os/soul"
+description = "核心价值观与伦理框架：商业文明 > 商业利益，协同创造 > 零和竞争"
+config = "agents/civilization_os/soul/civilization_soul.toml"
+priority = 0
+triggers = ["ethical_review", "decision_override", "value_conflict"]
+
+[[agents]]
+id = "civilization_memory_agent"
+name = "Civilization Memory 文明记忆"
+layer = "civilization_os/memory"
+description = "全球共享记忆层：用户/组织/生态/文明 四级记忆"
+config = "agents/civilization_os/memory/civilization_memory.toml"
+priority = 0
+triggers = ["memory_sync", "knowledge_inheritance", "civilization_update"]
+
+[[agents]]
+id = "user_system_agent"
+name = "User Understanding System 用户理解"
+layer = "civilization_os/user_system"
+description = "10 类用户自动识别 + 6W 分析框架 + 价值路径映射"
+config = "agents/civilization_os/user_system/user_system_agent.toml"
+priority = 0
+triggers = ["user_interaction", "onboarding_start", "needs_analysis"]
+
+[[agents]]
+id = "tool_system_agent"
+name = "Civilization Tool System 文明工具系统"
+layer = "civilization_os/tool_system"
+description = "7 层工具矩阵：OpenClaw/AnyGen/Data/Growth/Commerce/Web3/Civilization"
+config = "agents/civilization_os/tool_system/tool_system_agent.toml"
+priority = 0
+triggers = ["tool_request", "integration_setup", "system_orchestration"]

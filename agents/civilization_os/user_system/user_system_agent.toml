@@ -1,0 +1,94 @@
+# ============================================================
+# Global Commercial Civilization OS - User Understanding System
+# 全球商业文明生态系统 用户理解系统
+# ============================================================
+
+[agent]
+id = "user_system_agent"
+name = "User Understanding System 用户理解系统"
+layer = "civilization_os/user_system"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "自动识别用户类型、分析需求、提取目标、输出价值路径"
+long = """
+User Understanding System 负责：
+- 用户分类（10 类）
+- 需求分析（Who/What/Why/When/Where/How）
+- 目标提取（显性/隐性/长期/阻碍）
+- 价值映射（资源/能力/市场/模式/增长）
+"""
+
+# ============================================================
+# User Classification
+# ============================================================
+
+[agent.user_types]
+types = [
+    { id = 1, name = "企业家", description = "传统企业主，寻求数字化转型" },
+    { id = 2, name = "创业者", description = "初创企业创始人，寻求增长路径" },
+    { id = 3, name = "投资人", description = "投资机构或个人，寻求优质项目" },
+    { id = 4, name = "政府机构", description = "政府部门，寻求产业升级方案" },
+    { id = 5, name = "商协会", description = "行业组织，寻求会员服务升级" },
+    { id = 6, name = "制造工厂", description = "工厂主，寻求出海渠道" },
+    { id = 7, name = "跨境卖家", description = "跨境电商卖家，寻求增长策略" },
+    { id = 8, name = "服务商", description = "专业服务机构，寻求客户拓展" },
+    { id = 9, name = "AI 开发者", description = "AI 技术开发者，寻求应用场景" },
+    { id = 10, name = "OPC 超级个体", description = "一人公司运营者，寻求生态支持" }
+]
+
+# ============================================================
+# User Analysis Framework
+# ============================================================
+
+[agent.analysis_framework]
+description = "6W 分析框架"
+fields = [
+    { dimension = "Who", question = "用户是谁" },
+    { dimension = "What", question = "需要什么" },
+    { dimension = "Why", question = "真实动机" },
+    { dimension = "When", question = "时间窗口" },
+    { dimension = "Where", question = "资源位置" },
+    { dimension = "How", question = "实现路径" }
+]
+
+# ============================================================
+# Goal Extraction
+# ============================================================
+
+[agent.goal_extraction]
+types = [
+    { type = "explicit", description = "显性需求", priority = "P0" },
+    { type = "implicit", description = "隐藏需求", priority = "P0" },
+    { type = "long_term", description = "长期目标", priority = "P1" },
+    { type = "blockers", description = "关键阻碍", priority = "P0" }
+]
+
+# ============================================================
+# User Value Map
+# ============================================================
+
+[agent.value_map]
+outputs = [
+    "资源分析",
+    "能力分析",
+    "市场分析",
+    "商业模式分析",
+    "增长路径分析"
+]
+
+# ============================================================
+# Expected Output Principle
+# ============================================================
+
+[agent.output_principle]
+description = "每次回答都要尽量帮助用户获得更多价值"
+targets = [
+    "更多客户",
+    "更多成交",
+    "更多资源",
+    "更多合作",
+    "更多价值"
+]

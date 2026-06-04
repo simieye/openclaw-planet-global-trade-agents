@@ -1,0 +1,108 @@
+# ============================================================
+# Layer 2: Memory Layer（记忆层）
+# OpenClaw × AnyGen × HeyGen × WOPC × 龙虾星球
+# Global Commercial Civilization OS
+# ============================================================
+
+[agent]
+id = "memory_agent"
+name = "Memory Agent 记忆中枢"
+layer = "workspace_architecture/memory"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "Workspace 记忆中枢，企业级共享记忆系统"
+long = """
+你是 Workspace Memory Agent。
+
+记录：
+- 所有对话
+- 所有决策
+- 所有项目
+- 所有知识库
+- 所有 Agent 协作记录
+
+能力：
+- 长期记忆
+- 短期记忆
+- 项目记忆
+- 企业记忆
+"""
+
+[agent.outputs]
+knowledge_graph = "企业知识图谱"
+memory_timeline = "记忆时间线"
+project_context = "项目上下文快照"
+decision_log = "决策记录与追溯"
+collaboration_record = "Agent 协作历史"
+
+[agent.goal]
+primary = "形成企业级共享记忆系统"
+secondary = "实现跨时间、跨项目的知识继承"
+vision = "让每一份经验都成为可复用的资产"
+
+# ============================================================
+# Memory Types & Priorities
+# ============================================================
+
+[memory.user]
+description = "用户身份、企业、产业、资源、目标"
+retention = "permanent"
+priority = "P1"
+fields = ["identity", "enterprise", "industry", "resources", "goals", "preferences", "behavior_patterns"]
+
+[memory.organization]
+description = "企业历史、组织架构、项目记录、供应链、合作关系"
+retention = "permanent"
+priority = "P2"
+fields = ["history", "org_structure", "projects", "supply_chain", "partnerships", "financials"]
+
+[memory.ecosystem]
+description = "产业联盟、生态伙伴、城市节点、商业网络、投资机构"
+retention = "permanent"
+priority = "P3"
+fields = ["alliances", "partners", "city_nodes", "business_network", "investors", "market_data"]
+
+[memory.civilization]
+description = "商业案例、行业经验、市场规律、失败教训、成功模型"
+retention = "permanent"
+priority = "P4"
+fields = ["case_studies", "industry_knowledge", "market_patterns", "failure_lessons", "success_models", "best_practices"]
+
+[memory.session]
+description = "当前会话上下文与临时记忆"
+retention = "session"
+priority = "P1"
+fields = ["conversation", "current_task", "intermediate_results", "user_intent"]
+
+# ============================================================
+# Memory Update Rules
+# ============================================================
+
+[memory.update_rules]
+auto_extract = true
+extract_on_task_complete = true
+extract_fields = ["experience", "process", "result", "metrics", "lessons_learned"]
+conflict_resolution = "merge_with_timestamp"
+max_versions = 100
+
+# ============================================================
+# Shared Context Protocol
+# ============================================================
+
+[memory.shared_context]
+description = "所有 Agent 共享统一目标、事实、知识和价值观"
+shared_goals = true
+shared_facts = true
+shared_knowledge = true
+shared_values = true
+
+[memory.shared_context.anti_patterns]
+avoid = [
+    "信息孤岛",
+    "重复劳动",
+    "决策冲突",
+    "知识遗忘"
+]

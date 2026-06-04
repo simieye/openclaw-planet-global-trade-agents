@@ -1,0 +1,96 @@
+# ============================================================
+# Global Commercial Civilization OS - Shared Memory
+# 全球商业文明生态系统 共享记忆层
+# ============================================================
+
+[agent]
+id = "civilization_memory_agent"
+name = "Civilization Memory Agent 文明记忆"
+layer = "civilization_os/memory"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "全球共享记忆层，记录所有文明级数据"
+long = """
+Global Shared Memory Layer 记录以下内容：
+- User Memory（用户记忆）
+- Organization Memory（组织记忆）
+- Ecosystem Memory（生态记忆）
+- Civilization Memory（文明记忆）
+"""
+
+# ============================================================
+# Memory Layers
+# ============================================================
+
+[agent.memory]
+
+[agent.memory.user]
+priority = "P1"
+description = "用户实时目标"
+fields = {
+    identity = "用户身份",
+    enterprise = "用户企业",
+    industry = "用户产业",
+    resources = "用户资源",
+    goals = "用户目标"
+}
+
+[agent.memory.organization]
+priority = "P2"
+description = "组织长期目标"
+fields = {
+    history = "企业历史",
+    org_structure = "组织架构",
+    projects = "项目记录",
+    supply_chain = "供应链数据",
+    partnerships = "合作关系"
+}
+
+[agent.memory.ecosystem]
+priority = "P3"
+description = "生态系统发展目标"
+fields = {
+    alliances = "产业联盟",
+    partners = "生态伙伴",
+    city_nodes = "城市节点",
+    business_network = "商业网络",
+    investors = "投资机构"
+}
+
+[agent.memory.civilization]
+priority = "P4"
+description = "文明传承目标"
+fields = {
+    case_studies = "商业案例",
+    industry_knowledge = "行业经验",
+    market_patterns = "市场规律",
+    failure_lessons = "失败教训",
+    success_models = "成功模型"
+}
+
+# ============================================================
+# Memory Update Rules
+# ============================================================
+
+[agent.update_rules]
+auto_extract = true
+description = "每次任务完成后自动提取经验、流程、结果、指标，写入长期记忆库"
+extract_fields = ["experience", "process", "result", "metrics"]
+
+# ============================================================
+# Shared Context Protocol
+# ============================================================
+
+[agent.shared_context]
+description = "所有 Agent 共享统一目标、事实、知识和价值观"
+shared_items = ["unified_goals", "unified_facts", "unified_knowledge", "unified_values"]
+
+[agent.shared_context.anti_patterns]
+avoid = [
+    "信息孤岛",
+    "重复劳动",
+    "决策冲突"
+]

@@ -1,0 +1,127 @@
+# ============================================================
+# Layer 1: Identity Layer（身份层）
+# OpenClaw × AnyGen × HeyGen × WOPC × 龙虾星球
+# Global Commercial Civilization OS
+# ============================================================
+
+[agent]
+id = "identity_agent"
+name = "Identity Agent 身份中枢"
+layer = "workspace_architecture/identity"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "Workspace 身份中枢，统一管理所有身份实体"
+long = """
+你是 OpenClaw Workspace 中的身份中枢（Identity Agent）。
+
+统一管理：
+- 用户身份
+- 企业身份
+- 项目身份
+- Agent 身份
+- Skill 身份
+
+确保所有工作流拥有统一上下文。
+"""
+
+[agent.responsibilities]
+identity_registry = "维护所有身份实体的注册表"
+context_injection = "为每个工作流注入统一身份上下文"
+access_control = "基于身份的角色权限管理"
+profile_generation = "自动生成和维护各类 Profile"
+
+[agent.outputs]
+user_profile = "用户画像与身份档案"
+enterprise_profile = "企业画像与资质档案"
+project_profile = "项目上下文与目标档案"
+agent_registry = "Agent 注册表与能力清单"
+skill_registry = "Skill 注册表与能力清单"
+
+[agent.goal]
+primary = "建立 Workspace 统一身份系统"
+secondary = "实现跨 Agent、跨项目、跨企业的身份互认"
+vision = "成为全球商业文明生态的身份基础设施"
+
+# ============================================================
+# Identity Profile Templates
+# ============================================================
+
+[[identity.user_profile]]
+fields = [
+    "user_id",
+    "name",
+    "role",
+    "enterprise_id",
+    "industry",
+    "region",
+    "language",
+    "expertise",
+    "goals",
+    "resources",
+    "network",
+    "preferences"
+]
+
+[[identity.enterprise_profile]]
+fields = [
+    "enterprise_id",
+    "name",
+    "industry",
+    "scale",
+    "region",
+    "revenue_model",
+    "team_size",
+    "certifications",
+    "partners",
+    "supply_chain",
+    "data_assets",
+    "opc_status"
+]
+
+[[identity.project_profile]]
+fields = [
+    "project_id",
+    "name",
+    "owner",
+    "enterprise_id",
+    "type",
+    "status",
+    "timeline",
+    "budget",
+    "team",
+    "agents_assigned",
+    "skills_required",
+    "outputs"
+]
+
+[[identity.agent_registry]]
+fields = [
+    "agent_id",
+    "name",
+    "layer",
+    "capabilities",
+    "status",
+    "version",
+    "dependencies",
+    "owner",
+    "created_at",
+    "updated_at"
+]
+
+# ============================================================
+# Identity Resolution Protocol
+# ============================================================
+
+[identity.resolution]
+mode = "unified"
+conflict_strategy = "last_write_wins"
+sync_interval_seconds = 30
+cache_ttl_seconds = 300
+
+[identity.resolution.sources]
+primary = "identity_agent"
+secondary = ["memory_agent", "user_system_agent"]
+fallback = "manual_review"

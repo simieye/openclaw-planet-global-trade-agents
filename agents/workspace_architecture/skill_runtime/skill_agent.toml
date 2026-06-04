@@ -1,0 +1,190 @@
+# ============================================================
+# Layer 5: Skill Layer（技能层）
+# OpenClaw Skill Runtime + AnyGen AI Workspace
+# Global Commercial Civilization OS
+# ============================================================
+
+[agent]
+id = "skill_agent"
+name = "Skill Runtime Agent 技能运行时"
+layer = "workspace_architecture/skill_runtime"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "Skill Runtime Agent，管理所有 Agent 技能，实现能力标准化"
+long = """
+你是 Skill Runtime Agent。
+
+职责：管理所有 Skill。
+
+工作流：
+Agent → Skill → Tool → Output
+"""
+
+[agent.goal]
+primary = "实现 Agent 能力标准化"
+secondary = "构建可复用、可组合、可度量的技能体系"
+vision = "每个 Agent 都拥有标准化的专业技能栈"
+
+# ============================================================
+# Skill Categories
+# ============================================================
+
+[agent.skills]
+
+[agent.skills.marketing]
+category = "Marketing Skills 营销技能"
+skills = [
+    "品牌策略制定",
+    "市场调研分析",
+    "营销战役策划",
+    "内容营销矩阵",
+    "社交媒体运营",
+    "KOL/KOC 达人合作",
+    "联盟营销管理",
+    "事件营销策划",
+    "转介绍系统设计"
+]
+
+[agent.skills.sales]
+category = "Sales Skills 销售技能"
+skills = [
+    "销售流程设计",
+    "客户开发外拓",
+    "需求诊断分析",
+    "方案演示呈现",
+    "异议处理谈判",
+    "成交转化优化",
+    "客户关系管理",
+    "销售漏斗分析"
+]
+
+[agent.skills.content]
+category = "Content Skills 内容技能"
+skills = [
+    "文案撰写",
+    "短视频脚本",
+    "直播话术",
+    "PPT 制作",
+    "白皮书撰写",
+    "案例包装",
+    "多语言翻译",
+    "A/B 测试优化"
+]
+
+[agent.skills.ecommerce]
+category = "Ecommerce Skills 电商技能"
+skills = [
+    "TikTok Shop 运营",
+    "Amazon 品牌运营",
+    "Shopify DTC 建站",
+    "独立站 SEO",
+    "Listing 优化",
+    "广告投放管理",
+    "库存预测管理",
+    "跨境物流协同"
+]
+
+[agent.skills.seo]
+category = "SEO Skills 搜索优化技能"
+skills = [
+    "关键词研究",
+    "技术 SEO 审计",
+    "内容 SEO 策略",
+    "外链建设",
+    "GEO 生成式引擎优化",
+    "本地 SEO",
+    "多语言 SEO",
+    "排名监控分析"
+]
+
+[agent.skills.advertising]
+category = "Advertising Skills 广告技能"
+skills = [
+    "Google Ads 投放",
+    "Meta Ads 投放",
+    "TikTok Ads 投放",
+    "LinkedIn Ads 投放",
+    "程序化广告",
+    "再营销策略",
+    "归因分析",
+    "ROI 优化"
+]
+
+[agent.skills.crm]
+category = "CRM Skills 客户管理技能"
+skills = [
+    "客户生命周期管理",
+    "自动化营销流程",
+    "WhatsApp CRM",
+    "邮件营销自动化",
+    "线索评分模型",
+    "客户分层策略",
+    "流失预警",
+    "LTV 分析"
+]
+
+[agent.skills.finance]
+category = "Finance Skills 财务技能"
+skills = [
+    "财务建模",
+    "预算规划",
+    "盈利分析",
+    "现金流管理",
+    "跨境结算",
+    "税务筹划",
+    "投资分析",
+    "风险评估"
+]
+
+[agent.skills.developer]
+category = "Developer Skills 开发技能"
+skills = [
+    "API 集成",
+    "自动化脚本",
+    "数据管道",
+    "Webhook 开发",
+    "MCP 连接器",
+    "前端开发",
+    "后端开发",
+    "DevOps 运维"
+]
+
+[agent.skills.media]
+category = "Media Skills 媒体技能"
+skills = [
+    "视频剪辑",
+    "数字人制作",
+    "AI 配音",
+    "图片设计",
+    "3D 建模",
+    "动画制作",
+    "直播推流",
+    "多平台分发"
+]
+
+# ============================================================
+# Skill Runtime Config
+# ============================================================
+
+[agent.runtime]
+execution_mode = "async"
+parallel_execution = true
+max_concurrent_skills = 10
+skill_timeout_seconds = 300
+retry_on_failure = true
+max_retries = 3
+
+[agent.runtime.verification]
+enabled = true
+mode = "creator_validator"
+description = "Creator + Validator 双 AI 验证机制"
+validator_count = 1
+verification_threshold = 0.8
+
+[agent.runtime.quality]
+min_quality_score = 0.7
+auto_correction = true
+human_review_threshold = 0.6

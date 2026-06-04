@@ -1,0 +1,143 @@
+# ============================================================
+# Layer 6: Workspace Layer（工作空间层）
+# OpenClaw × AnyGen Workspace OS
+# Global Commercial Civilization OS
+# ============================================================
+
+[agent]
+id = "workspace_agent"
+name = "Workspace OS Agent 工作空间操作系统"
+layer = "workspace_architecture/workspace_os"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "Workspace Operating System，企业数字操作系统"
+long = """
+你是 Workspace Operating System。
+
+统一管理：
+- Documents（文档）
+- Slides（演示文稿）
+- Data Analysis（数据分析）
+- Research（研究调研）
+- Projects（项目）
+- Tasks（任务）
+- Workflows（工作流）
+- Meetings（会议）
+- Reports（报告）
+- Dashboard（仪表盘）
+"""
+
+[agent.goal]
+primary = "让 Workspace 成为企业数字操作系统"
+secondary = "实现 Voice → Idea → Output 全链路自动化"
+vision = "每个人拥有自己的 AI 团队、数字资产、商业网络、价值体系"
+
+# ============================================================
+# Workspace Full Workflow
+# ============================================================
+
+[agent.workflow]
+description = "Voice → Idea → Workspace → Agent → Skill → Execution → Verification → Output"
+steps = [
+    { name = "voice_input", description = "语音输入转化为结构化 Idea", engine = "AnyGen Voice-to-Document" },
+    { name = "idea_refinement", description = "Idea 精炼与结构化", engine = "Thinking Layer" },
+    { name = "workspace_routing", description = "路由到对应 Workspace 模块", engine = "Workspace OS" },
+    { name = "agent_assignment", description = "分配给对应 Agent", engine = "Agent Layer" },
+    { name = "skill_execution", description = "调用相应 Skill 执行", engine = "Skill Layer" },
+    { name = "execution", description = "执行具体任务", engine = "Tool System" },
+    { name = "verification", description = "Creator + Validator 双验证", engine = "Skill Runtime" },
+    { name = "output_generation", description = "生成最终输出物", engine = "Workspace OS" }
+]
+
+# ============================================================
+# Workspace Modules (AnyGen Integration)
+# ============================================================
+
+[agent.modules]
+
+[agent.modules.documents]
+name = "AI Documents 文档"
+description = "智能文档生成与协同编辑"
+engines = ["AnyGen AI Workspace", "OpenClaw Content Agent"]
+features = ["协同编辑", "版本管理", "模板库", "多格式导出"]
+
+[agent.modules.slides]
+name = "AI Slides 演示文稿"
+description = "智能 PPT 生成"
+engines = ["AnyGen AI Presentation"]
+features = ["一键生成", "模板匹配", "数据可视化", "演讲备注"]
+
+[agent.modules.data_analysis]
+name = "Data Analysis 数据分析"
+description = "智能数据分析工作流"
+engines = ["AnyGen Data Analysis Workflow", "OpenClaw Data Agent"]
+features = ["数据清洗", "可视化", "洞察报告", "预测模型"]
+
+[agent.modules.research]
+name = "AI Research 研究"
+description = "智能研究调研"
+engines = ["OpenClaw Research Agent"]
+features = ["文献搜索", "竞争分析", "行业报告", "趋势预测"]
+
+[agent.modules.meetings]
+name = "AI Meetings 会议"
+description = "智能会议管理"
+engines = ["AnyGen AI Meeting"]
+features = ["会议记录", "纪要生成", "行动项跟踪", "决策记录"]
+
+[agent.modules.projects]
+name = "Projects 项目管理"
+description = "智能项目管理"
+engines = ["OpenClaw Orchestrator"]
+features = ["任务分解", "进度跟踪", "资源分配", "风险管理"]
+
+[agent.modules.dashboard]
+name = "Dashboard 仪表盘"
+description = "企业运营仪表盘"
+engines = ["龙虾星球驾驶舱"]
+features = ["实时数据", "KPI 监控", "预警系统", "决策支持"]
+
+# ============================================================
+# Output Types
+# ============================================================
+
+[agent.outputs]
+document = { description = "专业文档", formats = ["pdf", "docx", "md", "html"] }
+ppt = { description = "演示文稿", formats = ["pptx", "pdf", "html"] }
+report = { description = "分析报告", formats = ["pdf", "html", "dashboard"] }
+dashboard = { description = "数据仪表盘", formats = ["html", "interactive"] }
+website = { description = "网站/落地页", formats = ["html", "deployable"] }
+video = { description = "视频内容", formats = ["mp4", "livestream"] }
+marketing_campaign = { description = "营销活动", formats = ["plan", "assets", "schedule"] }
+
+# ============================================================
+# Dual-AI Verification (Creator + Validator)
+# ============================================================
+
+[agent.verification]
+enabled = true
+description = "AnyGen Dual-AI Verification 机制"
+
+[agent.verification.creator]
+role = "Creator AI"
+responsibility = "生成初始输出"
+quality_check = false
+
+[agent.verification.validator]
+role = "Validator AI"
+responsibility = "验证输出质量与准确性"
+quality_check = true
+criteria = ["准确性", "完整性", "一致性", "可用性", "合规性"]
+
+[agent.verification.workflow]
+steps = [
+    "Creator 生成输出",
+    "Validator 审查输出",
+    "反馈修改意见",
+    "Creator 修正",
+    "Validator 最终确认",
+    "输出发布"
+]

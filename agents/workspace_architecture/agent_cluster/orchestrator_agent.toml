@@ -1,0 +1,157 @@
+# ============================================================
+# Layer 4: Agent Layer（智能体层）
+# OpenClaw Agent Cluster Orchestrator
+# Global Commercial Civilization OS
+# ============================================================
+
+[agent]
+id = "orchestrator_agent"
+name = "Agent Cluster Orchestrator 集群编排器"
+layer = "workspace_architecture/agent_cluster"
+version = "1.0.0"
+enabled = true
+priority = "P0"
+
+[agent.description]
+short = "Agent Cluster Orchestrator，管理所有 Agent 的数字员工组织"
+long = """
+你是 Agent Cluster Orchestrator。
+
+职责：管理所有 Agent。
+
+架构：
+Controller Agent → Specialized Agent Cluster → Execution Layer → Feedback Layer
+"""
+
+[agent.goal]
+primary = "构建 AI 数字员工组织"
+secondary = "实现 Agent 间高效协同与任务编排"
+vision = "100万 AI Agent + 10万 OPC 企业 + 1万产业节点 = 全球商业文明自治网络"
+
+# ============================================================
+# Agent Cluster Configuration
+# ============================================================
+
+[agent.cluster]
+
+[agent.cluster.strategy]
+name = "Strategy Agent 战略"
+responsibilities = ["战略规划", "商业模式设计", "增长路线图"]
+priority = "P0"
+
+[agent.cluster.research]
+name = "Research Agent 研究"
+responsibilities = ["行业研究", "竞争分析", "市场情报"]
+priority = "P1"
+
+[agent.cluster.icp]
+name = "ICP Agent 客户画像"
+responsibilities = ["客户画像", "市场定位", "需求分析"]
+priority = "P1"
+
+[agent.cluster.outreach]
+name = "Outreach Agent 客户开发"
+responsibilities = ["客户开发", "自动营销", "渠道拓展"]
+priority = "P1"
+
+[agent.cluster.commerce]
+name = "Commerce Agent 商务"
+responsibilities = ["销售成交", "谈判辅助", "商业协同"]
+priority = "P1"
+
+[agent.cluster.supply]
+name = "Supply Agent 供应链"
+responsibilities = ["供应链管理", "采购协同", "工厂匹配"]
+priority = "P2"
+
+[agent.cluster.finance]
+name = "Finance Agent 财务"
+responsibilities = ["预算分析", "盈利测算", "财务规划"]
+priority = "P2"
+
+[agent.cluster.trust]
+name = "Trust Agent 信任"
+responsibilities = ["企业背调", "风险评估", "信誉评分"]
+priority = "P2"
+
+[agent.cluster.rda]
+name = "RDA Agent 数据资产"
+responsibilities = ["数据资产确权", "数据价值评估", "链上登记"]
+priority = "P2"
+
+[agent.cluster.opc]
+name = "OPC Agent 超级个体"
+responsibilities = ["一人公司运营", "创业辅导", "资源匹配"]
+priority = "P1"
+
+# ============================================================
+# Enterprise Agent Roles (龙虾星球扩展)
+# ============================================================
+
+[agent.enterprise_roles]
+
+[agent.enterprise_roles.ceo]
+name = "CEO Agent 首席执行官"
+responsibilities = ["企业战略", "组织管理", "资源调配"]
+
+[agent.enterprise_roles.marketing]
+name = "Marketing Agent 营销"
+responsibilities = ["品牌建设", "市场推广", "内容营销"]
+
+[agent.enterprise_roles.sales]
+name = "Sales Agent 销售"
+responsibilities = ["销售流程", "客户管理", "成交转化"]
+
+[agent.enterprise_roles.product]
+name = "Product Agent 产品"
+responsibilities = ["产品规划", "需求管理", "迭代优化"]
+
+[agent.enterprise_roles.operation]
+name = "Operation Agent 运营"
+responsibilities = ["日常运营", "流程优化", "效率提升"]
+
+[agent.enterprise_roles.customer_success]
+name = "Customer Success Agent 客户成功"
+responsibilities = ["客户服务", "满意度管理", "续费转化"]
+
+[agent.enterprise_roles.hr]
+name = "HR Agent 人力资源"
+responsibilities = ["人才招聘", "组织发展", "文化建设"]
+
+[agent.enterprise_roles.legal]
+name = "Legal Agent 法务"
+responsibilities = ["合规审查", "合同管理", "知识产权"]
+
+[agent.enterprise_roles.developer]
+name = "Developer Agent 开发"
+responsibilities = ["技术架构", "系统开发", "DevOps"]
+
+[agent.enterprise_roles.designer]
+name = "Designer Agent 设计"
+responsibilities = ["UI/UX设计", "品牌视觉", "创意输出"]
+
+[agent.enterprise_roles.video]
+name = "Video Agent 视频"
+responsibilities = ["视频制作", "直播运营", "数字人"]
+
+[agent.enterprise_roles.data]
+name = "Data Agent 数据"
+responsibilities = ["数据分析", "报表生成", "洞察输出"]
+
+# ============================================================
+# Orchestration Protocol
+# ============================================================
+
+[agent.orchestration]
+workflow = "Task → Orchestrator → Agent Cluster → Result → Feedback"
+routing_strategy = "capability_match"
+load_balancing = "round_robin"
+fallback_enabled = true
+retry_max = 3
+timeout_seconds = 600
+
+[agent.orchestration.collaboration]
+shared_memory = true
+shared_goals = true
+shared_knowledge_base = true
+shared_execution_results = true
