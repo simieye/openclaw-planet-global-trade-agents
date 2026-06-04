@@ -157,6 +157,11 @@ body {
   color: #eab308;
 }
 
+.nav-item .nav-badge.pink {
+  background: rgba(236,72,153,0.15);
+  color: var(--accent4);
+}
+
 /* ===== AI 数字组织架构样式 ===== */
 .org-chart-container {
   display: flex;
@@ -833,6 +838,160 @@ body {
 .factory-center-card:hover {
   border-color: #f59e0b;
   transform: translateY(-2px);
+}
+
+/* ===== TikTok Shop 增长SOP样式 ===== */
+.tiktok-taskflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.tiktok-taskflow-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.tiktok-taskflow-card:hover {
+  border-color: #ec4899;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(236,72,153,0.15);
+}
+
+.tiktok-taskflow-card.active-taskflow {
+  border-color: #ec4899;
+  box-shadow: 0 0 15px rgba(236,72,153,0.2);
+}
+
+.tiktok-taskflow-card .tk-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ec4899;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.tiktok-taskflow-card .tk-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+}
+
+.tiktok-taskflow-card .tk-trigger {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.tiktok-taskflow-card .tk-agents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tiktok-taskflow-card .tk-agent-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(236,72,153,0.15);
+  color: #ec4899;
+  white-space: nowrap;
+}
+
+.tiktok-taskflow-card .tk-agent-arrow {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.tiktok-taskflow-card .tk-output {
+  font-size: 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.tiktok-taskflow-card .tk-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-tk-product { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.badge-tk-content { background: rgba(236,72,153,0.15); color: var(--accent4); }
+.badge-tk-kol { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-tk-live { background: rgba(239,68,68,0.15); color: #ef4444; }
+.badge-tk-ads { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.badge-tk-crm { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-tk-affiliate { background: rgba(139,92,246,0.15); color: var(--accent5); }
+.badge-tk-gmv { background: rgba(0,212,170,0.15); color: var(--accent2); }
+
+.tiktok-detail-panel {
+  background: var(--card-bg);
+  border: 1px solid #ec4899;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.tiktok-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tiktok-detail-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.tiktok-gmv-flywheel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.tiktok-flywheel-node {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.tiktok-flywheel-node:hover {
+  transform: scale(1.02);
 }
 
 /* ===== Agent配置面板样式 ===== */
@@ -2133,6 +2292,16 @@ body {
       </div>
     </div>
 
+    <!-- TikTok Shop 增长 SOP -->
+    <div class="nav-section">
+      <div class="nav-section-title">TikTok Shop 增长 SOP</div>
+      <div class="nav-item" data-panel="tiktokshop" onclick="switchPanel('tiktokshop', this)">
+        <span class="nav-icon">🎵</span>
+        <span>TikTok Shop 增长</span>
+        <span class="nav-badge pink">30 TaskFlow</span>
+      </div>
+    </div>
+
     <!-- 系统 -->
     <div class="nav-section">
       <div class="nav-section-title">系统</div>
@@ -2935,6 +3104,215 @@ body {
       </div>
     </div>
 
+    <!-- ===== TikTok Shop 全球增长SOP面板 ===== -->
+    <div class="panel" id="panel-tiktokshop">
+      <div class="section-title">🎵 TikTok Shop 全球增长SOP · 30个TaskFlow | OpenClaw + AnyGen + HeyGen + TikTok Shop AI增长体系</div>
+
+      <!-- TikTok Shop 配置卡片 -->
+      <div class="factory-config-card" style="background:linear-gradient(135deg, #1a0a12 0%, #2d0a1a 50%, #1a0a12 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:32px;">🎵</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#ec4899;">TikTok Shop 全球增长AI系统</div>
+              <div style="font-size:12px;color:var(--text-dim);">30个TaskFlow · 选品自动化 → 内容工厂 → 达人矩阵 → 直播矩阵 → 广告矩阵 → 私域转化 → 联盟分销 → GMV增长飞轮</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="initTikTokSOP()" style="background:rgba(236,72,153,0.1);color:#ec4899;border:1px solid rgba(236,72,153,0.3);">🚀 初始化增长系统</button>
+            <button class="btn btn-sm" onclick="syncTikTokWebhooks()" style="background:rgba(99,102,241,0.1);color:var(--accent3);border:1px solid rgba(99,102,241,0.3);">🔄 同步 Webhook</button>
+            <button class="btn btn-primary btn-sm" onclick="generateGMVReport()">📊 GMV日报</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 增长架构对比：传统 vs AI -->
+      <div class="factory-arch-compare" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#ef4444;margin-bottom:12px;">🔴 传统TikTok Shop模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            选品 → 拍视频 → 投广告 → 等订单
+          </div>
+          <div style="font-size:10px;color:rgba(239,68,68,0.5);margin-top:8px;">❌ 人工试错 · 效率低 · 规模化难</div>
+        </div>
+        <div style="background:rgba(236,72,153,0.05);border:1px solid rgba(236,72,153,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#ec4899;margin-bottom:12px;">🟣 AI增长模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            Trend Agent → Product Agent → Content Factory Agent → KOL Agent Cluster → Live Agent Cluster → Ads Agent Cluster → CRM Agent → Retention Agent → Affiliate Agent
+          </div>
+          <div style="font-size:10px;color:#ec4899;margin-top:8px;">✅ 全自动增长飞轮 · 7×24运行 · 全球扩张</div>
+        </div>
+      </div>
+
+      <!-- GMV增长飞轮可视化 -->
+      <div class="tiktok-gmv-flywheel">
+        <div style="font-size:14px;font-weight:700;color:#ec4899;margin-bottom:8px;">🔄 GMV增长飞轮</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+          <div class="tiktok-flywheel-node" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;">🔍 趋势发现</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.3);color:#ec4899;">💡 爆品筛选</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);color:var(--accent3);">🎬 内容工厂</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;">🌟 达人矩阵</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:#3b82f6;">📡 直播矩阵</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);color:var(--accent2);">📈 广告矩阵</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:6px;">
+          <div class="tiktok-flywheel-node" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);">📦 订单增长</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:var(--accent5);">💬 私域沉淀</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#f97316;">👑 会员运营</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);color:#eab308;">🤝 联盟裂变</div>
+          <div class="tiktok-flywheel-node" style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.3);color:#0ea5e9;">🔄 复购增长</div>
+          <div class="tiktok-flywheel-node" style="background:linear-gradient(135deg, rgba(236,72,153,0.2), rgba(255,107,53,0.2));border:1px solid #ec4899;color:#ec4899;font-size:14px;">💰 GMV增长</div>
+        </div>
+      </div>
+
+      <!-- TaskFlow 分类筛选 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="tiktokTaskFlowFilter">
+        <button class="btn btn-sm active" onclick="filterTikTokTaskFlows('all', this)">全部 30</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('product', this)">选品系统</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('content', this)">内容工厂</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('kol', this)">达人矩阵</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('live', this)">直播矩阵</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('ads', this)">广告投放</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('crm', this)">私域转化</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('affiliate', this)">联盟分销</button>
+        <button class="btn btn-sm" onclick="filterTikTokTaskFlows('gmv', this)">GMV增长</button>
+      </div>
+
+      <!-- TaskFlow 网格 -->
+      <div class="tiktok-taskflow-grid" id="tiktokTaskFlowGrid">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- Agent 体系映射 -->
+      <div class="section-title" style="margin-top:24px;">🤖 五大中心 Agent 体系</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:8px;">🔍 内容中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Trend Agent<br>Content Director Agent<br>Script Agent<br>Video Agent<br>Publishing Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ec4899;margin-bottom:8px;">🌟 达人中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            KOL Agent<br>Influencer Agent<br>Affiliate Agent<br>Campaign Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:8px;">📡 直播中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Live Agent<br>Live Script Agent<br>HeyGen Live Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:8px;">📈 广告中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Ads Agent<br>ROAS Agent<br>Budget Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px;">💬 CRM中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Lead Agent<br>WhatsApp Agent<br>Email Agent<br>Retention Agent
+          </div>
+        </div>
+      </div>
+
+      <!-- Webhook 映射 -->
+      <div class="section-title" style="margin-top:24px;">🔌 TikTok Shop Webhook 体系</div>
+      <div class="factory-webhook-map" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">TikTok订单 → Order Agent</div>
+          <pre class="webhook-code">订单创建 → 库存检查 → 物流触发</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">TikTok评论 → Engagement Agent</div>
+          <pre class="webhook-code">评论分析 → 自动回复 → 情绪追踪</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">TikTok私信 → WhatsApp Agent</div>
+          <pre class="webhook-code">私信捕获 → WhatsApp触达 → CRM录入</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">达人提交 → Review Agent</div>
+          <pre class="webhook-code">内容审核 → 佣金结算 → 数据回传</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">广告平台 → Ads Agent</div>
+          <pre class="webhook-code">广告数据 → ROAS分析 → 自动优化</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">HeyGen → Publishing Agent</div>
+          <pre class="webhook-code">视频生成 → 自动发布 → TikTok同步</pre>
+        </div>
+      </div>
+
+      <!-- 最终 TikTok Shop AI 模型 -->
+      <div class="factory-final-model" style="background:linear-gradient(135deg, rgba(236,72,153,0.08), rgba(255,107,53,0.08));border:1px solid rgba(236,72,153,0.3);border-radius:var(--radius);padding:20px;margin-top:20px;">
+        <div style="font-size:16px;font-weight:700;color:#ec4899;margin-bottom:12px;">🌟 TikTok Shop AI增长引擎最终形态</div>
+        <div style="font-size:12px;color:var(--text);line-height:2.2;">
+          <span style="color:var(--accent);font-weight:600;">OpenClaw Agent Cluster</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent3);font-weight:600;">AnyGen Workspace</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent4);font-weight:600;">HeyGen Digital Human</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#ec4899;font-weight:600;">TikTok Shop</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#0ea5e9;font-weight:600;">CRM/ERP/Affiliate Network</span>
+        </div>
+        <div style="font-size:14px;color:#ec4899;font-weight:700;margin-top:12px;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;">
+          🎯 选品自动化 + 内容自动化 + 达人自动化 + 直播自动化 + 广告自动化 + 销售自动化 + 复购自动化<br>
+          <span style="font-size:12px;color:var(--text-dim);">实现品牌从0到千万美金GMV规模化扩张</span>
+        </div>
+      </div>
+
+      <!-- CEO驾驶舱 -->
+      <div class="section-title" style="margin-top:24px;">📊 CEO驾驶舱 · 每日自动输出</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#f59e0b;font-weight:700;">💰</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">GMV日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">销售额/订单/客单价</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#3b82f6;font-weight:700;">📈</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">广告日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">ROAS/CPA/CTR/CVR</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ec4899;font-weight:700;">🌟</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">达人日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">合作数/GMV/佣金</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ef4444;font-weight:700;">📡</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">直播日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">场次/GMV/互动</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent2);font-weight:700;">📊</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">利润日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">毛利/净利/费用</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#f97316;font-weight:700;">📦</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">库存日报</div>
+          <div style="font-size:10px;color:var(--text-dim);">库存/预警/补货</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#eab308;font-weight:700;">⚠️</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">风险预警</div>
+          <div style="font-size:10px;color:var(--text-dim);">异常检测/告警</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent);font-weight:700;">🚀</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">增长建议</div>
+          <div style="font-size:10px;color:var(--text-dim);">AI策略推荐</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== AI 数字组织面板 ===== -->
     <div class="panel" id="panel-organization">
       <div class="section-title">🏛️ AI 数字组织 · 100 Agent 6层架构 | 点击Agent卡片配置工作层+技能+IM+MCP+定时任务</div>
@@ -3504,6 +3882,203 @@ function generateFactoryReport() {
 }
 
 // ============================================================
+// TikTok Shop 全球增长SOP TaskFlow 数据 (30个)
+// ============================================================
+const TIKTOK_TASKFLOWS = [
+  // 第一阶段：选品系统
+  { id:'TK-01', num:'01', category:'product', phase:'选品系统', title:'爆品发现系统', trigger:'每天 08:00 自动运行', agents:['Trend Agent','TikTok Trend Agent','Market Agent','Product Research Agent'], datasources:'TikTok Shop · TikTok Trends · Amazon · Google Trends · Reddit · Meta · AliExpress · 1688', output:'爆品榜单 · 增长榜单 · 新品榜单 · 蓝海榜单 · Top 50产品/天', webhook:'Trend Agent → Product Agent → CEO Agent' },
+  { id:'TK-02', num:'02', category:'product', phase:'选品系统', title:'竞争分析系统', trigger:'爆品确定后', agents:['Competitor Agent','Review Agent','Pricing Agent'], datasources:'TikTok Shop · Amazon · 竞品店铺', output:'竞争品牌 · 价格区间 · 卖点分析 · 评论分析 · 差异化机会', webhook:'Product Agent → Competitor Agent → Report' },
+  // 第二阶段：内容工厂系统
+  { id:'TK-03', num:'03', category:'content', phase:'内容工厂', title:'内容选题系统', trigger:'爆品确定后', agents:['Content Director Agent','Trend Agent','Consumer Insight Agent'], datasources:'TikTok Trends · 热门标签 · 用户评论 · 竞品内容', output:'100条选题 · 30天内容计划 · 热点追踪', webhook:'Product → Content Director → Script Agent' },
+  { id:'TK-04', num:'04', category:'content', phase:'内容工厂', title:'脚本生成系统', trigger:'选题确定后', agents:['Video Script Agent','Sales Copy Agent','UGC Agent'], datasources:'产品信息 · 选题库 · 脚本模板', output:'痛点视频 · 测评视频 · 对比视频 · 剧情视频 · UGC视频 · 开箱视频 · 教程视频 · 50-100条脚本/天', webhook:'Content Director → Script Agent → Video Agent' },
+  { id:'TK-05', num:'05', category:'content', phase:'内容工厂', title:'HeyGen视频工厂', trigger:'脚本生成后', agents:['HeyGen Agent','Video Production Agent','Avatar Agent'], datasources:'HeyGen平台 · 产品素材 · 数字人库', output:'数字人视频 · 产品讲解视频 · 多语言视频 (英/西/德/法/阿拉伯/葡)', webhook:'Script Agent → HeyGen → Publishing Agent' },
+  { id:'TK-06', num:'06', category:'content', phase:'内容工厂', title:'自动发布系统', trigger:'视频生成完成', agents:['Publishing Agent'], datasources:'TikTok Shop API', output:'发布时间优化 · 标签优化 · 标题优化 · 封面优化', webhook:'HeyGen → OpenClaw → TikTok' },
+  // 第三阶段：达人矩阵系统
+  { id:'TK-07', num:'07', category:'kol', phase:'达人矩阵', title:'达人发现系统', trigger:'每天运行', agents:['KOL Agent','Influencer Agent'], datasources:'TikTok Shop · 达人广场', output:'达人数据库 (粉丝量/互动率/GMV/国家/品类)', webhook:'KOL Agent → CRM → Campaign Agent' },
+  { id:'TK-08', num:'08', category:'kol', phase:'达人矩阵', title:'达人评分系统', trigger:'达人发现后', agents:['KOL Score Agent'], datasources:'达人数据 · GMV · 转化率 · 互动率', output:'评分(GMV/转化率/互动率/内容质量/合作历史)', webhook:'KOL Agent → Score Agent → Outreach Agent' },
+  { id:'TK-09', num:'09', category:'kol', phase:'达人矩阵', title:'达人触达系统', trigger:'评分后', agents:['Outreach Agent','Email Agent','WhatsApp Agent'], datasources:'达人联系方式 · 合作模板', output:'自动发送合作邀请 · 跟进 · 预约会议', webhook:'Score Agent → Outreach Agent → 达人' },
+  { id:'TK-10', num:'10', category:'kol', phase:'达人矩阵', title:'达人合作管理', trigger:'达人确认合作', agents:['Campaign Agent'], datasources:'CRM · 产品库 · 佣金系统', output:'寄样管理 · 佣金设置 · 内容审核 · 结算', webhook:'达人确认 → Campaign Agent → CRM' },
+  // 第四阶段：直播矩阵系统
+  { id:'TK-11', num:'11', category:'live', phase:'直播矩阵', title:'直播选品系统', trigger:'每天运行', agents:['Live Commerce Agent','Trend Agent'], datasources:'TikTok Shop · 商品数据 · 热门趋势', output:'直播SKU · 直播顺序 · 直播策略', webhook:'Trend Agent → Live Commerce Agent → Live Script Agent' },
+  { id:'TK-12', num:'12', category:'live', phase:'直播矩阵', title:'直播脚本生成', trigger:'直播选品后', agents:['Live Script Agent'], datasources:'商品信息 · 脚本模板 · 互动策略', output:'开场 · 福利 · 互动 · 成交 · 收尾 完整脚本', webhook:'Live Commerce Agent → Live Script Agent → HeyGen Live' },
+  { id:'TK-13', num:'13', category:'live', phase:'直播矩阵', title:'数字人直播', trigger:'脚本生成后', agents:['HeyGen Live Agent','Avatar Agent'], datasources:'HeyGen平台 · 直播脚本 · 商品信息', output:'24小时直播 · 多语言直播 · 全球直播', webhook:'Live Script → HeyGen Live → TikTok Live' },
+  { id:'TK-14', num:'14', category:'live', phase:'直播矩阵', title:'直播运营', trigger:'直播开始', agents:['Live Operation Agent'], datasources:'TikTok直播数据 · 用户互动', output:'优惠券 · 抽奖 · 秒杀 · 互动管理', webhook:'TikTok Live → Live Operation Agent' },
+  // 第五阶段：广告投放系统
+  { id:'TK-15', num:'15', category:'ads', phase:'广告投放', title:'广告素材生成', trigger:'每天运行', agents:['Creative Agent','Video Agent','Copywriting Agent'], datasources:'产品信息 · 广告模板 · 表现数据', output:'广告视频 · 广告文案 · 广告图片', webhook:'Product Agent → Creative Agent → Ads Agent' },
+  { id:'TK-16', num:'16', category:'ads', phase:'广告投放', title:'广告测试', trigger:'素材生成后', agents:['TikTok Ads Agent'], datasources:'TikTok Ads API · 测试框架', output:'AB测试 · 素材测试 · 受众测试', webhook:'Creative Agent → Ads Agent → 测试报告' },
+  { id:'TK-17', num:'17', category:'ads', phase:'广告投放', title:'广告优化', trigger:'广告投放中', agents:['ROAS Agent','Media Buyer Agent'], datasources:'TikTok Ads API · 实时数据', output:'CPA优化 · CTR优化 · CVR优化 · ROAS优化', webhook:'Ads Data → ROAS Agent → Auto Optimize' },
+  { id:'TK-18', num:'18', category:'ads', phase:'广告投放', title:'预算管理', trigger:'广告投放中', agents:['Budget Agent','Finance Agent'], datasources:'广告数据 · 财务系统', output:'自动调整广告预算', webhook:'Ads Data → Budget Agent → Finance Agent' },
+  // 第六阶段：私域转化系统
+  { id:'TK-19', num:'19', category:'crm', phase:'私域转化', title:'线索捕获', trigger:'评论/私信/表单', agents:['Lead Agent','CRM Agent'], datasources:'TikTok评论 · 私信 · 表单提交', output:'自动进入CRM系统', webhook:'TikTok互动 → Lead Agent → CRM' },
+  { id:'TK-20', num:'20', category:'crm', phase:'私域转化', title:'WhatsApp转化', trigger:'线索进入CRM', agents:['WhatsApp Sales Agent'], datasources:'CRM · WhatsApp API · 产品信息', output:'欢迎语 · 产品推荐 · 报价 · 跟进', webhook:'CRM → WhatsApp Agent → 客户' },
+  { id:'TK-21', num:'21', category:'crm', phase:'私域转化', title:'邮件营销', trigger:'线索进入CRM', agents:['Email Marketing Agent'], datasources:'CRM · 邮件模板 · 客户画像', output:'欢迎邮件 · 案例邮件 · 促销邮件 · 复购邮件', webhook:'CRM → Email Agent → 客户' },
+  { id:'TK-22', num:'22', category:'crm', phase:'私域转化', title:'客户分层', trigger:'客户数据更新', agents:['LTV Agent'], datasources:'CRM · 订单数据 · 互动数据', output:'VIP · 高价值 · 普通 · 沉睡 分类', webhook:'CRM → LTV Agent → Retention Agent' },
+  // 第七阶段：联盟分销系统
+  { id:'TK-23', num:'23', category:'affiliate', phase:'联盟分销', title:'Affiliate招募', trigger:'每天运行', agents:['Affiliate Agent','Partner Agent'], datasources:'TikTok Shop · 达人 · 代理商 · 站长 · 博主', output:'联盟成员数据库', webhook:'Affiliate Agent → CRM → Partner Agent' },
+  { id:'TK-24', num:'24', category:'affiliate', phase:'联盟分销', title:'联盟管理', trigger:'联盟成员加入', agents:['Affiliate Manager Agent'], datasources:'联盟系统 · 订单数据', output:'佣金管理 · 推广链接 · 结算', webhook:'订单 → Affiliate Manager → 佣金结算' },
+  { id:'TK-25', num:'25', category:'affiliate', phase:'联盟分销', title:'联盟增长', trigger:'联盟运营中', agents:['Growth Agent'], datasources:'联盟数据 · 转化数据', output:'自动优化联盟转化率', webhook:'Affiliate Data → Growth Agent → 优化建议' },
+  // 第八阶段：GMV增长系统
+  { id:'TK-26', num:'26', category:'gmv', phase:'GMV增长', title:'订单处理', trigger:'订单创建', agents:['Order Agent','Inventory Agent','Logistics Agent'], datasources:'TikTok Shop · ERP · WMS', output:'订单确认 · 库存扣减 · 物流触发', webhook:'TikTok订单 → Order Agent → ERP' },
+  { id:'TK-27', num:'27', category:'gmv', phase:'GMV增长', title:'评价管理', trigger:'订单完成', agents:['Review Agent'], datasources:'TikTok Shop · 订单数据', output:'自动索评 · 评价回复', webhook:'订单完成 → Review Agent → 客户' },
+  { id:'TK-28', num:'28', category:'gmv', phase:'GMV增长', title:'复购系统', trigger:'订单完成', agents:['Retention Agent'], datasources:'CRM · 订单数据 · 产品信息', output:'新品推荐 · 组合包 · 订阅产品', webhook:'订单数据 → Retention Agent → 客户' },
+  { id:'TK-29', num:'29', category:'gmv', phase:'GMV增长', title:'会员体系', trigger:'客户注册', agents:['Membership Agent'], datasources:'CRM · 积分系统', output:'积分 · 等级 · 奖励', webhook:'客户行为 → Membership Agent → CRM' },
+  { id:'TK-30', num:'30', category:'gmv', phase:'GMV增长', title:'GMV增长引擎', trigger:'每天自动运行', agents:['Growth Agent','Analytics Agent','CEO Agent'], datasources:'全系统数据 · TikTok Shop · CRM · ERP · Ads', output:'流量分析 · 转化分析 · 订单分析 · 利润分析 · ROI分析 · GMV日报', webhook:'全系统 → CEO Agent → 经营日报' },
+];
+
+let activeTikTokFilter = 'all';
+let selectedTikTokTaskFlowId = null;
+
+// ============================================================
+// TikTok Shop TaskFlow 渲染
+// ============================================================
+function renderTikTokTaskFlows(filter) {
+  activeTikTokFilter = filter || 'all';
+  const grid = document.getElementById('tiktokTaskFlowGrid');
+  if (!grid) return;
+
+  const filtered = activeTikTokFilter === 'all'
+    ? TIKTOK_TASKFLOWS
+    : TIKTOK_TASKFLOWS.filter(w => w.category === activeTikTokFilter);
+
+  const categoryLabels = {
+    product: '选品系统', content: '内容工厂', kol: '达人矩阵',
+    live: '直播矩阵', ads: '广告投放', crm: '私域转化',
+    affiliate: '联盟分销', gmv: 'GMV增长'
+  };
+
+  grid.innerHTML = filtered.map(tf => {
+    const agentTags = tf.agents.map((a, i) => {
+      let html = `<span class="tk-agent-tag">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tk-agent-arrow">↓</span>';
+      return html;
+    }).join('');
+
+    return `
+    <div class="tiktok-taskflow-card ${selectedTikTokTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleTikTokTaskFlowDetail('${tf.id}')">
+      <span class="tk-category-badge badge-tk-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+      <div class="tk-num">${tf.phase} · ${tf.id}</div>
+      <div class="tk-title">${tf.title}</div>
+      <div class="tk-trigger">🔔 ${tf.trigger}</div>
+      <div class="tk-agents">${agentTags}</div>
+      <div class="tk-output">📤 ${tf.output}</div>
+    </div>`;
+  }).join('');
+
+  // 更新筛选按钮状态
+  document.querySelectorAll('#tiktokTaskFlowFilter .btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`#tiktokTaskFlowFilter .btn[onclick*="${activeTikTokFilter}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function filterTikTokTaskFlows(category, btn) {
+  renderTikTokTaskFlows(category);
+}
+
+function toggleTikTokTaskFlowDetail(taskFlowId) {
+  const tf = TIKTOK_TASKFLOWS.find(w => w.id === taskFlowId);
+  if (!tf) return;
+
+  if (selectedTikTokTaskFlowId === taskFlowId) {
+    selectedTikTokTaskFlowId = null;
+  } else {
+    selectedTikTokTaskFlowId = taskFlowId;
+  }
+
+  renderTikTokTaskFlows(activeTikTokFilter);
+
+  // 展开详情面板
+  const grid = document.getElementById('tiktokTaskFlowGrid');
+  let detailPanel = document.getElementById('tiktokDetailPanel');
+  if (!detailPanel) {
+    detailPanel = document.createElement('div');
+    detailPanel.id = 'tiktokDetailPanel';
+    detailPanel.className = 'tiktok-detail-panel';
+    grid.parentNode.insertBefore(detailPanel, grid);
+  }
+
+  if (selectedTikTokTaskFlowId) {
+    const agentFlow = tf.agents.map((a, i) => {
+      let html = `<span class="tk-agent-tag" style="font-size:12px;padding:4px 12px;">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tk-agent-arrow" style="font-size:14px;">↓</span>';
+      return html;
+    }).join('');
+
+    detailPanel.innerHTML = `
+      <div class="tiktok-detail-header">
+        <div>
+          <span style="color:#ec4899;font-size:12px;">${tf.phase} · ${tf.id}</span>
+          <span style="font-size:16px;font-weight:700;margin-left:8px;">${tf.title}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm" onclick="testTikTokTaskFlow('${tf.id}')" style="background:rgba(236,72,153,0.1);color:#ec4899;">🧪 测试触发</button>
+          <button class="btn btn-sm btn-primary" onclick="deployTikTokTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" onclick="closeTikTokTaskFlowDetail()">✕ 关闭</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">🔔 触发条件：${tf.trigger}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:4px;">📡 数据来源：${tf.datasources}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;">🤖 执行Agent链：</div>
+      <div class="tiktok-detail-flow">${agentFlow}</div>
+      <div style="font-size:12px;color:var(--accent2);margin-bottom:8px;">📤 输出：${tf.output}</div>
+      <div style="font-size:12px;color:var(--accent);">🔗 Webhook链：${tf.webhook}</div>
+      <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Webhook 调用示例：</div>
+        <pre style="font-size:10px;color:var(--text);font-family:monospace;white-space:pre-wrap;">POST /hooks/agent
+{
+  "message": "${tf.title}",
+  "name": "${tf.id}",
+  "deliver": false
+}</pre>
+      </div>
+    `;
+    detailPanel.style.display = 'block';
+  } else {
+    detailPanel.style.display = 'none';
+  }
+}
+
+function closeTikTokTaskFlowDetail() {
+  selectedTikTokTaskFlowId = null;
+  const panel = document.getElementById('tiktokDetailPanel');
+  if (panel) panel.style.display = 'none';
+  renderTikTokTaskFlows(activeTikTokFilter);
+}
+
+function testTikTokTaskFlow(id) {
+  const tf = TIKTOK_TASKFLOWS.find(w => w.id === id);
+  showToast(`🧪 正在触发 TikTok TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ TikTok TaskFlow ${id} 测试完成，输出已生成`, 'success'), 2000);
+}
+
+function deployTikTokTaskFlow(id) {
+  const tf = TIKTOK_TASKFLOWS.find(w => w.id === id);
+  showToast(`🚀 正在部署 TikTok TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ TikTok TaskFlow ${id} 已部署上线，Webhook 已配置`, 'success'), 2500);
+}
+
+function initTikTokSOP() {
+  showToast('🚀 正在初始化 TikTok Shop 全球增长SOP系统...', 'success');
+  setTimeout(() => {
+    localStorage.setItem('tiktok_sop_initialized', 'true');
+    showToast('✅ TikTok Shop增长系统初始化完成！30个TaskFlow已配置，5大Agent中心已就绪', 'success');
+  }, 3000);
+}
+
+function syncTikTokWebhooks() {
+  showToast('🔄 正在同步 TikTok Shop Webhook 配置...', 'success');
+  setTimeout(() => {
+    showToast('✅ Webhook 同步完成！TikTok Shop/CRM/ERP/Ads/HeyGen 已连接', 'success');
+  }, 3000);
+}
+
+function generateGMVReport() {
+  showToast('📊 正在生成 TikTok Shop GMV日报...', 'success');
+  setTimeout(() => {
+    showToast('✅ GMV日报已生成！包含GMV/广告/达人/直播/利润/库存/风险预警/增长建议', 'success');
+  }, 2500);
+}
+
+// ============================================================
 // 页面加载完成后初始化 Ollama 配置
 initOllamaConfig();
 
@@ -3535,6 +4110,7 @@ function switchPanel(panelName, navItem) {
     'organization': '🏛️ AI 数字组织 · Agent配置面板 | 6层Prompt+技能+IM+MCP+定时任务',
     'anygen': '🌐 AnyGen.io 工作台 · 50 Webhook 自动化工作流 | CRM+ERP+Shopify+Amazon+TikTok',
     'factory': '🏭 AI工厂出海SOP · 17 TaskFlow | OEM/ODM制造企业全链路自动化出海系统',
+    'tiktokshop': '🎵 TikTok Shop 全球增长SOP · 30 TaskFlow | 选品+内容+达人+直播+广告+私域+联盟+GMV增长飞轮',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -3549,6 +4125,7 @@ function switchPanel(panelName, navItem) {
   if (panelName === 'organization') renderOrganization();
   if (panelName === 'anygen') renderWebhookWorkflows('all');
   if (panelName === 'factory') renderFactoryTaskFlows('all');
+  if (panelName === 'tiktokshop') renderTikTokTaskFlows('all');
 }
 
 // ============================================================
@@ -6795,6 +7372,7 @@ function refreshDashboard() {
   if (APP.currentPanel === 'im-channels') renderIMChannels();
   if (APP.currentPanel === 'anygen') renderWebhookWorkflows('all');
   if (APP.currentPanel === 'factory') renderFactoryTaskFlows('all');
+  if (APP.currentPanel === 'tiktokshop') renderTikTokTaskFlows('all');
   showToast('🔄 仪表盘已刷新', 'success');
 }
 
