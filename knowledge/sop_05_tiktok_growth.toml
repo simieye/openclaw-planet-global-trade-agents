@@ -1,0 +1,209 @@
+# SOP 05: TikTok Shop 全球增长SOP
+[sop]
+id = "sop_05"
+name = "TikTok Shop全球增长SOP"
+version = "1.0"
+
+# 增长架构: Trend Agent→Product Agent→Content Factory Agent→KOL Agent Cluster→Live Agent Cluster→Ads Agent Cluster→CRM Agent→Retention Agent→Affiliate Agent
+
+[[taskflows]]
+id = "tt_01"
+name = "爆品发现系统"
+trigger = "每天运行"
+agents = ["Trend Agent","TikTok Trend Agent","Market Agent","Product Research Agent"]
+sources = ["TikTok Shop","TikTok Trends","Amazon","Google Trends","Reddit","Meta","AliExpress","1688"]
+output = "爆品榜单/增长榜单/新品榜单/蓝海榜单"
+kpi = "每天输出Top 50产品"
+
+[[taskflows]]
+id = "tt_02"
+name = "竞争分析系统"
+agents = ["Competitor Agent","Review Agent","Pricing Agent"]
+output = "竞争品牌/价格区间/卖点分析/评论分析/差异化机会"
+
+[[taskflows]]
+id = "tt_03"
+name = "内容选题系统"
+trigger = "爆品确定"
+agents = ["Content Director Agent","Trend Agent","Consumer Insight Agent"]
+output = "100条选题/30天内容计划/热点追踪"
+
+[[taskflows]]
+id = "tt_04"
+name = "脚本生成系统"
+agents = ["Video Script Agent","Sales Copy Agent","UGC Agent"]
+output = "痛点视频/测评视频/对比视频/剧情视频/UGC视频/开箱视频/教程视频"
+kpi = "每天50-100条脚本"
+
+[[taskflows]]
+id = "tt_05"
+name = "HeyGen视频工厂"
+agents = ["HeyGen Agent","Video Production Agent","Avatar Agent"]
+output = "数字人视频/产品讲解视频/多语言视频"
+languages = ["英语","西班牙语","德语","法语","阿拉伯语","葡萄牙语"]
+
+[[taskflows]]
+id = "tt_06"
+name = "自动发布系统"
+trigger = "视频生成完成"
+webhook = "HeyGen→OpenClaw→TikTok"
+agents = ["Publishing Agent"]
+auto = ["发布时间优化","标签优化","标题优化","封面优化"]
+
+[[taskflows]]
+id = "tt_07"
+name = "达人发现系统"
+agents = ["KOL Agent","Influencer Agent"]
+search = ["粉丝量","互动率","GMV","国家","品类"]
+output = "达人数据库"
+
+[[taskflows]]
+id = "tt_08"
+name = "达人评分系统"
+agents = ["KOL Score Agent"]
+dimensions = ["GMV","转化率","互动率","内容质量","合作历史"]
+
+[[taskflows]]
+id = "tt_09"
+name = "达人触达系统"
+agents = ["Outreach Agent","Email Agent","WhatsApp Agent"]
+auto = ["发送合作邀请","跟进","预约会议"]
+
+[[taskflows]]
+id = "tt_10"
+name = "达人合作管理"
+agents = ["Campaign Agent"]
+manage = ["寄样","佣金","内容审核","结算"]
+
+[[taskflows]]
+id = "tt_11"
+name = "直播选品"
+agents = ["Live Commerce Agent","Trend Agent"]
+output = "直播SKU/直播顺序/直播策略"
+
+[[taskflows]]
+id = "tt_12"
+name = "直播脚本"
+agents = ["Live Script Agent"]
+output = "开场/福利/互动/成交/收尾完整脚本"
+
+[[taskflows]]
+id = "tt_13"
+name = "数字人直播"
+agents = ["HeyGen Live Agent","Avatar Agent"]
+output = "24小时直播/多语言直播/全球直播"
+
+[[taskflows]]
+id = "tt_14"
+name = "直播运营"
+agents = ["Live Operation Agent"]
+manage = ["优惠券","抽奖","秒杀","互动"]
+
+[[taskflows]]
+id = "tt_15"
+name = "广告素材生成"
+agents = ["Creative Agent","Video Agent","Copywriting Agent"]
+output = "广告视频/广告文案/广告图片"
+
+[[taskflows]]
+id = "tt_16"
+name = "广告测试"
+agents = ["TikTok Ads Agent"]
+auto = ["AB测试","素材测试","受众测试"]
+
+[[taskflows]]
+id = "tt_17"
+name = "广告优化"
+agents = ["ROAS Agent","Media Buyer Agent"]
+kpi = ["CPA","CTR","CVR","ROAS"]
+
+[[taskflows]]
+id = "tt_18"
+name = "预算管理"
+agents = ["Budget Agent","Finance Agent"]
+auto = "自动调整广告预算"
+
+[[taskflows]]
+id = "tt_19"
+name = "线索捕获"
+trigger = "评论/私信/表单"
+agents = ["Lead Agent","CRM Agent"]
+
+[[taskflows]]
+id = "tt_20"
+name = "WhatsApp转化"
+agents = ["WhatsApp Sales Agent"]
+auto = ["欢迎语","产品推荐","报价","跟进"]
+
+[[taskflows]]
+id = "tt_21"
+name = "邮件营销"
+agents = ["Email Marketing Agent"]
+auto = ["欢迎邮件","案例邮件","促销邮件","复购邮件"]
+
+[[taskflows]]
+id = "tt_22"
+name = "客户分层"
+agents = ["LTV Agent"]
+categories = ["VIP","高价值","普通","沉睡"]
+
+[[taskflows]]
+id = "tt_23"
+name = "Affiliate招募"
+agents = ["Affiliate Agent","Partner Agent"]
+search = ["达人","代理商","站长","博主"]
+
+[[taskflows]]
+id = "tt_24"
+name = "联盟管理"
+agents = ["Affiliate Manager Agent"]
+manage = ["佣金","推广链接","结算"]
+
+[[taskflows]]
+id = "tt_25"
+name = "联盟增长"
+agents = ["Growth Agent"]
+auto = "自动优化联盟转化率"
+
+[[taskflows]]
+id = "tt_26"
+name = "订单处理"
+trigger = "订单创建"
+agents = ["Order Agent","Inventory Agent","Logistics Agent"]
+
+[[taskflows]]
+id = "tt_27"
+name = "评价管理"
+agents = ["Review Agent"]
+
+[[taskflows]]
+id = "tt_28"
+name = "复购系统"
+agents = ["Retention Agent"]
+auto = ["新品推荐","组合包","订阅产品"]
+
+[[taskflows]]
+id = "tt_29"
+name = "会员体系"
+agents = ["Membership Agent"]
+build = ["积分","等级","奖励"]
+
+[[taskflows]]
+id = "tt_30"
+name = "GMV增长引擎"
+agents = ["Growth Agent","Analytics Agent","CEO Agent"]
+daily = ["流量","转化","订单","利润","ROI"]
+
+[webhook_map]
+tiktok_order = "Order Agent"
+tiktok_review = "Engagement Agent"
+tiktok_dm = "WhatsApp Agent → CRM Agent"
+tiktok_kol = "Review Agent"
+tiktok_ads = "Ads Agent"
+
+[agent_clusters]
+content = ["Trend Agent","Content Director Agent","Script Agent","Video Agent","Publishing Agent"]
+kol = ["KOL Agent","Influencer Agent","Affiliate Agent","Campaign Agent"]
+live = ["Live Agent","Live Script Agent","HeyGen Live Agent"]
+ads = ["Ads Agent","ROAS Agent","Budget Agent"]
+crm = ["Lead Agent","WhatsApp Agent","Email Agent","Retention Agent"]

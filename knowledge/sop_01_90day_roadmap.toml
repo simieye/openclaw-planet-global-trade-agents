@@ -1,0 +1,155 @@
+# SOP 01: OpenClaw + AnyGen + HeyGen 企业90天AI转型落地路线图
+[sop]
+id = "sop_01"
+name = "企业90天AI转型落地路线图"
+version = "1.0"
+
+[[phases]]
+name = "第一阶段：基础设施建设（第1-30天）"
+[[phases.weeks]]
+week = 1
+name = "项目启动周"
+tasks = [
+  {day=1,task="项目立项",output="AI转型项目立项书"},
+  {day=2,task="业务流程梳理",output="现状业务流程图"},
+  {day=3,task="数字资产盘点",output="企业数字资产清单"},
+  {day=4,task="系统盘点",output="系统架构图"},
+  {day=5,task="KPI定义",output="AI项目KPI表"},
+]
+[[phases.weeks]]
+week = 2
+name = "AI基础设施搭建"
+tasks = [
+  {day=6,task="部署OpenClaw Server",output="基础设施上线"},
+  {day=7,task="部署AnyGen Workspace",output="AnyGen工作台上线"},
+  {day=8,task="接入AI模型(GPT/Claude/Gemini/DeepSeek/Qwen)",output="模型路由配置"},
+  {day=9,task="建立企业知识库",output="知识库初始化"},
+  {day=10,task="建立权限体系",output="权限配置"},
+]
+[[phases.weeks]]
+week = 3
+name = "知识库建设"
+tasks = [
+  {day=11,task="上传产品说明书/FAQ/销售话术/案例",output="资料入库"},
+  {day=12,task="上传合同模板/报价模板",output="模板入库"},
+  {day=13,task="建立RAG知识库",output="RAG知识库"},
+  {day=14,task="建立标准Prompt库",output="Prompt库"},
+  {day=15,task="建立Skill库",output="Skill库"},
+  {day=16,task="建立企业术语库",output="术语库"},
+  {day=17,task="测试知识库准确率",output="准确率≥90%"},
+]
+[[phases.weeks]]
+week = 4
+name = "Agent建设"
+tasks = [
+  {day=21,task="部署CEO Agent(经营分析/战略建议/日报生成)",output="CEO Agent"},
+  {day=22,task="部署Market Agent(市场分析/竞品监控/趋势发现)",output="Market Agent"},
+  {day=23,task="部署Content Agent(内容生产/广告创意/视频脚本)",output="Content Agent"},
+  {day=24,task="部署SDR Agent(客户开发/客户筛选/客户评分)",output="SDR Agent"},
+  {day=25,task="部署Sales Agent(报价/方案/跟进/成交)",output="Sales Agent"},
+  {day=26,task="部署Customer Success Agent(售后/复购/会员运营)",output="CS Agent"},
+  {day=27,task="Agent联调测试",output="全部Agent验收通过"},
+]
+
+[[phases]]
+name = "第二阶段：自动化建设（第31-60天）"
+[[phases.weeks]]
+week = 5
+name = "Webhook建设"
+tasks = [
+  {day=31,task="接入CRM(新客户→Webhook→OpenClaw)",output="CRM Webhook"},
+  {day=32,task="接入邮箱系统(收到询盘→自动分析)",output="Email Webhook"},
+  {day=33,task="接入WhatsApp(消息自动处理)",output="WhatsApp Webhook"},
+  {day=34,task="接入Shopify(订单/退款/弃购)",output="Shopify Webhook"},
+  {day=35,task="接入ERP(订单同步/库存同步/物流同步)",output="ERP Webhook"},
+]
+[[phases.weeks]]
+week = 6
+name = "TaskFlow建设"
+tasks = [
+  {day=36,task="销售TaskFlow(询盘→报价→跟进→成交)",output="销售流程"},
+  {day=37,task="客服TaskFlow(咨询→问题识别→解决方案→满意度)",output="客服流程"},
+  {day=38,task="售后TaskFlow(投诉→分析→解决→回访)",output="售后流程"},
+  {day=39,task="测试所有TaskFlow",output="流程验证"},
+]
+[[phases.weeks]]
+week = 7
+name = "内容工厂建设"
+tasks = [
+  {day=41,task="建立内容矩阵(TikTok/YouTube/Instagram/Facebook/LinkedIn)",output="内容矩阵"},
+  {day=42,task="建立内容模板(产品/品牌/案例/教程/招商)",output="模板库"},
+  {day=43,task="接入HeyGen(生成数字人视频)",output="HeyGen集成"},
+  {day=44,task="自动化发布系统上线",output="自动发布"},
+]
+[[phases.weeks]]
+week = 8
+name = "获客系统建设"
+tasks = [
+  {day=46,task="部署LinkedIn获客",output="LinkedIn获客"},
+  {day=47,task="部署Apollo获客",output="Apollo获客"},
+  {day=48,task="部署邮件开发系统",output="邮件开发"},
+  {day=49,task="部署WhatsApp销售系统",output="WhatsApp销售"},
+  {day=50,task="建立CRM自动评分",output="CRM评分"},
+  {day=51,task="测试获客流程(目标每天100+线索)",output="获客验收"},
+]
+
+[[phases]]
+name = "第三阶段：增长系统（第61-90天）"
+[[phases.weeks]]
+week = 9
+name = "品牌建设"
+tasks = [
+  {day=61,task="建立品牌定位",output="品牌定位"},
+  {day=62,task="建立品牌故事",output="品牌故事"},
+  {day=63,task="建立品牌IP",output="品牌IP"},
+  {day=64,task="建立品牌视觉体系",output="品牌视觉"},
+  {day=65,task="建立品牌资产库",output="品牌资产"},
+]
+[[phases.weeks]]
+week = 10
+name = "销售增长"
+tasks = [
+  {day=66,task="自动报价系统上线",output="自动报价"},
+  {day=67,task="自动合同系统上线",output="自动合同"},
+  {day=68,task="自动付款系统上线",output="自动付款"},
+  {day=69,task="自动订单系统上线",output="自动订单"},
+  {day=70,task="自动跟进系统上线",output="自动跟进"},
+]
+[[phases.weeks]]
+week = 11
+name = "客户增长"
+tasks = [
+  {day=71,task="会员体系上线",output="会员体系"},
+  {day=72,task="积分系统上线",output="积分系统"},
+  {day=73,task="推荐奖励系统上线",output="推荐奖励"},
+  {day=74,task="自动复购系统上线",output="自动复购"},
+  {day=75,task="客户生命周期运营上线",output="生命周期运营"},
+]
+[[phases.weeks]]
+week = 12
+name = "数据驱动运营"
+tasks = [
+  {day=76,task="建立经营看板",output="经营看板"},
+  {day=77,task="建立销售看板",output="销售看板"},
+  {day=78,task="建立广告看板",output="广告看板"},
+  {day=79,task="建立客服看板",output="客服看板"},
+  {day=80,task="建立财务看板",output="财务看板"},
+  {day=81,task="全面验收",output="验收报告"},
+]
+
+[kpi_targets]
+content_production = {before="每月20篇",after="每月500篇+"}
+video_production = {before="每月10条",after="每月300条+"}
+lead_generation = {before="每天20个",after="每天300个+"}
+customer_service = {before="8小时响应",after="30秒响应"}
+quotation_speed = {before="1天",after="5分钟"}
+conversion_boost = "20%-50%"
+labor_cost_reduction = "30%-70%"
+
+[budget]
+small = "3万-10万人民币（5-20人）"
+medium = "10万-50万人民币（20-100人）"
+large = "50万-300万人民币（100人以上）"
+
+[organization]
+agents = ["CEO Agent","Market Agent","Content Agent","SDR Agent","Sales Agent","Customer Success Agent","Finance Agent","HR Agent","Training Agent","Operation Agent"]

@@ -1,0 +1,21 @@
+[agent]
+id = "graphic_design_agent"
+name = "Graphic Design Agent 海报设计"
+version = "1.0"
+description = "海报设计：Banner/社交媒体图片/广告素材/品牌视觉"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是海报设计专家，负责Banner设计/社交媒体图片/广告素材/品牌视觉/产品图/A+图片。"
+
+[agent.tools]
+enabled = ["image_gen","canva_api","anygen_content_gen"]
+
+[agent.output]
+channels = ["anygen_workspace","social_media"]
+target_agents = ["content_agent","ads_agent"]

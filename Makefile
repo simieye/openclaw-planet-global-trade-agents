@@ -2,7 +2,7 @@
 # 常用操作快捷命令
 
 .PHONY: help install test status agents taskflows start serve docker-build docker-up docker-down clean lint \
-        build-dmg build-icons release setup-env
+        build-dmg build-icons release setup-env unified-status unified-agents unified-taskflows unified-serve unified-test
 
 # 默认目标
 help:
@@ -57,6 +57,46 @@ start:
 # 启动HTTP服务器
 serve:
 	python orchestration/engine.py serve --host 0.0.0.0 --port 8080
+
+# ============================================================
+# Unified Engine v3 (unified_engine.py)
+# ============================================================
+
+# 统一引擎 - 查看状态
+unified-status:
+	python orchestration/unified_engine.py status
+
+# 统一引擎 - 列出Agent
+unified-agents:
+	python orchestration/unified_engine.py agents
+
+# 统一引擎 - 列出TaskFlow
+unified-taskflows:
+	python orchestration/unified_engine.py taskflows
+
+# 统一引擎 - 启动HTTP服务器
+unified-serve:
+	python orchestration/unified_engine.py serve --host 0.0.0.0 --port 8080
+
+# 统一引擎 - 集成测试
+unified-test:
+	python orchestration/unified_engine.py test
+
+# 统一引擎 - 执行TaskFlow
+unified-execute:
+	@if [ -z "$(TF)" ]; then \
+		echo "Usage: make unified-execute TF=<taskflow_id>"; \
+		exit 1; \
+	fi
+	python orchestration/unified_engine.py execute $(TF)
+
+# 统一引擎 - 触发Agent
+unified-trigger:
+	@if [ -z "$(AGENT)" ] || [ -z "$(ACTION)" ]; then \
+		echo "Usage: make unified-trigger AGENT=<agent_id> ACTION=<action>"; \
+		exit 1; \
+	fi
+	python orchestration/unified_engine.py agent $(AGENT) --action $(ACTION)
 
 # 启动CLI工具
 cli:

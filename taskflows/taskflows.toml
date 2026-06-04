@@ -901,6 +901,324 @@ output_to = "ceo_agent"
 timeout_seconds = 600
 
 # ============================================================
+# 二、Amazon运营 TaskFlow 集合
+# ============================================================
+
+[taskflow.amazon_listing_optimization]
+name = "Amazon Listing优化流水线"
+description = "关键词研究→Listing生成→A+ Content→发布"
+priority = "high"
+trigger = "product_launch"
+[[taskflow.amazon_listing_optimization.steps]]
+order = 1; agent = "amazon_manager_agent"; action = "init_listing_project"; input_from = "product_agent"; output_to = "amazon_listing_agent"; timeout_seconds = 300
+[[taskflow.amazon_listing_optimization.steps]]
+order = 2; agent = "amazon_listing_agent"; action = "generate_listing"; input_from = "amazon_manager_agent"; output_to = "localization_agent"; timeout_seconds = 1800
+[[taskflow.amazon_listing_optimization.steps]]
+order = 3; agent = "localization_agent"; action = "localize_listing"; input_from = "amazon_listing_agent"; output_to = "amazon_manager_agent"; timeout_seconds = 1200
+
+[taskflow.amazon_ppc_optimization]
+name = "Amazon PPC优化流水线"
+description = "关键词分析→广告创建→出价优化→否定词管理"
+priority = "high"
+trigger = "scheduled:daily"
+[[taskflow.amazon_ppc_optimization.steps]]
+order = 1; agent = "amazon_ppc_agent"; action = "analyze_keywords"; input_from = "scheduled:daily"; output_to = "amazon_manager_agent"; timeout_seconds = 600
+[[taskflow.amazon_ppc_optimization.steps]]
+order = 2; agent = "amazon_manager_agent"; action = "optimize_bids"; input_from = "amazon_ppc_agent"; output_to = "analytics_agent"; timeout_seconds = 600
+[[taskflow.amazon_ppc_optimization.steps]]
+order = 3; agent = "analytics_agent"; action = "report_ppc_roi"; input_from = "amazon_manager_agent"; output_to = "cfo_agent"; timeout_seconds = 300
+
+[taskflow.amazon_review_management]
+name = "Amazon Review管理流水线"
+description = "Review监控→差评处理→索评→洞察"
+priority = "medium"
+trigger = "review_posted"
+[[taskflow.amazon_review_management.steps]]
+order = 1; agent = "amazon_review_agent"; action = "analyze_review"; input_from = "webhook:review_posted"; output_to = "amazon_manager_agent"; timeout_seconds = 300
+[[taskflow.amazon_review_management.steps]]
+order = 2; agent = "amazon_manager_agent"; action = "handle_negative_review"; input_from = "amazon_review_agent"; output_to = "customer_success_agent"; timeout_seconds = 600; condition = "sentiment == 'negative'"
+
+# ============================================================
+# 三、Shopify DTC TaskFlow 集合
+# ============================================================
+
+[taskflow.shopify_launch]
+name = "Shopify独立站上线流水线"
+description = "品牌定位→网站建设→产品页→SEO→上线"
+priority = "high"
+trigger = "brand_launch"
+[[taskflow.shopify_launch.steps]]
+order = 1; agent = "brand_agent"; action = "define_brand"; input_from = "campaign_config"; output_to = "shopify_agent"; timeout_seconds = 3600
+[[taskflow.shopify_launch.steps]]
+order = 2; agent = "shopify_agent"; action = "build_site"; input_from = "brand_agent"; output_to = "content_agent"; timeout_seconds = 7200
+[[taskflow.shopify_launch.steps]]
+order = 3; agent = "content_agent"; action = "create_product_pages"; input_from = "shopify_agent"; output_to = "seo_agent"; timeout_seconds = 3600
+[[taskflow.shopify_launch.steps]]
+order = 4; agent = "seo_agent"; action = "optimize_seo"; input_from = "content_agent"; output_to = "ceo_agent"; timeout_seconds = 1800
+
+[taskflow.abandoned_cart_recovery]
+name = "弃购挽回流水线"
+description = "弃购检测→邮件→WhatsApp→优惠券"
+priority = "high"
+trigger = "cart_abandoned"
+[[taskflow.abandoned_cart_recovery.steps]]
+order = 1; agent = "email_marketing_agent"; action = "send_cart_email"; input_from = "webhook:cart_abandoned"; output_to = "retention_agent"; timeout_seconds = 300
+[[taskflow.abandoned_cart_recovery.steps]]
+order = 2; agent = "retention_agent"; action = "send_whatsapp_reminder"; input_from = "email_marketing_agent"; output_to = "crm_agent"; timeout_seconds = 600; condition = "email_not_opened == true"
+
+# ============================================================
+# 四、TikTok Shop TaskFlow 集合
+# ============================================================
+
+[taskflow.tiktok_live_automation]
+name = "TikTok直播自动化流水线"
+description = "选品→脚本→数字人→运营→复盘"
+priority = "high"
+trigger = "live_scheduled"
+[[taskflow.tiktok_live_automation.steps]]
+order = 1; agent = "tiktok_shop_agent"; action = "select_live_products"; input_from = "trend_agent"; output_to = "content_agent"; timeout_seconds = 600
+[[taskflow.tiktok_live_automation.steps]]
+order = 2; agent = "content_agent"; action = "generate_live_script"; input_from = "tiktok_shop_agent"; output_to = "heygen_agent"; timeout_seconds = 1200
+[[taskflow.tiktok_live_automation.steps]]
+order = 3; agent = "heygen_agent"; action = "produce_live_avatar"; input_from = "content_agent"; output_to = "tiktok_shop_agent"; timeout_seconds = 3600
+
+[taskflow.tiktok_kol_campaign]
+name = "TikTok达人合作流水线"
+description = "达人发现→触达→寄样→内容审核→结算"
+priority = "high"
+trigger = "campaign_launch"
+[[taskflow.tiktok_kol_campaign.steps]]
+order = 1; agent = "kol_agent"; action = "discover_kols"; input_from = "campaign_config"; output_to = "tiktok_shop_agent"; timeout_seconds = 1800
+[[taskflow.tiktok_kol_campaign.steps]]
+order = 2; agent = "tiktok_shop_agent"; action = "verify_kol_fit"; input_from = "kol_agent"; output_to = "whatsapp_agent"; timeout_seconds = 600
+[[taskflow.tiktok_kol_campaign.steps]]
+order = 3; agent = "whatsapp_agent"; action = "outreach_kol"; input_from = "tiktok_shop_agent"; output_to = "logistics_agent"; timeout_seconds = 1200
+[[taskflow.tiktok_kol_campaign.steps]]
+order = 4; agent = "logistics_agent"; action = "send_samples"; input_from = "whatsapp_agent"; output_to = "kol_agent"; timeout_seconds = 600; condition = "kol_accepted == true"
+
+# ============================================================
+# 五、邮件营销 TaskFlow 集合
+# ============================================================
+
+[taskflow.welcome_email_flow]
+name = "欢迎邮件流水线"
+description = "注册→欢迎→品牌故事→首单优惠"
+priority = "medium"
+trigger = "customer_subscribed"
+[[taskflow.welcome_email_flow.steps]]
+order = 1; agent = "email_marketing_agent"; action = "send_welcome"; input_from = "webhook:customer_subscribed"; output_to = "crm_agent"; timeout_seconds = 300
+[[taskflow.welcome_email_flow.steps]]
+order = 2; agent = "crm_agent"; action = "update_contact"; input_from = "email_marketing_agent"; output_to = "retention_agent"; timeout_seconds = 300
+
+[taskflow.retention_email_flow]
+name = "复购邮件流水线"
+description = "购买→7天→30天→60天→复购推荐"
+priority = "medium"
+trigger = "order_delivered"
+[[taskflow.retention_email_flow.steps]]
+order = 1; agent = "retention_agent"; action = "schedule_retention"; input_from = "webhook:order_delivered"; output_to = "email_marketing_agent"; timeout_seconds = 300
+[[taskflow.retention_email_flow.steps]]
+order = 2; agent = "email_marketing_agent"; action = "send_retention_email"; input_from = "retention_agent"; output_to = "analytics_agent"; timeout_seconds = 300
+
+# ============================================================
+# 六、供应链 TaskFlow 集合
+# ============================================================
+
+[taskflow.inventory_forecast]
+name = "库存预测流水线"
+description = "销量数据→需求预测→补货建议→采购"
+priority = "critical"
+trigger = "scheduled:weekly"
+[[taskflow.inventory_forecast.steps]]
+order = 1; agent = "demand_forecast_agent"; action = "forecast_demand"; input_from = "analytics_agent"; output_to = "inventory_agent"; timeout_seconds = 1200
+[[taskflow.inventory_forecast.steps]]
+order = 2; agent = "inventory_agent"; action = "generate_replenishment"; input_from = "demand_forecast_agent"; output_to = "procurement_agent"; timeout_seconds = 600
+[[taskflow.inventory_forecast.steps]]
+order = 3; agent = "procurement_agent"; action = "create_po"; input_from = "inventory_agent"; output_to = "supplier_agent"; timeout_seconds = 600; condition = "stock_below_threshold == true"
+
+[taskflow.quality_control]
+name = "质量控制流水线"
+description = "生产完成→质检→报告→改进建议"
+priority = "critical"
+trigger = "production_completed"
+[[taskflow.quality_control.steps]]
+order = 1; agent = "quality_agent"; action = "inspect_batch"; input_from = "webhook:production_completed"; output_to = "production_agent"; timeout_seconds = 1800
+[[taskflow.quality_control.steps]]
+order = 2; agent = "production_agent"; action = "review_quality_report"; input_from = "quality_agent"; output_to = "supplier_agent"; timeout_seconds = 600
+[[taskflow.quality_control.steps]]
+order = 3; agent = "supplier_agent"; action = "update_supplier_score"; input_from = "production_agent"; output_to = "ceo_agent"; timeout_seconds = 300
+
+[taskflow.logistics_routing]
+name = "物流路由优化流水线"
+description = "订单→比价→选择→发货→追踪"
+priority = "high"
+trigger = "order_ready_to_ship"
+[[taskflow.logistics_routing.steps]]
+order = 1; agent = "logistics_agent"; action = "compare_carriers"; input_from = "webhook:order_ready"; output_to = "dhl_agent"; timeout_seconds = 300
+[[taskflow.logistics_routing.steps]]
+order = 2; agent = "dhl_agent"; action = "get_quote"; input_from = "logistics_agent"; output_to = "ups_agent"; timeout_seconds = 300
+[[taskflow.logistics_routing.steps]]
+order = 3; agent = "ups_agent"; action = "get_quote"; input_from = "dhl_agent"; output_to = "fedex_agent"; timeout_seconds = 300
+[[taskflow.logistics_routing.steps]]
+order = 4; agent = "fedex_agent"; action = "get_quote"; input_from = "ups_agent"; output_to = "logistics_agent"; timeout_seconds = 300
+[[taskflow.logistics_routing.steps]]
+order = 5; agent = "logistics_agent"; action = "select_and_ship"; input_from = "fedex_agent"; output_to = "order_agent"; timeout_seconds = 600
+
+# ============================================================
+# 七、财务 TaskFlow 集合
+# ============================================================
+
+[taskflow.budget_review]
+name = "预算审核流水线"
+description = "预算提交→审核→批准→执行监控"
+priority = "medium"
+trigger = "budget_submitted"
+[[taskflow.budget_review.steps]]
+order = 1; agent = "budget_agent"; action = "review_budget"; input_from = "webhook:budget_submitted"; output_to = "cost_control_agent"; timeout_seconds = 600
+[[taskflow.budget_review.steps]]
+order = 2; agent = "cost_control_agent"; action = "analyze_cost"; input_from = "budget_agent"; output_to = "cfo_agent"; timeout_seconds = 600
+[[taskflow.budget_review.steps]]
+order = 3; agent = "cfo_agent"; action = "approve_budget"; input_from = "cost_control_agent"; output_to = "finance_agent"; timeout_seconds = 300
+
+[taskflow.tax_compliance]
+name = "税务合规流水线"
+description = "交易数据→税务计算→申报→归档"
+priority = "medium"
+trigger = "monthly_close"
+[[taskflow.tax_compliance.steps]]
+order = 1; agent = "tax_agent"; action = "calculate_tax"; input_from = "accountant_agent"; output_to = "finance_agent"; timeout_seconds = 1800
+[[taskflow.tax_compliance.steps]]
+order = 2; agent = "finance_agent"; action = "review_tax"; input_from = "tax_agent"; output_to = "cfo_agent"; timeout_seconds = 600
+
+# ============================================================
+# 八、LinkedIn获客 TaskFlow
+# ============================================================
+
+[taskflow.linkedin_outreach]
+name = "LinkedIn获客流水线"
+description = "搜索→画像→连接→InMail→CRM"
+priority = "high"
+trigger = "scheduled:daily"
+[[taskflow.linkedin_outreach.steps]]
+order = 1; agent = "linkedin_agent"; action = "search_prospects"; input_from = "lead_agent"; output_to = "lead_agent"; timeout_seconds = 1800
+[[taskflow.linkedin_outreach.steps]]
+order = 2; agent = "lead_agent"; action = "enrich_profiles"; input_from = "linkedin_agent"; output_to = "sdr_agent"; timeout_seconds = 600
+[[taskflow.linkedin_outreach.steps]]
+order = 3; agent = "sdr_agent"; action = "score_leads"; input_from = "lead_agent"; output_to = "linkedin_agent"; timeout_seconds = 300
+[[taskflow.linkedin_outreach.steps]]
+order = 4; agent = "linkedin_agent"; action = "send_connection"; input_from = "sdr_agent"; output_to = "crm_agent"; timeout_seconds = 600; condition = "lead_score >= 60"
+
+# ============================================================
+# 九、WhatsApp销售 TaskFlow
+# ============================================================
+
+[taskflow.whatsapp_sales]
+name = "WhatsApp销售流水线"
+description = "消息→分析→推荐→报价→成交→CRM"
+priority = "high"
+trigger = "whatsapp_message_received"
+[[taskflow.whatsapp_sales.steps]]
+order = 1; agent = "whatsapp_agent"; action = "analyze_message"; input_from = "webhook:whatsapp_message"; output_to = "product_agent"; timeout_seconds = 300
+[[taskflow.whatsapp_sales.steps]]
+order = 2; agent = "product_agent"; action = "recommend_products"; input_from = "whatsapp_agent"; output_to = "quotation_agent"; timeout_seconds = 300
+[[taskflow.whatsapp_sales.steps]]
+order = 3; agent = "quotation_agent"; action = "generate_quote"; input_from = "product_agent"; output_to = "whatsapp_agent"; timeout_seconds = 300; condition = "intent == 'buying'"
+
+# ============================================================
+# 十、HeyGen视频 TaskFlow 集合
+# ============================================================
+
+[taskflow.heygen_product_video]
+name = "HeyGen产品视频流水线"
+description = "产品信息→脚本→数字人→视频→多语言→发布"
+priority = "medium"
+trigger = "product_launch"
+[[taskflow.heygen_product_video.steps]]
+order = 1; agent = "product_agent"; action = "prepare_product_info"; input_from = "campaign_config"; output_to = "content_agent"; timeout_seconds = 600
+[[taskflow.heygen_product_video.steps]]
+order = 2; agent = "content_agent"; action = "write_video_script"; input_from = "product_agent"; output_to = "heygen_agent"; timeout_seconds = 1200
+[[taskflow.heygen_product_video.steps]]
+order = 3; agent = "heygen_agent"; action = "produce_video"; input_from = "content_agent"; output_to = "localization_agent"; timeout_seconds = 3600
+[[taskflow.heygen_product_video.steps]]
+order = 4; agent = "localization_agent"; action = "add_subtitles"; input_from = "heygen_agent"; output_to = "video_agent"; timeout_seconds = 1200
+
+[taskflow.heygen_franchise_video]
+name = "HeyGen招商视频流水线"
+description = "招商信息→脚本→数字人→多语言→分发"
+priority = "high"
+trigger = "franchise_campaign"
+[[taskflow.heygen_franchise_video.steps]]
+order = 1; agent = "franchise_agent"; action = "prepare_franchise_info"; input_from = "campaign_config"; output_to = "heygen_agent"; timeout_seconds = 600
+[[taskflow.heygen_franchise_video.steps]]
+order = 2; agent = "heygen_agent"; action = "produce_franchise_video"; input_from = "franchise_agent"; output_to = "localization_agent"; timeout_seconds = 3600
+[[taskflow.heygen_franchise_video.steps]]
+order = 3; agent = "localization_agent"; action = "multi_language"; input_from = "heygen_agent"; output_to = "community_agent"; timeout_seconds = 1800
+
+# ============================================================
+# 十一、品牌出海全流程 TaskFlow（升级版）
+# ============================================================
+
+[taskflow.brand_globalization_v2]
+name = "品牌出海全流程 V2"
+description = "市场调研→品牌定位→内容工厂→全球获客→自动成交→订单交付→客户运营→代理裂变"
+priority = "high"
+trigger = "global_expansion_trigger"
+[[taskflow.brand_globalization_v2.steps]]
+order = 1; agent = "market_agent"; action = "full_market_scan"; input_from = "global_expansion_agent"; output_to = "competitor_agent"; timeout_seconds = 7200
+[[taskflow.brand_globalization_v2.steps]]
+order = 2; agent = "competitor_agent"; action = "competitor_analysis"; input_from = "market_agent"; output_to = "brand_agent"; timeout_seconds = 3600
+[[taskflow.brand_globalization_v2.steps]]
+order = 3; agent = "brand_agent"; action = "brand_positioning"; input_from = "competitor_agent"; output_to = "product_agent"; timeout_seconds = 1800
+[[taskflow.brand_globalization_v2.steps]]
+order = 4; agent = "product_agent"; action = "localize_product"; input_from = "brand_agent"; output_to = "content_agent"; timeout_seconds = 3600
+[[taskflow.brand_globalization_v2.steps]]
+order = 5; agent = "content_agent"; action = "build_content_matrix"; input_from = "product_agent"; output_to = "heygen_agent"; timeout_seconds = 7200
+[[taskflow.brand_globalization_v2.steps]]
+order = 6; agent = "heygen_agent"; action = "produce_brand_videos"; input_from = "content_agent"; output_to = "ads_agent"; timeout_seconds = 3600
+[[taskflow.brand_globalization_v2.steps]]
+order = 7; agent = "ads_agent"; action = "launch_multi_channel"; input_from = "heygen_agent"; output_to = "lead_agent"; timeout_seconds = 1800
+[[taskflow.brand_globalization_v2.steps]]
+order = 8; agent = "lead_agent"; action = "mine_customers"; input_from = "ads_agent"; output_to = "sdr_agent"; timeout_seconds = 3600
+[[taskflow.brand_globalization_v2.steps]]
+order = 9; agent = "sdr_agent"; action = "outreach"; input_from = "lead_agent"; output_to = "sales_agent"; timeout_seconds = 1800
+[[taskflow.brand_globalization_v2.steps]]
+order = 10; agent = "sales_agent"; action = "close_deals"; input_from = "sdr_agent"; output_to = "order_agent"; timeout_seconds = 7200
+[[taskflow.brand_globalization_v2.steps]]
+order = 11; agent = "order_agent"; action = "process_orders"; input_from = "sales_agent"; output_to = "logistics_agent"; timeout_seconds = 600
+[[taskflow.brand_globalization_v2.steps]]
+order = 12; agent = "logistics_agent"; action = "fulfill"; input_from = "order_agent"; output_to = "customer_success_agent"; timeout_seconds = 3600
+[[taskflow.brand_globalization_v2.steps]]
+order = 13; agent = "customer_success_agent"; action = "onboarding"; input_from = "logistics_agent"; output_to = "retention_agent"; timeout_seconds = 600
+[[taskflow.brand_globalization_v2.steps]]
+order = 14; agent = "retention_agent"; action = "retention_loop"; input_from = "customer_success_agent"; output_to = "franchise_agent"; timeout_seconds = 600
+[[taskflow.brand_globalization_v2.steps]]
+order = 15; agent = "franchise_agent"; action = "expand_channels"; input_from = "retention_agent"; output_to = "ceo_agent"; timeout_seconds = 1800
+
+# ============================================================
+# 十二、AI NAILS全链路 TaskFlow 集合
+# ============================================================
+
+[taskflow.ainails_full_chain]
+name = "AI NAILS全链路运营流水线"
+description = "选址→投放→激活→运营→增长→裂变"
+priority = "critical"
+trigger = "expansion_plan"
+[[taskflow.ainails_full_chain.steps]]
+order = 1; agent = "ainails_location_agent"; action = "score_location"; input_from = "city_node_agent"; output_to = "ainails_device_agent"; timeout_seconds = 1800
+[[taskflow.ainails_full_chain.steps]]
+order = 2; agent = "ainails_device_agent"; action = "deploy_device"; input_from = "ainails_location_agent"; output_to = "logistics_agent"; timeout_seconds = 600
+[[taskflow.ainails_full_chain.steps]]
+order = 3; agent = "logistics_agent"; action = "ship_device"; input_from = "ainails_device_agent"; output_to = "ainails_device_agent"; timeout_seconds = 3600
+[[taskflow.ainails_full_chain.steps]]
+order = 4; agent = "ainails_device_agent"; action = "activate"; input_from = "logistics_agent"; output_to = "store_growth_agent"; timeout_seconds = 300
+[[taskflow.ainails_full_chain.steps]]
+order = 5; agent = "store_growth_agent"; action = "growth_campaign"; input_from = "ainails_device_agent"; output_to = "community_agent"; timeout_seconds = 1800
+[[taskflow.ainails_full_chain.steps]]
+order = 6; agent = "community_agent"; action = "community_launch"; input_from = "store_growth_agent"; output_to = "referral_agent"; timeout_seconds = 600
+[[taskflow.ainails_full_chain.steps]]
+order = 7; agent = "referral_agent"; action = "referral_program"; input_from = "community_agent"; output_to = "ceo_agent"; timeout_seconds = 300
+
+# ============================================================
 # 错误处理和重试策略
 # ============================================================
 [taskflow.error_handling]

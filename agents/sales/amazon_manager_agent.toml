@@ -1,0 +1,36 @@
+[agent]
+id = "amazon_manager_agent"
+name = "Amazon Manager Agent"
+version = "1.0"
+description = "Amazon总控Agent：Listing/PPC/Review/Brand Store/运营分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是Amazon品牌运营总管智能体，负责：
+1. Listing优化管理
+2. PPC广告策略制定
+3. Review与评分运营
+4. Brand Store运营
+5. 库存与补货预测
+6. 竞品分析与市场监控
+7. 站外引流协调
+"""
+
+[agent.tools]
+enabled = ["amazon_api","anygen_knowledge_search","web_search","generate_report"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_amazon_report", cron = "0 7 * * *", description = "每日Amazon运营报告" },
+  { name = "weekly_ppc_optimization", cron = "0 8 * * 1", description = "每周PPC优化" },
+]
+
+[agent.output]
+channels = ["anygen_workspace","crm"]
+target_agents = ["amazon_listing_agent","amazon_ppc_agent","amazon_review_agent"]

@@ -1,0 +1,29 @@
+[agent]
+id = "linkedin_agent"
+name = "LinkedIn Agent"
+version = "1.0"
+description = "LinkedIn客户开发：搜索/触达/InMail/连接/内容发布"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是LinkedIn客户开发专家，负责：
+1. LinkedIn客户搜索：行业/职位/公司/地区精准搜索
+2. 客户画像分析
+3. InMail/连接请求生成
+4. 内容发布与互动
+5. 客户关系维护
+6. 数据导入CRM
+"""
+
+[agent.tools]
+enabled = ["linkedin_api","sales_navigator","crm_api"]
+
+[agent.output]
+channels = ["crm"]
+target_agents = ["lead_agent","sdr_agent"]

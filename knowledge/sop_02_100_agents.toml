@@ -1,0 +1,423 @@
+# SOP 02: OpenClaw企业100个Agent角色体系
+[sop]
+id = "sop_02"
+name = "OpenClaw企业100个Agent角色体系"
+version = "1.0"
+
+# AI董事会 (10)
+[[board]]
+id = "chairman_agent"
+name = "董事长Agent"
+skill = "vision-planning.skill"
+[[board]]
+id = "ceo_agent"
+name = "CEO Agent"
+skill = "strategy-execution.skill"
+[[board]]
+id = "coo_agent"
+name = "COO Agent"
+skill = "operation-analysis.skill"
+[[board]]
+id = "cfo_agent"
+name = "CFO Agent"
+skill = "cashflow-analysis.skill"
+[[board]]
+id = "cmo_agent"
+name = "CMO Agent"
+skill = "marketing-plan.skill"
+[[board]]
+id = "cto_agent"
+name = "CTO Agent"
+skill = "architecture-review.skill"
+[[board]]
+id = "chro_agent"
+name = "CHRO Agent"
+skill = "talent-management.skill"
+[[board]]
+id = "legal_agent"
+name = "Legal Agent"
+skill = "contract-review.skill"
+[[board]]
+id = "risk_agent"
+name = "Risk Agent"
+skill = "risk-assessment.skill"
+[[board]]
+id = "innovation_agent"
+name = "Innovation Agent"
+skill = "innovation-evaluation.skill"
+
+# 市场部 (10)
+[[market]]
+id = "market_research_agent"
+name = "Market Research Agent"
+skill = "market-research.skill"
+[[market]]
+id = "competitor_agent"
+name = "Competitor Agent"
+skill = "competitor-analysis.skill"
+[[market]]
+id = "trend_agent"
+name = "Trend Agent"
+skill = "trend-prediction.skill"
+[[market]]
+id = "seo_agent"
+name = "SEO Agent"
+skill = "seo-optimize.skill"
+[[market]]
+id = "sem_agent"
+name = "SEM Agent"
+skill = "google-ads.skill"
+[[market]]
+id = "meta_ads_agent"
+name = "Meta Ads Agent"
+skill = "facebook-ads.skill"
+[[market]]
+id = "tiktok_ads_agent"
+name = "TikTok Ads Agent"
+skill = "tiktok-ads.skill"
+[[market]]
+id = "kol_agent"
+name = "KOL Agent"
+skill = "influencer-management.skill"
+[[market]]
+id = "pr_agent"
+name = "PR Agent"
+skill = "media-outreach.skill"
+[[market]]
+id = "branding_agent"
+name = "Branding Agent"
+skill = "brand-strategy.skill"
+
+# 内容中心 (10)
+[[content]]
+id = "content_director_agent"
+name = "Content Director Agent"
+skill = "content-strategy.skill"
+[[content]]
+id = "copywriting_agent"
+name = "Copywriting Agent"
+skill = "copywriting.skill"
+[[content]]
+id = "blog_agent"
+name = "Blog Agent"
+skill = "blog-writing.skill"
+[[content]]
+id = "news_agent"
+name = "News Agent"
+skill = "press-release.skill"
+[[content]]
+id = "video_script_agent"
+name = "Video Script Agent"
+skill = "video-script.skill"
+[[content]]
+id = "heygen_agent"
+name = "HeyGen Agent"
+skill = "digital-human-video.skill"
+[[content]]
+id = "graphic_design_agent"
+name = "Graphic Design Agent"
+skill = "poster-design.skill"
+[[content]]
+id = "social_media_agent"
+name = "Social Media Agent"
+skill = "social-content.skill"
+[[content]]
+id = "newsletter_agent"
+name = "Newsletter Agent"
+skill = "email-content.skill"
+[[content]]
+id = "localization_agent"
+name = "Localization Agent"
+skill = "multi-language.skill"
+
+# 销售中心 (15)
+[[sales]]
+id = "sdr_manager_agent"
+name = "SDR Manager Agent"
+skill = "sdr-management.skill"
+[[sales]]
+id = "lead_discovery_agent"
+name = "Lead Discovery Agent"
+skill = "apollo-search.skill"
+[[sales]]
+id = "lead_enrichment_agent"
+name = "Lead Enrichment Agent"
+skill = "profile-enrichment.skill"
+[[sales]]
+id = "lead_scoring_agent"
+name = "Lead Scoring Agent"
+skill = "lead-scoring.skill"
+[[sales]]
+id = "cold_email_agent"
+name = "Cold Email Agent"
+skill = "cold-email.skill"
+[[sales]]
+id = "linkedin_agent"
+name = "LinkedIn Agent"
+skill = "linkedin-outreach.skill"
+[[sales]]
+id = "whatsapp_agent"
+name = "WhatsApp Agent"
+skill = "whatsapp-sales.skill"
+[[sales]]
+id = "proposal_agent"
+name = "Proposal Agent"
+skill = "proposal-gen.skill"
+[[sales]]
+id = "quotation_agent"
+name = "Quotation Agent"
+skill = "quotation-gen.skill"
+[[sales]]
+id = "contract_agent"
+name = "Contract Agent"
+skill = "contract-gen.skill"
+[[sales]]
+id = "negotiation_agent"
+name = "Negotiation Agent"
+skill = "negotiation-assist.skill"
+[[sales]]
+id = "sales_coach_agent"
+name = "Sales Coach Agent"
+skill = "sales-training.skill"
+[[sales]]
+id = "crm_agent"
+name = "CRM Agent"
+skill = "crm-management.skill"
+[[sales]]
+id = "pipeline_agent"
+name = "Pipeline Agent"
+skill = "pipeline-analysis.skill"
+[[sales]]
+id = "closing_agent"
+name = "Closing Agent"
+skill = "deal-closing.skill"
+
+# 客服中心 (10)
+[[support]]
+id = "customer_support_agent"
+name = "Customer Support Agent"
+skill = "customer-support.skill"
+[[support]]
+id = "faq_agent"
+name = "FAQ Agent"
+skill = "faq-answer.skill"
+[[support]]
+id = "technical_support_agent"
+name = "Technical Support Agent"
+skill = "tech-support.skill"
+[[support]]
+id = "complaint_agent"
+name = "Complaint Agent"
+skill = "complaint-handling.skill"
+[[support]]
+id = "ticket_agent"
+name = "Ticket Agent"
+skill = "ticket-management.skill"
+[[support]]
+id = "escalation_agent"
+name = "Escalation Agent"
+skill = "escalation-handling.skill"
+[[support]]
+id = "satisfaction_agent"
+name = "Satisfaction Agent"
+skill = "nps-survey.skill"
+[[support]]
+id = "review_agent"
+name = "Review Agent"
+skill = "review-collection.skill"
+[[support]]
+id = "loyalty_agent"
+name = "Loyalty Agent"
+skill = "membership-management.skill"
+[[support]]
+id = "retention_agent"
+name = "Retention Agent"
+skill = "customer-retention.skill"
+
+# 跨境运营 (15)
+[[ecommerce]]
+id = "amazon_manager_agent"
+name = "Amazon Manager Agent"
+skill = "amazon-management.skill"
+[[ecommerce]]
+id = "amazon_listing_agent"
+name = "Amazon Listing Agent"
+skill = "listing-optimize.skill"
+[[ecommerce]]
+id = "amazon_ppc_agent"
+name = "Amazon PPC Agent"
+skill = "ppc-optimize.skill"
+[[ecommerce]]
+id = "amazon_review_agent"
+name = "Amazon Review Agent"
+skill = "review-analysis.skill"
+[[ecommerce]]
+id = "tiktok_shop_manager_agent"
+name = "TikTok Shop Manager Agent"
+skill = "tiktok-shop.skill"
+[[ecommerce]]
+id = "tiktok_video_agent"
+name = "TikTok Video Agent"
+skill = "short-video.skill"
+[[ecommerce]]
+id = "tiktok_live_agent"
+name = "TikTok Live Agent"
+skill = "live-commerce.skill"
+[[ecommerce]]
+id = "shopify_agent"
+name = "Shopify Agent"
+skill = "shopify-management.skill"
+[[ecommerce]]
+id = "cro_agent"
+name = "CRO Agent"
+skill = "conversion-optimization.skill"
+[[ecommerce]]
+id = "email_marketing_agent"
+name = "Email Marketing Agent"
+skill = "email-marketing.skill"
+[[ecommerce]]
+id = "affiliate_agent"
+name = "Affiliate Agent"
+skill = "affiliate-management.skill"
+[[ecommerce]]
+id = "marketplace_agent"
+name = "Marketplace Agent"
+skill = "multi-platform.skill"
+[[ecommerce]]
+id = "pricing_agent"
+name = "Pricing Agent"
+skill = "price-optimization.skill"
+[[ecommerce]]
+id = "promotion_agent"
+name = "Promotion Agent"
+skill = "promotion-management.skill"
+[[ecommerce]]
+id = "analytics_agent"
+name = "Analytics Agent"
+skill = "business-analytics.skill"
+
+# 供应链 (10)
+[[supply_chain]]
+id = "procurement_agent"
+name = "Procurement Agent"
+skill = "procurement.skill"
+[[supply_chain]]
+id = "inventory_agent"
+name = "Inventory Agent"
+skill = "inventory-management.skill"
+[[supply_chain]]
+id = "production_agent"
+name = "Production Agent"
+skill = "production-scheduling.skill"
+[[supply_chain]]
+id = "quality_agent"
+name = "Quality Agent"
+skill = "quality-inspection.skill"
+[[supply_chain]]
+id = "logistics_agent"
+name = "Logistics Agent"
+skill = "logistics-management.skill"
+[[supply_chain]]
+id = "dhl_agent"
+name = "DHL Agent"
+skill = "dhl-tracking.skill"
+[[supply_chain]]
+id = "ups_agent"
+name = "UPS Agent"
+skill = "ups-tracking.skill"
+[[supply_chain]]
+id = "fedex_agent"
+name = "FedEx Agent"
+skill = "fedex-tracking.skill"
+[[supply_chain]]
+id = "forecast_agent"
+name = "Forecast Agent"
+skill = "demand-forecast.skill"
+[[supply_chain]]
+id = "supplier_agent"
+name = "Supplier Agent"
+skill = "supplier-management.skill"
+
+# 财务 (10)
+[[finance]]
+id = "accounting_agent"
+name = "Accounting Agent"
+skill = "accounting.skill"
+[[finance]]
+id = "cashflow_agent"
+name = "Cashflow Agent"
+skill = "cashflow-analysis.skill"
+[[finance]]
+id = "budget_agent"
+name = "Budget Agent"
+skill = "budget-management.skill"
+[[finance]]
+id = "cost_control_agent"
+name = "Cost Control Agent"
+skill = "cost-control.skill"
+[[finance]]
+id = "tax_agent"
+name = "Tax Agent"
+skill = "tax-management.skill"
+[[finance]]
+id = "profit_agent"
+name = "Profit Agent"
+skill = "profit-analysis.skill"
+[[finance]]
+id = "payment_agent"
+name = "Payment Agent"
+skill = "payment-management.skill"
+[[finance]]
+id = "invoice_agent"
+name = "Invoice Agent"
+skill = "invoice-management.skill"
+[[finance]]
+id = "audit_agent"
+name = "Audit Agent"
+skill = "audit-analysis.skill"
+[[finance]]
+id = "finance_dashboard_agent"
+name = "Finance Dashboard Agent"
+skill = "finance-reporting.skill"
+
+# 招商加盟 (10)
+[[franchise]]
+id = "franchise_agent"
+name = "Franchise Agent"
+skill = "franchise-management.skill"
+[[franchise]]
+id = "distributor_agent"
+name = "Distributor Agent"
+skill = "distributor-management.skill"
+[[franchise]]
+id = "channel_agent"
+name = "Channel Agent"
+skill = "channel-development.skill"
+[[franchise]]
+id = "partner_agent"
+name = "Partner Agent"
+skill = "partner-management.skill"
+[[franchise]]
+id = "training_agent"
+name = "Training Agent"
+skill = "training-management.skill"
+[[franchise]]
+id = "event_agent"
+name = "Event Agent"
+skill = "event-management.skill"
+[[franchise]]
+id = "webinar_agent"
+name = "Webinar Agent"
+skill = "webinar-management.skill"
+[[franchise]]
+id = "community_agent"
+name = "Community Agent"
+skill = "community-management.skill"
+[[franchise]]
+id = "referral_agent"
+name = "Referral Agent"
+skill = "referral-system.skill"
+[[franchise]]
+id = "ecosystem_agent"
+name = "Ecosystem Agent"
+skill = "ecosystem-management.skill"

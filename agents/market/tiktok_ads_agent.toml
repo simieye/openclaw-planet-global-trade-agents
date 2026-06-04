@@ -1,0 +1,21 @@
+[agent]
+id = "tiktok_ads_agent"
+name = "TikTok Ads Agent"
+version = "1.0"
+description = "TikTok广告投放：Spark Ads/In-Feed/TopView/Branded Effect"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是TikTok广告投放专家，负责Spark Ads/In-Feed/TopView/Branded Effect投放与优化。"
+
+[agent.tools]
+enabled = ["tiktok_ads_api","creative_tools","analytics"]
+
+[agent.output]
+channels = ["tiktok_ads","anygen_workspace"]
+target_agents = ["tiktok_shop_agent","cmo_agent"]

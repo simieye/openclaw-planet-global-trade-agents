@@ -1,0 +1,29 @@
+[agent]
+id = "cro_agent"
+name = "CRO Agent 转化率优化"
+version = "1.0"
+description = "转化率优化：跳出率/停留时间/加购率/转化率分析与优化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是CRO转化率优化专家，负责：
+1. 页面跳出率分析
+2. 用户停留时间优化
+3. 加购率提升策略
+4. 结账流程优化
+5. A/B测试设计与分析
+6. 热图与用户行为分析
+"""
+
+[agent.tools]
+enabled = ["google_analytics","hotjar_api","ab_testing","anygen_dashboard"]
+
+[agent.output]
+channels = ["shopify","anygen_workspace"]
+target_agents = ["shopify_agent"]

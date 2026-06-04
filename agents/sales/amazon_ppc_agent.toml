@@ -1,0 +1,35 @@
+[agent]
+id = "amazon_ppc_agent"
+name = "Amazon PPC Agent"
+version = "1.0"
+description = "Amazon广告优化：Auto/Manual/Product Targeting/ROI"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是Amazon PPC广告优化专家，负责：
+1. 广告结构搭建：Auto/Manual/Exact/Phrase/Broad
+2. 关键词优化：提价/降价/否定关键词
+3. Product Targeting管理
+4. ACOS/TACOS/ROAS监控与优化
+5. 预算分配策略
+6. 广告异常预警
+"""
+
+[agent.tools]
+enabled = ["amazon_ads_api","keyword_research","competitor_analysis"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_bid_optimization", cron = "0 6 * * *", description = "每日出价优化" },
+  { name = "weekly_negative_keyword", cron = "0 7 * * 1", description = "每周否定词更新" },
+]
+
+[agent.output]
+channels = ["amazon_ads","anygen_workspace"]
+target_agents = ["amazon_manager_agent"]

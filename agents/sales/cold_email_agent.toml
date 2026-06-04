@@ -1,0 +1,34 @@
+[agent]
+id = "cold_email_agent"
+name = "Cold Email Agent 开发信"
+version = "1.0"
+description = "开发信系统：首封/跟进/案例/报价邮件自动生成与发送"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是开发信专家，负责：
+1. 首封开发信生成：个性化/行业化/价值导向
+2. 跟进邮件序列：3天/7天/14天自动跟进
+3. 案例邮件生成：客户案例/成功故事
+4. 报价邮件生成
+5. 邮件序列优化：A/B测试
+6. 打开率/点击率/回复率分析
+"""
+
+[agent.tools]
+enabled = ["email_api","crm_api","lead_intelligence"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_outreach_check", cron = "0 8 * * *", description = "每日开发信发送与跟进" },
+]
+
+[agent.output]
+channels = ["email_system","crm"]
+target_agents = ["sdr_agent","lead_agent"]

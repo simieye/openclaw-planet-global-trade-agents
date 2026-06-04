@@ -1,0 +1,254 @@
+# SOP 07: Shopify独立站DTC增长SOP
+[sop]
+id = "sop_07"
+name = "Shopify独立站DTC增长SOP"
+version = "1.0"
+
+[[taskflows]]
+id = "dtc_01"
+name = "品牌定位系统"
+agents = ["Brand Strategy Agent","Consumer Insight Agent","Market Agent"]
+output = "品牌定位/品牌使命/品牌愿景/品牌价值观/品牌口号/USP"
+skills = ["brand-positioning.skill","consumer-insight.skill"]
+
+[[taskflows]]
+id = "dtc_02"
+name = "品牌故事系统"
+agents = ["Storytelling Agent","Content Agent"]
+output = "品牌故事/创始人故事/产品故事/用户故事"
+
+[[taskflows]]
+id = "dtc_03"
+name = "网站架构规划"
+agents = ["Shopify Architect Agent","UX Agent","CRO Agent"]
+pages = ["Home","Product","Collection","Blog","About","FAQ","Contact","Affiliate","Community"]
+
+[[taskflows]]
+id = "dtc_04"
+name = "产品页自动生成"
+agents = ["Product Page Agent","Copywriting Agent","SEO Agent"]
+output = "标题/卖点/FAQ/评价展示/SEO内容"
+
+[[taskflows]]
+id = "dtc_05"
+name = "转化率优化"
+agents = ["CRO Agent","Analytics Agent"]
+analysis = ["跳出率","停留时间","加购率","转化率"]
+output = "优化建议"
+
+[[taskflows]]
+id = "dtc_06"
+name = "广告素材工厂"
+agents = ["Creative Agent","Video Agent","Copywriting Agent","HeyGen Agent"]
+output = "UGC视频/产品视频/测评视频/创始人视频/数字人视频"
+
+[[taskflows]]
+id = "dtc_07"
+name = "广告测试"
+agents = ["Meta Ads Agent"]
+auto = ["AB测试","兴趣测试","素材测试","受众测试"]
+
+[[taskflows]]
+id = "dtc_08"
+name = "广告优化"
+agents = ["ROAS Agent","Budget Agent"]
+kpi = ["CPA","CTR","CVR","ROAS"]
+
+[[taskflows]]
+id = "dtc_09"
+name = "搜索广告"
+agents = ["Google Search Agent","Keyword Agent"]
+output = "关键词组/广告组/文案"
+
+[[taskflows]]
+id = "dtc_10"
+name = "Shopping广告"
+agents = ["Google Shopping Agent","Feed Agent"]
+auto = "Shopify→Google Merchant同步"
+
+[[taskflows]]
+id = "dtc_11"
+name = "PMax优化"
+agents = ["Performance Max Agent"]
+output = "预算调整/素材建议/受众优化"
+
+[[taskflows]]
+id = "dtc_12"
+name = "关键词研究"
+agents = ["SEO Agent","Keyword Agent"]
+output = "核心关键词/长尾关键词/问题关键词"
+
+[[taskflows]]
+id = "dtc_13"
+name = "博客内容工厂"
+agents = ["Blog Agent","Content Agent"]
+output = "产品教程/行业知识/测评文章/购买指南"
+
+[[taskflows]]
+id = "dtc_14"
+name = "SEO优化"
+agents = ["Technical SEO Agent","On-page SEO Agent"]
+output = "结构优化/链接优化/速度优化"
+
+[[taskflows]]
+id = "dtc_15"
+name = "欢迎流程"
+trigger = "用户注册"
+agents = ["Email Agent","CRM Agent"]
+auto = ["欢迎邮件","品牌故事","优惠券"]
+
+[[taskflows]]
+id = "dtc_16"
+name = "弃购挽回"
+trigger = "放弃购物车"
+agents = ["Retention Agent","Email Agent"]
+auto = ["提醒邮件","优惠券","用户评价"]
+
+[[taskflows]]
+id = "dtc_17"
+name = "复购营销"
+agents = ["Lifecycle Agent"]
+auto = ["第7天","第30天","第60天营销"]
+
+[[taskflows]]
+id = "dtc_18"
+name = "会员邮件"
+agents = ["VIP Agent"]
+output = "专属活动/新品预售/积分通知"
+
+[[taskflows]]
+id = "dtc_19"
+name = "线索接入"
+trigger = "表单提交/广告线索/网站咨询"
+agents = ["Lead Agent","WhatsApp Agent"]
+
+[[taskflows]]
+id = "dtc_20"
+name = "自动成交"
+agents = ["Sales Agent","Product Agent"]
+auto = ["产品推荐","报价","FAQ","预约"]
+
+[[taskflows]]
+id = "dtc_21"
+name = "售后运营"
+agents = ["Customer Success Agent"]
+auto = ["物流通知","使用教程","评价邀请"]
+
+[[taskflows]]
+id = "dtc_22"
+name = "会员等级"
+agents = ["Membership Agent"]
+levels = ["Bronze","Silver","Gold","VIP"]
+
+[[taskflows]]
+id = "dtc_23"
+name = "积分系统"
+agents = ["Loyalty Agent"]
+earn = ["购买","签到","评价","推荐"]
+
+[[taskflows]]
+id = "dtc_24"
+name = "会员营销"
+agents = ["Retention Agent"]
+auto = ["生日营销","节日营销","专属活动"]
+
+[[taskflows]]
+id = "dtc_25"
+name = "订阅产品识别"
+agents = ["Subscription Agent"]
+analysis = ["高频消费","耗材产品","会员产品"]
+
+[[taskflows]]
+id = "dtc_26"
+name = "订阅营销"
+agents = ["Email Agent","WhatsApp Agent"]
+auto = ["续费提醒","折扣通知","升级方案"]
+
+[[taskflows]]
+id = "dtc_27"
+name = "流失预警"
+agents = ["Churn Agent"]
+output = "取消风险/挽回建议"
+
+[[taskflows]]
+id = "dtc_28"
+name = "社区建设"
+platforms = ["Facebook Group","Discord","Telegram","WhatsApp Community"]
+agents = ["Community Agent"]
+
+[[taskflows]]
+id = "dtc_29"
+name = "UGC增长"
+agents = ["UGC Agent"]
+auto = ["晒单激励","测评激励","视频激励","分享激励"]
+
+[[taskflows]]
+id = "dtc_30"
+name = "社区活跃"
+agents = ["Engagement Agent"]
+auto = ["话题发布","活动发布","投票发布","挑战赛发布"]
+
+[[taskflows]]
+id = "dtc_31"
+name = "Affiliate招募"
+agents = ["Affiliate Agent","Partner Agent"]
+targets = ["KOL","博主","站长","媒体"]
+
+[[taskflows]]
+id = "dtc_32"
+name = "联盟管理"
+agents = ["Affiliate Manager Agent"]
+manage = ["佣金","链接","结算"]
+
+[[taskflows]]
+id = "dtc_33"
+name = "推荐裂变"
+agents = ["Referral Agent"]
+output = "推荐码/奖励计划"
+
+[[taskflows]]
+id = "dtc_34"
+name = "客户数据平台"
+agents = ["CDP Agent","CRM Agent"]
+unify = ["用户","订单","行为","互动"]
+
+[[taskflows]]
+id = "dtc_35"
+name = "用户分层"
+agents = ["LTV Agent"]
+categories = ["VIP","高价值","普通","沉睡"]
+
+[[taskflows]]
+id = "dtc_36"
+name = "生命周期运营"
+agents = ["Lifecycle Agent"]
+auto = ["拉新","激活","转化","留存","召回"]
+
+[[taskflows]]
+id = "dtc_37"
+name = "订单管理"
+trigger = "Shopify订单"
+agents = ["Order Agent","Inventory Agent","Logistics Agent"]
+
+[[taskflows]]
+id = "dtc_38"
+name = "库存预警"
+agents = ["Forecast Agent","Inventory Agent"]
+
+[[taskflows]]
+id = "dtc_39"
+name = "售后处理"
+agents = ["Customer Success Agent","Complaint Agent"]
+
+[[taskflows]]
+id = "dtc_40"
+name = "经营日报"
+trigger = "每日运行"
+agents = ["Sales Agent","Ads Agent","SEO Agent","Finance Agent","Community Agent"]
+output = "营收/利润/ROAS/CAC/LTV/复购率/会员增长/社区增长"
+
+[skills]
+shopify = ["product-page.skill","cro-analysis.skill","shopify-seo.skill"]
+meta = ["creative-generate.skill","ads-optimize.skill","audience-analysis.skill"]
+email = ["welcome-flow.skill","cart-recovery.skill","retention.skill"]
+community = ["ugc-growth.skill","community-engagement.skill"]

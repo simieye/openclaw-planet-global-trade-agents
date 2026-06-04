@@ -1,0 +1,148 @@
+# SOP 04: 跨境工厂AI出海SOP (OEM/ODM制造企业版)
+[sop]
+id = "sop_04"
+name = "跨境工厂AI出海SOP"
+version = "1.0"
+
+[[taskflows]]
+id = "tf_factory_01"
+name = "全球市场扫描"
+trigger = "每天08:00"
+agents = ["Market Research Agent","Competitor Agent","Trend Agent","Pricing Agent"]
+sources = ["Google","LinkedIn","Alibaba","Amazon","TikTok","Reddit","行业网站","海关数据"]
+outputs = ["国家机会排名","行业机会排名","客户名单","代理商名单","竞品分析"]
+
+[[taskflows]]
+id = "tf_factory_02"
+name = "客户发现"
+trigger = "市场扫描完成"
+agents = ["Lead Discovery Agent","Lead Enrichment Agent","Lead Scoring Agent"]
+sources = ["LinkedIn","Apollo","ZoomInfo","Google Maps","黄页","展会名单","海关数据"]
+outputs = ["客户名称","采购负责人","邮箱","WhatsApp","LinkedIn","采购能力","评分"]
+
+[[taskflows]]
+id = "tf_factory_03"
+name = "询盘自动分析"
+trigger = "收到询盘(Email/WhatsApp/网站表单/Alibaba)"
+agents = ["Inquiry Agent","Product Agent","Sales Agent"]
+analysis = ["客户类型","采购量","产品需求","交付时间","预算区间","成交概率"]
+output = "A类/B类/C类客户"
+
+[[taskflows]]
+id = "tf_factory_04"
+name = "智能报价"
+trigger = "客户询价"
+agents = ["Quotation Agent","Cost Agent","Finance Agent"]
+auto_read = ["ERP库存","原料价格","汇率","历史订单","利润率"]
+output = "报价单/PI/交期/MOQ/付款条件 (PDF/Excel/多语言)"
+
+[[taskflows]]
+id = "tf_factory_05"
+name = "样品管理"
+trigger = "客户要求打样"
+agents = ["Sample Agent","Production Agent","Quality Agent"]
+output = "样品单/物料单/生产单/物流单"
+webhook = "CRM→ERP→MES→生产系统"
+
+[[taskflows]]
+id = "tf_factory_06"
+name = "样品状态跟踪"
+trigger = "样品进入生产"
+agents = ["Sample Tracking Agent","Logistics Agent"]
+auto_push = ["样品完成","发货通知","物流信息","签收提醒"]
+
+[[taskflows]]
+id = "tf_factory_07"
+name = "订单确认"
+trigger = "客户确认订单"
+agents = ["Order Agent","Finance Agent","Contract Agent"]
+output = "合同/PI/Invoice/收款通知"
+webhook = "订单确认→ERP→生产系统"
+
+[[taskflows]]
+id = "tf_factory_08"
+name = "生产排程"
+trigger = "订单创建"
+agents = ["Production Agent","Scheduling Agent","Inventory Agent"]
+analysis = ["产能","设备","人员","物料","交期"]
+output = "生产计划/排产计划/采购计划"
+
+[[taskflows]]
+id = "tf_factory_09"
+name = "采购自动化"
+trigger = "库存不足"
+agents = ["Procurement Agent","Supplier Agent"]
+auto = ["供应商筛选","询价","采购单生成","ERP回写"]
+
+[[taskflows]]
+id = "tf_factory_10"
+name = "质量控制"
+trigger = "生产完成"
+agents = ["Quality Agent","Inspection Agent"]
+output = "检验报告/质量报告/出货报告/AI分析不良率"
+
+[[taskflows]]
+id = "tf_factory_11"
+name = "客户验厂"
+trigger = "客户预约验厂"
+agents = ["Factory Audit Agent","Compliance Agent"]
+output = "工厂介绍/资质包/ESG资料/验厂文件/PPT"
+heygen = "数字人讲解工厂/自动验厂导览"
+
+[[taskflows]]
+id = "tf_factory_12"
+name = "物流管理"
+trigger = "出货"
+agents = ["Logistics Agent","DHL Agent","UPS Agent","FedEx Agent","Freight Agent"]
+auto_select = ["空运","海运","铁路","快递"]
+auto_push = ["物流轨迹","预计到达时间","异常预警"]
+
+[[taskflows]]
+id = "tf_factory_13"
+name = "客户成功"
+trigger = "客户收货"
+agents = ["Customer Success Agent","Review Agent","Retention Agent"]
+auto = ["满意度调查","评价收集","复购推荐","新品推荐"]
+
+[[taskflows]]
+id = "tf_factory_14"
+name = "全球代理招募"
+trigger = "市场扫描"
+agents = ["Distributor Agent","Partner Agent","Channel Agent"]
+auto_search = ["国家代理","渠道商","经销商","品牌商"]
+auto_send = ["招商资料","代理政策","利润模型","合作协议"]
+
+[[taskflows]]
+id = "tf_factory_15"
+name = "全球招商自动化"
+agents = ["HeyGen Agent","Distributor Agent","Training Agent"]
+auto_generate = ["招商视频","产品视频","代理培训视频","案例视频"]
+languages = ["英语","西班牙语","法语","德语","阿拉伯语","俄语","葡萄牙语"]
+
+[[taskflows]]
+id = "tf_factory_16"
+name = "展会自动获客"
+trigger = "展会名单导入"
+agents = ["Lead Agent","SDR Agent","Sales Agent"]
+auto = ["名单清洗","客户分析","开发信","WhatsApp触达","会议预约"]
+
+[[taskflows]]
+id = "tf_factory_17"
+name = "经营日报"
+trigger = "每天自动运行"
+summary = ["销售","订单","生产","库存","物流","财务","客户"]
+output = "日报/周报/月报/风险预警/增长建议"
+
+[agents_map]
+sales_center = ["Lead Agent","SDR Agent","Sales Agent","Quotation Agent","Contract Agent"]
+production_center = ["Production Agent","Scheduling Agent","Inventory Agent","Quality Agent"]
+supply_center = ["Procurement Agent","Supplier Agent","Logistics Agent"]
+customer_center = ["Customer Success Agent","Distributor Agent","Partner Agent"]
+
+[webhook_map]
+CRM = "Lead Agent"
+ERP = "Production Agent"
+MES = "Scheduling Agent"
+WMS = "Inventory Agent"
+logistics = "Logistics Agent"
+payment = "Finance Agent"

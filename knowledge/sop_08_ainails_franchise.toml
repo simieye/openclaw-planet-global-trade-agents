@@ -1,0 +1,131 @@
+# SOP 08: AI NAILS全球加盟裂变SOP
+[sop]
+id = "sop_08"
+name = "AI NAILS全球加盟裂变SOP"
+version = "1.0"
+
+[[taskflows]]
+id = "an_01"
+name = "加盟线索获取"
+sources = ["TikTok","Facebook","Instagram","Google","LinkedIn","WhatsApp","官网","展会","招商会"]
+agents = ["Lead Discovery Agent","Franchise Agent","CRM Agent"]
+webhook = "官网表单→Webhook→Lead Agent→CRM"
+
+[[taskflows]]
+id = "an_02"
+name = "加盟商评分"
+agents = ["Franchise Scoring Agent","Risk Agent"]
+dimensions = ["资金实力","运营能力","团队规模","资源能力","渠道能力","城市资源"]
+output = "A级/B级/C级/D级"
+
+[[taskflows]]
+id = "an_03"
+name = "国家代理开发"
+agents = ["Country Expansion Agent","Partner Agent"]
+search = ["进口商","渠道商","代理商","连锁品牌","美业集团"]
+
+[[taskflows]]
+id = "an_04"
+name = "国家代理签约"
+agents = ["Contract Agent","Legal Agent","Finance Agent"]
+output = "合作协议/代理政策/价格体系/返点体系"
+
+[[taskflows]]
+id = "an_05"
+name = "城市合伙人招募"
+agents = ["City Franchise Agent","Marketing Agent"]
+targets = ["创业者","宝妈","美容院老板","美甲店老板","商场资源方","社区资源方"]
+
+[[taskflows]]
+id = "an_06"
+name = "城市运营体系"
+agents = ["City Manager Agent","Community Agent"]
+kpi = ["设备数量","活跃用户","收入","增长率"]
+
+[[taskflows]]
+id = "an_07"
+name = "AI选址系统"
+agents = ["Location Intelligence Agent","GIS Agent","Data Agent"]
+locations = ["机场","地铁站","高铁站","火车站","商场","社区","写字楼","酒店","美容院","美甲店","大学","景区"]
+output = "点位评分/预计客流/预计收益/投资回报率"
+
+[[taskflows]]
+id = "an_08"
+name = "设备投放管理"
+agents = ["Device Deployment Agent","Inventory Agent","Logistics Agent"]
+manage = ["安装","激活","维护","升级"]
+
+[[taskflows]]
+id = "an_09"
+name = "HeyGen招商视频工厂"
+agents = ["HeyGen Agent","Franchise Marketing Agent"]
+output = "招商视频/案例视频/收益模型视频/加盟培训视频"
+languages = ["英语","中文","法语","西班牙语","阿拉伯语","葡萄牙语","俄语","德语"]
+
+[[taskflows]]
+id = "an_10"
+name = "数字人招商直播"
+agents = ["HeyGen Live Agent","Sales Agent"]
+output = "24小时直播/招商讲解/收益讲解/案例展示/在线答疑"
+
+[[taskflows]]
+id = "an_11"
+name = "加盟培训"
+agents = ["Training Agent","Certification Agent"]
+content = ["设备安装","运营管理","营销推广","客户服务","财务管理"]
+
+[[taskflows]]
+id = "an_12"
+name = "认证考试"
+agents = ["Assessment Agent"]
+output = "运营认证/销售认证/技术认证/管理认证"
+
+[[taskflows]]
+id = "an_13"
+name = "门店增长系统"
+agents = ["Store Growth Agent","CRM Agent"]
+analysis = ["订单量","用户数","复购率","活跃度"]
+
+[[taskflows]]
+id = "an_14"
+name = "会员体系"
+agents = ["Membership Agent"]
+levels = ["普通会员","银卡会员","金卡会员","黑金会员"]
+
+[[taskflows]]
+id = "an_15"
+name = "裂变系统"
+agents = ["Referral Agent","Affiliate Agent"]
+output = "邀请码/推荐奖励/裂变奖励"
+
+[[taskflows]]
+id = "an_16"
+name = "全球数据驾驶舱"
+agents = ["Analytics Agent","CEO Agent","Finance Agent"]
+summary = ["国家数据","城市数据","设备数据","加盟数据","用户数据","收入数据"]
+output = "日报/周报/月报/季度报表"
+
+[[taskflows]]
+id = "an_17"
+name = "全球风险控制"
+agents = ["Risk Agent","Compliance Agent"]
+monitor = ["异常交易","设备异常","运营异常","加盟异常"]
+
+[[taskflows]]
+id = "an_18"
+name = "自动分账"
+agents = ["Finance Agent","Commission Agent"]
+auto = "总部→国家代理→城市代理→社区运营商→推荐人"
+webhook = "Stripe/PayPal/微信支付/支付宝/银行转账/数字货币→Payment Agent→Finance Agent"
+
+[agent_clusters]
+franchise = ["Franchise Agent","Partner Agent","Country Agent","City Agent"]
+operations = ["Store Agent","Device Agent","Community Agent","Growth Agent"]
+training = ["Training Agent","Certification Agent","Assessment Agent"]
+finance = ["Finance Agent","Commission Agent","Payment Agent"]
+
+[skills]
+franchise = ["franchise-recruit.skill","partner-evaluation.skill","city-expansion.skill"]
+training = ["training.skill","exam.skill","certification.skill"]
+operations = ["location-analysis.skill","device-management.skill","store-growth.skill"]
+finance = ["commission-calc.skill","profit-analysis.skill","auto-settlement.skill"]

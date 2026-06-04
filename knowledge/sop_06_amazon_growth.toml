@@ -1,0 +1,210 @@
+# SOP 06: Amazon品牌增长SOP
+[sop]
+id = "sop_06"
+name = "Amazon品牌增长SOP"
+version = "1.0"
+
+[[taskflows]]
+id = "az_01"
+name = "市场机会发现"
+trigger = "每日自动运行"
+agents = ["Market Research Agent","Category Agent","Trend Agent","Competitor Agent"]
+sources = ["Amazon","Google Trends","TikTok","Reddit","行业报告"]
+output = "市场规模/增长率/竞争强度/利润空间/蓝海机会"
+
+[[taskflows]]
+id = "az_02"
+name = "关键词机会分析"
+agents = ["Keyword Research Agent","Search Volume Agent","Ranking Agent"]
+output = "核心关键词/长尾关键词/高转化关键词/竞品关键词"
+skills = ["amazon-keyword-research.skill","keyword-gap-analysis.skill"]
+
+[[taskflows]]
+id = "az_03"
+name = "Listing生成系统"
+trigger = "新品创建"
+agents = ["Listing Agent","SEO Agent","Copywriting Agent","Localization Agent"]
+output = "标题/五点描述/产品描述/Search Terms/A+ Content文案"
+markets = ["美国站","欧洲站","日本站","中东站"]
+
+[[taskflows]]
+id = "az_04"
+name = "Listing优化系统"
+trigger = "流量下降/转化下降"
+agents = ["Listing Audit Agent","Conversion Agent"]
+output = "标题优化建议/关键词补充/图片优化建议/A+优化建议"
+
+[[taskflows]]
+id = "az_05"
+name = "关键词排名监控"
+trigger = "每日"
+agents = ["Keyword Ranking Agent"]
+output = "排名变化/流量变化/竞争分析"
+
+[[taskflows]]
+id = "az_06"
+name = "SEO优化"
+agents = ["SEO Agent","Keyword Agent"]
+auto = ["关键词更新","后台搜索词更新","内容优化"]
+
+[[taskflows]]
+id = "az_07"
+name = "广告结构创建"
+trigger = "新品上线"
+agents = ["PPC Agent","Campaign Agent"]
+auto = ["Auto Campaign","Manual Campaign","Exact/Phrase/Broad/Product Targeting"]
+
+[[taskflows]]
+id = "az_08"
+name = "关键词优化"
+trigger = "广告数据更新"
+agents = ["Keyword Optimization Agent","Bid Agent"]
+auto = ["提价","降价","否定关键词","预算调整"]
+
+[[taskflows]]
+id = "az_09"
+name = "广告ROI优化"
+agents = ["ROAS Agent","Finance Agent"]
+kpi = ["ACOS","TACOS","ROAS","CTR","CVR"]
+
+[[taskflows]]
+id = "az_10"
+name = "广告异常预警"
+agents = ["Risk Agent"]
+monitor = ["花费异常","转化异常","竞争异常"]
+
+[[taskflows]]
+id = "az_11"
+name = "评价监控"
+trigger = "收到Review"
+agents = ["Review Agent","Sentiment Agent"]
+output = "好评/中评/差评"
+
+[[taskflows]]
+id = "az_12"
+name = "差评处理"
+agents = ["Risk Agent","Customer Success Agent"]
+auto = ["问题分类","客服跟进","产品反馈"]
+
+[[taskflows]]
+id = "az_13"
+name = "Review洞察"
+agents = ["Review Intelligence Agent"]
+analysis = ["痛点","需求","改进建议","竞品机会"]
+
+[[taskflows]]
+id = "az_14"
+name = "品牌旗舰店建设"
+agents = ["Brand Store Agent","UX Agent","Content Agent"]
+output = "首页/分类页/活动页/品牌故事"
+
+[[taskflows]]
+id = "az_15"
+name = "Store优化"
+trigger = "转化下降"
+agents = ["Conversion Agent","Analytics Agent"]
+output = "热图分析/点击分析/转化优化建议"
+
+[[taskflows]]
+id = "az_16"
+name = "订阅增长"
+agents = ["Retention Agent","Subscription Agent"]
+auto = "识别高复购产品/适合订阅产品"
+
+[[taskflows]]
+id = "az_17"
+name = "订阅营销"
+agents = ["Email Agent","Promotion Agent"]
+auto = ["续订提醒","优惠券","新品推荐"]
+
+[[taskflows]]
+id = "az_18"
+name = "DSP受众创建"
+agents = ["Audience Agent","DSP Agent"]
+types = ["浏览用户","加购用户","购买用户","竞品用户"]
+
+[[taskflows]]
+id = "az_19"
+name = "DSP广告投放"
+agents = ["DSP Agent","Creative Agent"]
+output = "展示广告/视频广告/重定向广告"
+
+[[taskflows]]
+id = "az_20"
+name = "TikTok引流"
+agents = ["TikTok Traffic Agent"]
+output = "短视频/达人合作/直播引流"
+
+[[taskflows]]
+id = "az_21"
+name = "YouTube引流"
+agents = ["YouTube Agent","Influencer Agent"]
+output = "测评视频/开箱视频/教程视频"
+
+[[taskflows]]
+id = "az_22"
+name = "Google SEO引流"
+agents = ["SEO Blog Agent"]
+output = "博客/测评/教程"
+
+[[taskflows]]
+id = "az_23"
+name = "Reddit增长"
+agents = ["Community Agent"]
+output = "社区运营/用户互动/口碑传播"
+
+[[taskflows]]
+id = "az_24"
+name = "Affiliate招募"
+agents = ["Affiliate Agent","Partner Agent"]
+targets = ["博主","媒体","KOL","网站站长"]
+
+[[taskflows]]
+id = "az_25"
+name = "联盟管理"
+agents = ["Affiliate Manager Agent"]
+manage = ["佣金","推广链接","转化统计","结算"]
+
+[[taskflows]]
+id = "az_26"
+name = "品牌扩张"
+agents = ["Brand Expansion Agent","Market Agent"]
+analysis = ["新品类","新市场","新品牌"]
+
+[[taskflows]]
+id = "az_27"
+name = "品牌内容矩阵"
+agents = ["Content Director Agent"]
+platforms = ["Amazon Posts","TikTok","Instagram","Facebook","YouTube","LinkedIn"]
+
+[[taskflows]]
+id = "az_28"
+name = "订单管理"
+trigger = "订单创建"
+agents = ["Order Agent","Inventory Agent","Logistics Agent"]
+
+[[taskflows]]
+id = "az_29"
+name = "库存预警"
+trigger = "库存低于阈值"
+agents = ["Inventory Agent","Forecast Agent","Procurement Agent"]
+
+[[taskflows]]
+id = "az_30"
+name = "补货预测"
+agents = ["Demand Forecast Agent"]
+output = "30天/60天/90天预测"
+
+[[taskflows]]
+id = "az_31"
+name = "Amazon经营日报"
+trigger = "每日运行"
+agents = ["Sales Agent","PPC Agent","Review Agent","Inventory Agent","Finance Agent"]
+output = "销售额/利润/广告ROI/库存风险/关键词排名/Review情况/增长建议"
+
+[skills]
+listing = ["listing-generate.skill","listing-optimize.skill","a-plus-content.skill"]
+seo = ["keyword-research.skill","ranking-analysis.skill","seo-optimize.skill"]
+ppc = ["campaign-create.skill","bid-optimization.skill","negative-keyword.skill"]
+review = ["review-analysis.skill","sentiment-analysis.skill"]
+dsp = ["audience-build.skill","dsp-campaign.skill"]

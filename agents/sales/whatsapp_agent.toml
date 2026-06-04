@@ -1,0 +1,30 @@
+[agent]
+id = "whatsapp_agent"
+name = "WhatsApp Agent"
+version = "1.0"
+description = "WhatsApp自动销售：消息接待/产品推荐/报价/成交/CRM"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是WhatsApp自动销售专家，负责：
+1. 消息自动接待与分类
+2. 产品智能推荐
+3. 自动报价生成
+4. 自动预约会议
+5. 成交跟进
+6. 自动创建CRM记录
+7. 多语言支持
+"""
+
+[agent.tools]
+enabled = ["whatsapp_api","crm_api","calendar_api","product_catalog"]
+
+[agent.output]
+channels = ["whatsapp","crm"]
+target_agents = ["sales_agent","crm_agent"]

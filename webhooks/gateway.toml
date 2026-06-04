@@ -574,3 +574,195 @@ agent = "ceo_agent"
 action = "generate_daily_report"
 taskflow = "ceo_dashboard"
 payload = { date = "$.date", departments = ["sales", "finance", "marketing", "operations", "franchise"] }
+
+# ============================================================
+# 十二、Google Ads Webhook（51-53）
+# ============================================================
+[[gateway.routes]]
+id = "wh_google_ads_conversion"
+name = "Google Ads转化追踪"
+description = "Google Ads转化事件 → Ads Agent 分析"
+event = "conversion"
+source = "google_ads"
+method = "POST"
+path = "/hooks/google-ads/conversion"
+agent = "sem_agent"
+action = "track_conversion"
+payload = { campaign_id = "$.campaign_id", conversion_type = "$.type", value = "$.value" }
+
+[[gateway.routes]]
+id = "wh_google_merchant_feed"
+name = "Google Merchant Feed更新"
+description = "Shopify产品更新 → Google Merchant Center 同步"
+event = "product_updated"
+source = "shopify"
+method = "POST"
+path = "/hooks/google-merchant/feed"
+agent = "sem_agent"
+action = "update_merchant_feed"
+payload = { product_id = "$.id", title = "$.title", price = "$.price", availability = "$.availability" }
+
+[[gateway.routes]]
+id = "wh_meta_lead"
+name = "Meta Leads接入"
+description = "Facebook Lead Form提交 → Lead Agent"
+event = "lead_form_submitted"
+source = "meta"
+method = "POST"
+path = "/hooks/meta/lead"
+agent = "lead_agent"
+action = "process_meta_lead"
+payload = { lead_id = "$.id", name = "$.name", email = "$.email", phone = "$.phone" }
+
+# ============================================================
+# 十三、DHL/UPS/FedEx物流Webhook（54-56）
+# ============================================================
+[[gateway.routes]]
+id = "wh_dhl_tracking"
+name = "DHL物流追踪更新"
+description = "DHL状态更新 → DHL Agent → Customer Agent"
+event = "tracking_updated"
+source = "dhl"
+method = "POST"
+path = "/hooks/dhl/tracking"
+agent = "dhl_agent"
+action = "update_tracking"
+payload = { tracking = "$.tracking_number", status = "$.status", location = "$.location" }
+
+[[gateway.routes]]
+id = "wh_ups_tracking"
+name = "UPS物流追踪更新"
+description = "UPS状态更新 → UPS Agent"
+event = "tracking_updated"
+source = "ups"
+method = "POST"
+path = "/hooks/ups/tracking"
+agent = "ups_agent"
+action = "update_tracking"
+payload = { tracking = "$.tracking_number", status = "$.status" }
+
+[[gateway.routes]]
+id = "wh_fedex_tracking"
+name = "FedEx物流追踪更新"
+description = "FedEx状态更新 → FedEx Agent"
+event = "tracking_updated"
+source = "fedex"
+method = "POST"
+path = "/hooks/fedex/tracking"
+agent = "fedex_agent"
+action = "update_tracking"
+payload = { tracking = "$.tracking_number", status = "$.status" }
+
+# ============================================================
+# 十四、Google Analytics Webhook（57）
+# ============================================================
+[[gateway.routes]]
+id = "wh_google_analytics"
+name = "Google Analytics数据同步"
+description = "GA4实时数据 → Analytics Agent"
+event = "realtime_data"
+source = "google_analytics"
+method = "POST"
+path = "/hooks/analytics/realtime"
+agent = "analytics_agent"
+action = "sync_realtime_data"
+payload = { visitors = "$.active_users", conversions = "$.conversions", revenue = "$.revenue" }
+
+# ============================================================
+# 十五、银行到账Webhook（58）
+# ============================================================
+[[gateway.routes]]
+id = "wh_bank_transfer"
+name = "银行到账通知"
+description = "银行转账到账 → Payment Agent → Finance Agent"
+event = "transfer_received"
+source = "bank"
+method = "POST"
+path = "/hooks/payment/bank"
+agent = "payment_agent"
+action = "process_bank_transfer"
+payload = { transaction_id = "$.id", amount = "$.amount", sender = "$.sender", reference = "$.reference" }
+
+# ============================================================
+# 十六、企业微信/飞书Webhook（59-60）
+# ============================================================
+[[gateway.routes]]
+id = "wh_wechat_work"
+name = "企业微信消息通知"
+description = "OpenClaw → 企业微信 推送日报/预警"
+event = "notification"
+source = "openclaw"
+method = "POST"
+path = "/hooks/notify/wechat-work"
+agent = "ceo_agent"
+action = "send_wechat_notification"
+payload = { message = "$.message", type = "$.type", recipients = "$.recipients" }
+
+[[gateway.routes]]
+id = "wh_feishu"
+name = "飞书消息通知"
+description = "OpenClaw → 飞书 推送日报/预警"
+event = "notification"
+source = "openclaw"
+method = "POST"
+path = "/hooks/notify/feishu"
+agent = "ceo_agent"
+action = "send_feishu_notification"
+payload = { message = "$.message", type = "$.type", recipients = "$.recipients" }
+
+# ============================================================
+# 十七、LinkedIn Webhook（61）
+# ============================================================
+[[gateway.routes]]
+id = "wh_linkedin_connection"
+name = "LinkedIn新连接"
+description = "LinkedIn新连接 → LinkedIn Agent → CRM Agent"
+event = "new_connection"
+source = "linkedin"
+method = "POST"
+path = "/hooks/linkedin/connection"
+agent = "linkedin_agent"
+action = "process_new_connection"
+payload = { profile_id = "$.id", name = "$.name", company = "$.company", title = "$.title" }
+
+# ============================================================
+# 十八、TikTok达人Webhook（62）
+# ============================================================
+[[gateway.routes]]
+id = "wh_tiktok_kol_application"
+name = "TikTok达人合作申请"
+description = "达人提交合作 → KOL Agent 审核"
+event = "kol_application"
+source = "tiktok"
+method = "POST"
+path = "/hooks/tiktok/kol-apply"
+agent = "kol_agent"
+action = "review_kol_application"
+payload = { creator_id = "$.id", followers = "$.followers", niche = "$.niche", gmv = "$.gmv" }
+
+# ============================================================
+# 十九、客户成功Webhook（63-64）
+# ============================================================
+[[gateway.routes]]
+id = "wh_nps_survey"
+name = "NPS满意度调查"
+description = "客户完成NPS → Satisfaction Agent 分析"
+event = "nps_submitted"
+source = "survey"
+method = "POST"
+path = "/hooks/customer/nps"
+agent = "customer_success_agent"
+action = "analyze_nps"
+payload = { customer_id = "$.customer_id", score = "$.score", feedback = "$.feedback" }
+
+[[gateway.routes]]
+id = "wh_churn_risk"
+name = "流失风险预警"
+description = "客户行为异常 → Churn Agent 预警"
+event = "churn_signal"
+source = "analytics"
+method = "POST"
+path = "/hooks/customer/churn-risk"
+agent = "churn_agent"
+action = "handle_churn_risk"
+payload = { customer_id = "$.customer_id", risk_score = "$.score", signals = "$.signals" }

@@ -1,0 +1,29 @@
+[agent]
+id = "dhl_agent"
+name = "DHL Agent"
+version = "1.0"
+description = "DHL物流管理：询价/下单/追踪/异常处理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是DHL物流管理专家，负责：
+1. DHL运单创建
+2. 物流轨迹追踪
+3. 送达时间预估
+4. 异常预警与处理
+5. 运费优化
+6. 关税文件准备
+"""
+
+[agent.tools]
+enabled = ["dhl_api","logistics_platform"]
+
+[agent.output]
+channels = ["logistics_system","anygen_workspace"]
+target_agents = ["logistics_agent","customer_success_agent"]

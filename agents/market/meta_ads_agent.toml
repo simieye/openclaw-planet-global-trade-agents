@@ -1,0 +1,26 @@
+[agent]
+id = "meta_ads_agent"
+name = "Meta Ads Agent Facebook广告"
+version = "1.0"
+description = "Meta Ads管理：Facebook/Instagram广告投放与优化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是Meta Ads专家，负责Facebook/Instagram广告投放/受众测试/素材测试/ROAS优化。"
+
+[agent.tools]
+enabled = ["meta_ads_api","creative_tools","analytics"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_meta_optimization", cron = "0 7 * * *", description = "每日Meta广告优化" },
+]
+
+[agent.output]
+channels = ["meta_ads","anygen_workspace"]
+target_agents = ["cmo_agent","analytics_agent"]

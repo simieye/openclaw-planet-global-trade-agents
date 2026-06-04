@@ -1,0 +1,325 @@
+# SOP 03: OpenClaw企业50个Webhook自动化工作流体系
+[sop]
+id = "sop_03"
+name = "OpenClaw企业50个Webhook自动化工作流体系"
+version = "1.0"
+
+# CRM工作流 (01-08)
+[[workflows]]
+id = "wf_01"
+name = "新线索自动评分"
+trigger = "CRM新增客户"
+flow = "Lead Discovery Agent → Lead Scoring Agent → CRM Agent"
+output = "A/B/C/D级客户"
+[[workflows]]
+id = "wf_02"
+name = "客户画像补全"
+trigger = "新客户录入"
+flow = "LinkedIn Agent → Company Research Agent → Lead Enrichment Agent"
+output = "公司规模/采购负责人/邮箱/LinkedIn/采购能力"
+[[workflows]]
+id = "wf_03"
+name = "自动开发信"
+trigger = "A级客户出现"
+flow = "Cold Email Agent → Email Agent"
+output = "首封开发信"
+[[workflows]]
+id = "wf_04"
+name = "客户回复分析"
+trigger = "收到邮件"
+flow = "Intent Analysis Agent"
+output = "高意向/中意向/低意向"
+[[workflows]]
+id = "wf_05"
+name = "自动会议预约"
+trigger = "高意向客户"
+flow = "Calendar Agent → Sales Agent"
+output = "会议安排"
+[[workflows]]
+id = "wf_06"
+name = "商机升级"
+trigger = "客户点击报价"
+flow = "Pipeline Agent"
+output = "商机升级"
+[[workflows]]
+id = "wf_07"
+name = "销售提醒"
+trigger = "7天未跟进"
+flow = "Sales Coach Agent"
+output = "提醒销售"
+[[workflows]]
+id = "wf_08"
+name = "丢单分析"
+trigger = "商机关闭"
+flow = "Loss Analysis Agent"
+output = "丢单原因报告"
+
+# 邮箱工作流 (09-14)
+[[workflows]]
+id = "wf_09"
+name = "询盘自动分析"
+trigger = "收到询盘邮件"
+flow = "Email Agent → Intent Agent → Proposal Agent"
+output = "自动分类"
+[[workflows]]
+id = "wf_10"
+name = "自动生成报价"
+trigger = "客户询价"
+flow = "Quotation Agent"
+output = "报价单PDF"
+[[workflows]]
+id = "wf_11"
+name = "自动跟进"
+trigger = "3天未回复"
+flow = "Follow-up Agent"
+output = "跟进邮件"
+[[workflows]]
+id = "wf_12"
+name = "邮件情绪分析"
+trigger = "收到邮件"
+flow = "Emotion Agent"
+output = "积极/中性/消极"
+[[workflows]]
+id = "wf_13"
+name = "自动FAQ回复"
+trigger = "标准问题"
+flow = "FAQ Agent"
+output = "自动回复"
+[[workflows]]
+id = "wf_14"
+name = "邮件归档"
+trigger = "邮件处理完成"
+flow = "CRM Agent"
+output = "自动写入CRM"
+
+# WhatsApp工作流 (15-20)
+[[workflows]]
+id = "wf_15"
+name = "消息自动接待"
+trigger = "收到WhatsApp消息"
+flow = "Customer Support Agent"
+output = "自动接待"
+[[workflows]]
+id = "wf_16"
+name = "自动推荐产品"
+trigger = "产品咨询"
+flow = "Product Recommendation Agent"
+output = "产品推荐"
+[[workflows]]
+id = "wf_17"
+name = "自动报价"
+trigger = "询价"
+flow = "Quotation Agent"
+output = "报价"
+[[workflows]]
+id = "wf_18"
+name = "自动预约会议"
+trigger = "客户请求"
+flow = "Calendar Agent"
+output = "会议预约"
+[[workflows]]
+id = "wf_19"
+name = "自动成交跟进"
+trigger = "报价已发送"
+flow = "Closing Agent"
+output = "成交跟进"
+[[workflows]]
+id = "wf_20"
+name = "自动创建CRM记录"
+trigger = "新对话"
+flow = "CRM Agent"
+output = "CRM记录"
+
+# Shopify工作流 (21-26)
+[[workflows]]
+id = "wf_21"
+name = "新订单处理"
+trigger = "Shopify订单"
+flow = "Order Agent → Inventory Agent → Logistics Agent"
+output = "订单处理"
+[[workflows]]
+id = "wf_22"
+name = "弃购挽回"
+trigger = "购物车放弃"
+flow = "Email Marketing Agent"
+output = "挽回邮件"
+[[workflows]]
+id = "wf_23"
+name = "退款预警"
+trigger = "退款申请"
+flow = "Risk Agent"
+output = "风险预警"
+[[workflows]]
+id = "wf_24"
+name = "客户评价收集"
+trigger = "订单完成"
+flow = "Review Agent"
+output = "索评"
+[[workflows]]
+id = "wf_25"
+name = "VIP识别"
+trigger = "客户数据更新"
+flow = "LTV Agent"
+output = "VIP标记"
+[[workflows]]
+id = "wf_26"
+name = "复购推荐"
+trigger = "购买周期"
+flow = "Retention Agent"
+output = "复购推荐"
+
+# Amazon工作流 (27-32)
+[[workflows]]
+id = "wf_27"
+name = "新评论分析"
+trigger = "Review出现"
+flow = "Review Agent"
+output = "正面/负面/风险"
+[[workflows]]
+id = "wf_28"
+name = "差评预警"
+trigger = "差评"
+flow = "Risk Agent"
+output = "差评处理"
+[[workflows]]
+id = "wf_29"
+name = "Listing优化"
+trigger = "转化下降"
+flow = "Amazon Listing Agent"
+output = "Listing优化"
+[[workflows]]
+id = "wf_30"
+name = "广告优化"
+trigger = "ROI下降"
+flow = "Amazon PPC Agent"
+output = "广告优化"
+[[workflows]]
+id = "wf_31"
+name = "库存预警"
+trigger = "库存低"
+flow = "Inventory Agent"
+output = "补货建议"
+[[workflows]]
+id = "wf_32"
+name = "价格优化"
+trigger = "竞品调价"
+flow = "Pricing Agent"
+output = "价格调整"
+
+# TikTok Shop工作流 (33-38)
+[[workflows]]
+id = "wf_33"
+name = "订单自动处理"
+trigger = "TikTok订单"
+flow = "TikTok Shop Agent"
+output = "订单处理"
+[[workflows]]
+id = "wf_34"
+name = "热视频发现"
+trigger = "视频爆火"
+flow = "Trend Agent"
+output = "趋势分析"
+[[workflows]]
+id = "wf_35"
+name = "达人筛选"
+trigger = "达人招募"
+flow = "KOL Agent"
+output = "达人匹配"
+[[workflows]]
+id = "wf_36"
+name = "短视频生成"
+trigger = "选题确定"
+flow = "Content Agent → HeyGen Agent"
+output = "视频生成"
+[[workflows]]
+id = "wf_37"
+name = "直播脚本生成"
+trigger = "直播计划"
+flow = "TikTok Live Agent"
+output = "直播脚本"
+[[workflows]]
+id = "wf_38"
+name = "GMV日报"
+trigger = "每日"
+flow = "Analytics Agent"
+output = "GMV日报"
+
+# ERP工作流 (39-43)
+[[workflows]]
+id = "wf_39"
+name = "库存同步"
+trigger = "库存变化"
+flow = "Inventory Agent"
+output = "库存同步"
+[[workflows]]
+id = "wf_40"
+name = "生产排程"
+trigger = "订单确认"
+flow = "Production Agent"
+output = "生产计划"
+[[workflows]]
+id = "wf_41"
+name = "采购申请"
+trigger = "库存不足"
+flow = "Procurement Agent"
+output = "采购单"
+[[workflows]]
+id = "wf_42"
+name = "质量检测"
+trigger = "生产完成"
+flow = "Quality Agent"
+output = "质检报告"
+[[workflows]]
+id = "wf_43"
+name = "发货同步"
+trigger = "出货"
+flow = "Logistics Agent"
+output = "发货同步"
+
+# 支付工作流 (44-46)
+[[workflows]]
+id = "wf_44"
+name = "Stripe到账通知"
+trigger = "付款成功"
+flow = "Payment Agent → Order Agent"
+output = "到账处理"
+[[workflows]]
+id = "wf_45"
+name = "PayPal到账"
+trigger = "PayPal付款"
+flow = "Payment Agent"
+output = "到账处理"
+[[workflows]]
+id = "wf_46"
+name = "异常支付"
+trigger = "异常交易"
+flow = "Fraud Detection Agent"
+output = "欺诈预警"
+
+# 物流工作流 (47-49)
+[[workflows]]
+id = "wf_47"
+name = "发货通知"
+trigger = "发货"
+flow = "Logistics Agent → Customer Agent"
+output = "发货通知"
+[[workflows]]
+id = "wf_48"
+name = "物流异常"
+trigger = "物流异常"
+flow = "Risk Agent"
+output = "异常预警"
+[[workflows]]
+id = "wf_49"
+name = "签收确认"
+trigger = "签收"
+flow = "Customer Success Agent"
+output = "签收确认"
+
+# CEO驾驶舱工作流 (50)
+[[workflows]]
+id = "wf_50"
+name = "企业经营日报"
+trigger = "每天08:00"
+flow = "CRM Agent → Sales Agent → Finance Agent → Marketing Agent → Operations Agent → CEO Agent"
+output = "经营日报/销售日报/利润日报/风险预警/增长建议"

@@ -1,0 +1,21 @@
+[agent]
+id = "pr_agent"
+name = "PR Agent 媒体公关"
+version = "1.0"
+description = "媒体公关：新闻稿/媒体关系/危机公关/品牌声誉"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是媒体公关专家，负责新闻稿撰写/媒体关系维护/危机公关/品牌声誉管理/行业媒体监测。"
+
+[agent.tools]
+enabled = ["web_search","media_monitoring","anygen_doc_gen"]
+
+[agent.output]
+channels = ["anygen_workspace","social_media"]
+target_agents = ["cmo_agent","brand_agent"]

@@ -1,0 +1,21 @@
+[agent]
+id = "budget_agent"
+name = "Budget Agent 预算管理"
+version = "1.0"
+description = "预算管理：年度预算/部门预算/预算执行/偏差分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是预算管理专家，负责年度预算编制/部门预算审核/预算执行监控/偏差分析与预警。"
+
+[agent.tools]
+enabled = ["erp_api","finance_system"]
+
+[agent.output]
+channels = ["erp","anygen_ceo_dashboard"]
+target_agents = ["cfo_agent","finance_agent"]

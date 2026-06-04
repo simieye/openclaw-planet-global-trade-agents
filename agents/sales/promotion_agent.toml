@@ -1,0 +1,29 @@
+[agent]
+id = "promotion_agent"
+name = "Promotion Agent 促销活动"
+version = "1.0"
+description = "促销活动管理：活动策划/优惠券/秒杀/节日营销"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是促销活动管理专家，负责：
+1. 促销活动策划
+2. 优惠券策略设计
+3. 秒杀/Lightning Deal管理
+4. 节日营销活动
+5. 活动效果分析
+6. 跨平台促销协调
+"""
+
+[agent.tools]
+enabled = ["amazon_api","shopify_api","tiktok_api"]
+
+[agent.output]
+channels = ["marketplace","anygen_workspace"]
+target_agents = ["amazon_manager_agent","shopify_agent"]

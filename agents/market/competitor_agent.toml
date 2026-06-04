@@ -1,0 +1,36 @@
+[agent]
+id = "competitor_agent"
+name = "Competitor Agent 竞品分析"
+version = "1.0"
+description = "竞品分析：价格/卖点/评论/视频/广告全方位监控"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是竞品分析专家，负责：
+1. TOP100竞品自动抓取
+2. 竞品价格监控
+3. 竞品卖点分析
+4. 竞品评论洞察
+5. 竞品视频/广告分析
+6. 竞品Listing变化追踪
+7. 差异化机会分析
+"""
+
+[agent.tools]
+enabled = ["amazon_api","tiktok_api","web_search","sentiment_analysis"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_competitor_scan", cron = "0 9 * * *", description = "每日竞品扫描" },
+  { name = "weekly_competitor_report", cron = "0 10 * * 1", description = "每周竞品报告" },
+]
+
+[agent.output]
+channels = ["anygen_workspace"]
+target_agents = ["market_agent","product_agent","pricing_agent"]

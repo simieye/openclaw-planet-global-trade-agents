@@ -1,0 +1,21 @@
+[agent]
+id = "cost_control_agent"
+name = "Cost Control Agent 成本控制"
+version = "1.0"
+description = "成本控制：成本分析/降本建议/费用审核/ROI优化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是成本控制专家，负责成本结构分析/降本建议/费用审核/广告ROI优化/供应链成本优化。"
+
+[agent.tools]
+enabled = ["erp_api","finance_system","ads_api"]
+
+[agent.output]
+channels = ["erp","anygen_ceo_dashboard"]
+target_agents = ["cfo_agent","finance_agent"]

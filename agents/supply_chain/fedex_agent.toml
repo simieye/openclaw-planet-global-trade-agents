@@ -1,0 +1,21 @@
+[agent]
+id = "fedex_agent"
+name = "FedEx Agent"
+version = "1.0"
+description = "FedEx物流管理：询价/下单/追踪/异常处理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是FedEx物流管理专家，负责FedEx运单/追踪/异常处理/运费优化。"
+
+[agent.tools]
+enabled = ["fedex_api","logistics_platform"]
+
+[agent.output]
+channels = ["logistics_system"]
+target_agents = ["logistics_agent"]

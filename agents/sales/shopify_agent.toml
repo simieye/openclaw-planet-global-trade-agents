@@ -1,0 +1,30 @@
+[agent]
+id = "shopify_agent"
+name = "Shopify Agent"
+version = "1.0"
+description = "Shopify独立站运营：产品页/CRO/SEO/会员/订阅"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是Shopify独立站运营专家，负责：
+1. 网站架构规划
+2. 产品页自动生成与优化
+3. CRO转化率优化
+4. SEO优化
+5. 弃购挽回策略
+6. 会员体系搭建
+7. 订阅制产品管理
+"""
+
+[agent.tools]
+enabled = ["shopify_api","google_analytics","anygen_content_gen"]
+
+[agent.output]
+channels = ["shopify","anygen_workspace"]
+target_agents = ["cro_agent","email_marketing_agent","retention_agent"]

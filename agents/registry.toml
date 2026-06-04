@@ -651,3 +651,288 @@ description = "7 层工具矩阵：OpenClaw/AnyGen/Data/Growth/Commerce/Web3/Civ
 config = "agents/civilization_os/tool_system/tool_system_agent.toml"
 priority = 0
 triggers = ["tool_request", "integration_setup", "system_orchestration"]
+
+# ============================================================
+# 十一、Amazon运营层（4个Agent）
+# ============================================================
+[[agents]]
+id = "amazon_manager_agent"
+name = "Amazon Manager Agent"
+layer = "ecommerce"
+description = "Amazon总控：Listing/PPC/Review/Brand Store/运营分析"
+config = "agents/sales/amazon_manager_agent.toml"
+priority = 4
+triggers = ["daily_amazon_report", "weekly_ppc_optimization"]
+
+[[agents]]
+id = "amazon_listing_agent"
+name = "Amazon Listing Agent"
+layer = "ecommerce"
+description = "Amazon Listing优化：标题/五点描述/A+ Content/SEO"
+config = "agents/sales/amazon_listing_agent.toml"
+priority = 4
+triggers = ["listing_update_request", "conversion_drop"]
+
+[[agents]]
+id = "amazon_ppc_agent"
+name = "Amazon PPC Agent"
+layer = "ecommerce"
+description = "Amazon广告优化：Auto/Manual/Product Targeting/ROI"
+config = "agents/sales/amazon_ppc_agent.toml"
+priority = 4
+triggers = ["daily_bid_optimization", "acos_alert"]
+
+[[agents]]
+id = "amazon_review_agent"
+name = "Amazon Review Agent"
+layer = "ecommerce"
+description = "Amazon Review运营：评价监控/差评处理/索评/洞察分析"
+config = "agents/sales/amazon_review_agent.toml"
+priority = 4
+triggers = ["review_posted", "negative_review_alert"]
+
+# ============================================================
+# 十二、独立站与转化层（5个Agent）
+# ============================================================
+[[agents]]
+id = "shopify_agent"
+name = "Shopify Agent"
+layer = "ecommerce"
+description = "Shopify独立站运营：产品页/CRO/SEO/会员/订阅"
+config = "agents/sales/shopify_agent.toml"
+priority = 4
+triggers = ["shopify_order", "site_health_check"]
+
+[[agents]]
+id = "cro_agent"
+name = "CRO Agent 转化率优化"
+layer = "ecommerce"
+description = "转化率优化：跳出率/停留时间/加购率/转化率分析与优化"
+config = "agents/sales/cro_agent.toml"
+priority = 4
+triggers = ["conversion_drop", "ab_test_complete"]
+
+[[agents]]
+id = "email_marketing_agent"
+name = "Email Marketing Agent"
+layer = "sales"
+description = "邮件营销自动化：欢迎流程/弃购挽回/复购/会员/Newsletter"
+config = "agents/sales/email_marketing_agent.toml"
+priority = 4
+triggers = ["customer_subscribed", "cart_abandoned"]
+
+[[agents]]
+id = "pricing_agent"
+name = "Pricing Agent 价格优化"
+layer = "ecommerce"
+description = "价格优化：动态定价/竞品比价/利润分析/促销策略"
+config = "agents/sales/pricing_agent.toml"
+priority = 4
+triggers = ["competitor_price_change", "profit_margin_alert"]
+
+[[agents]]
+id = "promotion_agent"
+name = "Promotion Agent 促销活动"
+layer = "ecommerce"
+description = "促销活动管理：活动策划/优惠券/秒杀/节日营销"
+config = "agents/sales/promotion_agent.toml"
+priority = 4
+triggers = ["holiday_coming", "sales_target_unmet"]
+
+# ============================================================
+# 十三、销售开发层（4个Agent）
+# ============================================================
+[[agents]]
+id = "cold_email_agent"
+name = "Cold Email Agent 开发信"
+layer = "sales"
+description = "开发信系统：首封/跟进/案例/报价邮件自动生成与发送"
+config = "agents/sales/cold_email_agent.toml"
+priority = 5
+triggers = ["lead_scored_A", "follow_up_due"]
+
+[[agents]]
+id = "linkedin_agent"
+name = "LinkedIn Agent"
+layer = "sales"
+description = "LinkedIn客户开发：搜索/触达/InMail/连接/内容发布"
+config = "agents/sales/linkedin_agent.toml"
+priority = 5
+triggers = ["lead_mining_start", "profile_view"]
+
+[[agents]]
+id = "whatsapp_agent"
+name = "WhatsApp Agent"
+layer = "sales"
+description = "WhatsApp自动销售：消息接待/产品推荐/报价/成交/CRM"
+config = "agents/sales/whatsapp_agent.toml"
+priority = 5
+triggers = ["whatsapp_message_received", "product_inquiry"]
+
+[[agents]]
+id = "channel_agent"
+name = "Channel Agent 渠道开发"
+layer = "sales"
+description = "渠道开发：国家代理/经销商/零售商/分销网络"
+config = "agents/sales/channel_agent.toml"
+priority = 5
+triggers = ["channel_search", "distributor_lead"]
+
+# ============================================================
+# 十四、市场与广告层（5个Agent）
+# ============================================================
+[[agents]]
+id = "competitor_agent"
+name = "Competitor Agent 竞品分析"
+layer = "market"
+description = "竞品分析：价格/卖点/评论/视频/广告全方位监控"
+config = "agents/market/competitor_agent.toml"
+priority = 3
+triggers = ["daily_competitor_scan", "market_shift"]
+
+[[agents]]
+id = "sem_agent"
+name = "SEM Agent Google广告"
+layer = "market"
+description = "Google Ads管理：Search/Shopping/PMax/Display/YouTube"
+config = "agents/market/sem_agent.toml"
+priority = 4
+triggers = ["google_ads_campaign", "roi_drop"]
+
+[[agents]]
+id = "meta_ads_agent"
+name = "Meta Ads Agent Facebook广告"
+layer = "market"
+description = "Meta Ads管理：Facebook/Instagram广告投放与优化"
+config = "agents/market/meta_ads_agent.toml"
+priority = 4
+triggers = ["meta_campaign_launch", "roi_drop"]
+
+[[agents]]
+id = "tiktok_ads_agent"
+name = "TikTok Ads Agent"
+layer = "market"
+description = "TikTok广告投放：Spark Ads/In-Feed/TopView/Branded Effect"
+config = "agents/market/tiktok_ads_agent.toml"
+priority = 4
+triggers = ["tiktok_campaign_launch", "viral_detected"]
+
+[[agents]]
+id = "pr_agent"
+name = "PR Agent 媒体公关"
+layer = "market"
+description = "媒体公关：新闻稿/媒体关系/危机公关/品牌声誉"
+config = "agents/market/pr_agent.toml"
+priority = 3
+triggers = ["press_release_needed", "crisis_alert"]
+
+# ============================================================
+# 十五、内容与设计层（2个Agent）
+# ============================================================
+[[agents]]
+id = "localization_agent"
+name = "Localization Agent 多语言本地化"
+layer = "content"
+description = "多语言本地化：英/西/法/德/阿/日/韩/葡/俄/中"
+config = "agents/content/localization_agent.toml"
+priority = 3
+triggers = ["translation_request", "new_market_entry"]
+
+[[agents]]
+id = "graphic_design_agent"
+name = "Graphic Design Agent 海报设计"
+layer = "content"
+description = "海报设计：Banner/社交媒体图片/广告素材/品牌视觉"
+config = "agents/content/graphic_design_agent.toml"
+priority = 3
+triggers = ["design_request", "campaign_launch"]
+
+# ============================================================
+# 十六、供应链层（4个Agent）
+# ============================================================
+[[agents]]
+id = "demand_forecast_agent"
+name = "Demand Forecast Agent 需求预测"
+layer = "supply_chain"
+description = "需求预测：30/60/90天销量预测/补货建议/季节分析"
+config = "agents/supply_chain/demand_forecast_agent.toml"
+priority = 5
+triggers = ["inventory_update", "sales_trend_change"]
+
+[[agents]]
+id = "supplier_agent"
+name = "Supplier Agent 供应商管理"
+layer = "supply_chain"
+description = "供应商管理：评估/询价/比价/合同/绩效"
+config = "agents/supply_chain/supplier_agent.toml"
+priority = 5
+triggers = ["supplier_search", "quality_issue"]
+
+[[agents]]
+id = "dhl_agent"
+name = "DHL Agent"
+layer = "supply_chain"
+description = "DHL物流管理：询价/下单/追踪/异常处理"
+config = "agents/supply_chain/dhl_agent.toml"
+priority = 5
+triggers = ["shipment_request", "delivery_exception"]
+
+[[agents]]
+id = "ups_agent"
+name = "UPS Agent"
+layer = "supply_chain"
+description = "UPS物流管理：询价/下单/追踪/异常处理"
+config = "agents/supply_chain/ups_agent.toml"
+priority = 5
+triggers = ["shipment_request", "delivery_exception"]
+
+[[agents]]
+id = "fedex_agent"
+name = "FedEx Agent"
+layer = "supply_chain"
+description = "FedEx物流管理：询价/下单/追踪/异常处理"
+config = "agents/supply_chain/fedex_agent.toml"
+priority = 5
+triggers = ["shipment_request", "delivery_exception"]
+
+# ============================================================
+# 十七、财务层（3个Agent）
+# ============================================================
+[[agents]]
+id = "budget_agent"
+name = "Budget Agent 预算管理"
+layer = "finance"
+description = "预算管理：年度预算/部门预算/预算执行/偏差分析"
+config = "agents/finance/budget_agent.toml"
+priority = 6
+triggers = ["monthly_budget_review", "budget_alert"]
+
+[[agents]]
+id = "tax_agent"
+name = "Tax Agent 税务管理"
+layer = "finance"
+description = "税务管理：各国税务合规/增值税/关税/转让定价"
+config = "agents/finance/tax_agent.toml"
+priority = 6
+triggers = ["tax_filing_due", "cross_border_transaction"]
+
+[[agents]]
+id = "cost_control_agent"
+name = "Cost Control Agent 成本控制"
+layer = "finance"
+description = "成本控制：成本分析/降本建议/费用审核/ROI优化"
+config = "agents/finance/cost_control_agent.toml"
+priority = 6
+triggers = ["cost_alert", "monthly_review"]
+
+# ============================================================
+# 十八、运营分析层（1个Agent）
+# ============================================================
+[[agents]]
+id = "analytics_agent"
+name = "Analytics Agent 运营分析"
+layer = "operations"
+description = "运营分析：GMV/流量/转化/利润/ROI/增长建议"
+config = "agents/sales/analytics_agent.toml"
+priority = 3
+triggers = ["daily_analytics_report", "weekly_growth_review"]

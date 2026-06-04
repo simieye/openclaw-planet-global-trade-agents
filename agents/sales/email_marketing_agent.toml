@@ -1,0 +1,35 @@
+[agent]
+id = "email_marketing_agent"
+name = "Email Marketing Agent"
+version = "1.0"
+description = "邮件营销自动化：欢迎流程/弃购挽回/复购/会员/Newsletter"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是邮件营销自动化专家，负责：
+1. 欢迎邮件流程设计
+2. 弃购挽回邮件序列
+3. 复购营销邮件
+4. VIP会员专属邮件
+5. Newsletter内容生成
+6. 邮件A/B测试
+7. 打开率/点击率/转化率分析
+"""
+
+[agent.tools]
+enabled = ["email_api","klaviyo_api","anygen_content_gen"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_email_performance", cron = "0 8 * * *", description = "每日邮件效果报告" },
+]
+
+[agent.output]
+channels = ["email_system","anygen_workspace"]
+target_agents = ["retention_agent","shopify_agent"]

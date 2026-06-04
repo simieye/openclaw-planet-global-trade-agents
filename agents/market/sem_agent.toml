@@ -1,0 +1,26 @@
+[agent]
+id = "sem_agent"
+name = "SEM Agent Google广告"
+version = "1.0"
+description = "Google Ads管理：Search/Shopping/PMax/Display/YouTube"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是Google Ads专家，负责搜索广告/Shopping广告/PMax/Display/YouTube广告管理与优化。"
+
+[agent.tools]
+enabled = ["google_ads_api","keyword_planner","analytics"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_ads_optimization", cron = "0 6 * * *", description = "每日广告优化" },
+]
+
+[agent.output]
+channels = ["google_ads","anygen_workspace"]
+target_agents = ["cmo_agent","analytics_agent"]

@@ -1,0 +1,133 @@
+# SOP 09: 龙虾星球联盟生态运营SOP
+[sop]
+id = "sop_09"
+name = "龙虾星球联盟生态运营SOP"
+version = "1.0"
+
+[[taskflows]]
+id = "lp_01"
+name = "成员招募体系"
+targets = ["企业家","工厂老板","跨境卖家","服务商","投资人","开发者","AI创业者","实体产业经营者"]
+agents = ["Community Growth Agent","Member Agent","Referral Agent"]
+channels = ["TikTok","LinkedIn","微信","公众号","小红书","Facebook","YouTube","官网","线下活动"]
+kpi = "每日新增成员/新增企业/新增合作伙伴"
+
+[[taskflows]]
+id = "lp_02"
+name = "成员画像体系"
+agents = ["Member Profile Agent","CRM Agent"]
+tags = ["行业","城市","国家","资源","项目","投资能力","渠道能力","技术能力"]
+output = "生态人才库/生态企业库/生态资源库"
+
+[[taskflows]]
+id = "lp_03"
+name = "成员匹配系统"
+agents = ["Matching Agent","Resource Agent"]
+match = ["项目→资金","项目→渠道","项目→客户","项目→供应链","项目→技术团队"]
+output = "合作推荐/资源推荐/项目推荐"
+
+[[taskflows]]
+id = "lp_04"
+name = "城市节点建设"
+types = ["城市运营中心","城市共创中心","产业服务中心","招商中心","AI服务中心"]
+agents = ["City Expansion Agent","City Manager Agent"]
+flow = "城市申请→资格审核→签约授权→培训认证→节点上线→运营考核"
+
+[[taskflows]]
+id = "lp_05"
+name = "城市运营体系"
+agents = ["City Growth Agent","Community Agent"]
+kpi = ["新增企业","新增会员","新增项目","新增收入","新增合作"]
+output = "城市运营日报/城市排行榜/城市增长报告"
+
+[[taskflows]]
+id = "lp_06"
+name = "全球合伙人招募"
+levels = ["普通合伙人","高级合伙人","城市合伙人","产业合伙人","国家合伙人","全球合伙人"]
+agents = ["Partner Agent","Partner Evaluation Agent"]
+dimensions = ["资源能力","运营能力","项目能力","影响力","投资能力"]
+
+[[taskflows]]
+id = "lp_07"
+name = "合伙人成长体系"
+agents = ["Training Agent","Mentor Agent"]
+modules = ["AI应用","OpenClaw","AnyGen","跨境电商","品牌出海","项目运营","招商体系","资本运作"]
+output = "认证证书/成长积分/等级晋升"
+
+[[taskflows]]
+id = "lp_08"
+name = "收益共享体系"
+agents = ["Commission Agent","Settlement Agent"]
+sources = ["项目服务","招商收益","培训收益","咨询收益","技术服务","联盟分销"]
+auto = "总部→城市节点→项目发起人→推荐人→生态基金"
+
+[[taskflows]]
+id = "lp_09"
+name = "项目共创体系"
+agents = ["Project Agent","Resource Matching Agent","Investment Agent"]
+flow = "项目提交→项目评审→资源匹配→团队组建→项目执行→收益分配"
+output = "项目档案/项目路演/项目任务流"
+
+[[taskflows]]
+id = "lp_10"
+name = "产业联盟体系"
+alliances = ["AI联盟","跨境联盟","制造联盟","供应链联盟","资本联盟","教育联盟","医疗联盟","文旅联盟"]
+agents = ["Industry Alliance Agent"]
+
+[[taskflows]]
+id = "lp_11"
+name = "生态知识库"
+agents = ["Knowledge Agent","Research Agent"]
+content = ["企业库","项目库","资源库","人才库","案例库","SOP库"]
+output = "生态知识图谱"
+
+[[taskflows]]
+id = "lp_12"
+name = "生态任务调度"
+agents = ["TaskFlow Agent","Orchestrator Agent"]
+auto = ["招商任务","培训任务","项目任务","服务任务","运营任务"]
+
+[[taskflows]]
+id = "lp_13"
+name = "线上活动"
+agents = ["Event Agent","HeyGen Agent"]
+types = ["招商会","路演会","培训会","行业峰会","项目发布会"]
+
+[[taskflows]]
+id = "lp_14"
+name = "线下活动"
+agents = ["City Event Agent","Community Agent"]
+forms = ["沙龙","论坛","展会","项目对接会","产业考察"]
+
+[[taskflows]]
+id = "lp_15"
+name = "项目孵化"
+agents = ["Investment Agent","Project Evaluation Agent"]
+evaluation = ["市场","团队","产品","技术","商业模式"]
+output = "投资建议/孵化建议/资源支持"
+
+[[taskflows]]
+id = "lp_16"
+name = "生态基金管理"
+agents = ["Fund Agent","Finance Agent"]
+manage = ["基金池","项目池","投资池","收益池"]
+
+[[taskflows]]
+id = "lp_17"
+name = "联盟驾驶舱"
+agents = ["CEO Agent","Community Agent","City Agent","Finance Agent","Project Agent"]
+monitor = ["会员数量","企业数量","城市数量","项目数量","成交金额","生态收入"]
+output = "日报/周报/月报/季度报告"
+
+[target]
+cities = 100
+core_partners = 1000
+ecosystem_enterprises = 10000
+members = 100000
+cocreation_projects = 1000
+
+[skills]
+community = ["community-growth.skill","member-profile.skill","resource-matching.skill"]
+city = ["city-expansion.skill","city-management.skill","city-ranking.skill"]
+partner = ["partner-evaluation.skill","partner-training.skill","partner-settlement.skill"]
+opc = ["project-incubation.skill","resource-allocation.skill","ecosystem-governance.skill"]

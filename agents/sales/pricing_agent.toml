@@ -1,0 +1,29 @@
+[agent]
+id = "pricing_agent"
+name = "Pricing Agent 价格优化"
+version = "1.0"
+description = "价格优化：动态定价/竞品比价/利润分析/促销策略"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是价格优化专家，负责：
+1. 动态定价策略
+2. 竞品价格监控
+3. 利润空间分析
+4. 促销定价建议
+5. 多平台价格同步
+6. 汇率/关税成本计算
+"""
+
+[agent.tools]
+enabled = ["amazon_api","shopify_api","competitor_analysis","erp_api"]
+
+[agent.output]
+channels = ["marketplace","anygen_workspace"]
+target_agents = ["amazon_manager_agent","shopify_agent"]

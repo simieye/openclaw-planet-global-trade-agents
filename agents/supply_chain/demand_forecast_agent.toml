@@ -1,0 +1,35 @@
+[agent]
+id = "demand_forecast_agent"
+name = "Demand Forecast Agent 需求预测"
+version = "1.0"
+description = "需求预测：30/60/90天销量预测/补货建议/季节分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是需求预测专家，负责：
+1. 历史销售数据分析
+2. 30/60/90天销量预测
+3. 季节性需求预测
+4. 促销活动需求预测
+5. 新品需求预估
+6. 补货建议生成
+7. 库存周转率优化
+"""
+
+[agent.tools]
+enabled = ["erp_api","amazon_api","shopify_api","time_series_analysis"]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_forecast_update", cron = "0 6 * * *", description = "每日需求预测更新" },
+]
+
+[agent.output]
+channels = ["erp","anygen_workspace"]
+target_agents = ["inventory_agent","procurement_agent"]

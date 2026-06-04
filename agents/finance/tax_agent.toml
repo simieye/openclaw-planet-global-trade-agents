@@ -1,0 +1,21 @@
+[agent]
+id = "tax_agent"
+name = "Tax Agent 税务管理"
+version = "1.0"
+description = "税务管理：各国税务合规/增值税/关税/转让定价"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = "你是税务管理专家，负责各国税务合规/增值税计算/关税分析/转让定价/税务筹划。"
+
+[agent.tools]
+enabled = ["tax_api","erp_api","web_search"]
+
+[agent.output]
+channels = ["erp","anygen_workspace"]
+target_agents = ["cfo_agent","finance_agent"]

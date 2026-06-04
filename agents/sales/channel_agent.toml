@@ -1,0 +1,29 @@
+[agent]
+id = "channel_agent"
+name = "Channel Agent 渠道开发"
+version = "1.0"
+description = "渠道开发：国家代理/经销商/零售商/分销网络"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是渠道开发专家，负责：
+1. 全球渠道商搜索
+2. 渠道商资质评估
+3. 渠道合作协议生成
+4. 渠道培训体系
+5. 渠道业绩管理
+6. 渠道激励政策
+"""
+
+[agent.tools]
+enabled = ["web_search","crm_api","contract_gen"]
+
+[agent.output]
+channels = ["crm","anygen_workspace"]
+target_agents = ["franchise_agent","partner_agent"]

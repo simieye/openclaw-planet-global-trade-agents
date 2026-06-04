@@ -1,0 +1,173 @@
+# SOP 10: OpenClaw + AnyGen 企业数字员工组织架构
+[sop]
+id = "sop_10"
+name = "企业数字员工组织架构"
+version = "1.0"
+
+[architecture]
+model = "AI原生企业"
+components = {openclaw="企业大脑",anygen="企业工作台",agent="数字员工",skill="岗位能力",webhook="神经系统",taskflow="执行系统",knowledge="企业记忆"}
+
+# AI董事会 (10)
+[[board]]
+id = "chairman_agent"
+name = "董事长Agent"
+skill = "vision-planning.skill"
+[[board]]
+id = "ceo_agent"
+name = "CEO Agent"
+skill = "strategy-execution.skill"
+[[board]]
+id = "cfo_agent"
+name = "CFO Agent"
+skill = "cashflow-analysis.skill"
+[[board]]
+id = "coo_agent"
+name = "COO Agent"
+skill = "operation-analysis.skill"
+[[board]]
+id = "cmo_agent"
+name = "CMO Agent"
+skill = "marketing-plan.skill"
+[[board]]
+id = "cto_agent"
+name = "CTO Agent"
+skill = "architecture-review.skill"
+[[board]]
+id = "cro_agent"
+name = "CRO Agent"
+skill = "risk-assessment.skill"
+[[board]]
+id = "investment_agent"
+name = "Investment Agent"
+skill = "investment-evaluation.skill"
+[[board]]
+id = "strategy_agent"
+name = "Strategy Agent"
+skill = "strategy-research.skill"
+[[board]]
+id = "innovation_agent"
+name = "Innovation Agent"
+skill = "innovation-evaluation.skill"
+
+# AI管理层 Executive Team
+[[executive]]
+id = "vp_sales_agent"
+name = "VP Sales Agent"
+department = "销售中心"
+[[executive]]
+id = "vp_marketing_agent"
+name = "VP Marketing Agent"
+department = "市场中心"
+[[executive]]
+id = "vp_product_agent"
+name = "Product Director Agent"
+department = "产品中心"
+[[executive]]
+id = "vp_supply_chain_agent"
+name = "Supply Chain Director Agent"
+department = "供应链中心"
+[[executive]]
+id = "vp_finance_agent"
+name = "Finance Director Agent"
+department = "财务中心"
+[[executive]]
+id = "sales_director_agent"
+name = "Sales Director Agent"
+department = "销售"
+[[executive]]
+id = "channel_director_agent"
+name = "Channel Director Agent"
+department = "渠道"
+[[executive]]
+id = "cs_director_agent"
+name = "Customer Success Director Agent"
+department = "客户成功"
+[[executive]]
+id = "brand_director_agent"
+name = "Brand Director Agent"
+department = "品牌"
+[[executive]]
+id = "growth_director_agent"
+name = "Growth Director Agent"
+department = "增长"
+[[executive]]
+id = "pr_director_agent"
+name = "PR Director Agent"
+department = "公关"
+[[executive]]
+id = "ux_director_agent"
+name = "UX Director Agent"
+department = "用户体验"
+[[executive]]
+id = "research_director_agent"
+name = "Research Director Agent"
+department = "产品研究"
+[[executive]]
+id = "procurement_director_agent"
+name = "Procurement Director Agent"
+department = "采购"
+[[executive]]
+id = "logistics_director_agent"
+name = "Logistics Director Agent"
+department = "物流"
+[[executive]]
+id = "tax_director_agent"
+name = "Tax Director Agent"
+department = "税务"
+
+# AI数字员工体系
+[[digital_workers]]
+department = "内容"
+members = ["Blog Writer Agent","Copywriter Agent","Social Media Agent","Video Script Agent","HeyGen Agent"]
+
+[[digital_workers]]
+department = "电商"
+members = ["Amazon Agent","Shopify Agent","TikTok Shop Agent","Marketplace Agent"]
+
+[[digital_workers]]
+department = "财务"
+members = ["Accountant Agent","Invoice Agent","Payment Agent"]
+
+[[digital_workers]]
+department = "供应链"
+members = ["Inventory Agent","Procurement Agent","Logistics Agent"]
+
+# 企业神经系统
+[[nervous_system]]
+systems = ["CRM","ERP","MES","WMS","Shopify","Amazon","TikTok","WhatsApp","Email","Stripe","PayPal","银行系统"]
+
+# 企业执行系统
+[[taskflow_examples]]
+name = "客户成交TaskFlow"
+steps = ["Lead Agent","SDR Agent","Proposal Agent","Quotation Agent","Contract Agent","Payment Agent"]
+
+[[taskflow_examples]]
+name = "电商运营TaskFlow"
+steps = ["Trend Agent","Content Agent","Ads Agent","CRM Agent","Retention Agent"]
+
+[[taskflow_examples]]
+name = "工厂生产TaskFlow"
+steps = ["Order Agent","Production Agent","Quality Agent","Logistics Agent"]
+
+# 企业成熟度模型
+[[maturity]]
+level = 1
+name = "AI助手阶段"
+model = "人 + ChatGPT"
+[[maturity]]
+level = 2
+name = "AI部门阶段"
+model = "人 + 多个Agent"
+[[maturity]]
+level = 3
+name = "AI公司阶段"
+model = "AI董事会 + AI部门 + AI员工"
+[[maturity]]
+level = 4
+name = "AI集团阶段"
+model = "多公司 + 多Agent组织 + 统一调度"
+[[maturity]]
+level = 5
+name = "AI生态阶段"
+model = "OpenClaw + AnyGen + 企业联盟 + 城市节点 + 产业联盟 + 全球生态"

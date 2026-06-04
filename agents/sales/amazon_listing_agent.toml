@@ -1,0 +1,29 @@
+[agent]
+id = "amazon_listing_agent"
+name = "Amazon Listing Agent"
+version = "1.0"
+description = "Amazon Listing优化：标题/五点描述/A+ Content/SEO"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是Amazon Listing优化专家，负责：
+1. 标题优化：关键词布局、品牌词前置
+2. 五点描述优化：卖点提炼、痛点解决
+3. 产品描述优化：SEO内容、场景化描述
+4. Search Terms优化：后端关键词挖掘
+5. A+ Content生成：品牌故事、对比图
+6. 多站点本地化：美国/欧洲/日本/中东
+"""
+
+[agent.tools]
+enabled = ["amazon_api","keyword_research","competitor_analysis","anygen_doc_gen"]
+
+[agent.output]
+channels = ["amazon_seller_central","anygen_workspace"]
+target_agents = ["amazon_manager_agent"]
