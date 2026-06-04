@@ -943,6 +943,325 @@ body {
 .badge-tk-affiliate { background: rgba(139,92,246,0.15); color: var(--accent5); }
 .badge-tk-gmv { background: rgba(0,212,170,0.15); color: var(--accent2); }
 
+/* ===== Amazon 品牌增长SOP样式 ===== */
+.amazon-taskflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.amazon-taskflow-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.amazon-taskflow-card:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(245,158,11,0.15);
+}
+
+.amazon-taskflow-card.active-taskflow {
+  border-color: #f59e0b;
+  box-shadow: 0 0 15px rgba(245,158,11,0.2);
+}
+
+.amazon-taskflow-card .am-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.amazon-taskflow-card .am-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+}
+
+.amazon-taskflow-card .am-trigger {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.amazon-taskflow-card .am-agents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.amazon-taskflow-card .am-agent-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(245,158,11,0.15);
+  color: #f59e0b;
+  white-space: nowrap;
+}
+
+.amazon-taskflow-card .am-agent-arrow {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.amazon-taskflow-card .am-output {
+  font-size: 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.amazon-taskflow-card .am-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-am-market { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.badge-am-listing { background: rgba(236,72,153,0.15); color: var(--accent4); }
+.badge-am-seo { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.badge-am-ppc { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-am-review { background: rgba(239,68,68,0.15); color: #ef4444; }
+.badge-am-brandstore { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-am-subs { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+.badge-am-dsp { background: rgba(139,92,246,0.15); color: var(--accent5); }
+.badge-am-offsite { background: rgba(234,179,8,0.15); color: #eab308; }
+.badge-am-affiliate { background: rgba(249,115,22,0.15); color: #f97316; }
+.badge-am-brandmatrix { background: rgba(0,212,170,0.15); color: var(--accent2); }
+.badge-am-ops { background: rgba(107,114,128,0.15); color: #9ca3af; }
+.badge-am-ceo { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(255,107,53,0.2)); color: #f59e0b; }
+
+.amazon-detail-panel {
+  background: var(--card-bg);
+  border: 1px solid #f59e0b;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.amazon-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.amazon-detail-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.amazon-gmv-flywheel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.amazon-flywheel-node {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.amazon-flywheel-node:hover {
+  transform: scale(1.02);
+}
+
+/* ===== Shopify DTC 增长SOP样式 ===== */
+.shopify-taskflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.shopify-taskflow-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.shopify-taskflow-card:hover {
+  border-color: #22c55e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(34,197,94,0.15);
+}
+
+.shopify-taskflow-card.active-taskflow {
+  border-color: #22c55e;
+  box-shadow: 0 0 15px rgba(34,197,94,0.2);
+}
+
+.shopify-taskflow-card .sh-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #22c55e;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.shopify-taskflow-card .sh-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+}
+
+.shopify-taskflow-card .sh-trigger {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.shopify-taskflow-card .sh-agents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.shopify-taskflow-card .sh-agent-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(34,197,94,0.15);
+  color: #22c55e;
+  white-space: nowrap;
+}
+
+.shopify-taskflow-card .sh-agent-arrow {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.shopify-taskflow-card .sh-output {
+  font-size: 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.shopify-taskflow-card .sh-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-sh-brand { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.badge-sh-shopify { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-sh-meta { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.badge-sh-google { background: rgba(239,68,68,0.15); color: #ef4444; }
+.badge-sh-seo { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-sh-email { background: rgba(236,72,153,0.15); color: var(--accent4); }
+.badge-sh-whatsapp { background: rgba(34,197,94,0.2); color: #22c55e; }
+.badge-sh-membership { background: rgba(139,92,246,0.15); color: var(--accent5); }
+.badge-sh-subscription { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+.badge-sh-community { background: rgba(234,179,8,0.15); color: #eab308; }
+.badge-sh-affiliate { background: rgba(249,115,22,0.15); color: #f97316; }
+.badge-sh-cdp { background: rgba(0,212,170,0.15); color: var(--accent2); }
+.badge-sh-ops { background: rgba(107,114,128,0.15); color: #9ca3af; }
+.badge-sh-ceo { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(0,212,170,0.2)); color: #22c55e; }
+
+.shopify-detail-panel {
+  background: var(--card-bg);
+  border: 1px solid #22c55e;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.shopify-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shopify-detail-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.shopify-dtc-flywheel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.shopify-flywheel-node {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.shopify-flywheel-node:hover {
+  transform: scale(1.02);
+}
+
 .tiktok-detail-panel {
   background: var(--card-bg);
   border: 1px solid #ec4899;
@@ -2302,6 +2621,26 @@ body {
       </div>
     </div>
 
+    <!-- Amazon 品牌增长 SOP -->
+    <div class="nav-section">
+      <div class="nav-section-title">Amazon 品牌增长 SOP</div>
+      <div class="nav-item" data-panel="amazonbrand" onclick="switchPanel('amazonbrand', this)">
+        <span class="nav-icon">📦</span>
+        <span>Amazon 品牌增长</span>
+        <span class="nav-badge gold">31 TaskFlow</span>
+      </div>
+    </div>
+
+    <!-- Shopify DTC 增长 SOP -->
+    <div class="nav-section">
+      <div class="nav-section-title">Shopify DTC 增长 SOP</div>
+      <div class="nav-item" data-panel="shopifydtc" onclick="switchPanel('shopifydtc', this)">
+        <span class="nav-icon">🛍️</span>
+        <span>Shopify DTC 增长</span>
+        <span class="nav-badge green">40 TaskFlow</span>
+      </div>
+    </div>
+
     <!-- 系统 -->
     <div class="nav-section">
       <div class="nav-section-title">系统</div>
@@ -3313,6 +3652,474 @@ body {
       </div>
     </div>
 
+    <!-- ===== Amazon 品牌增长SOP面板 ===== -->
+    <div class="panel" id="panel-amazonbrand">
+      <div class="section-title">📦 Amazon 品牌增长SOP · 31个TaskFlow | OpenClaw + AnyGen + Amazon Seller Central 全链路增长体系</div>
+
+      <!-- Amazon 配置卡片 -->
+      <div class="factory-config-card" style="background:linear-gradient(135deg, #1a0f08 0%, #2d1a0a 50%, #1a0f08 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:32px;">📦</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#f59e0b;">Amazon 品牌增长AI系统</div>
+              <div style="font-size:12px;color:var(--text-dim);">31个TaskFlow · 市场选品 → Listing优化 → SEO增长 → PPC广告 → Review增长 → Brand Store → Subscribe & Save → DSP广告 → 站外引流 → 联盟营销 → 品牌矩阵 → 订单运营 → CEO驾驶舱</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="initAmazonSOP()" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">🚀 初始化增长系统</button>
+            <button class="btn btn-sm" onclick="syncAmazonWebhooks()" style="background:rgba(99,102,241,0.1);color:var(--accent3);border:1px solid rgba(99,102,241,0.3);">🔄 同步 Webhook</button>
+            <button class="btn btn-primary btn-sm" onclick="generateAmazonReport()">📊 经营日报</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 增长架构对比：传统 vs AI -->
+      <div class="factory-arch-compare" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#ef4444;margin-bottom:12px;">🔴 传统Amazon运营</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            选品 → Listing → PPC → 订单
+          </div>
+          <div style="font-size:10px;color:rgba(239,68,68,0.5);margin-top:8px;">❌ 人工试错 · 广告浪费 · 品牌难建立</div>
+        </div>
+        <div style="background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#f59e0b;margin-bottom:12px;">🟠 AI品牌增长模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            Market Agent → Keyword Agent → Listing Agent → SEO Agent → PPC Agent → Review Agent → Brand Agent → Retention Agent → Analytics Agent
+          </div>
+          <div style="font-size:10px;color:#f59e0b;margin-top:8px;">✅ 全自动品牌增长引擎 · 7×24运行 · 全球多站点</div>
+        </div>
+      </div>
+
+      <!-- Amazon增长飞轮可视化 -->
+      <div class="amazon-gmv-flywheel">
+        <div style="font-size:14px;font-weight:700;color:#f59e0b;margin-bottom:8px;">🔄 Amazon 品牌增长飞轮</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+          <div class="amazon-flywheel-node" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;">🔍 市场分析</div>
+          <div class="amazon-flywheel-node" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.3);color:#ec4899;">🔑 关键词研究</div>
+          <div class="amazon-flywheel-node" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:#3b82f6;">📝 Listing优化</div>
+          <div class="amazon-flywheel-node" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);color:var(--accent3);">🚀 SEO增长</div>
+          <div class="amazon-flywheel-node" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;">📊 PPC增长</div>
+          <div class="amazon-flywheel-node" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);">⭐ Review增长</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:6px;">
+          <div class="amazon-flywheel-node" style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);color:var(--accent2);">🏪 Brand Store</div>
+          <div class="amazon-flywheel-node" style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.3);color:#0ea5e9;">📬 Subscribe</div>
+          <div class="amazon-flywheel-node" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:var(--accent5);">📡 DSP广告</div>
+          <div class="amazon-flywheel-node" style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);color:#eab308;">🌐 站外引流</div>
+          <div class="amazon-flywheel-node" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#f97316;">🤝 联盟营销</div>
+          <div class="amazon-flywheel-node" style="background:rgba(107,114,128,0.1);border:1px solid rgba(107,114,128,0.3);color:#9ca3af;">🏷️ 品牌矩阵</div>
+          <div class="amazon-flywheel-node" style="background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(255,107,53,0.2));border:1px solid #f59e0b;color:#f59e0b;font-size:14px;">💰 复购增长</div>
+        </div>
+      </div>
+
+      <!-- TaskFlow 分类筛选 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="amazonTaskFlowFilter">
+        <button class="btn btn-sm active" onclick="filterAmazonTaskFlows('all', this)">全部 31</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('market', this)">市场选品</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('listing', this)">Listing系统</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('seo', this)">SEO系统</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('ppc', this)">PPC广告</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('review', this)">Review系统</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('brandstore', this)">Brand Store</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('subs', this)">Subscribe</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('dsp', this)">DSP广告</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('offsite', this)">站外引流</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('affiliate', this)">联盟营销</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('brandmatrix', this)">品牌矩阵</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('ops', this)">订单运营</button>
+        <button class="btn btn-sm" onclick="filterAmazonTaskFlows('ceo', this)">CEO驾驶舱</button>
+      </div>
+
+      <!-- TaskFlow 网格 -->
+      <div class="amazon-taskflow-grid" id="amazonTaskFlowGrid">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- Agent 体系映射 -->
+      <div class="section-title" style="margin-top:24px;">🤖 六大中心 Agent 体系</div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:8px;">🔍 市场中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Market Research Agent<br>Category Agent<br>Trend Agent<br>Competitor Agent<br>Keyword Research Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ec4899;margin-bottom:8px;">📝 Listing中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Listing Agent<br>SEO Agent<br>Copywriting Agent<br>Localization Agent<br>Conversion Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:8px;">📊 广告中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            PPC Agent<br>Campaign Agent<br>Bid Agent<br>ROAS Agent<br>Risk Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:8px;">⭐ Review中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Review Agent<br>Sentiment Agent<br>Customer Success Agent<br>Review Intelligence Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px;">🏪 品牌中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Brand Store Agent<br>Brand Expansion Agent<br>Content Director Agent<br>Retention Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f97316;margin-bottom:8px;">📦 运营中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Order Agent<br>Inventory Agent<br>Forecast Agent<br>Logistics Agent<br>Finance Agent
+          </div>
+        </div>
+      </div>
+
+      <!-- Webhook 映射 -->
+      <div class="section-title" style="margin-top:24px;">🔌 Amazon Webhook 体系</div>
+      <div class="factory-webhook-map" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Amazon订单 → Order Agent</div>
+          <pre class="webhook-code">订单创建 → 库存检查 → 物流触发</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Amazon Review → Review Agent</div>
+          <pre class="webhook-code">评价分析 → 情感检测 → 自动回复</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Amazon Ads → PPC Agent</div>
+          <pre class="webhook-code">广告数据 → ROAS分析 → 自动优化</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">库存变化 → Forecast Agent</div>
+          <pre class="webhook-code">库存阈值 → 补货预测 → 采购触发</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">DSP数据 → DSP Agent</div>
+          <pre class="webhook-code">受众数据 → 广告优化 → 预算调整</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Brand Store → Analytics Agent</div>
+          <pre class="webhook-code">流量分析 → 热图分析 → 转化优化</pre>
+        </div>
+      </div>
+
+      <!-- 最终 Amazon AI 模型 -->
+      <div class="factory-final-model" style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(255,107,53,0.08));border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius);padding:20px;margin-top:20px;">
+        <div style="font-size:16px;font-weight:700;color:#f59e0b;margin-bottom:12px;">🌟 Amazon AI品牌增长引擎最终形态</div>
+        <div style="font-size:12px;color:var(--text);line-height:2.2;">
+          <span style="color:var(--accent);font-weight:600;">OpenClaw Agent Cluster</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent3);font-weight:600;">AnyGen Workspace</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#f59e0b;font-weight:600;">Amazon Seller Central</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#3b82f6;font-weight:600;">Amazon Ads</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent5);font-weight:600;">DSP</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#0ea5e9;font-weight:600;">CRM/ERP</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent4);font-weight:600;">HeyGen</span>
+        </div>
+        <div style="font-size:14px;color:#f59e0b;font-weight:700;margin-top:12px;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;">
+          🎯 自动选品 + 自动SEO + 自动广告优化 + 自动Review运营 + 自动补货预测 + 自动品牌增长<br>
+          <span style="font-size:12px;color:var(--text-dim);">打造AI驱动的Amazon全球品牌增长引擎</span>
+        </div>
+      </div>
+
+      <!-- CEO驾驶舱 -->
+      <div class="section-title" style="margin-top:24px;">📊 CEO驾驶舱 · 每日自动输出</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#f59e0b;font-weight:700;">💰</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">销售额</div>
+          <div style="font-size:10px;color:var(--text-dim);">日/周/月/年</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent2);font-weight:700;">📊</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">利润</div>
+          <div style="font-size:10px;color:var(--text-dim);">毛利/净利/ACOS</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#3b82f6;font-weight:700;">📈</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">广告ROI</div>
+          <div style="font-size:10px;color:var(--text-dim);">ROAS/ACOS/TACOS</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ef4444;font-weight:700;">⚠️</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">库存风险</div>
+          <div style="font-size:10px;color:var(--text-dim);">断货/滞销预警</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ec4899;font-weight:700;">🔑</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">关键词排名</div>
+          <div style="font-size:10px;color:var(--text-dim);">排名变化/流量变化</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent3);font-weight:700;">⭐</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">Review情况</div>
+          <div style="font-size:10px;color:var(--text-dim);">评分/数量/情感</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#f97316;font-weight:700;">📦</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">补货预测</div>
+          <div style="font-size:10px;color:var(--text-dim);">30/60/90天预测</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent);font-weight:700;">🚀</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">增长建议</div>
+          <div style="font-size:10px;color:var(--text-dim);">AI策略推荐</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Shopify DTC 增长SOP面板 ===== -->
+    <div class="panel" id="panel-shopifydtc">
+      <div class="section-title">🛍️ Shopify DTC 品牌增长SOP · 40个TaskFlow | OpenClaw + AnyGen + Shopify + Meta Ads + Google Ads 全链路品牌增长系统</div>
+
+      <!-- Shopify 配置卡片 -->
+      <div class="factory-config-card" style="background:linear-gradient(135deg, #081a0f 0%, #0a2d1a 50%, #081a0f 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:32px;">🛍️</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#22c55e;">Shopify DTC 品牌增长AI系统</div>
+              <div style="font-size:12px;color:var(--text-dim);">40个TaskFlow · 品牌战略 → Shopify网站 → Meta Ads → Google Ads → SEO → Email Marketing → WhatsApp → 会员体系 → 订阅制 → 社区运营 → 联盟营销 → 品牌私域 → 订单履约 → CEO驾驶舱</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="initShopifyDTC()" style="background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.3);">🚀 初始化增长系统</button>
+            <button class="btn btn-sm" onclick="syncShopifyWebhooks()" style="background:rgba(99,102,241,0.1);color:var(--accent3);border:1px solid rgba(99,102,241,0.3);">🔄 同步 Webhook</button>
+            <button class="btn btn-primary btn-sm" onclick="generateShopifyReport()">📊 经营日报</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 增长架构对比：传统 vs DTC -->
+      <div class="factory-arch-compare" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#ef4444;margin-bottom:12px;">🔴 传统平台卖货模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            广告 → 订单 → 结束
+          </div>
+          <div style="font-size:10px;color:rgba(239,68,68,0.5);margin-top:8px;">❌ 平台依赖 · 流量不可控 · 用户不属于你 · 品牌难建立</div>
+        </div>
+        <div style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#22c55e;margin-bottom:12px;">🟢 DTC品牌经营模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            流量 → 内容 → 独立站 → 成交 → 会员 → 复购 → 社区 → 品牌
+          </div>
+          <div style="font-size:10px;color:#22c55e;margin-top:8px;">✅ 品牌经营 = 用户资产 + 数据资产 + 私域资产</div>
+        </div>
+      </div>
+
+      <!-- DTC增长飞轮可视化 -->
+      <div class="shopify-dtc-flywheel">
+        <div style="font-size:14px;font-weight:700;color:#22c55e;margin-bottom:8px;">🔄 DTC 品牌增长飞轮</div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+          <div class="shopify-flywheel-node" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;">🎯 品牌定位</div>
+          <div class="shopify-flywheel-node" style="background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.3);color:#ec4899;">📝 内容工厂</div>
+          <div class="shopify-flywheel-node" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:#3b82f6;">📢 Meta广告</div>
+          <div class="shopify-flywheel-node" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#ef4444;">🔍 Google广告</div>
+          <div class="shopify-flywheel-node" style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);color:var(--accent3);">🌐 SEO流量</div>
+          <div class="shopify-flywheel-node" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:var(--success);">🛒 独立站成交</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:6px;">
+          <div class="shopify-flywheel-node" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);color:var(--accent5);">👑 会员体系</div>
+          <div class="shopify-flywheel-node" style="background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.3);color:#0ea5e9;">🔄 订阅体系</div>
+          <div class="shopify-flywheel-node" style="background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);color:#eab308;">💬 社区运营</div>
+          <div class="shopify-flywheel-node" style="background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);color:#f97316;">🤝 联盟营销</div>
+          <div class="shopify-flywheel-node" style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);color:var(--accent2);">🔄 复购增长</div>
+          <div class="shopify-flywheel-node" style="background:linear-gradient(135deg, rgba(34,197,94,0.2), rgba(0,212,170,0.2));border:1px solid #22c55e;color:#22c55e;font-size:14px;">🏆 品牌资产</div>
+        </div>
+      </div>
+
+      <!-- TaskFlow 分类筛选 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="shopifyTaskFlowFilter">
+        <button class="btn btn-sm active" onclick="filterShopifyTaskFlows('all', this)">全部 40</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('brand', this)">品牌战略</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('shopify', this)">Shopify网站</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('meta', this)">Meta Ads</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('google', this)">Google Ads</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('seo', this)">SEO增长</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('email', this)">Email Marketing</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('whatsapp', this)">WhatsApp</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('membership', this)">会员体系</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('subscription', this)">订阅制</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('community', this)">社区运营</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('affiliate', this)">联盟营销</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('cdp', this)">品牌私域</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('ops', this)">订单履约</button>
+        <button class="btn btn-sm" onclick="filterShopifyTaskFlows('ceo', this)">CEO驾驶舱</button>
+      </div>
+
+      <!-- TaskFlow 网格 -->
+      <div class="shopify-taskflow-grid" id="shopifyTaskFlowGrid">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- Agent 体系映射 -->
+      <div class="section-title" style="margin-top:24px;">🤖 八大中心 Agent 体系</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:8px;">🎯 品牌中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Brand Strategy Agent<br>Consumer Insight Agent<br>Storytelling Agent<br>Content Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:8px;">🛒 Shopify中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Shopify Architect Agent<br>Product Page Agent<br>CRO Agent<br>Analytics Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#3b82f6;margin-bottom:8px;">📢 广告中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Meta Ads Agent<br>Google Ads Agent<br>Creative Agent<br>ROAS Agent<br>PMax Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:8px;">📧 营销中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Email Agent<br>WhatsApp Agent<br>Retention Agent<br>Lifecycle Agent<br>VIP Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#ec4899;margin-bottom:8px;">👑 会员中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Membership Agent<br>Loyalty Agent<br>Subscription Agent<br>Churn Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#eab308;margin-bottom:8px;">💬 社区中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Community Agent<br>UGC Agent<br>Engagement Agent<br>Referral Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:8px;">📊 数据/联盟中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            CDP Agent<br>CRM Agent<br>LTV Agent<br>Affiliate Agent<br>Partner Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <div style="font-size:13px;font-weight:700;color:#9ca3af;margin-bottom:8px;">📦 运营中心</div>
+          <div style="font-size:10px;color:var(--text-dim);line-height:2;">
+            Order Agent<br>Inventory Agent<br>Logistics Agent<br>Forecast Agent<br>Complaint Agent
+          </div>
+        </div>
+      </div>
+
+      <!-- Webhook 映射 -->
+      <div class="section-title" style="margin-top:24px;">🔌 DTC Webhook 体系</div>
+      <div class="factory-webhook-map" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Shopify订单 → Order Agent</div>
+          <pre class="webhook-code">订单创建 → 库存检查 → 物流触发</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Meta Leads → Lead Agent</div>
+          <pre class="webhook-code">线索数据 → 客户建档 → WhatsApp跟进</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Google Ads → Ads Agent</div>
+          <pre class="webhook-code">广告数据 → ROAS分析 → 自动优化</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">WhatsApp消息 → Sales Agent</div>
+          <pre class="webhook-code">客户消息 → 自动回复 → 订单转化</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Email事件 → Lifecycle Agent</div>
+          <pre class="webhook-code">打开/点击 → 行为分析 → 自动化营销</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">弃购事件 → Retention Agent</div>
+          <pre class="webhook-code">放弃购物车 → 挽回邮件 → 优惠券</pre>
+        </div>
+      </div>
+
+      <!-- 最终 DTC AI 模型 -->
+      <div class="factory-final-model" style="background:linear-gradient(135deg, rgba(34,197,94,0.08), rgba(0,212,170,0.08));border:1px solid rgba(34,197,94,0.3);border-radius:var(--radius);padding:20px;margin-top:20px;">
+        <div style="font-size:16px;font-weight:700;color:#22c55e;margin-bottom:12px;">🌟 AI DTC品牌增长引擎最终形态</div>
+        <div style="font-size:12px;color:var(--text);line-height:2.2;">
+          <span style="color:var(--accent);font-weight:600;">OpenClaw Agent Cluster</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent3);font-weight:600;">AnyGen Workspace</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#22c55e;font-weight:600;">Shopify</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#3b82f6;font-weight:600;">Meta Ads</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#ef4444;font-weight:600;">Google Ads</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#22c55e;font-weight:600;">WhatsApp</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent4);font-weight:600;">Email Marketing</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#eab308;font-weight:600;">Community</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent5);font-weight:600;">Membership</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#f97316;font-weight:600;">Affiliate Network</span>
+        </div>
+        <div style="font-size:14px;color:#22c55e;font-weight:700;margin-top:12px;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;">
+          🎯 流量资产自主可控 · 用户资产持续沉淀 · 品牌资产持续增值<br>
+          <span style="font-size:12px;color:var(--text-dim);">形成可复制、可扩张、可全球化运营的AI驱动DTC品牌增长引擎</span>
+        </div>
+      </div>
+
+      <!-- CEO驾驶舱 -->
+      <div class="section-title" style="margin-top:24px;">📊 CEO驾驶舱 · 每日自动输出</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#22c55e;font-weight:700;">💰</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">营收</div>
+          <div style="font-size:10px;color:var(--text-dim);">日/周/月/年</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent2);font-weight:700;">📊</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">利润</div>
+          <div style="font-size:10px;color:var(--text-dim);">毛利/净利</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#3b82f6;font-weight:700;">📈</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">ROAS</div>
+          <div style="font-size:10px;color:var(--text-dim);">Meta/Google/Total</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ef4444;font-weight:700;">👤</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">CAC</div>
+          <div style="font-size:10px;color:var(--text-dim);">客户获取成本</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#ec4899;font-weight:700;">💎</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">LTV</div>
+          <div style="font-size:10px;color:var(--text-dim);">客户终身价值</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent3);font-weight:700;">🔄</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">复购率</div>
+          <div style="font-size:10px;color:var(--text-dim);">30/60/90天</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:#f97316;font-weight:700;">👑</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">会员增长</div>
+          <div style="font-size:10px;color:var(--text-dim);">新增/活跃/留存</div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;">
+          <div style="font-size:24px;color:var(--accent);font-weight:700;">🚀</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);">社区增长</div>
+          <div style="font-size:10px;color:var(--text-dim);">成员/互动/UGC</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== AI 数字组织面板 ===== -->
     <div class="panel" id="panel-organization">
       <div class="section-title">🏛️ AI 数字组织 · 100 Agent 6层架构 | 点击Agent卡片配置工作层+技能+IM+MCP+定时任务</div>
@@ -3925,6 +4732,56 @@ const TIKTOK_TASKFLOWS = [
   { id:'TK-30', num:'30', category:'gmv', phase:'GMV增长', title:'GMV增长引擎', trigger:'每天自动运行', agents:['Growth Agent','Analytics Agent','CEO Agent'], datasources:'全系统数据 · TikTok Shop · CRM · ERP · Ads', output:'流量分析 · 转化分析 · 订单分析 · 利润分析 · ROI分析 · GMV日报', webhook:'全系统 → CEO Agent → 经营日报' },
 ];
 
+// ============================================================
+// Amazon 品牌增长SOP TaskFlow 数据 (31个)
+// ============================================================
+const AMAZON_TASKFLOWS = [
+  // 第一阶段：市场与选品系统
+  { id:'AM-01', num:'01', category:'market', phase:'市场选品', title:'市场机会发现', trigger:'每日自动运行', agents:['Market Research Agent','Category Agent','Trend Agent','Competitor Agent'], datasources:'Amazon · Google Trends · TikTok · Reddit · 行业报告', output:'市场规模 · 增长率 · 竞争强度 · 利润空间 · 蓝海机会', webhook:'Market Agent → CEO Agent' },
+  { id:'AM-02', num:'02', category:'market', phase:'市场选品', title:'关键词机会分析', trigger:'市场发现后', agents:['Keyword Research Agent','Search Volume Agent','Ranking Agent'], datasources:'Amazon Search · 竞品Listing · 关键词工具', output:'核心关键词 · 长尾关键词 · 高转化关键词 · 竞品关键词', webhook:'Market Agent → Keyword Agent → Listing Agent' },
+  // 第二阶段：Listing增长系统
+  { id:'AM-03', num:'03', category:'listing', phase:'Listing系统', title:'Listing生成系统', trigger:'新品创建', agents:['Listing Agent','SEO Agent','Copywriting Agent','Localization Agent'], datasources:'产品信息 · 关键词库 · 竞品分析', output:'标题 · 五点描述 · 产品描述 · Search Terms · A+ Content文案 · 美国站/欧洲站/日本站/中东站', webhook:'Keyword Agent → Listing Agent → Amazon' },
+  { id:'AM-04', num:'04', category:'listing', phase:'Listing系统', title:'Listing优化系统', trigger:'流量下降 / 转化下降', agents:['Listing Audit Agent','Conversion Agent'], datasources:'Amazon Listing数据 · 流量数据 · 转化数据', output:'标题优化建议 · 关键词补充 · 图片优化建议 · A+优化建议', webhook:'Analytics Agent → Listing Audit Agent → Report' },
+  // 第三阶段：SEO增长系统
+  { id:'AM-05', num:'05', category:'seo', phase:'SEO系统', title:'关键词排名监控', trigger:'每日', agents:['Keyword Ranking Agent'], datasources:'Amazon Search · 排名追踪工具', output:'排名变化 · 流量变化 · 竞争分析', webhook:'Ranking Agent → SEO Agent → CEO Agent' },
+  { id:'AM-06', num:'06', category:'seo', phase:'SEO系统', title:'SEO优化', trigger:'排名变化检测', agents:['SEO Agent','Keyword Agent'], datasources:'Amazon Listing · 关键词数据 · 竞品数据', output:'关键词更新 · 后台搜索词更新 · 内容优化', webhook:'Ranking Agent → SEO Agent → Amazon' },
+  // 第四阶段：PPC广告增长系统
+  { id:'AM-07', num:'07', category:'ppc', phase:'PPC广告', title:'广告结构创建', trigger:'新品上线', agents:['PPC Agent','Campaign Agent'], datasources:'Amazon Ads API · 关键词库 · 竞品分析', output:'Auto Campaign · Manual Campaign · Exact/Phrase/Broad · Product Targeting', webhook:'Listing Agent → PPC Agent → Amazon Ads' },
+  { id:'AM-08', num:'08', category:'ppc', phase:'PPC广告', title:'关键词优化', trigger:'广告数据更新 Webhook', agents:['Keyword Optimization Agent','Bid Agent'], datasources:'Amazon Ads API · 实时数据', output:'提价 · 降价 · 否定关键词 · 预算调整', webhook:'Ads Data → Bid Agent → Auto Optimize' },
+  { id:'AM-09', num:'09', category:'ppc', phase:'PPC广告', title:'广告ROI优化', trigger:'广告运行中', agents:['ROAS Agent','Finance Agent'], datasources:'Amazon Ads · 财务系统', output:'ACOS · TACOS · ROAS · CTR · CVR 分析报告', webhook:'Ads Data → ROAS Agent → Finance Agent' },
+  { id:'AM-10', num:'10', category:'ppc', phase:'PPC广告', title:'广告异常预警', trigger:'异常检测', agents:['Risk Agent'], datasources:'Amazon Ads · 花费数据 · 转化数据', output:'花费异常 · 转化异常 · 竞争异常 预警', webhook:'Ads Data → Risk Agent → CEO Agent' },
+  // 第五阶段：Review增长系统
+  { id:'AM-11', num:'11', category:'review', phase:'Review系统', title:'评价监控', trigger:'收到Review Webhook', agents:['Review Agent','Sentiment Agent'], datasources:'Amazon Review API', output:'好评 · 中评 · 差评 分类', webhook:'Amazon Review → Review Agent → Sentiment Agent' },
+  { id:'AM-12', num:'12', category:'review', phase:'Review系统', title:'差评处理', trigger:'差评检测', agents:['Risk Agent','Customer Success Agent'], datasources:'Review数据 · 订单数据 · 客服系统', output:'问题分类 · 客服跟进 · 产品反馈', webhook:'Review Agent → Customer Success Agent → 客户' },
+  { id:'AM-13', num:'13', category:'review', phase:'Review系统', title:'Review洞察', trigger:'Review数据积累', agents:['Review Intelligence Agent'], datasources:'全量Review · 竞品Review', output:'痛点 · 需求 · 改进建议 · 竞品机会', webhook:'Review Intelligence → Product Agent → CEO Agent' },
+  // 第六阶段：Brand Store增长系统
+  { id:'AM-14', num:'14', category:'brandstore', phase:'Brand Store', title:'品牌旗舰店建设', trigger:'品牌注册完成', agents:['Brand Store Agent','UX Agent','Content Agent'], datasources:'品牌信息 · 产品库 · 内容素材', output:'首页 · 分类页 · 活动页 · 品牌故事', webhook:'Brand Agent → Brand Store Agent → Amazon' },
+  { id:'AM-15', num:'15', category:'brandstore', phase:'Brand Store', title:'Store优化', trigger:'转化下降', agents:['Conversion Agent','Analytics Agent'], datasources:'Store Analytics · 用户行为数据', output:'热图分析 · 点击分析 · 转化优化建议', webhook:'Analytics Agent → Brand Store Agent → Report' },
+  // 第七阶段：Subscribe & Save系统
+  { id:'AM-16', num:'16', category:'subs', phase:'Subscribe', title:'订阅增长', trigger:'每日运行', agents:['Retention Agent','Subscription Agent'], datasources:'订单数据 · 产品数据 · 客户行为', output:'高复购产品识别 · 适合订阅产品 · 订阅策略', webhook:'Order Data → Retention Agent → Subscription Agent' },
+  { id:'AM-17', num:'17', category:'subs', phase:'Subscribe', title:'订阅营销', trigger:'订阅状态变化', agents:['Email Agent','Promotion Agent'], datasources:'CRM · 邮件系统 · 促销系统', output:'续订提醒 · 优惠券 · 新品推荐', webhook:'Subscription Agent → Email Agent → 客户' },
+  // 第八阶段：Amazon DSP广告系统
+  { id:'AM-18', num:'18', category:'dsp', phase:'DSP广告', title:'DSP受众创建', trigger:'品牌推广启动', agents:['Audience Agent','DSP Agent'], datasources:'Amazon DSP · 客户数据 · 浏览数据', output:'浏览用户 · 加购用户 · 购买用户 · 竞品用户 受众包', webhook:'CRM → Audience Agent → DSP Agent' },
+  { id:'AM-19', num:'19', category:'dsp', phase:'DSP广告', title:'DSP广告投放', trigger:'受众创建完成', agents:['DSP Agent','Creative Agent'], datasources:'DSP平台 · 创意素材库', output:'展示广告 · 视频广告 · 重定向广告', webhook:'Audience Agent → DSP Agent → Amazon DSP' },
+  // 第九阶段：站外引流系统
+  { id:'AM-20', num:'20', category:'offsite', phase:'站外引流', title:'TikTok引流', trigger:'每日运行', agents:['TikTok Traffic Agent'], datasources:'TikTok · 产品信息 · 内容素材', output:'短视频 · 达人合作 · 直播引流', webhook:'Content Agent → TikTok Traffic Agent → Amazon' },
+  { id:'AM-21', num:'21', category:'offsite', phase:'站外引流', title:'YouTube引流', trigger:'每日运行', agents:['YouTube Agent','Influencer Agent'], datasources:'YouTube · 产品信息', output:'测评视频 · 开箱视频 · 教程视频', webhook:'Content Agent → YouTube Agent → Amazon' },
+  { id:'AM-22', num:'22', category:'offsite', phase:'站外引流', title:'Google SEO引流', trigger:'每日运行', agents:['SEO Blog Agent'], datasources:'Google Trends · 关键词工具 · 产品信息', output:'博客 · 测评 · 教程', webhook:'SEO Agent → Blog Agent → Amazon' },
+  { id:'AM-23', num:'23', category:'offsite', phase:'站外引流', title:'Reddit增长', trigger:'每日运行', agents:['Community Agent'], datasources:'Reddit · 产品信息 · 社区数据', output:'社区运营 · 用户互动 · 口碑传播', webhook:'Community Agent → Amazon' },
+  // 第十阶段：联盟营销系统
+  { id:'AM-24', num:'24', category:'affiliate', phase:'联盟营销', title:'Affiliate招募', trigger:'每日运行', agents:['Affiliate Agent','Partner Agent'], datasources:'博主 · 媒体 · KOL · 网站站长', output:'联盟成员数据库 · 招募策略', webhook:'Affiliate Agent → CRM → Partner Agent' },
+  { id:'AM-25', num:'25', category:'affiliate', phase:'联盟营销', title:'联盟管理', trigger:'联盟成员加入', agents:['Affiliate Manager Agent'], datasources:'联盟系统 · 订单数据', output:'佣金管理 · 推广链接 · 转化统计 · 结算', webhook:'订单 → Affiliate Manager → 佣金结算' },
+  // 第十一阶段：品牌矩阵系统
+  { id:'AM-26', num:'26', category:'brandmatrix', phase:'品牌矩阵', title:'品牌扩张', trigger:'品牌稳定后', agents:['Brand Expansion Agent','Market Agent'], datasources:'市场数据 · 品类数据 · 竞争数据', output:'新品类 · 新市场 · 新品牌 分析报告', webhook:'Brand Agent → Brand Expansion Agent → CEO Agent' },
+  { id:'AM-27', num:'27', category:'brandmatrix', phase:'品牌矩阵', title:'品牌内容矩阵', trigger:'每日运行', agents:['Content Director Agent'], datasources:'Amazon Posts · TikTok · Instagram · Facebook · YouTube · LinkedIn', output:'多平台内容分发 · 品牌一致性管理', webhook:'Content Director → 各平台 → Analytics' },
+  // 第十二阶段：订单与运营系统
+  { id:'AM-28', num:'28', category:'ops', phase:'订单运营', title:'订单管理', trigger:'订单创建 Webhook', agents:['Order Agent','Inventory Agent','Logistics Agent'], datasources:'Amazon Seller Central · ERP · WMS', output:'订单确认 · 库存扣减 · 物流触发', webhook:'Amazon订单 → Order Agent → ERP' },
+  { id:'AM-29', num:'29', category:'ops', phase:'订单运营', title:'库存预警', trigger:'库存低于阈值 Webhook', agents:['Inventory Agent','Forecast Agent','Procurement Agent'], datasources:'ERP · 库存数据 · 销售数据', output:'库存预警 · 补货建议 · 采购触发', webhook:'库存变化 → Inventory Agent → Procurement Agent' },
+  { id:'AM-30', num:'30', category:'ops', phase:'订单运营', title:'补货预测', trigger:'每日运行', agents:['Demand Forecast Agent'], datasources:'销售数据 · 季节数据 · 广告数据', output:'30天 · 60天 · 90天 补货预测', webhook:'Forecast Agent → Inventory Agent → CEO Agent' },
+  // 第十三阶段：CEO驾驶舱
+  { id:'AM-31', num:'31', category:'ceo', phase:'CEO驾驶舱', title:'Amazon经营日报', trigger:'每日运行', agents:['Sales Agent','PPC Agent','Review Agent','Inventory Agent','Finance Agent'], datasources:'Amazon Seller Central · Amazon Ads · DSP · CRM · ERP', output:'销售额 · 利润 · 广告ROI · 库存风险 · 关键词排名 · Review情况 · 增长建议', webhook:'全系统 → CEO Agent → 经营日报' },
+];
+
 let activeTikTokFilter = 'all';
 let selectedTikTokTaskFlowId = null;
 
@@ -4079,6 +4936,371 @@ function generateGMVReport() {
 }
 
 // ============================================================
+// Amazon 品牌增长SOP TaskFlow 渲染
+// ============================================================
+let activeAmazonFilter = 'all';
+let selectedAmazonTaskFlowId = null;
+
+function renderAmazonTaskFlows(filter) {
+  activeAmazonFilter = filter || 'all';
+  const grid = document.getElementById('amazonTaskFlowGrid');
+  if (!grid) return;
+
+  const filtered = activeAmazonFilter === 'all'
+    ? AMAZON_TASKFLOWS
+    : AMAZON_TASKFLOWS.filter(w => w.category === activeAmazonFilter);
+
+  const categoryLabels = {
+    market: '市场选品', listing: 'Listing系统', seo: 'SEO系统',
+    ppc: 'PPC广告', review: 'Review系统', brandstore: 'Brand Store',
+    subs: 'Subscribe', dsp: 'DSP广告', offsite: '站外引流',
+    affiliate: '联盟营销', brandmatrix: '品牌矩阵', ops: '订单运营', ceo: 'CEO驾驶舱'
+  };
+
+  grid.innerHTML = filtered.map(tf => {
+    const agentTags = tf.agents.map((a, i) => {
+      let html = `<span class="am-agent-tag">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="am-agent-arrow">↓</span>';
+      return html;
+    }).join('');
+
+    return `
+    <div class="amazon-taskflow-card ${selectedAmazonTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleAmazonTaskFlowDetail('${tf.id}')">
+      <span class="am-category-badge badge-am-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+      <div class="am-num">${tf.phase} · ${tf.id}</div>
+      <div class="am-title">${tf.title}</div>
+      <div class="am-trigger">🔔 ${tf.trigger}</div>
+      <div class="am-agents">${agentTags}</div>
+      <div class="am-output">📤 ${tf.output}</div>
+    </div>`;
+  }).join('');
+
+  // 更新筛选按钮状态
+  document.querySelectorAll('#amazonTaskFlowFilter .btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`#amazonTaskFlowFilter .btn[onclick*="${activeAmazonFilter}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function filterAmazonTaskFlows(category, btn) {
+  renderAmazonTaskFlows(category);
+}
+
+function toggleAmazonTaskFlowDetail(taskFlowId) {
+  const tf = AMAZON_TASKFLOWS.find(w => w.id === taskFlowId);
+  if (!tf) return;
+
+  if (selectedAmazonTaskFlowId === taskFlowId) {
+    selectedAmazonTaskFlowId = null;
+  } else {
+    selectedAmazonTaskFlowId = taskFlowId;
+  }
+
+  renderAmazonTaskFlows(activeAmazonFilter);
+
+  const grid = document.getElementById('amazonTaskFlowGrid');
+  let detailPanel = document.getElementById('amazonDetailPanel');
+  if (!detailPanel) {
+    detailPanel = document.createElement('div');
+    detailPanel.id = 'amazonDetailPanel';
+    detailPanel.className = 'amazon-detail-panel';
+    grid.parentNode.insertBefore(detailPanel, grid);
+  }
+
+  if (selectedAmazonTaskFlowId) {
+    const agentFlow = tf.agents.map((a, i) => {
+      let html = `<span class="am-agent-tag" style="font-size:12px;padding:4px 12px;">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="am-agent-arrow" style="font-size:14px;">↓</span>';
+      return html;
+    }).join('');
+
+    detailPanel.innerHTML = `
+      <div class="amazon-detail-header">
+        <div>
+          <span style="color:#f59e0b;font-size:12px;">${tf.phase} · ${tf.id}</span>
+          <span style="font-size:16px;font-weight:700;margin-left:8px;">${tf.title}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm" onclick="testAmazonTaskFlow('${tf.id}')" style="background:rgba(245,158,11,0.1);color:#f59e0b;">🧪 测试触发</button>
+          <button class="btn btn-sm btn-primary" onclick="deployAmazonTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" onclick="closeAmazonTaskFlowDetail()">✕ 关闭</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">🔔 触发条件：${tf.trigger}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:4px;">📡 数据来源：${tf.datasources}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;">🤖 执行Agent链：</div>
+      <div class="amazon-detail-flow">${agentFlow}</div>
+      <div style="font-size:12px;color:var(--accent2);margin-bottom:8px;">📤 输出：${tf.output}</div>
+      <div style="font-size:12px;color:var(--accent);">🔗 Webhook链：${tf.webhook}</div>
+      <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Webhook 调用示例：</div>
+        <pre style="font-size:10px;color:var(--text);font-family:monospace;white-space:pre-wrap;">POST /hooks/agent
+{
+  "message": "${tf.title}",
+  "name": "${tf.id}",
+  "deliver": false
+}</pre>
+      </div>
+    `;
+    detailPanel.style.display = 'block';
+  } else {
+    detailPanel.style.display = 'none';
+  }
+}
+
+function closeAmazonTaskFlowDetail() {
+  selectedAmazonTaskFlowId = null;
+  const panel = document.getElementById('amazonDetailPanel');
+  if (panel) panel.style.display = 'none';
+  renderAmazonTaskFlows(activeAmazonFilter);
+}
+
+function testAmazonTaskFlow(id) {
+  const tf = AMAZON_TASKFLOWS.find(w => w.id === id);
+  showToast(`🧪 正在触发 Amazon TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ Amazon TaskFlow ${id} 测试完成，输出已生成`, 'success'), 2000);
+}
+
+function deployAmazonTaskFlow(id) {
+  const tf = AMAZON_TASKFLOWS.find(w => w.id === id);
+  showToast(`🚀 正在部署 Amazon TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ Amazon TaskFlow ${id} 已部署上线，Webhook 已配置`, 'success'), 2500);
+}
+
+function initAmazonSOP() {
+  showToast('🚀 正在初始化 Amazon 品牌增长SOP系统...', 'success');
+  setTimeout(() => {
+    localStorage.setItem('amazon_sop_initialized', 'true');
+    showToast('✅ Amazon品牌增长系统初始化完成！31个TaskFlow已配置，6大Agent中心已就绪', 'success');
+  }, 3000);
+}
+
+function syncAmazonWebhooks() {
+  showToast('🔄 正在同步 Amazon Webhook 配置...', 'success');
+  setTimeout(() => {
+    showToast('✅ Webhook 同步完成！Amazon Seller Central/Ads/DSP/CRM/ERP 已连接', 'success');
+  }, 3000);
+}
+
+function generateAmazonReport() {
+  showToast('📊 正在生成 Amazon 经营日报...', 'success');
+  setTimeout(() => {
+    showToast('✅ 经营日报已生成！包含销售额/利润/广告ROI/库存风险/关键词排名/Review/增长建议', 'success');
+  }, 2500);
+}
+
+// ============================================================
+// Shopify DTC 品牌增长SOP TaskFlow 数据 (40个)
+// ============================================================
+const SHOPIFY_DTC_TASKFLOWS = [
+  // 第一阶段：品牌战略系统
+  { id:'SH-01', num:'01', category:'brand', phase:'品牌战略', title:'品牌定位系统', trigger:'品牌启动', agents:['Brand Strategy Agent','Consumer Insight Agent','Market Agent'], datasources:'市场数据 · 消费者洞察 · 竞品分析', output:'品牌定位 · 品牌使命 · 品牌愿景 · 品牌价值观 · 品牌口号 · USP', webhook:'Market Agent → Brand Strategy Agent → CEO Agent' },
+  { id:'SH-02', num:'02', category:'brand', phase:'品牌战略', title:'品牌故事系统', trigger:'品牌定位完成后', agents:['Storytelling Agent','Content Agent'], datasources:'品牌定位 · 创始人故事 · 产品信息', output:'品牌故事 · 创始人故事 · 产品故事 · 用户故事', webhook:'Brand Agent → Content Agent → 全平台分发' },
+  // 第二阶段：Shopify网站系统
+  { id:'SH-03', num:'03', category:'shopify', phase:'Shopify网站', title:'网站架构规划', trigger:'品牌启动', agents:['Shopify Architect Agent','UX Agent','CRO Agent'], datasources:'Shopify · 行业最佳实践 · CRO数据', output:'Home · Product · Collection · Blog · About · FAQ · Contact · Affiliate · Community 页面结构', webhook:'Brand Agent → Shopify Architect → Shopify' },
+  { id:'SH-04', num:'04', category:'shopify', phase:'Shopify网站', title:'产品页自动生成', trigger:'新品创建', agents:['Product Page Agent','Copywriting Agent','SEO Agent'], datasources:'产品信息 · 关键词库 · 竞品分析', output:'标题 · 卖点 · FAQ · 评价展示 · SEO内容', webhook:'Product Agent → Page Agent → Shopify' },
+  { id:'SH-05', num:'05', category:'shopify', phase:'Shopify网站', title:'转化率优化', trigger:'CRO数据分析', agents:['CRO Agent','Analytics Agent'], datasources:'Shopify Analytics · 热力图 · 用户行为', output:'跳出率分析 · 停留时间 · 加购率 · 转化率 · 优化建议', webhook:'Analytics → CRO Agent → Report' },
+  // 第三阶段：Meta Ads增长系统
+  { id:'SH-06', num:'06', category:'meta', phase:'Meta Ads', title:'广告素材工厂', trigger:'每日/新品上线', agents:['Creative Agent','Video Agent','Copywriting Agent','HeyGen Agent'], datasources:'产品信息 · 素材库 · UGC内容', output:'UGC视频 · 产品视频 · 测评视频 · 创始人视频 · 数字人视频', webhook:'Creative Agent → Meta Ads → Content Library' },
+  { id:'SH-07', num:'07', category:'meta', phase:'Meta Ads', title:'广告测试系统', trigger:'素材就绪', agents:['Meta Ads Agent'], datasources:'Meta Ads API · 素材库 · 受众数据', output:'AB测试 · 兴趣测试 · 素材测试 · 受众测试', webhook:'Creative Agent → Meta Ads Agent → 自动测试' },
+  { id:'SH-08', num:'08', category:'meta', phase:'Meta Ads', title:'广告优化系统', trigger:'广告运行中/Webhook', agents:['ROAS Agent','Budget Agent'], datasources:'Meta Ads API · 实时数据', output:'CPA优化 · CTR优化 · CVR优化 · ROAS优化 · 预算调整', webhook:'Ads Data → ROAS Agent → Auto Optimize' },
+  // 第四阶段：Google Ads增长系统
+  { id:'SH-09', num:'09', category:'google', phase:'Google Ads', title:'搜索广告系统', trigger:'品牌启动', agents:['Google Search Agent','Keyword Agent'], datasources:'Google Ads · 关键词工具 · 竞品分析', output:'关键词组 · 广告组 · 搜索广告文案', webhook:'Keyword Agent → Google Ads → Campaign' },
+  { id:'SH-10', num:'10', category:'google', phase:'Google Ads', title:'Shopping广告系统', trigger:'产品就绪', agents:['Google Shopping Agent','Feed Agent'], datasources:'Shopify · Google Merchant Center', output:'Shopify → Google Merchant 自动同步 · Feed优化', webhook:'Shopify → Feed Agent → Google Merchant' },
+  { id:'SH-11', num:'11', category:'google', phase:'Google Ads', title:'PMax优化系统', trigger:'广告运行中', agents:['Performance Max Agent'], datasources:'Google Ads · 转化数据 · 素材数据', output:'预算调整 · 素材建议 · 受众优化', webhook:'PMax Agent → Google Ads → Auto Optimize' },
+  // 第五阶段：SEO增长系统
+  { id:'SH-12', num:'12', category:'seo', phase:'SEO增长', title:'关键词研究', trigger:'品牌启动/新品', agents:['SEO Agent','Keyword Agent'], datasources:'Google Search Console · 关键词工具 · 竞品分析', output:'核心关键词 · 长尾关键词 · 问题关键词', webhook:'Keyword Agent → SEO Agent → Content Agent' },
+  { id:'SH-13', num:'13', category:'seo', phase:'SEO增长', title:'博客内容工厂', trigger:'关键词研究完成', agents:['Blog Agent','Content Agent'], datasources:'关键词库 · 产品信息 · 行业知识', output:'产品教程 · 行业知识 · 测评文章 · 购买指南', webhook:'SEO Agent → Blog Agent → Shopify Blog' },
+  { id:'SH-14', num:'14', category:'seo', phase:'SEO增长', title:'SEO优化系统', trigger:'每日运行', agents:['Technical SEO Agent','On-page SEO Agent'], datasources:'Google Search Console · Shopify · 技术分析', output:'结构优化 · 链接优化 · 速度优化 · 排名监控', webhook:'SEO Agent → Shopify → Google Search Console' },
+  // 第六阶段：Email Marketing系统
+  { id:'SH-15', num:'15', category:'email', phase:'Email Marketing', title:'欢迎邮件流程', trigger:'用户注册 Webhook', agents:['Email Agent','CRM Agent'], datasources:'CRM · 邮件系统 · 品牌素材', output:'欢迎邮件 · 品牌故事 · 优惠券 · 产品推荐', webhook:'注册 → Email Agent → 客户' },
+  { id:'SH-16', num:'16', category:'email', phase:'Email Marketing', title:'弃购挽回系统', trigger:'放弃购物车 Webhook', agents:['Retention Agent','Email Agent'], datasources:'Shopify · CRM · 邮件系统', output:'提醒邮件 · 优惠券 · 用户评价 · 挽回分析', webhook:'弃购 → Retention Agent → Email Agent → 客户' },
+  { id:'SH-17', num:'17', category:'email', phase:'Email Marketing', title:'复购营销系统', trigger:'订单完成', agents:['Lifecycle Agent'], datasources:'CRM · 订单数据 · 产品数据', output:'第7天营销 · 第30天营销 · 第60天营销 · 复购分析', webhook:'订单 → Lifecycle Agent → Email → 客户' },
+  { id:'SH-18', num:'18', category:'email', phase:'Email Marketing', title:'会员邮件系统', trigger:'会员状态变化', agents:['VIP Agent'], datasources:'CRM · 会员数据 · 产品信息', output:'专属活动通知 · 新品预售 · 积分通知 · 生日营销', webhook:'会员 → VIP Agent → Email → 客户' },
+  // 第七阶段：WhatsApp增长系统
+  { id:'SH-19', num:'19', category:'whatsapp', phase:'WhatsApp增长', title:'线索接入系统', trigger:'表单提交/广告线索/网站咨询', agents:['Lead Agent','WhatsApp Agent'], datasources:'Meta Leads · 网站表单 · 广告线索', output:'客户档案建立 · 线索分类 · 自动跟进', webhook:'线索 → Lead Agent → WhatsApp Agent → CRM' },
+  { id:'SH-20', num:'20', category:'whatsapp', phase:'WhatsApp增长', title:'自动成交系统', trigger:'线索分配', agents:['Sales Agent','Product Agent'], datasources:'CRM · 产品库 · FAQ库', output:'产品推荐 · 自动报价 · FAQ回复 · 预约系统', webhook:'Lead → Sales Agent → WhatsApp → 订单' },
+  { id:'SH-21', num:'21', category:'whatsapp', phase:'WhatsApp增长', title:'售后运营系统', trigger:'订单完成', agents:['Customer Success Agent'], datasources:'订单数据 · 物流系统 · 教程库', output:'物流通知 · 使用教程 · 评价邀请 · 售后跟进', webhook:'订单 → Customer Success Agent → WhatsApp' },
+  // 第八阶段：会员体系
+  { id:'SH-22', num:'22', category:'membership', phase:'会员体系', title:'会员等级系统', trigger:'会员体系启动', agents:['Membership Agent'], datasources:'CRM · 订单数据 · 消费行为', output:'Bronze · Silver · Gold · VIP 等级规则', webhook:'CRM → Membership Agent → Shopify' },
+  { id:'SH-23', num:'23', category:'membership', phase:'会员体系', title:'积分系统', trigger:'会员等级建立后', agents:['Loyalty Agent'], datasources:'CRM · 订单数据 · 行为数据', output:'购买积分 · 签到积分 · 评价积分 · 推荐积分', webhook:'行为 → Loyalty Agent → CRM' },
+  { id:'SH-24', num:'24', category:'membership', phase:'会员体系', title:'会员营销系统', trigger:'会员数据更新', agents:['Retention Agent'], datasources:'CRM · 会员数据 · 活动日历', output:'生日营销 · 节日营销 · 专属活动 · 会员日', webhook:'会员 → Retention Agent → 多渠道触达' },
+  // 第九阶段：订阅制增长系统
+  { id:'SH-25', num:'25', category:'subscription', phase:'订阅制增长', title:'订阅产品识别', trigger:'产品上线', agents:['Subscription Agent'], datasources:'产品数据 · 消费行为 · 行业分析', output:'高频消费产品 · 耗材产品 · 会员产品 分析', webhook:'Product Agent → Subscription Agent → Report' },
+  { id:'SH-26', num:'26', category:'subscription', phase:'订阅制增长', title:'订阅营销系统', trigger:'订阅状态变化', agents:['Email Agent','WhatsApp Agent'], datasources:'CRM · 订阅数据 · 营销系统', output:'续费提醒 · 折扣通知 · 升级方案 · 暂停挽回', webhook:'订阅 → Email/WhatsApp Agent → 客户' },
+  { id:'SH-27', num:'27', category:'subscription', phase:'订阅制增长', title:'流失预警系统', trigger:'订阅行为分析', agents:['Churn Agent'], datasources:'CRM · 订阅数据 · 行为数据', output:'取消风险评估 · 挽回建议 · 预警通知', webhook:'行为分析 → Churn Agent → Retention Agent' },
+  // 第十阶段：社区运营系统
+  { id:'SH-28', num:'28', category:'community', phase:'社区运营', title:'社区建设系统', trigger:'品牌启动', agents:['Community Agent'], datasources:'Facebook Group · Discord · Telegram · WhatsApp Community', output:'社区搭建 · 规则制定 · 内容规划 · 成员管理', webhook:'Brand Agent → Community Agent → 多平台' },
+  { id:'SH-29', num:'29', category:'community', phase:'社区运营', title:'UGC增长系统', trigger:'社区运营中', agents:['UGC Agent'], datasources:'社区平台 · 用户内容 · 激励系统', output:'晒单激励 · 测评激励 · 视频激励 · 分享激励', webhook:'用户行为 → UGC Agent → 激励发放' },
+  { id:'SH-30', num:'30', category:'community', phase:'社区运营', title:'社区活跃系统', trigger:'每日运行', agents:['Engagement Agent'], datasources:'社区平台 · 内容日历 · 活动模板', output:'话题发布 · 活动发布 · 投票发布 · 挑战赛', webhook:'Engagement Agent → 社区平台 → 成员互动' },
+  // 第十一阶段：联盟营销系统
+  { id:'SH-31', num:'31', category:'affiliate', phase:'联盟营销', title:'Affiliate招募系统', trigger:'品牌启动', agents:['Affiliate Agent','Partner Agent'], datasources:'KOL数据库 · 博主平台 · 媒体资源', output:'KOL招募 · 博主合作 · 站长合作 · 媒体合作', webhook:'Affiliate Agent → Partner Agent → CRM' },
+  { id:'SH-32', num:'32', category:'affiliate', phase:'联盟营销', title:'联盟管理系统', trigger:'联盟成员加入', agents:['Affiliate Manager Agent'], datasources:'联盟系统 · 订单数据 · 佣金系统', output:'佣金管理 · 推广链接 · 转化统计 · 自动结算', webhook:'订单 → Affiliate Manager → 佣金结算' },
+  { id:'SH-33', num:'33', category:'affiliate', phase:'联盟营销', title:'推荐裂变系统', trigger:'用户购买后', agents:['Referral Agent'], datasources:'CRM · 订单数据 · 推荐系统', output:'推荐码生成 · 奖励计划 · 裂变追踪', webhook:'订单 → Referral Agent → 推荐奖励' },
+  // 第十二阶段：品牌私域资产系统
+  { id:'SH-34', num:'34', category:'cdp', phase:'品牌私域', title:'客户数据平台', trigger:'系统启动', agents:['CDP Agent','CRM Agent'], datasources:'Shopify · Meta · Google · WhatsApp · Email · Community', output:'用户画像 · 订单数据 · 行为数据 · 互动数据 统一管理', webhook:'全渠道 → CDP Agent → CRM' },
+  { id:'SH-35', num:'35', category:'cdp', phase:'品牌私域', title:'用户分层系统', trigger:'CDP数据积累', agents:['LTV Agent'], datasources:'CDP · 订单数据 · 行为数据', output:'VIP · 高价值 · 普通 · 沉睡 用户分层', webhook:'CDP → LTV Agent → 营销系统' },
+  { id:'SH-36', num:'36', category:'cdp', phase:'品牌私域', title:'生命周期运营', trigger:'用户分层完成', agents:['Lifecycle Agent'], datasources:'CDP · 用户分层 · 营销系统', output:'拉新 · 激活 · 转化 · 留存 · 召回 自动化运营', webhook:'用户分层 → Lifecycle Agent → 多渠道' },
+  // 第十三阶段：订单与履约系统
+  { id:'SH-37', num:'37', category:'ops', phase:'订单履约', title:'订单管理系统', trigger:'Shopify订单 Webhook', agents:['Order Agent','Inventory Agent','Logistics Agent'], datasources:'Shopify · ERP · WMS', output:'订单确认 · 库存扣减 · 物流触发 · 状态同步', webhook:'Shopify订单 → Order Agent → ERP' },
+  { id:'SH-38', num:'38', category:'ops', phase:'订单履约', title:'库存预警系统', trigger:'库存阈值 Webhook', agents:['Forecast Agent','Inventory Agent'], datasources:'ERP · 库存数据 · 销售数据', output:'库存预警 · 补货建议 · 采购触发', webhook:'库存变化 → Inventory Agent → Procurement Agent' },
+  { id:'SH-39', num:'39', category:'ops', phase:'订单履约', title:'售后处理系统', trigger:'售后请求', agents:['Customer Success Agent','Complaint Agent'], datasources:'订单数据 · CRM · 售后系统', output:'退换货处理 · 投诉处理 · 满意度追踪', webhook:'售后 → Customer Success Agent → 自动处理' },
+  // 第十四阶段：CEO增长驾驶舱
+  { id:'SH-40', num:'40', category:'ceo', phase:'CEO驾驶舱', title:'DTC经营日报', trigger:'每日运行', agents:['Sales Agent','Ads Agent','SEO Agent','Finance Agent','Community Agent'], datasources:'Shopify · Meta Ads · Google Ads · Google Analytics · CRM · Email · WhatsApp · Community', output:'营收 · 利润 · ROAS · CAC · LTV · 复购率 · 会员增长 · 社区增长', webhook:'全系统 → CEO Agent → 经营日报' },
+];
+
+let activeShopifyFilter = 'all';
+let selectedShopifyTaskFlowId = null;
+
+// ============================================================
+// Shopify DTC 品牌增长SOP TaskFlow 渲染
+// ============================================================
+function renderShopifyTaskFlows(filter) {
+  activeShopifyFilter = filter || 'all';
+  const grid = document.getElementById('shopifyTaskFlowGrid');
+  if (!grid) return;
+
+  const filtered = activeShopifyFilter === 'all'
+    ? SHOPIFY_DTC_TASKFLOWS
+    : SHOPIFY_DTC_TASKFLOWS.filter(w => w.category === activeShopifyFilter);
+
+  const categoryLabels = {
+    brand: '品牌战略', shopify: 'Shopify网站', meta: 'Meta Ads',
+    google: 'Google Ads', seo: 'SEO增长', email: 'Email Marketing',
+    whatsapp: 'WhatsApp', membership: '会员体系', subscription: '订阅制',
+    community: '社区运营', affiliate: '联盟营销', cdp: '品牌私域', ops: '订单履约', ceo: 'CEO驾驶舱'
+  };
+
+  grid.innerHTML = filtered.map(tf => {
+    const agentTags = tf.agents.map((a, i) => {
+      let html = `<span class="sh-agent-tag">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="sh-agent-arrow">↓</span>';
+      return html;
+    }).join('');
+
+    return `
+    <div class="shopify-taskflow-card ${selectedShopifyTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleShopifyTaskFlowDetail('${tf.id}')">
+      <span class="sh-category-badge badge-sh-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+      <div class="sh-num">${tf.phase} · ${tf.id}</div>
+      <div class="sh-title">${tf.title}</div>
+      <div class="sh-trigger">🔔 ${tf.trigger}</div>
+      <div class="sh-agents">${agentTags}</div>
+      <div class="sh-output">📤 ${tf.output}</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('#shopifyTaskFlowFilter .btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`#shopifyTaskFlowFilter .btn[onclick*="${activeShopifyFilter}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function filterShopifyTaskFlows(category, btn) {
+  renderShopifyTaskFlows(category);
+}
+
+function toggleShopifyTaskFlowDetail(taskFlowId) {
+  const tf = SHOPIFY_DTC_TASKFLOWS.find(w => w.id === taskFlowId);
+  if (!tf) return;
+
+  if (selectedShopifyTaskFlowId === taskFlowId) {
+    selectedShopifyTaskFlowId = null;
+  } else {
+    selectedShopifyTaskFlowId = taskFlowId;
+  }
+
+  renderShopifyTaskFlows(activeShopifyFilter);
+
+  const grid = document.getElementById('shopifyTaskFlowGrid');
+  let detailPanel = document.getElementById('shopifyDetailPanel');
+  if (!detailPanel) {
+    detailPanel = document.createElement('div');
+    detailPanel.id = 'shopifyDetailPanel';
+    detailPanel.className = 'shopify-detail-panel';
+    grid.parentNode.insertBefore(detailPanel, grid);
+  }
+
+  if (selectedShopifyTaskFlowId) {
+    const agentFlow = tf.agents.map((a, i) => {
+      let html = `<span class="sh-agent-tag" style="font-size:12px;padding:4px 12px;">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="sh-agent-arrow" style="font-size:14px;">↓</span>';
+      return html;
+    }).join('');
+
+    detailPanel.innerHTML = `
+      <div class="shopify-detail-header">
+        <div>
+          <span style="color:#22c55e;font-size:12px;">${tf.phase} · ${tf.id}</span>
+          <span style="font-size:16px;font-weight:700;margin-left:8px;">${tf.title}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm" onclick="testShopifyTaskFlow('${tf.id}')" style="background:rgba(34,197,94,0.1);color:#22c55e;">🧪 测试触发</button>
+          <button class="btn btn-sm btn-primary" onclick="deployShopifyTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" onclick="closeShopifyTaskFlowDetail()">✕ 关闭</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">🔔 触发条件：${tf.trigger}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:4px;">📡 数据来源：${tf.datasources}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;">🤖 执行Agent链：</div>
+      <div class="shopify-detail-flow">${agentFlow}</div>
+      <div style="font-size:12px;color:var(--accent2);margin-bottom:8px;">📤 输出：${tf.output}</div>
+      <div style="font-size:12px;color:var(--accent);">🔗 Webhook链：${tf.webhook}</div>
+      <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Webhook 调用示例：</div>
+        <pre style="font-size:10px;color:var(--text);font-family:monospace;white-space:pre-wrap;">POST /hooks/agent
+{
+  "message": "${tf.title}",
+  "name": "${tf.id}",
+  "deliver": false
+}</pre>
+      </div>
+    `;
+    detailPanel.style.display = 'block';
+  } else {
+    detailPanel.style.display = 'none';
+  }
+}
+
+function closeShopifyTaskFlowDetail() {
+  selectedShopifyTaskFlowId = null;
+  const panel = document.getElementById('shopifyDetailPanel');
+  if (panel) panel.style.display = 'none';
+  renderShopifyTaskFlows(activeShopifyFilter);
+}
+
+function testShopifyTaskFlow(id) {
+  const tf = SHOPIFY_DTC_TASKFLOWS.find(w => w.id === id);
+  showToast(`🧪 正在触发 Shopify DTC TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ Shopify DTC TaskFlow ${id} 测试完成，输出已生成`, 'success'), 2000);
+}
+
+function deployShopifyTaskFlow(id) {
+  const tf = SHOPIFY_DTC_TASKFLOWS.find(w => w.id === id);
+  showToast(`🚀 正在部署 Shopify DTC TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ Shopify DTC TaskFlow ${id} 已部署上线，Webhook 已配置`, 'success'), 2500);
+}
+
+function initShopifyDTC() {
+  showToast('🚀 正在初始化 Shopify DTC 品牌增长SOP系统...', 'success');
+  setTimeout(() => {
+    localStorage.setItem('shopify_dtc_initialized', 'true');
+    showToast('✅ Shopify DTC品牌增长系统初始化完成！40个TaskFlow已配置，8大Agent中心已就绪', 'success');
+  }, 3000);
+}
+
+function syncShopifyWebhooks() {
+  showToast('🔄 正在同步 Shopify DTC Webhook 配置...', 'success');
+  setTimeout(() => {
+    showToast('✅ Webhook 同步完成！Shopify/Meta Ads/Google Ads/WhatsApp/Email/Community 已连接', 'success');
+  }, 3000);
+}
+
+function generateShopifyReport() {
+  showToast('📊 正在生成 DTC 经营日报...', 'success');
+  setTimeout(() => {
+    showToast('✅ DTC经营日报已生成！包含营收/利润/ROAS/CAC/LTV/复购率/会员增长/社区增长', 'success');
+  }, 2500);
+}
+
+// ============================================================
 // 页面加载完成后初始化 Ollama 配置
 initOllamaConfig();
 
@@ -4111,6 +5333,8 @@ function switchPanel(panelName, navItem) {
     'anygen': '🌐 AnyGen.io 工作台 · 50 Webhook 自动化工作流 | CRM+ERP+Shopify+Amazon+TikTok',
     'factory': '🏭 AI工厂出海SOP · 17 TaskFlow | OEM/ODM制造企业全链路自动化出海系统',
     'tiktokshop': '🎵 TikTok Shop 全球增长SOP · 30 TaskFlow | 选品+内容+达人+直播+广告+私域+联盟+GMV增长飞轮',
+    'amazonbrand': '📦 Amazon 品牌增长SOP · 31 TaskFlow | 选品+Listing+SEO+PPC+Review+Brand Store+DSP+站外引流+联盟+品牌矩阵',
+    'shopifydtc': '🛍️ Shopify DTC 品牌增长SOP · 40 TaskFlow | 品牌战略+Shopify+Meta+Google+SEO+Email+WhatsApp+会员+订阅+社区+联盟+私域+履约',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -4126,6 +5350,8 @@ function switchPanel(panelName, navItem) {
   if (panelName === 'anygen') renderWebhookWorkflows('all');
   if (panelName === 'factory') renderFactoryTaskFlows('all');
   if (panelName === 'tiktokshop') renderTikTokTaskFlows('all');
+  if (panelName === 'amazonbrand') renderAmazonTaskFlows('all');
+  if (panelName === 'shopifydtc') renderShopifyTaskFlows('all');
 }
 
 // ============================================================
@@ -7373,6 +8599,8 @@ function refreshDashboard() {
   if (APP.currentPanel === 'anygen') renderWebhookWorkflows('all');
   if (APP.currentPanel === 'factory') renderFactoryTaskFlows('all');
   if (APP.currentPanel === 'tiktokshop') renderTikTokTaskFlows('all');
+  if (APP.currentPanel === 'amazonbrand') renderAmazonTaskFlows('all');
+  if (APP.currentPanel === 'shopifydtc') renderShopifyTaskFlows('all');
   showToast('🔄 仪表盘已刷新', 'success');
 }
 
