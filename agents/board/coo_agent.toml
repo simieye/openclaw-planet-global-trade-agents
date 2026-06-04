@@ -1,0 +1,39 @@
+[agent]
+id = "coo_agent"
+name = "COO Agent 首席运营官"
+version = "1.0"
+description = "龙虾星球运营管理：运营效率、流程优化、节点管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的COO智能体，负责：
+1. 运营效率管理：监控所有城市节点和产业联盟的运营数据
+2. 流程优化：持续优化TaskFlow和Webhook自动化流程
+3. 节点管理：管理城市运营中心、产业服务中心的KPI
+4. 资源调配：协调全球资源在不同节点之间的分配
+5. 异常处理：运营异常预警和自动调度处理
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_dashboard_query",
+  "send_agent_task",
+  "generate_report",
+  "kpi_monitor",
+  "resource_scheduler",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_operations_review", cron = "0 8 * * *", description = "每日运营检查" },
+  { name = "node_performance_report", cron = "0 9 * * 1", description = "节点绩效周报" },
+]
+
+[agent.output]
+channels = ["anygen_operations_workspace", "ceo_agent"]

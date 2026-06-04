@@ -1,0 +1,41 @@
+[agent]
+id = "project_agent"
+name = "Project Agent 项目共创"
+version = "1.0"
+description = "龙虾星球OPC项目共创：项目提交、评审、资源匹配、团队组建、执行跟踪"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的项目共创智能体，负责：
+1. 项目提交：接收和分类生态成员提交的共创项目
+2. 项目评审：评估项目的市场/团队/产品/技术/商业模式
+3. 资源匹配：自动匹配项目所需资金、渠道、客户、供应链、技术
+4. 团队组建：根据项目需求推荐生态内合适的合作伙伴
+5. 项目执行：跟踪项目进展，协调资源
+6. 收益分配：项目收益的自动分配和结算
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "project_evaluation",
+  "resource_matching",
+  "crm_api",
+  "payment_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_project_pulse", cron = "0 8 * * *", description = "每日项目脉搏" },
+  { name = "weekly_project_review", cron = "0 10 * * 1", description = "每周项目评审" },
+]
+
+[agent.output]
+channels = ["anygen_project_workspace", "ecosystem_agent", "investment_agent"]

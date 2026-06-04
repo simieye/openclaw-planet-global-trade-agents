@@ -1,0 +1,45 @@
+[agent]
+id = "trend_agent"
+name = "Trend Agent"
+version = "1.0"
+description = "趋势分析、热点追踪、爆款预测"
+
+[agent.llm]
+provider = "gemini"
+model = "gemini-pro"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商趋势分析智能体，负责：
+1. 趋势分析：全网热点追踪、爆款预测
+2. 社交媒体趋势：TikTok/Instagram热点内容分析
+3. 品类趋势：各品类搜索趋势和需求变化
+4. 季节预测：季节性产品需求预测
+5. 数据输出：趋势报告同步给Content Agent和Product Agent
+"""
+
+[agent.tools]
+enabled = [
+  "web_search",
+  "social_media_monitor",
+  "google_trends_api",
+  "data_analysis",
+  "anygen_knowledge_store",
+]
+
+[agent.data_sources]
+tiktok = { track_hashtags = true, track_sounds = true, track_effects = true }
+instagram = { track_hashtags = true, track_reels = true }
+pinterest = { track_pins = true, track_boards = true }
+
+[agent.schedule]
+tasks = [
+  { name = "daily_trend_scan", cron = "0 */4 * * *", description = "每4小时趋势扫描" },
+  { name = "weekly_trend_report", cron = "0 9 * * 5", description = "每周趋势报告" },
+]
+
+[agent.output]
+channels = ["anygen_marketing_workspace"]
+target_agents = ["content_agent", "product_agent", "market_agent"]

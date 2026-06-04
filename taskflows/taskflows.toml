@@ -1,0 +1,915 @@
+# ============================================================
+# 龙虾星球共创联盟 - TaskFlow 执行引擎
+# OpenClaw TaskFlow 完整工作流定义
+# ============================================================
+
+[meta]
+version = "3.0"
+engine = "openclaw"
+cluster = "lobster-planet-alliance"
+
+# ============================================================
+# 一、核心业务TaskFlow
+# ============================================================
+
+# 客户成交 TaskFlow
+[taskflow.customer_acquisition]
+name = "客户成交流水线"
+description = "从线索到成交的全流程自动化"
+priority = "high"
+trigger = "lead_scored_above_threshold"
+
+[[taskflow.customer_acquisition.steps]]
+order = 1
+agent = "lead_agent"
+action = "enrich_and_score_lead"
+input_from = "webhook:new_lead_detected"
+output_to = "sdr_agent"
+timeout_seconds = 300
+
+[[taskflow.customer_acquisition.steps]]
+order = 2
+agent = "sdr_agent"
+action = "create_outreach_sequence"
+input_from = "lead_agent"
+output_to = "sales_agent"
+timeout_seconds = 600
+condition = "lead_score >= 70"
+
+[[taskflow.customer_acquisition.steps]]
+order = 3
+agent = "sales_agent"
+action = "engage_and_qualify"
+input_from = "sdr_agent"
+output_to = "proposal_agent"
+timeout_seconds = 3600
+condition = "lead_responded == true"
+
+[[taskflow.customer_acquisition.steps]]
+order = 4
+agent = "proposal_agent"
+action = "generate_proposal"
+input_from = "sales_agent"
+output_to = "quotation_agent"
+timeout_seconds = 600
+
+[[taskflow.customer_acquisition.steps]]
+order = 5
+agent = "quotation_agent"
+action = "generate_quotation"
+input_from = "proposal_agent"
+output_to = "contract_agent"
+timeout_seconds = 300
+condition = "proposal_accepted == true"
+
+[[taskflow.customer_acquisition.steps]]
+order = 6
+agent = "contract_agent"
+action = "generate_contract"
+input_from = "quotation_agent"
+output_to = "payment_agent"
+timeout_seconds = 600
+condition = "quotation_accepted == true"
+
+[[taskflow.customer_acquisition.steps]]
+order = 7
+agent = "payment_agent"
+action = "process_payment"
+input_from = "contract_agent"
+output_to = "order_agent"
+timeout_seconds = 1800
+condition = "contract_signed == true"
+
+[[taskflow.customer_acquisition.steps]]
+order = 8
+agent = "customer_success_agent"
+action = "start_onboarding"
+input_from = "payment_agent"
+output_to = "crm"
+timeout_seconds = 300
+condition = "payment_confirmed == true"
+
+# ============================================================
+# 电商运营 TaskFlow
+# ============================================================
+[taskflow.ecommerce_operations]
+name = "电商运营流水线"
+description = "趋势驱动的内容-广告-留存全链路"
+priority = "high"
+trigger = "scheduled:daily"
+
+[[taskflow.ecommerce_operations.steps]]
+order = 1
+agent = "trend_agent"
+action = "scan_trends"
+input_from = "scheduled:daily_trend_scan"
+output_to = "content_agent"
+timeout_seconds = 600
+
+[[taskflow.ecommerce_operations.steps]]
+order = 2
+agent = "content_agent"
+action = "generate_content_batch"
+input_from = "trend_agent"
+output_to = "video_agent"
+timeout_seconds = 1800
+
+[[taskflow.ecommerce_operations.steps]]
+order = 3
+agent = "video_agent"
+action = "produce_videos"
+input_from = "content_agent"
+output_to = "ads_agent"
+timeout_seconds = 3600
+
+[[taskflow.ecommerce_operations.steps]]
+order = 4
+agent = "ads_agent"
+action = "launch_and_optimize_ads"
+input_from = "video_agent"
+output_to = "crm_agent"
+timeout_seconds = 600
+
+[[taskflow.ecommerce_operations.steps]]
+order = 5
+agent = "crm_agent"
+action = "sync_and_analyze_customers"
+input_from = "ads_agent"
+output_to = "retention_agent"
+timeout_seconds = 300
+
+[[taskflow.ecommerce_operations.steps]]
+order = 6
+agent = "retention_agent"
+action = "run_retention_campaign"
+input_from = "crm_agent"
+output_to = "ceo_agent"
+timeout_seconds = 600
+
+# ============================================================
+# 工厂生产 TaskFlow
+# ============================================================
+[taskflow.factory_production]
+name = "工厂生产流水线"
+description = "订单到发货的全流程自动化"
+priority = "critical"
+trigger = "order_confirmed"
+
+[[taskflow.factory_production.steps]]
+order = 1
+agent = "order_agent"
+action = "process_order"
+input_from = "webhook:order_confirmed"
+output_to = "production_agent"
+timeout_seconds = 300
+
+[[taskflow.factory_production.steps]]
+order = 2
+agent = "production_agent"
+action = "schedule_production"
+input_from = "order_agent"
+output_to = "procurement_agent"
+timeout_seconds = 600
+condition = "inventory_insufficient == true"
+
+[[taskflow.factory_production.steps]]
+order = 3
+agent = "procurement_agent"
+action = "procure_materials"
+input_from = "production_agent"
+output_to = "production_agent"
+timeout_seconds = 1800
+
+[[taskflow.factory_production.steps]]
+order = 4
+agent = "quality_agent"
+action = "inspect_batch"
+input_from = "production_agent"
+output_to = "logistics_agent"
+timeout_seconds = 600
+condition = "production_completed == true"
+
+[[taskflow.factory_production.steps]]
+order = 5
+agent = "logistics_agent"
+action = "ship_order"
+input_from = "quality_agent"
+output_to = "order_agent"
+timeout_seconds = 600
+condition = "quality_passed == true"
+
+[[taskflow.factory_production.steps]]
+order = 6
+agent = "order_agent"
+action = "update_order_status"
+input_from = "logistics_agent"
+output_to = "customer_success_agent"
+timeout_seconds = 300
+
+# ============================================================
+# 市场调研 TaskFlow
+# ============================================================
+[taskflow.market_research]
+name = "市场调研流水线"
+description = "市场洞察驱动产品和内容策略"
+priority = "medium"
+trigger = "scheduled:weekly"
+
+[[taskflow.market_research.steps]]
+order = 1
+agent = "market_agent"
+action = "full_market_scan"
+input_from = "scheduled:weekly_market_scan"
+output_to = "product_agent"
+timeout_seconds = 3600
+
+[[taskflow.market_research.steps]]
+order = 2
+agent = "product_agent"
+action = "optimize_product_positioning"
+input_from = "market_agent"
+output_to = "content_agent"
+timeout_seconds = 1200
+
+[[taskflow.market_research.steps]]
+order = 3
+agent = "content_agent"
+action = "update_brand_language"
+input_from = "product_agent"
+output_to = "ceo_agent"
+timeout_seconds = 600
+
+# ============================================================
+# 财务管理 TaskFlow
+# ============================================================
+[taskflow.financial_management]
+name = "财务管理流水线"
+description = "财务数据处理和报告生成"
+priority = "medium"
+trigger = "scheduled:daily"
+
+[[taskflow.financial_management.steps]]
+order = 1
+agent = "payment_agent"
+action = "reconcile_payments"
+input_from = "scheduled:daily"
+output_to = "accountant_agent"
+timeout_seconds = 600
+
+[[taskflow.financial_management.steps]]
+order = 2
+agent = "accountant_agent"
+action = "book_journal_entries"
+input_from = "payment_agent"
+output_to = "invoice_agent"
+timeout_seconds = 600
+
+[[taskflow.financial_management.steps]]
+order = 3
+agent = "invoice_agent"
+action = "process_invoices"
+input_from = "accountant_agent"
+output_to = "finance_agent"
+timeout_seconds = 300
+
+[[taskflow.financial_management.steps]]
+order = 4
+agent = "finance_agent"
+action = "generate_financial_report"
+input_from = "invoice_agent"
+output_to = "ceo_agent"
+timeout_seconds = 600
+
+# ============================================================
+# 品牌出海全流程 TaskFlow
+# ============================================================
+[taskflow.brand_globalization]
+name = "品牌出海全流程"
+description = "从市场调研到客户成交的端到端品牌出海流程"
+priority = "high"
+trigger = "manual:launch_brand_campaign"
+
+[[taskflow.brand_globalization.steps]]
+order = 1
+agent = "market_agent"
+action = "analyze_target_market"
+input_from = "campaign_config"
+output_to = "product_agent"
+timeout_seconds = 7200
+
+[[taskflow.brand_globalization.steps]]
+order = 2
+agent = "product_agent"
+action = "localize_product"
+input_from = "market_agent"
+output_to = "content_agent"
+timeout_seconds = 3600
+
+[[taskflow.brand_globalization.steps]]
+order = 3
+agent = "content_agent"
+action = "build_content_matrix"
+input_from = "product_agent"
+output_to = "video_agent"
+timeout_seconds = 3600
+
+[[taskflow.brand_globalization.steps]]
+order = 4
+agent = "video_agent"
+action = "produce_campaign_videos"
+input_from = "content_agent"
+output_to = "ads_agent"
+timeout_seconds = 7200
+
+[[taskflow.brand_globalization.steps]]
+order = 5
+agent = "ads_agent"
+action = "launch_multi_channel_ads"
+input_from = "video_agent"
+output_to = "tiktok_shop_agent"
+timeout_seconds = 1800
+
+[[taskflow.brand_globalization.steps]]
+order = 6
+agent = "tiktok_shop_agent"
+action = "setup_shop_and_listings"
+input_from = "ads_agent"
+output_to = "marketplace_agent"
+timeout_seconds = 1800
+
+[[taskflow.brand_globalization.steps]]
+order = 7
+agent = "marketplace_agent"
+action = "setup_marketplace_listings"
+input_from = "tiktok_shop_agent"
+output_to = "lead_agent"
+timeout_seconds = 1800
+
+[[taskflow.brand_globalization.steps]]
+order = 8
+agent = "lead_agent"
+action = "mine_target_customers"
+input_from = "marketplace_agent"
+output_to = "sdr_agent"
+timeout_seconds = 3600
+
+[[taskflow.brand_globalization.steps]]
+order = 9
+agent = "sdr_agent"
+action = "launch_outreach_campaign"
+input_from = "lead_agent"
+output_to = "ceo_agent"
+timeout_seconds = 1800
+
+# ============================================================
+# 二、龙虾星球生态TaskFlow
+# ============================================================
+
+# 全球加盟裂变 TaskFlow
+[taskflow.franchise_expansion]
+name = "全球加盟裂变流水线"
+description = "加盟线索→评分→招商→签约→培训→上线全流程"
+priority = "high"
+trigger = "franchise_lead_detected"
+
+[[taskflow.franchise_expansion.steps]]
+order = 1
+agent = "franchise_agent"
+action = "discover_franchise_leads"
+input_from = "scheduled:daily"
+output_to = "lead_agent"
+timeout_seconds = 1800
+
+[[taskflow.franchise_expansion.steps]]
+order = 2
+agent = "lead_agent"
+action = "enrich_franchise_lead"
+input_from = "franchise_agent"
+output_to = "sdr_agent"
+timeout_seconds = 600
+
+[[taskflow.franchise_expansion.steps]]
+order = 3
+agent = "sdr_agent"
+action = "score_franchise_lead"
+input_from = "lead_agent"
+output_to = "franchise_agent"
+timeout_seconds = 300
+condition = "lead_enriched == true"
+
+[[taskflow.franchise_expansion.steps]]
+order = 4
+agent = "franchise_agent"
+action = "send_franchise_package"
+input_from = "sdr_agent"
+output_to = "heygen_agent"
+timeout_seconds = 600
+condition = "lead_score >= 70"
+
+[[taskflow.franchise_expansion.steps]]
+order = 5
+agent = "heygen_agent"
+action = "generate_franchise_video"
+input_from = "franchise_agent"
+output_to = "sales_agent"
+timeout_seconds = 3600
+
+[[taskflow.franchise_expansion.steps]]
+order = 6
+agent = "sales_agent"
+action = "engage_franchise_lead"
+input_from = "heygen_agent"
+output_to = "contract_agent"
+timeout_seconds = 7200
+condition = "lead_responded == true"
+
+[[taskflow.franchise_expansion.steps]]
+order = 7
+agent = "contract_agent"
+action = "generate_franchise_contract"
+input_from = "sales_agent"
+output_to = "payment_agent"
+timeout_seconds = 600
+
+[[taskflow.franchise_expansion.steps]]
+order = 8
+agent = "payment_agent"
+action = "process_franchise_payment"
+input_from = "contract_agent"
+output_to = "training_agent"
+timeout_seconds = 1800
+condition = "contract_signed == true"
+
+[[taskflow.franchise_expansion.steps]]
+order = 9
+agent = "training_agent"
+action = "start_franchise_training"
+input_from = "payment_agent"
+output_to = "city_node_agent"
+timeout_seconds = 600
+
+[[taskflow.franchise_expansion.steps]]
+order = 10
+agent = "city_node_agent"
+action = "activate_city_node"
+input_from = "training_agent"
+output_to = "ceo_agent"
+timeout_seconds = 300
+
+# ============================================================
+# OPC项目共创 TaskFlow
+# ============================================================
+[taskflow.opc_project_cocreation]
+name = "OPC项目共创流水线"
+description = "项目提交→评审→资源匹配→团队组建→执行→收益分配"
+priority = "high"
+trigger = "project_submitted"
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 1
+agent = "project_agent"
+action = "receive_project"
+input_from = "webhook:project_submitted"
+output_to = "ecosystem_agent"
+timeout_seconds = 300
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 2
+agent = "ecosystem_agent"
+action = "evaluate_project"
+input_from = "project_agent"
+output_to = "investment_agent"
+timeout_seconds = 1800
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 3
+agent = "investment_agent"
+action = "investment_review"
+input_from = "ecosystem_agent"
+output_to = "project_agent"
+timeout_seconds = 3600
+condition = "project_score >= 60"
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 4
+agent = "project_agent"
+action = "match_resources"
+input_from = "investment_agent"
+output_to = "partner_agent"
+timeout_seconds = 1200
+condition = "investment_approved == true"
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 5
+agent = "partner_agent"
+action = "assemble_team"
+input_from = "project_agent"
+output_to = "project_agent"
+timeout_seconds = 1800
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 6
+agent = "project_agent"
+action = "execute_project"
+input_from = "partner_agent"
+output_to = "commission_agent"
+timeout_seconds = 7200
+
+[[taskflow.opc_project_cocreation.steps]]
+order = 7
+agent = "commission_agent"
+action = "distribute_revenue"
+input_from = "project_agent"
+output_to = "ceo_agent"
+timeout_seconds = 600
+condition = "project_completed == true"
+
+# ============================================================
+# 全球扩张 TaskFlow
+# ============================================================
+[taskflow.global_expansion]
+name = "全球扩张流水线"
+description = "市场分析→合规审查→节点建设→运营启动"
+priority = "high"
+trigger = "expansion_trigger"
+
+[[taskflow.global_expansion.steps]]
+order = 1
+agent = "global_expansion_agent"
+action = "analyze_new_market"
+input_from = "scheduled:weekly"
+output_to = "market_agent"
+timeout_seconds = 3600
+
+[[taskflow.global_expansion.steps]]
+order = 2
+agent = "market_agent"
+action = "deep_market_research"
+input_from = "global_expansion_agent"
+output_to = "legal_agent"
+timeout_seconds = 7200
+
+[[taskflow.global_expansion.steps]]
+order = 3
+agent = "legal_agent"
+action = "compliance_review"
+input_from = "market_agent"
+output_to = "cro_agent"
+timeout_seconds = 1800
+
+[[taskflow.global_expansion.steps]]
+order = 4
+agent = "cro_agent"
+action = "risk_assessment"
+input_from = "legal_agent"
+output_to = "cfo_agent"
+timeout_seconds = 1200
+
+[[taskflow.global_expansion.steps]]
+order = 5
+agent = "cfo_agent"
+action = "financial_feasibility"
+input_from = "cro_agent"
+output_to = "global_expansion_agent"
+timeout_seconds = 1800
+condition = "risk_acceptable == true"
+
+[[taskflow.global_expansion.steps]]
+order = 6
+agent = "global_expansion_agent"
+action = "establish_country_center"
+input_from = "cfo_agent"
+output_to = "city_node_agent"
+timeout_seconds = 3600
+condition = "investment_approved == true"
+
+[[taskflow.global_expansion.steps]]
+order = 7
+agent = "city_node_agent"
+action = "activate_city_network"
+input_from = "global_expansion_agent"
+output_to = "chairman_agent"
+timeout_seconds = 1800
+
+# ============================================================
+# AI NAILS设备运营 TaskFlow
+# ============================================================
+[taskflow.ainails_device_operations]
+name = "AI NAILS设备运营流水线"
+description = "选址→投放→激活→运营→维护全流程"
+priority = "critical"
+trigger = "device_deployment_request"
+
+[[taskflow.ainails_device_operations.steps]]
+order = 1
+agent = "ainails_location_agent"
+action = "score_location"
+input_from = "webhook:deployment_request"
+output_to = "ainails_device_agent"
+timeout_seconds = 1800
+
+[[taskflow.ainails_device_operations.steps]]
+order = 2
+agent = "ainails_device_agent"
+action = "deploy_device"
+input_from = "ainails_location_agent"
+output_to = "logistics_agent"
+timeout_seconds = 600
+
+[[taskflow.ainails_device_operations.steps]]
+order = 3
+agent = "logistics_agent"
+action = "ship_device"
+input_from = "ainails_device_agent"
+output_to = "ainails_device_agent"
+timeout_seconds = 3600
+
+[[taskflow.ainails_device_operations.steps]]
+order = 4
+agent = "ainails_device_agent"
+action = "activate_device"
+input_from = "logistics_agent"
+output_to = "store_growth_agent"
+timeout_seconds = 300
+
+[[taskflow.ainails_device_operations.steps]]
+order = 5
+agent = "store_growth_agent"
+action = "start_growth_campaign"
+input_from = "ainails_device_agent"
+output_to = "city_node_agent"
+timeout_seconds = 600
+
+[[taskflow.ainails_device_operations.steps]]
+order = 6
+agent = "city_node_agent"
+action = "update_node_metrics"
+input_from = "store_growth_agent"
+output_to = "ceo_agent"
+timeout_seconds = 300
+
+# ============================================================
+# 全球分账 TaskFlow
+# ============================================================
+[taskflow.global_settlement]
+name = "全球分账流水线"
+description = "收入→计算→分账→结算→对账全流程"
+priority = "critical"
+trigger = "scheduled:daily"
+
+[[taskflow.global_settlement.steps]]
+order = 1
+agent = "payment_agent"
+action = "collect_daily_revenue"
+input_from = "scheduled:daily_settlement"
+output_to = "commission_agent"
+timeout_seconds = 600
+
+[[taskflow.global_settlement.steps]]
+order = 2
+agent = "commission_agent"
+action = "calculate_commissions"
+input_from = "payment_agent"
+output_to = "partner_agent"
+timeout_seconds = 1200
+
+[[taskflow.global_settlement.steps]]
+order = 3
+agent = "partner_agent"
+action = "verify_partner_shares"
+input_from = "commission_agent"
+output_to = "affiliate_agent"
+timeout_seconds = 600
+
+[[taskflow.global_settlement.steps]]
+order = 4
+agent = "affiliate_agent"
+action = "verify_affiliate_shares"
+input_from = "partner_agent"
+output_to = "commission_agent"
+timeout_seconds = 600
+
+[[taskflow.global_settlement.steps]]
+order = 5
+agent = "commission_agent"
+action = "execute_settlement"
+input_from = "affiliate_agent"
+output_to = "finance_agent"
+timeout_seconds = 1800
+
+[[taskflow.global_settlement.steps]]
+order = 6
+agent = "finance_agent"
+action = "generate_settlement_report"
+input_from = "commission_agent"
+output_to = "cfo_agent"
+timeout_seconds = 600
+
+# ============================================================
+# CEO经营驾驶舱 TaskFlow
+# ============================================================
+[taskflow.ceo_dashboard]
+name = "CEO经营驾驶舱"
+description = "每日汇总所有业务线数据生成经营日报"
+priority = "high"
+trigger = "scheduled:daily_8am"
+
+[[taskflow.ceo_dashboard.steps]]
+order = 1
+agent = "finance_agent"
+action = "daily_financial_snapshot"
+input_from = "scheduled:daily"
+output_to = "sales_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 2
+agent = "sales_agent"
+action = "daily_sales_snapshot"
+input_from = "finance_agent"
+output_to = "crm_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 3
+agent = "crm_agent"
+action = "daily_customer_snapshot"
+input_from = "sales_agent"
+output_to = "franchise_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 4
+agent = "franchise_agent"
+action = "daily_franchise_snapshot"
+input_from = "crm_agent"
+output_to = "city_node_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 5
+agent = "city_node_agent"
+action = "daily_node_snapshot"
+input_from = "franchise_agent"
+output_to = "ecosystem_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 6
+agent = "ecosystem_agent"
+action = "daily_ecosystem_snapshot"
+input_from = "city_node_agent"
+output_to = "cro_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 7
+agent = "cro_agent"
+action = "daily_risk_snapshot"
+input_from = "ecosystem_agent"
+output_to = "ceo_agent"
+timeout_seconds = 300
+
+[[taskflow.ceo_dashboard.steps]]
+order = 8
+agent = "ceo_agent"
+action = "generate_daily_report"
+input_from = "cro_agent"
+output_to = "chairman_agent"
+timeout_seconds = 600
+
+# ============================================================
+# 内容工厂 TaskFlow
+# ============================================================
+[taskflow.content_factory]
+name = "内容工厂流水线"
+description = "选题→脚本→HeyGen视频→多语言→发布全流程"
+priority = "medium"
+trigger = "scheduled:daily"
+
+[[taskflow.content_factory.steps]]
+order = 1
+agent = "trend_agent"
+action = "discover_content_topics"
+input_from = "scheduled:daily"
+output_to = "content_agent"
+timeout_seconds = 600
+
+[[taskflow.content_factory.steps]]
+order = 2
+agent = "content_agent"
+action = "generate_content_batch"
+input_from = "trend_agent"
+output_to = "video_agent"
+timeout_seconds = 1800
+
+[[taskflow.content_factory.steps]]
+order = 3
+agent = "video_agent"
+action = "generate_video_scripts"
+input_from = "content_agent"
+output_to = "heygen_agent"
+timeout_seconds = 600
+
+[[taskflow.content_factory.steps]]
+order = 4
+agent = "heygen_agent"
+action = "produce_digital_human_videos"
+input_from = "video_agent"
+output_to = "brand_agent"
+timeout_seconds = 7200
+
+[[taskflow.content_factory.steps]]
+order = 5
+agent = "brand_agent"
+action = "localize_content"
+input_from = "heygen_agent"
+output_to = "community_agent"
+timeout_seconds = 1800
+
+[[taskflow.content_factory.steps]]
+order = 6
+agent = "community_agent"
+action = "publish_content_matrix"
+input_from = "brand_agent"
+output_to = "cmo_agent"
+timeout_seconds = 1200
+
+# ============================================================
+# 联盟裂变 TaskFlow
+# ============================================================
+[taskflow.alliance_growth]
+name = "联盟裂变流水线"
+description = "招募→评分→培训→激活→裂变全流程"
+priority = "high"
+trigger = "alliance_growth_trigger"
+
+[[taskflow.alliance_growth.steps]]
+order = 1
+agent = "affiliate_agent"
+action = "recruit_affiliates"
+input_from = "scheduled:daily"
+output_to = "kol_agent"
+timeout_seconds = 1800
+
+[[taskflow.alliance_growth.steps]]
+order = 2
+agent = "kol_agent"
+action = "discover_kols"
+input_from = "affiliate_agent"
+output_to = "referral_agent"
+timeout_seconds = 1800
+
+[[taskflow.alliance_growth.steps]]
+order = 3
+agent = "referral_agent"
+action = "activate_referral_program"
+input_from = "kol_agent"
+output_to = "partner_agent"
+timeout_seconds = 600
+
+[[taskflow.alliance_growth.steps]]
+order = 4
+agent = "partner_agent"
+action = "onboard_partners"
+input_from = "referral_agent"
+output_to = "training_agent"
+timeout_seconds = 1200
+
+[[taskflow.alliance_growth.steps]]
+order = 5
+agent = "training_agent"
+action = "train_alliance_members"
+input_from = "partner_agent"
+output_to = "community_agent"
+timeout_seconds = 3600
+
+[[taskflow.alliance_growth.steps]]
+order = 6
+agent = "community_agent"
+action = "engage_community"
+input_from = "training_agent"
+output_to = "ecosystem_agent"
+timeout_seconds = 1200
+
+[[taskflow.alliance_growth.steps]]
+order = 7
+agent = "ecosystem_agent"
+action = "report_alliance_growth"
+input_from = "community_agent"
+output_to = "ceo_agent"
+timeout_seconds = 600
+
+# ============================================================
+# 错误处理和重试策略
+# ============================================================
+[taskflow.error_handling]
+retry_strategy = "exponential_backoff"
+max_retries = 3
+retry_delay_seconds = [60, 300, 900]
+fallback_action = "notify_ceo_agent"
+
+[taskflow.notifications]
+on_success = ["ceo_agent", "anygen_workspace"]
+on_failure = ["ceo_agent", "slack", "email"]
+on_step_complete = ["anygen_workspace"]

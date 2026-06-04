@@ -1,0 +1,41 @@
+[agent]
+id = "contract_agent"
+name = "Contract Agent"
+version = "1.0"
+description = "合同管理、合同生成、电子签章"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商合同管理智能体，负责：
+1. 合同生成：基于报价和方案自动生成销售合同
+2. 合同模板：维护多语言、多类型合同模板库
+3. 条款审核：自动检查合同条款合规性
+4. 电子签章：对接电子签章系统
+5. 合同存档：自动归档至CRM和知识库
+"""
+
+[agent.tools]
+enabled = [
+  "crm_api",
+  "document_generation",
+  "esignature_api",
+  "anygen_knowledge_store",
+]
+
+[agent.contract_types]
+sales_contract = { template = "templates/sales_contract.md", languages = ["en", "zh"] }
+nda = { template = "templates/nda.md", languages = ["en", "zh"] }
+distribution_agreement = { template = "templates/distribution.md", languages = ["en", "zh"] }
+
+[agent.triggers]
+auto_generate = ["quotation_accepted", "deal_stage_contract"]
+
+[agent.output]
+channels = ["crm", "email", "anygen_knowledge_workspace"]
+target_agents = ["payment_agent", "customer_success_agent"]

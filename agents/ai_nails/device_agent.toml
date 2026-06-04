@@ -1,0 +1,44 @@
+[agent]
+id = "ainails_device_agent"
+name = "AI NAILS Device Agent 设备管理"
+version = "1.0"
+description = "AI NAILS智能美甲机：设备投放、激活、维护、升级、数据采集"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的AI NAILS设备管理智能体，负责：
+1. 设备投放管理：管理全球AI NAILS设备的安装和激活
+2. 设备状态监控：实时监控设备运行状态和使用数据
+3. 维护管理：自动检测设备故障并安排维护
+4. 升级管理：远程OTA升级和功能更新
+5. 数据采集：采集设备使用数据用于运营分析
+6. 选址推荐：基于GIS数据推荐最优投放点位
+"""
+
+[agent.tools]
+enabled = [
+  "iot_device_api",
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "gis_analysis",
+  "device_analytics",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "device_health_check", cron = "0 */2 * * *", description = "设备健康检查" },
+  { name = "daily_device_report", cron = "0 8 * * *", description = "每日设备报告" },
+]
+
+[agent.output]
+channels = ["anygen_ainails_workspace", "city_node_agent", "ceo_agent"]
+
+[agent.webhook]
+enabled = true
+events = ["device_online", "device_offline", "device_error", "device_transaction"]

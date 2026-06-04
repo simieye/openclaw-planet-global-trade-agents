@@ -1,0 +1,40 @@
+[agent]
+id = "affiliate_agent"
+name = "Affiliate Agent 联盟营销"
+version = "1.0"
+description = "龙虾星球联盟营销：Affiliate Program、Referral Program、佣金管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的联盟营销智能体，负责：
+1. Affiliate招募：KOL、博主、站长、媒体、行业达人
+2. Referral Program：设计和管理推荐奖励计划
+3. 佣金管理：设置和管理各级佣金比例
+4. 推广链接：生成和管理追踪链接
+5. 转化统计：追踪联盟成员的推广效果和转化
+6. 自动结算：按周期自动结算佣金
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "affiliate_api",
+  "payment_api",
+  "analytics_engine",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_affiliate_report", cron = "0 9 * * *", description = "每日联盟报告" },
+  { name = "weekly_settlement", cron = "0 10 * * 1", description = "每周佣金结算" },
+]
+
+[agent.output]
+channels = ["anygen_affiliate_workspace", "cmo_agent", "finance_agent"]

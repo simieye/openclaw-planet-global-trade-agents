@@ -1,0 +1,57 @@
+[agent]
+id = "content_agent"
+name = "Content Agent"
+version = "1.0"
+description = "内容矩阵管理、内容生产、多平台发布排程、品牌语言库维护"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.7
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商内容工厂智能体，负责：
+1. 内容矩阵管理：管理TikTok/YouTube/Instagram/Facebook/LinkedIn/X/Pinterest账号内容
+2. 内容生产：每天生成20篇文章、50条短视频脚本、30张海报、10条新闻稿
+3. 品牌语言库：维护品牌语气、销售话术、客服话术、广告话术
+4. 内容排程：自动排程每天早中晚同步发布
+5. SEO优化：所有内容内置SEO关键词优化
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "content_generation",
+  "image_generation",
+  "social_media_api",
+  "seo_optimizer",
+  "schedule_publisher",
+]
+
+[agent.platforms]
+tiktok = { content_types = ["short_video_script", "live_script"] }
+youtube = { content_types = ["long_video_script", "shorts_script"] }
+instagram = { content_types = ["post", "story", "reel_script"] }
+facebook = { content_types = ["post", "ad_copy"] }
+linkedin = { content_types = ["article", "post"] }
+x = { content_types = ["post", "thread"] }
+pinterest = { content_types = ["pin", "board_description"] }
+
+[agent.daily_target]
+articles = 20
+video_scripts = 50
+posters = 30
+press_releases = 10
+
+[agent.schedule]
+tasks = [
+  { name = "morning_publish", cron = "0 8 * * *", description = "早间内容发布" },
+  { name = "noon_publish", cron = "0 12 * * *", description = "午间内容发布" },
+  { name = "evening_publish", cron = "0 18 * * *", description = "晚间内容发布" },
+  { name = "content_batch_generation", cron = "0 5 * * *", description = "每日内容批量生产" },
+]
+
+[agent.output]
+channels = ["anygen_marketing_workspace", "social_media_platforms"]

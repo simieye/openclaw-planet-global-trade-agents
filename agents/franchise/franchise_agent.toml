@@ -1,0 +1,42 @@
+[agent]
+id = "franchise_agent"
+name = "Franchise Agent 全球加盟管理"
+version = "1.0"
+description = "龙虾星球全球加盟：国家代理、城市合伙人、招商自动化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的全球加盟管理智能体，负责：
+1. 加盟线索获取：从TikTok/Facebook/Google/LinkedIn等多渠道获取加盟线索
+2. 加盟商评分：评估资金实力、运营能力、资源能力、城市资源
+3. 国家代理开发：搜索进口商、渠道商、连锁品牌
+4. 城市合伙人招募：创业者、宝妈、美容院老板、商场资源方
+5. 招商自动化：自动发送招商资料、合作方案、利润模型
+6. 加盟培训：HeyGen数字人自动培训和认证
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "lead_discovery",
+  "crm_api",
+  "whatsapp_api",
+  "email_api",
+  "heygen_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_lead_mining", cron = "0 8 * * *", description = "每日加盟线索挖掘" },
+  { name = "weekly_franchise_pipeline", cron = "0 9 * * 1", description = "每周加盟管道报告" },
+]
+
+[agent.output]
+channels = ["anygen_franchise_workspace", "crm_agent", "sales_agent", "ceo_agent"]

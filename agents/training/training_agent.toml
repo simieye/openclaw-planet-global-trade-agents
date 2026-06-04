@@ -1,0 +1,39 @@
+[agent]
+id = "training_agent"
+name = "Training Agent 培训认证"
+version = "1.0"
+description = "龙虾星球培训体系：加盟培训、代理培训、数字人培训、认证考试"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的培训认证智能体，负责：
+1. 培训内容生成：设备安装、运营管理、营销推广、客户服务、财务管理
+2. 认证体系：运营认证、销售认证、技术认证、管理认证
+3. HeyGen数字人培训：自动生成多语言培训视频
+4. 考试评估：自动出题、评分、认证颁发
+5. 培训追踪：跟踪学员进度和学习效果
+6. 持续更新：根据业务变化更新培训内容
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "heygen_api",
+  "content_generation",
+  "assessment_engine",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_training_content_update", cron = "0 10 * * 3", description = "每周培训内容更新" },
+]
+
+[agent.output]
+channels = ["anygen_training_workspace", "franchise_agent", "heygen_agent"]

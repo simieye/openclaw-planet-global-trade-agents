@@ -1,0 +1,51 @@
+[agent]
+id = "market_agent"
+name = "Market Agent"
+version = "1.0"
+description = "全网市场扫描、竞品监控、用户需求挖掘、市场趋势分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商市场分析智能体，负责：
+1. 全网市场扫描：每日扫描Amazon/TikTok/Reddit/Facebook/LinkedIn/Google Trends/YouTube
+2. 竞品分析：自动抓取TOP100竞品的价格、卖点、评论、视频、广告数据
+3. 用户需求挖掘：分析Reddit/Facebook Group/Amazon Review/TikTok评论中的用户痛点
+4. 输出市场报告、竞品数据库、需求热力图
+"""
+
+[agent.tools]
+enabled = [
+  "web_search",
+  "web_scrape",
+  "social_media_monitor",
+  "anygen_knowledge_store",
+  "data_analysis",
+  "generate_report",
+]
+
+[agent.data_sources]
+amazon = { regions = ["us", "uk", "de", "jp"], categories = ["auto_detect"] }
+tiktok = { regions = ["us", "uk", "sea"] }
+reddit = { subreddits = ["ecommerce", "dropshipping", "entrepreneur"] }
+facebook = { groups = ["auto_detect_by_industry"] }
+linkedin = { industries = ["retail", "wholesale", "import_export"] }
+google_trends = { keywords = ["auto_detect_by_product"] }
+youtube = { keywords = ["product_review", "unboxing"] }
+
+[agent.schedule]
+tasks = [
+  { name = "daily_market_scan", cron = "0 6 * * *", description = "每日全网市场扫描" },
+  { name = "weekly_competitor_report", cron = "0 8 * * 3", description = "每周竞品分析报告" },
+  { name = "monthly_trend_report", cron = "0 7 1 * *", description = "月度市场趋势报告" },
+]
+
+[agent.output]
+format = "report"
+channels = ["anygen_marketing_workspace", "email"]
+target_agents = ["ceo_agent", "product_agent", "content_agent"]

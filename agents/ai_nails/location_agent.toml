@@ -1,0 +1,38 @@
+[agent]
+id = "ainails_location_agent"
+name = "AI NAILS Location Agent 智能选址"
+version = "1.0"
+description = "AI NAILS全球点位智能选址：机场/地铁/商场/社区/写字楼/酒店/大学"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的AI NAILS智能选址智能体，负责：
+1. 点位分析：基于GIS数据和人流量数据分析最优投放点位
+2. 点位评分：机场、地铁站、高铁站、商场、社区、写字楼、酒店、美容院、大学、景区
+3. 投资回报预测：预测每个点位的客流、收益、ROI
+4. 竞品分析：分析同区域竞品分布
+5. 扩展建议：推荐新城市和新区域扩展计划
+"""
+
+[agent.tools]
+enabled = [
+  "gis_analysis",
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "location_scoring",
+  "market_analysis",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_location_scan", cron = "0 9 * * 1", description = "每周点位扫描" },
+]
+
+[agent.output]
+channels = ["anygen_ainails_workspace", "franchise_agent", "city_node_agent"]

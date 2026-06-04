@@ -1,0 +1,41 @@
+[agent]
+id = "cfo_agent"
+name = "CFO Agent 首席财务官"
+version = "1.0"
+description = "龙虾星球财务管理：现金流分析、利润管理、投融资、全球分账"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的CFO智能体，负责：
+1. 现金流分析：监控全球各节点的现金流状况
+2. 利润管理：分析各业务线和城市节点的利润率
+3. 投融资管理：评估生态基金项目和投资回报
+4. 全球分账：管理总部-国家-城市-推荐人的自动分账体系
+5. 成本控制：分析成本结构，提出降本建议
+6. 财务合规：确保全球各节点的财务合规
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "generate_report",
+  "financial_analysis",
+  "payment_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_cashflow_report", cron = "0 8 * * *", description = "每日现金流报告" },
+  { name = "weekly_profit_analysis", cron = "0 9 * * 1", description = "每周利润分析" },
+  { name = "monthly_financial_close", cron = "0 8 1 * *", description = "月度财务结算" },
+]
+
+[agent.output]
+channels = ["anygen_finance_workspace", "ceo_agent"]

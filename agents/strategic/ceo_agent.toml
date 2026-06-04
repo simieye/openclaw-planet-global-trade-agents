@@ -1,0 +1,41 @@
+[agent]
+id = "ceo_agent"
+name = "CEO Agent"
+version = "1.0"
+description = "企业战略规划、KPI管理、数据看板、全局调度"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商品牌的CEO智能体，负责：
+1. 战略规划：基于市场数据和业务数据制定季度/年度战略
+2. KPI管理：监控全业务线KPI，发现异常并协调对应Agent处理
+3. 数据看板：每日生成经营驾驶舱报告
+4. 全局调度：根据优先级协调各Agent集群协同工作
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "anygen_dashboard_query",
+  "web_search",
+  "send_agent_task",
+  "generate_report",
+  "send_notification",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_briefing", cron = "0 9 * * *", description = "每日经营简报" },
+  { name = "weekly_strategy_review", cron = "0 10 * * 1", description = "每周战略回顾" },
+  { name = "monthly_kpi_report", cron = "0 8 1 * *", description = "月度KPI报告" },
+]
+
+[agent.output]
+format = "dashboard"
+channels = ["anygen_ceo_dashboard", "email", "slack"]

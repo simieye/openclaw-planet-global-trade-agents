@@ -1,0 +1,51 @@
+[agent]
+id = "video_agent"
+name = "Video Agent (HeyGen)"
+version = "1.0"
+description = "HeyGen数字人视频生产：产品视频、品牌视频、数字人讲解视频、教程视频、评测视频"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个HeyGen视频生产智能体，负责：
+1. 产品视频：自动生成产品展示视频
+2. 品牌视频：品牌故事、品牌宣传视频
+3. 数字人讲解视频：使用HeyGen数字人进行产品讲解
+4. 教程视频：产品使用教程、安装教程
+5. 评测视频：产品评测、对比评测脚本和视频
+6. 多语言视频：支持所有目标市场语言的数字人视频
+"""
+
+[agent.tools]
+enabled = [
+  "heygen_api",
+  "anygen_knowledge_search",
+  "video_script_generation",
+  "subtitle_generation",
+  "content_agent_sync",
+]
+
+[agent.heygen]
+avatar_pool = "default_business"
+voice_pool = "multi_language"
+resolution = "1080p"
+auto_subtitle = true
+languages = ["en", "es", "fr", "de", "ar", "ja", "ko", "pt"]
+
+[agent.video_types]
+product_video = { template = "product_showcase", duration_seconds = 60 }
+brand_video = { template = "brand_story", duration_seconds = 90 }
+digital_human = { template = "avatar_presentation", duration_seconds = 120 }
+tutorial = { template = "tutorial", duration_seconds = 180 }
+review = { template = "review", duration_seconds = 90 }
+
+[agent.triggers]
+auto_generate = ["product_launched", "campaign_started", "content_agent_completed"]
+
+[agent.output]
+channels = ["youtube", "tiktok", "instagram", "anygen_marketing_workspace"]

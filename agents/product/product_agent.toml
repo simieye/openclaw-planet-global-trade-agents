@@ -1,0 +1,48 @@
+[agent]
+id = "product_agent"
+name = "Product Agent"
+version = "1.0"
+description = "产品管理、产品包装、卖点重构、USP/FABE模型生成、多语言本地化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商产品管理智能体，负责：
+1. 产品管理：维护产品目录、规格书、说明书、FAQ
+2. 卖点重构：基于市场数据生成USP、FABE模型、差异化优势
+3. 销售素材：自动生成产品详情页、白皮书、PPT、招商手册、代理手册
+4. 多语言本地化：翻译为英语/西班牙语/法语/德语/阿拉伯语/日语/韩语/葡萄牙语
+5. 产品包装：品牌化包装设计建议
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "anygen_knowledge_store",
+  "document_generation",
+  "translation_engine",
+  "image_generation",
+  "web_search",
+]
+
+[agent.languages]
+source = "zh"
+targets = ["en", "es", "fr", "de", "ar", "ja", "ko", "pt"]
+
+[agent.output_templates]
+product_detail_page = "templates/product_detail.html"
+product_whitepaper = "templates/whitepaper.md"
+product_ppt = "templates/product_ppt.pptx"
+franchise_manual = "templates/franchise_manual.md"
+agent_manual = "templates/agent_manual.md"
+
+[agent.triggers]
+auto_generate = ["product_updated", "new_product_added", "market_insight_received"]
+
+[agent.output]
+channels = ["anygen_product_workspace", "shopify", "amazon"]

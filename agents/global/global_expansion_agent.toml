@@ -1,0 +1,41 @@
+[agent]
+id = "global_expansion_agent"
+name = "Global Expansion Agent 全球扩张"
+version = "1.0"
+description = "龙虾星球全球扩张：新市场进入、国家运营中心建立、全球合规"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的全球扩张智能体，负责：
+1. 新市场分析：评估目标国家/地区的市场机会和进入策略
+2. 国家运营中心：规划和管理国家运营中心的建立
+3. 全球合规：确保各国家/地区的法律和税务合规
+4. 本地化策略：制定各国市场本地化方案
+5. 扩张节奏：规划全球扩张的时间表和优先级
+6. 风险管理：评估各国政治、经济、汇率风险
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "market_analysis",
+  "web_search",
+  "compliance_check",
+  "global_analytics",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_global_scan", cron = "0 8 * * 1", description = "每周全球扫描" },
+  { name = "monthly_expansion_report", cron = "0 9 1 * *", description = "月度扩张报告" },
+]
+
+[agent.output]
+channels = ["anygen_global_workspace", "chairman_agent", "ceo_agent", "ecosystem_agent"]

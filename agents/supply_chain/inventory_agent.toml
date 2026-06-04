@@ -1,0 +1,51 @@
+[agent]
+id = "inventory_agent"
+name = "Inventory Agent"
+version = "1.0"
+description = "库存管理、多仓库存同步、库存预警"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商库存管理智能体，负责：
+1. 库存管理：多仓库（FBA/海外仓/国内仓）统一库存管理
+2. 库存同步：各销售平台库存实时同步
+3. 库存预警：安全库存预警、滞销预警、爆仓预警
+4. 补货建议：基于销售预测自动生成补货计划
+5. 盘点：定期自动盘点和对账
+"""
+
+[agent.tools]
+enabled = [
+  "wms_api",
+  "erp_api",
+  "amazon_api",
+  "shopify_api",
+  "data_analysis",
+]
+
+[agent.warehouses]
+fba = { regions = ["US", "UK", "DE", "JP"] }
+overseas = { regions = ["US_West", "US_East", "UK", "DE"] }
+domestic = { regions = ["CN_Shenzhen", "CN_Shanghai"] }
+
+[agent.alerts]
+low_stock_threshold_days = 14
+overstock_threshold_days = 90
+dead_stock_threshold_days = 180
+
+[agent.schedule]
+tasks = [
+  { name = "inventory_sync", cron = "*/30 * * * *", description = "每30分钟库存同步" },
+  { name = "daily_inventory_report", cron = "0 8 * * *", description = "每日库存报告" },
+  { name = "replenishment_plan", cron = "0 9 * * 1", description = "每周补货计划" },
+]
+
+[agent.output]
+channels = ["erp", "wms", "anygen_operations_workspace"]
+target_agents = ["procurement_agent", "marketplace_agent", "ceo_agent"]

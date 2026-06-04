@@ -1,0 +1,398 @@
+# ============================================================
+# 龙虾星球共创联盟 - 企业知识库配置
+# AnyGen Knowledge Base 完整知识体系
+# ============================================================
+
+[knowledge_base]
+name = "龙虾星球共创联盟知识库"
+version = "3.0"
+description = "龙虾星球全球联盟生态知识体系"
+
+# ============================================================
+# 一、联盟制度与治理
+# ============================================================
+[knowledge_base.categories.governance]
+name = "联盟制度与治理"
+priority = 1
+description = "龙虾星球联盟章程、治理规则、价值观"
+
+[[knowledge_base.categories.governance.documents]]
+title = "龙虾星球联盟章程"
+type = "pdf"
+path = "governance/alliance_charter.pdf"
+tags = ["章程", "治理", "联盟规则"]
+
+[[knowledge_base.categories.governance.documents]]
+title = "OPC共生体系说明"
+type = "pdf"
+path = "governance/opc_system.pdf"
+tags = ["OPC", "共生", "资源共享", "收益共享"]
+
+[[knowledge_base.categories.governance.documents]]
+title = "城市节点运营规范"
+type = "pdf"
+path = "governance/city_node_standards.pdf"
+tags = ["城市节点", "运营规范", "KPI"]
+
+[[knowledge_base.categories.governance.documents]]
+title = "合伙人准入与退出机制"
+type = "pdf"
+path = "governance/partner_policy.pdf"
+tags = ["合伙人", "准入", "退出"]
+
+# ============================================================
+# 二、加盟体系
+# ============================================================
+[knowledge_base.categories.franchise]
+name = "加盟体系"
+priority = 2
+description = "国家代理、城市合伙人、招商政策"
+
+[[knowledge_base.categories.franchise.documents]]
+title = "全球加盟政策"
+type = "pdf"
+path = "franchise/global_franchise_policy.pdf"
+tags = ["加盟", "政策", "全球"]
+
+[[knowledge_base.categories.franchise.documents]]
+title = "国家代理合作方案"
+type = "pdf"
+path = "franchise/country_agency_plan.pdf"
+tags = ["国家代理", "合作方案"]
+
+[[knowledge_base.categories.franchise.documents]]
+title = "城市合伙人收益模型"
+type = "xlsx"
+path = "franchise/city_partner_revenue.xlsx"
+tags = ["城市合伙人", "收益模型", "ROI"]
+
+[[knowledge_base.categories.franchise.documents]]
+title = "加盟培训手册"
+type = "pdf"
+path = "franchise/training_manual.pdf"
+tags = ["培训", "加盟", "手册"]
+
+[[knowledge_base.categories.franchise.documents]]
+title = "招商话术库"
+type = "md"
+path = "franchise/sales_scripts.md"
+tags = ["招商", "话术", "销售"]
+
+# ============================================================
+# 三、AI NAILS产品体系
+# ============================================================
+[knowledge_base.categories.ainails]
+name = "AI NAILS产品体系"
+priority = 3
+description = "AI NAILS设备、技术、服务、案例"
+
+[[knowledge_base.categories.ainails.documents]]
+title = "AI NAILS产品手册"
+type = "pdf"
+path = "ainails/product_manual.pdf"
+tags = ["产品", "AI NAILS", "手册"]
+
+[[knowledge_base.categories.ainails.documents]]
+title = "AI NAILS技术白皮书"
+type = "pdf"
+path = "ainails/technical_whitepaper.pdf"
+tags = ["技术", "白皮书", "AI"]
+
+[[knowledge_base.categories.ainails.documents]]
+title = "AI NAILS设备安装指南"
+type = "pdf"
+path = "ainails/installation_guide.pdf"
+tags = ["安装", "设备", "指南"]
+
+[[knowledge_base.categories.ainails.documents]]
+title = "AI NAILS运营SOP"
+type = "pdf"
+path = "ainails/operation_sop.pdf"
+tags = ["运营", "SOP", "标准"]
+
+[[knowledge_base.categories.ainails.documents]]
+title = "AI NAILS全球案例集"
+type = "pdf"
+path = "ainails/case_studies.pdf"
+tags = ["案例", "全球", "成功"]
+
+# ============================================================
+# 四、销售与成交
+# ============================================================
+[knowledge_base.categories.sales]
+name = "销售与成交"
+priority = 4
+description = "销售话术、报价模板、合同模板、谈判策略"
+
+[[knowledge_base.categories.sales.documents]]
+title = "销售话术库"
+type = "md"
+path = "sales/sales_scripts.md"
+tags = ["销售", "话术", "沟通"]
+
+[[knowledge_base.categories.sales.documents]]
+title = "报价模板集"
+type = "xlsx"
+path = "sales/quotation_templates.xlsx"
+tags = ["报价", "模板", "价格"]
+
+[[knowledge_base.categories.sales.documents]]
+title = "合同模板库"
+type = "docx"
+path = "sales/contract_templates.docx"
+tags = ["合同", "模板", "法律"]
+
+[[knowledge_base.categories.sales.documents]]
+title = "谈判策略手册"
+type = "pdf"
+path = "sales/negotiation_handbook.pdf"
+tags = ["谈判", "策略", "成交"]
+
+[[knowledge_base.categories.sales.documents]]
+title = "客户FAQ库"
+type = "md"
+path = "sales/faq_database.md"
+tags = ["FAQ", "客户", "问答"]
+
+# ============================================================
+# 五、品牌与营销
+# ============================================================
+[knowledge_base.categories.brand]
+name = "品牌与营销"
+priority = 5
+description = "品牌资产、营销物料、内容模板"
+
+[[knowledge_base.categories.brand.documents]]
+title = "龙虾星球品牌手册"
+type = "pdf"
+path = "brand/brand_guidelines.pdf"
+tags = ["品牌", "VI", "视觉"]
+
+[[knowledge_base.categories.brand.documents]]
+title = "品牌故事与IP体系"
+type = "pdf"
+path = "brand/brand_story.pdf"
+tags = ["品牌故事", "IP", "世界观"]
+
+[[knowledge_base.categories.brand.documents]]
+title = "内容营销模板"
+type = "md"
+path = "brand/content_templates.md"
+tags = ["内容", "营销", "模板"]
+
+[[knowledge_base.categories.brand.documents]]
+title = "社媒运营手册"
+type = "pdf"
+path = "brand/social_media_handbook.pdf"
+tags = ["社媒", "运营", "TikTok"]
+
+[[knowledge_base.categories.brand.documents]]
+title = "HeyGen视频脚本库"
+type = "md"
+path = "brand/heygen_scripts.md"
+tags = ["HeyGen", "视频", "脚本"]
+
+# ============================================================
+# 六、财务与分账
+# ============================================================
+[knowledge_base.categories.finance]
+name = "财务与分账"
+priority = 6
+description = "财务制度、分账规则、税务合规"
+
+[[knowledge_base.categories.finance.documents]]
+title = "全球分账规则"
+type = "pdf"
+path = "finance/commission_rules.pdf"
+tags = ["分账", "佣金", "规则"]
+
+[[knowledge_base.categories.finance.documents]]
+title = "财务管理制度"
+type = "pdf"
+path = "finance/financial_policy.pdf"
+tags = ["财务", "制度", "管理"]
+
+[[knowledge_base.categories.finance.documents]]
+title = "各国税务合规指南"
+type = "pdf"
+path = "finance/tax_compliance.pdf"
+tags = ["税务", "合规", "各国"]
+
+[[knowledge_base.categories.finance.documents]]
+title = "支付渠道配置"
+type = "md"
+path = "finance/payment_channels.md"
+tags = ["支付", "Stripe", "PayPal", "微信支付"]
+
+# ============================================================
+# 七、SOP标准操作体系
+# ============================================================
+[knowledge_base.categories.sop]
+name = "SOP标准操作体系"
+priority = 7
+description = "全流程SOP文档、操作指南"
+
+[[knowledge_base.categories.sop.documents]]
+title = "企业90天AI转型路线图"
+type = "pdf"
+path = "sop/90_day_roadmap.pdf"
+tags = ["SOP", "90天", "路线图"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "跨境工厂AI出海SOP"
+type = "pdf"
+path = "sop/factory_global_sop.pdf"
+tags = ["工厂", "出海", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "TikTok Shop增长SOP"
+type = "pdf"
+path = "sop/tiktok_growth_sop.pdf"
+tags = ["TikTok", "增长", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "Amazon品牌增长SOP"
+type = "pdf"
+path = "sop/amazon_growth_sop.pdf"
+tags = ["Amazon", "品牌", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "Shopify DTC增长SOP"
+type = "pdf"
+path = "sop/shopify_dtc_sop.pdf"
+tags = ["Shopify", "DTC", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "AI NAILS全球加盟SOP"
+type = "pdf"
+path = "sop/ainails_franchise_sop.pdf"
+tags = ["AI NAILS", "加盟", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "龙虾星球生态运营SOP"
+type = "pdf"
+path = "sop/lobster_planet_sop.pdf"
+tags = ["龙虾星球", "生态", "SOP"]
+
+[[knowledge_base.categories.sop.documents]]
+title = "数字员工组织架构SOP"
+type = "pdf"
+path = "sop/digital_workforce_sop.pdf"
+tags = ["数字员工", "组织", "SOP"]
+
+# ============================================================
+# 八、项目与案例
+# ============================================================
+[knowledge_base.categories.projects]
+name = "项目与案例"
+priority = 8
+description = "OPC共创项目、成功案例、经验库"
+
+[[knowledge_base.categories.projects.documents]]
+title = "OPC项目共创案例集"
+type = "pdf"
+path = "projects/opc_cases.pdf"
+tags = ["OPC", "项目", "案例"]
+
+[[knowledge_base.categories.projects.documents]]
+title = "城市节点运营案例"
+type = "pdf"
+path = "projects/city_node_cases.pdf"
+tags = ["城市节点", "运营", "案例"]
+
+[[knowledge_base.categories.projects.documents]]
+title = "加盟商成功故事"
+type = "pdf"
+path = "projects/franchise_success.pdf"
+tags = ["加盟", "成功", "故事"]
+
+# ============================================================
+# 九、培训与认证
+# ============================================================
+[knowledge_base.categories.training]
+name = "培训与认证"
+priority = 9
+description = "培训课程、认证体系、考试题库"
+
+[[knowledge_base.categories.training.documents]]
+title = "加盟商培训课程"
+type = "pdf"
+path = "training/franchise_courses.pdf"
+tags = ["培训", "加盟", "课程"]
+
+[[knowledge_base.categories.training.documents]]
+title = "认证考试题库"
+type = "md"
+path = "training/exam_bank.md"
+tags = ["认证", "考试", "题库"]
+
+[[knowledge_base.categories.training.documents]]
+title = "HeyGen数字人培训视频"
+type = "video"
+path = "training/heygen_videos/"
+tags = ["HeyGen", "数字人", "视频"]
+
+# ============================================================
+# 十、Prompt与Skill库
+# ============================================================
+[knowledge_base.categories.prompts]
+name = "Prompt与Skill库"
+priority = 10
+description = "标准Prompt模板、Skill定义"
+
+[[knowledge_base.categories.prompts.documents]]
+title = "销售Prompt库"
+type = "md"
+path = "prompts/sales_prompts.md"
+tags = ["Prompt", "销售"]
+
+[[knowledge_base.categories.prompts.documents]]
+title = "招商Prompt库"
+type = "md"
+path = "prompts/franchise_prompts.md"
+tags = ["Prompt", "招商"]
+
+[[knowledge_base.categories.prompts.documents]]
+title = "客服Prompt库"
+type = "md"
+path = "prompts/support_prompts.md"
+tags = ["Prompt", "客服"]
+
+[[knowledge_base.categories.prompts.documents]]
+title = "内容Prompt库"
+type = "md"
+path = "prompts/content_prompts.md"
+tags = ["Prompt", "内容"]
+
+[[knowledge_base.categories.prompts.documents]]
+title = "培训Prompt库"
+type = "md"
+path = "prompts/training_prompts.md"
+tags = ["Prompt", "培训"]
+
+# ============================================================
+# 十一、系统配置
+# ============================================================
+[knowledge_base.settings]
+vector_store = "chromadb"
+embedding_model = "text-embedding-3-large"
+chunk_size = 1000
+chunk_overlap = 200
+
+[knowledge_base.settings.access]
+admin_roles = ["admin", "ceo", "cto"]
+editor_roles = ["manager", "content_editor"]
+viewer_roles = ["agent", "partner", "franchisee"]
+
+# ============================================================
+# Agent知识访问权限
+# ============================================================
+[knowledge_base.agent_levels]
+board = ["governance", "finance", "projects", "sop"]
+market = ["brand", "sales", "sop", "projects"]
+sales = ["sales", "franchise", "ainails", "prompts"]
+content = ["brand", "prompts", "sop"]
+franchise = ["franchise", "ainails", "training", "sop"]
+ecosystem = ["governance", "projects", "sop"]
+finance = ["finance", "sop"]
+training = ["training", "prompts", "sop"]

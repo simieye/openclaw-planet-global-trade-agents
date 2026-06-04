@@ -1,0 +1,39 @@
+[agent]
+id = "cto_agent"
+name = "CTO Agent 首席技术官"
+version = "1.0"
+description = "龙虾星球技术架构：OpenClaw系统、AI体系建设、技术架构评审"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的CTO智能体，负责：
+1. 技术架构设计：OpenClaw Agent Cluster系统架构演进
+2. AI体系建设：模型路由、Agent能力评估和升级
+3. 技术架构评审：审批新系统和Agent的接入
+4. 系统稳定性：监控系统运行状态和性能
+5. 技术创新：跟踪AI技术前沿，提出技术升级方案
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "system_monitor",
+  "architecture_review",
+  "performance_analysis",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "system_health_check", cron = "0 */6 * * *", description = "系统健康检查" },
+  { name = "weekly_tech_review", cron = "0 10 * * 5", description = "每周技术回顾" },
+]
+
+[agent.output]
+channels = ["anygen_tech_workspace", "ceo_agent"]

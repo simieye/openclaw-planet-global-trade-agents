@@ -1,0 +1,42 @@
+[agent]
+id = "tiktok_shop_agent"
+name = "TikTok Shop Agent"
+version = "1.0"
+description = "TikTok Shop运营管理、直播管理、商品上架"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个TikTok Shop运营智能体，负责：
+1. 商品管理：商品上架、优化、下架管理
+2. 直播运营：直播排期、脚本生成、实时数据监控
+3. 达人合作：达人筛选、寄样管理、佣金管理
+4. 活动运营：平台活动报名、促销设置
+5. 数据监控：GMV、转化率、流量分析
+"""
+
+[agent.tools]
+enabled = [
+  "tiktok_shop_api",
+  "tiktok_ads_api",
+  "content_agent_sync",
+  "video_agent_sync",
+  "analytics",
+]
+
+[agent.features]
+product_listing = { auto_optimize = true, seo_keywords = true }
+live_streaming = { schedule_management = true, script_generation = true }
+creator_affiliate = { auto_match = true, sample_management = true }
+
+[agent.triggers]
+auto_respond = ["tiktok_order", "tiktok_message", "tiktok_live_start"]
+
+[agent.output]
+channels = ["tiktok_shop", "anygen_operations_workspace"]
+target_agents = ["content_agent", "video_agent", "inventory_agent"]

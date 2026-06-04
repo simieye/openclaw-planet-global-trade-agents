@@ -1,0 +1,46 @@
+[agent]
+id = "payment_agent"
+name = "Payment Agent"
+version = "1.0"
+description = "收款管理、支付网关对接、退款处理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商收款管理智能体，负责：
+1. 收款管理：Stripe/PayPal/银行转账等多渠道收款
+2. 支付确认：自动确认付款并触发后续流程
+3. 退款处理：退款审核和自动处理
+4. 对账：收款对账和差异处理
+5. 风控：异常交易识别和预警
+"""
+
+[agent.tools]
+enabled = [
+  "stripe_api",
+  "paypal_api",
+  "bank_api",
+  "erp_api",
+  "crm_api",
+]
+
+[agent.payment_gateways]
+stripe = { currencies = ["USD", "EUR", "GBP", "JPY"] }
+paypal = { currencies = ["USD", "EUR", "GBP", "JPY", "AED"] }
+bank_transfer = { currencies = ["USD", "EUR", "CNY"] }
+
+[agent.risk]
+large_amount_threshold = 10000
+unusual_pattern_detection = true
+
+[agent.triggers]
+auto_process = ["payment_event", "refund_request"]
+
+[agent.output]
+channels = ["erp", "anygen_finance_workspace"]
+target_agents = ["invoice_agent", "accountant_agent", "contract_agent"]

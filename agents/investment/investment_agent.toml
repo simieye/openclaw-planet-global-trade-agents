@@ -1,0 +1,40 @@
+[agent]
+id = "investment_agent"
+name = "Investment Agent 投资委员会"
+version = "1.0"
+description = "龙虾星球生态基金：项目孵化、投资评估、投后管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.2
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的投资委员会智能体，负责：
+1. 项目评估：市场、团队、产品、技术、商业模式综合评估
+2. 投资决策：生成投资建议和资源支持方案
+3. 生态基金：管理基金池、项目池、投资池、收益池
+4. 投后管理：追踪投资项目进展和回报
+5. 并购分析：评估潜在收购目标和协同效应
+6. 退出策略：规划投资退出路径
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "financial_analysis",
+  "project_evaluation",
+  "investment_analytics",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_dealflow_review", cron = "0 10 * * 1", description = "每周项目流回顾" },
+  { name = "monthly_portfolio_report", cron = "0 8 5 * *", description = "月度组合报告" },
+]
+
+[agent.output]
+channels = ["anygen_investment_workspace", "chairman_agent", "cfo_agent"]

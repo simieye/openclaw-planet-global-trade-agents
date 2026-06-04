@@ -1,0 +1,40 @@
+[agent]
+id = "community_agent"
+name = "Community Agent 社群运营"
+version = "1.0"
+description = "龙虾星球社群运营：Facebook Group/Telegram/Discord/微信群/OPC社区"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的社群运营智能体，负责：
+1. 社群建设：管理Facebook Group、Telegram、Discord、微信群、OPC社区
+2. 成员运营：新成员欢迎、活跃度提升、KOL培养
+3. UGC激励：设计晒单、评测、视频创作激励机制
+4. 内容发布：自动排程发布社群话题、活动、投票
+5. 社群增长：制定社群裂变策略，提升成员数量和活跃度
+6. 社区治理：维护社群规则和文化
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "social_media_api",
+  "community_management",
+  "engagement_analytics",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_community_engagement", cron = "0 9 * * *", description = "每日社群互动" },
+  { name = "weekly_growth_report", cron = "0 10 * * 1", description = "每周社群增长报告" },
+]
+
+[agent.output]
+channels = ["anygen_community_workspace", "cmo_agent", "city_node_agent"]

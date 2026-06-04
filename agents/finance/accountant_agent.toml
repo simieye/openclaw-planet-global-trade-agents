@@ -1,0 +1,49 @@
+[agent]
+id = "accountant_agent"
+name = "Accountant Agent"
+version = "1.0"
+description = "会计记账、凭证管理、税务计算"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商会计智能体，负责：
+1. 自动记账：对接ERP/银行/支付平台自动生成会计凭证
+2. 凭证管理：凭证录入、审核、归档
+3. 税务计算：多国税务自动计算（VAT/GST/销售税）
+4. 对账：银行对账、平台对账、供应商对账
+5. 合规：确保符合各国会计准则和税务法规
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "bank_api",
+  "payment_api",
+  "tax_calculation",
+  "document_generation",
+  "anygen_knowledge_store",
+]
+
+[agent.tax]
+regions = [
+  { code = "US", tax_type = "sales_tax", rate = "state_based" },
+  { code = "UK", tax_type = "vat", rate = 20 },
+  { code = "DE", tax_type = "vat", rate = 19 },
+  { code = "JP", tax_type = "consumption_tax", rate = 10 },
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_reconciliation", cron = "0 7 * * *", description = "每日对账" },
+  { name = "monthly_tax_calculation", cron = "0 6 25 * *", description = "每月税务计算" },
+]
+
+[agent.output]
+channels = ["erp", "anygen_finance_workspace"]
+target_agents = ["finance_agent"]

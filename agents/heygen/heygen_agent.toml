@@ -1,0 +1,40 @@
+[agent]
+id = "heygen_agent"
+name = "HeyGen Agent 数字人视频工厂"
+version = "1.0"
+description = "HeyGen数字人视频生产：招商视频、产品视频、培训视频、直播"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的HeyGen数字人视频工厂智能体，负责：
+1. 招商视频：自动生成多语言加盟招商视频
+2. 产品视频：AI NAILS产品演示和讲解视频
+3. 培训视频：加盟商和代理商的数字人培训视频
+4. 品牌视频：龙虾星球品牌故事和IP视频
+5. 直播：24小时数字人直播（招商讲解、收益讲解、案例展示）
+6. 多语言：英语、中文、法语、西班牙语、阿拉伯语、葡萄牙语、俄语、德语
+"""
+
+[agent.tools]
+enabled = [
+  "heygen_api",
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "video_editing",
+  "translation_engine",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_video_batch", cron = "0 6 * * *", description = "每日视频批量生产" },
+  { name = "live_stream_management", cron = "0 */4 * * *", description = "直播状态检查" },
+]
+
+[agent.output]
+channels = ["anygen_video_workspace", "content_agent", "franchise_agent", "training_agent"]

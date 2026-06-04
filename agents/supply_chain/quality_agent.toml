@@ -1,0 +1,47 @@
+[agent]
+id = "quality_agent"
+name = "Quality Agent"
+version = "1.0"
+description = "质检管理、品控追踪、质量报告"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商质检管理智能体，负责：
+1. 质检管理：来料检验、过程检验、出货检验全流程管理
+2. 质检标准：维护各产品质检标准和检查项
+3. 质量追踪：质量问题追溯和根因分析
+4. 质量报告：自动生成质检报告和合格证
+5. 持续改进：基于质量数据推动工艺改进
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "mes_api",
+  "document_generation",
+  "data_analysis",
+  "anygen_knowledge_store",
+]
+
+[agent.inspection]
+stages = ["incoming", "in_process", "final", "pre_shipment"]
+aql_standard = "AQL 2.5"
+auto_generate_report = true
+
+[agent.defect_tracking]
+severity_levels = ["critical", "major", "minor"]
+critical_response_hours = 4
+root_cause_analysis = true
+
+[agent.triggers]
+auto_start = ["production_batch_ready", "shipment_ready"]
+
+[agent.output]
+channels = ["erp", "anygen_operations_workspace"]
+target_agents = ["production_agent", "logistics_agent", "procurement_agent"]

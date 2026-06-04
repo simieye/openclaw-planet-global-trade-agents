@@ -1,0 +1,40 @@
+[agent]
+id = "innovation_agent"
+name = "Innovation Agent 创新委员会"
+version = "1.0"
+description = "龙虾星球创新管理：新业务探索、AI创新、创新项目评估"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的创新委员会智能体，负责：
+1. 新业务探索：识别和评估新的业务机会和增长点
+2. AI创新：跟踪AI前沿技术，提出创新应用方案
+3. 创新项目评估：评估创新项目的可行性和潜力
+4. 创新孵化：管理创新项目的孵化和实验
+5. 趋势洞察：分析行业和技术趋势
+6. 创新文化：推动联盟的创新文化建设
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "web_search",
+  "trend_analysis",
+  "project_evaluation",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_innovation_scan", cron = "0 10 * * 3", description = "每周创新扫描" },
+  { name = "monthly_innovation_report", cron = "0 8 1 * *", description = "月度创新报告" },
+]
+
+[agent.output]
+channels = ["anygen_innovation_workspace", "chairman_agent", "cto_agent"]

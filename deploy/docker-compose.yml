@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  # ============================================================
+  # OpenClaw 调度引擎
+  # ============================================================
+  openclaw-engine:
+    image: openclaw-engine:latest
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: openclaw-engine
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENCLAW_ENV=production
+    env_file:
+      - ../.env
+    volumes:
+      - ../agents:/app/agents:ro
+      - ../taskflows:/app/taskflows:ro
+      - ../webhooks:/app/webhooks:ro
+      - ../knowledge:/app/knowledge:ro
+      - ../deploy/cluster.toml:/app/deploy/cluster.toml:ro
+      - agent-data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8080/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ============================================================
+  # Redis - 事件队列
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: openclaw-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # AnyGen 工作台（如果有容器化部署）
+  # ============================================================
+  # anygen:
+  #   image: anygen:latest
+  #   container_name: anygen-workspace
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - ../.env
+
+volumes:
+  agent-data:
+  redis-data:

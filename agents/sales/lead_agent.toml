@@ -1,0 +1,64 @@
+[agent]
+id = "lead_agent"
+name = "Lead Agent"
+version = "1.0"
+description = "线索采集、客户搜索、客户数据库建立"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商线索采集智能体，负责：
+1. 客户搜索：通过LinkedIn/Apollo/Clay/Google Maps/行业黄页搜索目标客户
+2. 目标画像：采购经理、CEO、创始人、品牌负责人、渠道负责人
+3. 数据采集：每天采集500-5000条客户数据
+4. 数据清洗：去重、验证、补全客户信息
+5. 客户评分：公司规模、采购能力、增长速度、行业匹配度、成交概率
+"""
+
+[agent.tools]
+enabled = [
+  "linkedin_api",
+  "apollo_api",
+  "clay_api",
+  "google_maps_api",
+  "web_search",
+  "web_scrape",
+  "data_enrichment",
+  "crm_api",
+]
+
+[agent.sources]
+linkedin = { search_filters = ["industry", "company_size", "job_title", "region"] }
+apollo = { enrich = true, verify_email = true }
+clay = { enrichment_tables = ["company_data", "contact_data"] }
+google_maps = { categories = ["wholesale", "retail", "distribution"] }
+yellow_pages = { regions = ["us", "uk", "de", "jp"] }
+
+[agent.scoring]
+dimensions = [
+  { name = "company_size", weight = 0.20 },
+  { name = "purchasing_power", weight = 0.25 },
+  { name = "growth_rate", weight = 0.20 },
+  { name = "industry_match", weight = 0.25 },
+  { name = "deal_probability", weight = 0.10 },
+]
+min_score_for_sdr = 70
+
+[agent.daily_target]
+min_leads = 500
+max_leads = 5000
+
+[agent.schedule]
+tasks = [
+  { name = "daily_lead_mining", cron = "0 2 * * *", description = "每日线索采集" },
+  { name = "lead_scoring", cron = "0 3 * * *", description = "每日线索评分" },
+]
+
+[agent.output]
+channels = ["crm", "anygen_sales_workspace"]
+target_agents = ["sdr_agent"]

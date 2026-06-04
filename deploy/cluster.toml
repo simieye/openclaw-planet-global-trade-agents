@@ -1,0 +1,190 @@
+# ============================================================
+# 龙虾星球共创联盟 - 集群全局配置
+# OpenClaw Cluster Configuration v3.0
+# ============================================================
+
+[cluster]
+name = "龙虾星球共创联盟"
+name_en = "Lobster Planet Co-Creation Alliance"
+version = "3.0"
+engine = "openclaw"
+environment = "production"
+
+[cluster.server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+timeout = 300
+
+[cluster.llm]
+default_provider = "claude"
+default_model = "claude-3-sonnet"
+routing_strategy = "cost_optimized"
+
+[cluster.llm.providers.openai]
+enabled = true
+api_key = "${OPENAI_API_KEY}"
+models = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"]
+
+[cluster.llm.providers.claude]
+enabled = true
+api_key = "${ANTHROPIC_API_KEY}"
+models = ["claude-3-opus", "claude-3-sonnet", "claude-3-haiku"]
+
+[cluster.llm.providers.gemini]
+enabled = true
+api_key = "${GEMINI_API_KEY}"
+models = ["gemini-2.0-flash", "gemini-1.5-pro"]
+
+[cluster.llm.providers.deepseek]
+enabled = true
+api_key = "${DEEPSEEK_API_KEY}"
+models = ["deepseek-chat", "deepseek-reasoner"]
+
+[cluster.llm.providers.qwen]
+enabled = true
+api_key = "${QWEN_API_KEY}"
+models = ["qwen-max", "qwen-plus"]
+
+# 模型路由规则
+[cluster.llm.routing]
+strategy = "cost_optimized"
+fallback_provider = "claude"
+
+[cluster.llm.routing.rules]
+board_agents = { provider = "claude", model = "claude-3-opus" }
+sales_agents = { provider = "claude", model = "claude-3-sonnet" }
+content_agents = { provider = "gemini", model = "gemini-2.0-flash" }
+analysis_agents = { provider = "claude", model = "claude-3-sonnet" }
+finance_agents = { provider = "claude", model = "claude-3-sonnet" }
+
+# ============================================================
+# 外部集成
+# ============================================================
+[cluster.integrations]
+
+[cluster.integrations.crm]
+enabled = true
+type = "custom"
+base_url = "${CRM_API_URL}"
+api_key = "${CRM_API_KEY}"
+
+[cluster.integrations.erp]
+enabled = true
+type = "custom"
+base_url = "${ERP_API_URL}"
+api_key = "${ERP_API_KEY}"
+
+[cluster.integrations.shopify]
+enabled = true
+store_url = "${SHOPIFY_STORE_URL}"
+api_key = "${SHOPIFY_API_KEY}"
+api_secret = "${SHOPIFY_API_SECRET}"
+
+[cluster.integrations.amazon]
+enabled = true
+seller_id = "${AMAZON_SELLER_ID}"
+auth_token = "${AMAZON_AUTH_TOKEN}"
+region = "us-east-1"
+
+[cluster.integrations.tiktok_shop]
+enabled = true
+shop_id = "${TIKTOK_SHOP_ID}"
+access_token = "${TIKTOK_ACCESS_TOKEN}"
+
+[cluster.integrations.whatsapp]
+enabled = true
+phone_number_id = "${WHATSAPP_PHONE_ID}"
+access_token = "${WHATSAPP_ACCESS_TOKEN}"
+business_account_id = "${WHATSAPP_BIZ_ID}"
+
+[cluster.integrations.email]
+enabled = true
+provider = "google_workspace"
+smtp_host = "smtp.gmail.com"
+smtp_port = 587
+
+[cluster.integrations.stripe]
+enabled = true
+secret_key = "${STRIPE_SECRET_KEY}"
+webhook_secret = "${STRIPE_WEBHOOK_SECRET}"
+
+[cluster.integrations.paypal]
+enabled = true
+client_id = "${PAYPAL_CLIENT_ID}"
+client_secret = "${PAYPAL_CLIENT_SECRET}"
+
+[cluster.integrations.heygen]
+enabled = true
+api_key = "${HEYGEN_API_KEY}"
+base_url = "https://api.heygen.com"
+
+[cluster.integrations.anygen]
+enabled = true
+workspace_id = "${ANYGEN_WORKSPACE_ID}"
+api_key = "${ANYGEN_API_KEY}"
+base_url = "${ANYGEN_BASE_URL}"
+
+# ============================================================
+# 存储与缓存
+# ============================================================
+[cluster.storage]
+type = "redis"
+redis_url = "${REDIS_URL}"
+session_ttl = 3600
+
+[cluster.storage.vector_db]
+type = "chromadb"
+host = "${CHROMA_HOST}"
+port = 8000
+
+# ============================================================
+# 监控与日志
+# ============================================================
+[cluster.monitoring]
+enabled = true
+prometheus_port = 9090
+health_check_interval = 30
+
+[cluster.monitoring.alerts]
+slack_webhook = "${SLACK_WEBHOOK_URL}"
+email = "${ALERT_EMAIL}"
+wechat_work_webhook = "${WECHAT_WORK_WEBHOOK}"
+
+[cluster.logging]
+level = "INFO"
+format = "json"
+outputs = ["console", "file"]
+file_path = "logs/openclaw.log"
+rotation = "daily"
+
+# ============================================================
+# 安全配置
+# ============================================================
+[cluster.security]
+webhook_secret = "${WEBHOOK_SECRET}"
+api_key = "${OPENCLAW_API_KEY}"
+cors_origins = ["*"]
+rate_limit = { requests = 600, period = "1m" }
+
+# ============================================================
+# 龙虾星球生态配置
+# ============================================================
+[cluster.ecosystem]
+name = "龙虾星球联盟生态"
+global_nodes_target = 100
+core_partners_target = 1000
+ecosystem_members_target = 100000
+cocreation_projects_target = 1000
+
+[cluster.ecosystem.commission]
+default_commission_rate = 0.15
+referral_bonus_rate = 0.05
+settlement_cycle = "weekly"
+
+[cluster.ecosystem.node_levels]
+global_headquarters = { share = 0.30, description = "全球总部" }
+country_center = { share = 0.20, description = "国家运营中心" }
+city_node = { share = 0.25, description = "城市运营中心" }
+community_operator = { share = 0.15, description = "社区运营商" }
+referrer = { share = 0.10, description = "推荐人" }

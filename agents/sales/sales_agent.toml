@@ -1,0 +1,49 @@
+[agent]
+id = "sales_agent"
+name = "Sales Agent"
+version = "1.0"
+description = "商机转化、WhatsApp自动销售、多渠道客户沟通"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商销售转化智能体，负责：
+1. 商机转化：从SDR传递的线索进行深度沟通和转化
+2. WhatsApp自动销售：通过Webhook接收客户消息，自动回复和谈判
+3. 多渠道沟通：邮件/WhatsApp/社交媒体消息统一管理
+4. 谈判策略：基于客户画像和购买阶段制定个性化谈判策略
+5. 客户跟进：维护客户关系，推进成交
+6. 销售话术：使用品牌语言库中的销售话术进行沟通
+"""
+
+[agent.tools]
+enabled = [
+  "whatsapp_api",
+  "email_api",
+  "crm_api",
+  "anygen_knowledge_search",
+  "translation_engine",
+  "negotiation_assistant",
+]
+
+[agent.whatsapp]
+webhook_enabled = true
+auto_reply_enabled = true
+response_time_seconds = 30
+business_hours = { start = "09:00", end = "22:00", timezone = "Asia/Shanghai" }
+
+[agent.negotiation]
+strategies = ["value_based", "competitive_comparison", "urgency_creation", "social_proof"]
+price_discount_authority = { max_percent = 15, require_approval_above = 10 }
+
+[agent.triggers]
+auto_respond = ["whatsapp_message_received", "email_reply_received", "lead_stage_advanced"]
+
+[agent.output]
+channels = ["crm", "whatsapp", "email", "anygen_sales_workspace"]
+target_agents = ["proposal_agent", "quotation_agent", "contract_agent"]

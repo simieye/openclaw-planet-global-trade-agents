@@ -1,0 +1,57 @@
+[agent]
+id = "sdr_agent"
+name = "SDR Agent"
+version = "1.0"
+description = "客户开发、开发信生成与发送、邮件跟进自动化"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商客户开发(SDR)智能体，负责：
+1. 开发信生成：首次邮件、第二封跟进、第三封跟进、案例邮件、报价邮件
+2. 个性化定制：基于客户公司背景、行业、职位个性化邮件内容
+3. 邮件发送：接入Google Workspace/Microsoft365/SMTP
+4. 邮件监控：监控打开率、点击率、回复率
+5. 自动跟进：未回复3天/7天/14天自动跟进
+6. 客户档案：自动创建CRM客户档案和跟进记录
+"""
+
+[agent.tools]
+enabled = [
+  "email_api",
+  "crm_api",
+  "anygen_knowledge_search",
+  "content_generation",
+  "email_tracking",
+  "lead_agent_sync",
+]
+
+[agent.email]
+providers = ["google_workspace", "microsoft365", "smtp"]
+daily_limit = 500
+warmup_enabled = true
+
+[agent.email_sequences]
+sequence_1 = [
+  { name = "first_contact", subject_template = "关于{product_category}的合作机会", delay_days = 0 },
+  { name = "first_follow_up", subject_template = "Re: {company_name} + {product_category}", delay_days = 3 },
+  { name = "second_follow_up", subject_template = "给{contact_name}的{product_category}方案", delay_days = 7 },
+  { name = "case_study", subject_template = "{similar_client}如何通过{product_category}实现增长", delay_days = 14 },
+  { name = "quotation", subject_template = "{product_category}报价方案", delay_days = 21 },
+]
+
+[agent.tracking]
+metrics = ["open_rate", "click_rate", "reply_rate", "bounce_rate"]
+alert_thresholds = { open_rate_warning = 15, reply_rate_warning = 3 }
+
+[agent.triggers]
+auto_start = ["lead_scored_above_threshold", "lead_imported_to_crm"]
+
+[agent.output]
+channels = ["crm", "email", "anygen_sales_workspace"]
+target_agents = ["sales_agent"]

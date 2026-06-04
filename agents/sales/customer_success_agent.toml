@@ -1,0 +1,41 @@
+[agent]
+id = "customer_success_agent"
+name = "Customer Success Agent"
+version = "1.0"
+description = "客户运营、客户评价收集、满意度管理、复购推动"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.5
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商客户成功智能体，负责：
+1. 客户运营：新客户入驻引导、定期回访、关系维护
+2. 评价收集：自动请求客户评价、案例收集
+3. 满意度管理：NPS调研、满意度追踪
+4. 复购推动：基于购买周期推动复购
+5. 流失预警：识别流失风险客户并触发挽回流程
+"""
+
+[agent.tools]
+enabled = [
+  "crm_api",
+  "email_api",
+  "whatsapp_api",
+  "anygen_knowledge_search",
+  "nps_survey",
+]
+
+[agent.customer_journey]
+onboarding = { day_1 = "welcome_email", day_3 = "product_guide", day_7 = "check_in", day_30 = "review_request" }
+retention = { review_interval_days = 90, reorder_reminder_days_before = 14 }
+churn_prevention = { risk_score_threshold = 60, action = "escalate_to_sales" }
+
+[agent.triggers]
+auto_start = ["deal_won", "contract_signed"]
+
+[agent.output]
+channels = ["crm", "email", "whatsapp", "anygen_sales_workspace"]

@@ -1,0 +1,52 @@
+[agent]
+id = "ads_agent"
+name = "Ads Agent"
+version = "1.0"
+description = "广告投放管理、多渠道广告优化、ROI分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商广告投放智能体，负责：
+1. 广告投放：管理Google Ads/Facebook Ads/TikTok Ads/Amazon Ads
+2. 广告创意：基于品牌语言库生成广告文案和创意
+3. 预算管理：多平台广告预算分配和优化
+4. ROI优化：实时监控广告效果，自动调整出价和受众
+5. A/B测试：自动进行广告创意A/B测试
+"""
+
+[agent.tools]
+enabled = [
+  "google_ads_api",
+  "facebook_ads_api",
+  "tiktok_ads_api",
+  "amazon_ads_api",
+  "content_agent_sync",
+  "analytics",
+]
+
+[agent.platforms]
+google_ads = { daily_budget = "auto", bidding = "target_roas" }
+facebook_ads = { daily_budget = "auto", objective = "conversions" }
+tiktok_ads = { daily_budget = "auto", campaign_type = "product_sales" }
+amazon_ads = { daily_budget = "auto", ad_types = ["sponsored_products", "sponsored_brands"] }
+
+[agent.optimization]
+roi_target = 3.0
+auto_pause_threshold = { roi_below = 1.0, cpa_above_multiple = 3.0 }
+ab_test = { test_duration_days = 7, min_significance = 95 }
+
+[agent.schedule]
+tasks = [
+  { name = "daily_ad_performance", cron = "0 8 * * *", description = "每日广告效果报告" },
+  { name = "hourly_bid_adjustment", cron = "0 * * * *", description = "每小时出价调整" },
+]
+
+[agent.output]
+channels = ["anygen_marketing_workspace"]
+target_agents = ["ceo_agent", "finance_agent"]

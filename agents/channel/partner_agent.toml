@@ -1,0 +1,41 @@
+[agent]
+id = "partner_agent"
+name = "Partner Agent 合作伙伴管理"
+version = "1.0"
+description = "龙虾星球合伙人体系：招募、评级、成长、收益分配"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的合作伙伴管理智能体，负责：
+1. 合伙人招募：全球合伙人（普通/高级/城市/产业/国家/全球合伙人）
+2. 合伙人评级：资源能力、运营能力、项目能力、影响力、投资能力
+3. 合伙人成长：学习模块、认证证书、成长积分、等级晋升
+4. 收益分配：项目服务、招商收益、培训收益、咨询收益、技术服务、联盟分销
+5. 自动分账：总部-城市节点-项目发起人-推荐人-生态基金
+6. 合伙人服务：提供专属支持和资源对接
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "crm_api",
+  "payment_api",
+  "commission_engine",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_partner_activity", cron = "0 9 * * *", description = "每日合伙人活动" },
+  { name = "weekly_settlement", cron = "0 10 * * 1", description = "每周分账结算" },
+  { name = "monthly_partner_review", cron = "0 8 1 * *", description = "月度合伙人评审" },
+]
+
+[agent.output]
+channels = ["anygen_partner_workspace", "ceo_agent", "cfo_agent"]

@@ -1,0 +1,547 @@
+# ============================================================
+# 龙虾星球共创联盟 - Agent Registry
+# OpenClaw Agent Cluster 完整注册中心
+# 100+ Agent 统一注册与调度
+# ============================================================
+
+[meta]
+version = "3.0"
+cluster = "lobster-planet-alliance"
+engine = "openclaw"
+
+# ============================================================
+# 一、AI董事会（10个Agent）
+# ============================================================
+[[agents]]
+id = "chairman_agent"
+name = "Chairman Agent 董事长"
+layer = "board"
+description = "企业愿景、长期战略、重大决策审批"
+config = "agents/board/chairman_agent.toml"
+priority = 1
+triggers = ["weekly_strategy_review", "monthly_board_meeting", "ecosystem_governance"]
+
+[[agents]]
+id = "ceo_agent"
+name = "CEO Agent 首席执行官"
+layer = "board"
+description = "战略执行、经营管理、全局调度"
+config = "agents/strategic/ceo_agent.toml"
+priority = 1
+triggers = ["daily_briefing", "kpi_alert", "strategy_review"]
+
+[[agents]]
+id = "coo_agent"
+name = "COO Agent 首席运营官"
+layer = "board"
+description = "运营效率、流程优化、节点管理"
+config = "agents/board/coo_agent.toml"
+priority = 1
+triggers = ["daily_operations_review", "node_performance_alert"]
+
+[[agents]]
+id = "cfo_agent"
+name = "CFO Agent 首席财务官"
+layer = "board"
+description = "现金流分析、利润管理、投融资、全球分账"
+config = "agents/board/cfo_agent.toml"
+priority = 1
+triggers = ["daily_cashflow_report", "monthly_financial_close"]
+
+[[agents]]
+id = "cmo_agent"
+name = "CMO Agent 首席营销官"
+layer = "board"
+description = "品牌增长、用户增长、联盟营销"
+config = "agents/board/cmo_agent.toml"
+priority = 1
+triggers = ["daily_growth_report", "campaign_launch"]
+
+[[agents]]
+id = "cto_agent"
+name = "CTO Agent 首席技术官"
+layer = "board"
+description = "技术架构、AI体系建设、系统稳定性"
+config = "agents/board/cto_agent.toml"
+priority = 1
+triggers = ["system_health_check", "architecture_review"]
+
+[[agents]]
+id = "cro_agent"
+name = "CRO Agent 首席风险官"
+layer = "board"
+description = "风险控制、合规管理、异常检测"
+config = "agents/board/cro_agent.toml"
+priority = 1
+triggers = ["risk_alert", "compliance_breach"]
+
+[[agents]]
+id = "legal_agent"
+name = "Legal Agent 法务管理"
+layer = "board"
+description = "合同审核、知识产权、合规审查"
+config = "agents/board/legal_agent.toml"
+priority = 1
+triggers = ["contract_review_request", "ip_alert"]
+
+[[agents]]
+id = "investment_agent"
+name = "Investment Agent 投资委员会"
+layer = "board"
+description = "项目孵化、投资评估、投后管理"
+config = "agents/investment/investment_agent.toml"
+priority = 1
+triggers = ["project_submitted", "portfolio_review"]
+
+[[agents]]
+id = "innovation_agent"
+name = "Innovation Agent 创新委员会"
+layer = "board"
+description = "新业务探索、AI创新、创新项目评估"
+config = "agents/board/innovation_agent.toml"
+priority = 1
+triggers = ["innovation_scan", "new_opportunity_detected"]
+
+# ============================================================
+# 二、市场与品牌层（12个Agent）
+# ============================================================
+[[agents]]
+id = "market_agent"
+name = "Market Agent 市场研究"
+layer = "market"
+description = "市场分析、竞品监控、全网市场扫描"
+config = "agents/market/market_agent.toml"
+priority = 2
+triggers = ["weekly_market_scan", "competitor_alert"]
+
+[[agents]]
+id = "trend_agent"
+name = "Trend Agent 趋势分析"
+layer = "market"
+description = "趋势分析、热点追踪、爆品发现"
+config = "agents/operations/trend_agent.toml"
+priority = 2
+triggers = ["trend_scan", "viral_detected"]
+
+[[agents]]
+id = "brand_agent"
+name = "Branding Agent 品牌建设"
+layer = "brand"
+description = "品牌定位、品牌故事、品牌IP、品牌视觉体系"
+config = "agents/brand/brand_agent.toml"
+priority = 2
+triggers = ["brand_update", "campaign_launch"]
+
+[[agents]]
+id = "kol_agent"
+name = "KOL Agent 达人运营"
+layer = "channel"
+description = "全球达人矩阵：筛选、合作、内容审核、结算"
+config = "agents/channel/kol_agent.toml"
+priority = 3
+triggers = ["kol_discovery", "campaign_launch"]
+
+[[agents]]
+id = "affiliate_agent"
+name = "Affiliate Agent 联盟营销"
+layer = "channel"
+description = "Affiliate Program、Referral Program、佣金管理"
+config = "agents/channel/affiliate_agent.toml"
+priority = 3
+triggers = ["affiliate_signup", "commission_due"]
+
+[[agents]]
+id = "event_agent"
+name = "Event Agent 活动管理"
+layer = "channel"
+description = "全球活动：招商会、路演会、培训会、行业峰会"
+config = "agents/channel/event_agent.toml"
+priority = 3
+triggers = ["event_scheduled", "registration_opened"]
+
+[[agents]]
+id = "referral_agent"
+name = "Referral Agent 转介绍系统"
+layer = "channel"
+description = "裂变引擎：推荐码、奖励计划、裂变追踪"
+config = "agents/channel/referral_agent.toml"
+priority = 3
+triggers = ["referral_signup", "reward_due"]
+
+[[agents]]
+id = "seo_agent"
+name = "SEO Agent 搜索优化"
+layer = "market"
+description = "SEO优化、关键词研究、排名监控"
+config = "agents/operations/ads_agent.toml"
+priority = 4
+triggers = ["seo_audit", "ranking_drop"]
+
+[[agents]]
+id = "ads_agent"
+name = "Ads Agent 广告投放"
+layer = "market"
+description = "广告投放管理、ROI优化、多平台广告"
+config = "agents/operations/ads_agent.toml"
+priority = 4
+triggers = ["ad_campaign_launch", "budget_alert", "roi_drop"]
+
+[[agents]]
+id = "tiktok_shop_agent"
+name = "TikTok Shop Agent"
+layer = "market"
+description = "TikTok Shop运营管理、短视频、直播、GMV增长"
+config = "agents/operations/tiktok_shop_agent.toml"
+priority = 4
+triggers = ["tiktok_order", "tiktok_live_start"]
+
+[[agents]]
+id = "marketplace_agent"
+name = "Marketplace Agent"
+layer = "market"
+description = "Amazon/Shopify平台运营"
+config = "agents/operations/marketplace_agent.toml"
+priority = 4
+triggers = ["order_received", "inventory_low", "review_posted"]
+
+# ============================================================
+# 三、内容与创意层（8个Agent）
+# ============================================================
+[[agents]]
+id = "content_agent"
+name = "Content Agent 内容工厂"
+layer = "content"
+description = "内容生成、多语言本地化、品牌语言库"
+config = "agents/content/content_agent.toml"
+priority = 3
+triggers = ["content_schedule", "translation_request"]
+
+[[agents]]
+id = "video_agent"
+name = "Video Agent 视频生产"
+layer = "content"
+description = "短视频脚本、广告创意、内容编排"
+config = "agents/content/video_agent.toml"
+priority = 3
+triggers = ["video_production_request", "campaign_launch"]
+
+[[agents]]
+id = "heygen_agent"
+name = "HeyGen Agent 数字人视频工厂"
+layer = "heygen"
+description = "HeyGen数字人视频：招商、产品、培训、直播"
+config = "agents/heygen/heygen_agent.toml"
+priority = 3
+triggers = ["video_production_request", "live_stream_request"]
+
+[[agents]]
+id = "product_agent"
+name = "Product Agent 产品管理"
+layer = "content"
+description = "产品管理、卖点重构、USP生成、FABE模型"
+config = "agents/product/product_agent.toml"
+priority = 3
+triggers = ["product_updated", "new_product_launch"]
+
+[[agents]]
+id = "training_agent"
+name = "Training Agent 培训认证"
+layer = "training"
+description = "加盟培训、代理培训、数字人培训、认证考试"
+config = "agents/training/training_agent.toml"
+priority = 4
+triggers = ["training_request", "certification_due"]
+
+# ============================================================
+# 四、销售与成交层（12个Agent）
+# ============================================================
+[[agents]]
+id = "lead_agent"
+name = "Lead Agent 线索发现"
+layer = "sales"
+description = "线索采集、客户搜索（LinkedIn/Apollo/Google Maps）"
+config = "agents/sales/lead_agent.toml"
+priority = 5
+triggers = ["daily_lead_mining", "lead_import"]
+
+[[agents]]
+id = "sdr_agent"
+name = "SDR Agent 销售开发"
+layer = "sales"
+description = "客户开发、客户评分、开发信生成"
+config = "agents/sales/sdr_agent.toml"
+priority = 5
+triggers = ["lead_scored", "outreach_campaign"]
+
+[[agents]]
+id = "sales_agent"
+name = "Sales Agent 销售转化"
+layer = "sales"
+description = "商机转化、WhatsApp自动销售、邮件跟进"
+config = "agents/sales/sales_agent.toml"
+priority = 5
+triggers = ["lead_responded", "whatsapp_message", "follow_up_due"]
+
+[[agents]]
+id = "proposal_agent"
+name = "Proposal Agent 方案生成"
+layer = "sales"
+description = "方案生成、招商手册、代理手册"
+config = "agents/sales/proposal_agent.toml"
+priority = 5
+triggers = ["proposal_request", "partner_inquiry"]
+
+[[agents]]
+id = "quotation_agent"
+name = "Quotation Agent 报价管理"
+layer = "sales"
+description = "报价管理、报价邮件生成"
+config = "agents/sales/quotation_agent.toml"
+priority = 5
+triggers = ["quotation_request"]
+
+[[agents]]
+id = "contract_agent"
+name = "Contract Agent 合同管理"
+layer = "sales"
+description = "合同管理、合同模板生成"
+config = "agents/sales/contract_agent.toml"
+priority = 5
+triggers = ["contract_request", "deal_won"]
+
+[[agents]]
+id = "customer_success_agent"
+name = "Customer Success Agent"
+layer = "sales"
+description = "客户运营、客户评价收集、满意度管理"
+config = "agents/sales/customer_success_agent.toml"
+priority = 5
+triggers = ["customer_onboarding", "review_request", "churn_risk"]
+
+[[agents]]
+id = "crm_agent"
+name = "CRM Agent 客户关系"
+layer = "sales"
+description = "CRM客户关系管理、客户数据库维护"
+config = "agents/operations/crm_agent.toml"
+priority = 5
+triggers = ["customer_created", "deal_stage_changed"]
+
+[[agents]]
+id = "retention_agent"
+name = "Retention Agent 客户留存"
+layer = "sales"
+description = "客户留存管理、复购推荐"
+config = "agents/operations/retention_agent.toml"
+priority = 5
+triggers = ["churn_risk_detected", "renewal_due"]
+
+[[agents]]
+id = "churn_agent"
+name = "Churn Agent 流失预警"
+layer = "sales"
+description = "客户流失预警：订阅流失、加盟流失分析"
+config = "agents/operations/churn_agent.toml"
+priority = 5
+triggers = ["churn_risk_detected", "subscription_cancel"]
+
+# ============================================================
+# 五、龙虾星球生态层（15个Agent）
+# ============================================================
+[[agents]]
+id = "ecosystem_agent"
+name = "Ecosystem Agent 生态联盟管理"
+layer = "ecosystem"
+description = "产业联盟、OPC共生体系、资源协同、收益共享"
+config = "agents/ecosystem/ecosystem_agent.toml"
+priority = 2
+triggers = ["alliance_update", "resource_match_request"]
+
+[[agents]]
+id = "franchise_agent"
+name = "Franchise Agent 全球加盟管理"
+layer = "franchise"
+description = "国家代理、城市合伙人、招商自动化"
+config = "agents/franchise/franchise_agent.toml"
+priority = 3
+triggers = ["franchise_lead", "partner_application"]
+
+[[agents]]
+id = "community_agent"
+name = "Community Agent 社群运营"
+layer = "community"
+description = "Facebook Group/Telegram/Discord/微信群/OPC社区"
+config = "agents/community/community_agent.toml"
+priority = 3
+triggers = ["member_joined", "community_event"]
+
+[[agents]]
+id = "city_node_agent"
+name = "City Node Agent 城市节点管理"
+layer = "city_node"
+description = "城市运营中心：节点建设、运营考核、城市增长"
+config = "agents/city_node/city_node_agent.toml"
+priority = 3
+triggers = ["node_application", "node_performance_alert"]
+
+[[agents]]
+id = "partner_agent"
+name = "Partner Agent 合作伙伴管理"
+layer = "channel"
+description = "合伙人体系：招募、评级、成长、收益分配"
+config = "agents/channel/partner_agent.toml"
+priority = 3
+triggers = ["partner_application", "settlement_due"]
+
+[[agents]]
+id = "project_agent"
+name = "Project Agent 项目共创"
+layer = "ecosystem"
+description = "OPC项目共创：提交、评审、资源匹配、执行跟踪"
+config = "agents/ecosystem/project_agent.toml"
+priority = 3
+triggers = ["project_submitted", "resource_request"]
+
+[[agents]]
+id = "global_expansion_agent"
+name = "Global Expansion Agent 全球扩张"
+layer = "global"
+description = "新市场进入、国家运营中心建立、全球合规"
+config = "agents/global/global_expansion_agent.toml"
+priority = 2
+triggers = ["expansion_trigger", "country_entry"]
+
+# ============================================================
+# 六、AI NAILS设备层（5个Agent）
+# ============================================================
+[[agents]]
+id = "ainails_device_agent"
+name = "AI NAILS Device Agent 设备管理"
+layer = "ai_nails"
+description = "设备投放、激活、维护、升级、数据采集"
+config = "agents/ai_nails/device_agent.toml"
+priority = 4
+triggers = ["device_online", "device_error", "device_transaction"]
+
+[[agents]]
+id = "ainails_location_agent"
+name = "AI NAILS Location Agent 智能选址"
+layer = "ai_nails"
+description = "全球点位智能选址：GIS分析、人流量、ROI预测"
+config = "agents/ai_nails/location_agent.toml"
+priority = 4
+triggers = ["location_scan", "expansion_plan"]
+
+[[agents]]
+id = "store_growth_agent"
+name = "Store Growth Agent 门店增长"
+layer = "ai_nails"
+description = "门店增长：订单分析、用户增长、复购提升"
+config = "agents/ai_nails/store_growth_agent.toml"
+priority = 4
+triggers = ["store_report", "growth_alert"]
+
+# ============================================================
+# 七、财务层（6个Agent）
+# ============================================================
+[[agents]]
+id = "finance_agent"
+name = "Finance Agent 财务分析"
+layer = "finance"
+description = "ROI分析、财务报表、经营分析"
+config = "agents/finance/finance_agent.toml"
+priority = 6
+triggers = ["daily_finance_report", "monthly_close"]
+
+[[agents]]
+id = "accountant_agent"
+name = "Accountant Agent 会计"
+layer = "finance"
+description = "会计记账、凭证管理"
+config = "agents/finance/accountant_agent.toml"
+priority = 6
+triggers = ["transaction_recorded", "reconciliation_due"]
+
+[[agents]]
+id = "invoice_agent"
+name = "Invoice Agent 发票管理"
+layer = "finance"
+description = "发票管理、开票自动化"
+config = "agents/finance/invoice_agent.toml"
+priority = 6
+triggers = ["invoice_request", "payment_received"]
+
+[[agents]]
+id = "payment_agent"
+name = "Payment Agent 收款管理"
+layer = "finance"
+description = "收款管理、Stripe/PayPal对接"
+config = "agents/finance/payment_agent.toml"
+priority = 6
+triggers = ["payment_event", "refund_request"]
+
+[[agents]]
+id = "commission_agent"
+name = "Commission Agent 分账引擎"
+layer = "finance"
+description = "全球分账：自动计算、分配、结算各级佣金"
+config = "agents/finance/commission_agent.toml"
+priority = 6
+triggers = ["payment_received", "settlement_due"]
+
+# ============================================================
+# 八、供应链层（6个Agent）
+# ============================================================
+[[agents]]
+id = "order_agent"
+name = "Order Agent 订单管理"
+layer = "supply_chain"
+description = "订单管理、订单流转"
+config = "agents/supply_chain/order_agent.toml"
+priority = 5
+triggers = ["order_created", "order_status_changed"]
+
+[[agents]]
+id = "inventory_agent"
+name = "Inventory Agent 库存管理"
+layer = "supply_chain"
+description = "库存管理、库存预警"
+config = "agents/supply_chain/inventory_agent.toml"
+priority = 5
+triggers = ["inventory_update", "low_stock_alert"]
+
+[[agents]]
+id = "procurement_agent"
+name = "Procurement Agent 采购管理"
+layer = "supply_chain"
+description = "采购管理、供应商管理"
+config = "agents/supply_chain/procurement_agent.toml"
+priority = 5
+triggers = ["procurement_request", "supplier_update"]
+
+[[agents]]
+id = "logistics_agent"
+name = "Logistics Agent 物流管理"
+layer = "supply_chain"
+description = "物流管理、发货追踪"
+config = "agents/supply_chain/logistics_agent.toml"
+priority = 5
+triggers = ["shipment_created", "delivery_update"]
+
+[[agents]]
+id = "production_agent"
+name = "Production Agent 生产管理"
+layer = "supply_chain"
+description = "生产管理、排产调度"
+config = "agents/supply_chain/production_agent.toml"
+priority = 5
+triggers = ["production_order", "quality_check"]
+
+[[agents]]
+id = "quality_agent"
+name = "Quality Agent 质检管理"
+layer = "supply_chain"
+description = "质检管理、品控追踪"
+config = "agents/supply_chain/quality_agent.toml"
+priority = 5
+triggers = ["quality_inspection", "defect_reported"]

@@ -1,0 +1,41 @@
+[agent]
+id = "referral_agent"
+name = "Referral Agent 转介绍系统"
+version = "1.0"
+description = "龙虾星球裂变引擎：推荐码、奖励计划、裂变追踪、自动奖励"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的转介绍裂变智能体，负责：
+1. 推荐码生成：为每个用户生成唯一推荐码和追踪链接
+2. 奖励计划：设计多层推荐奖励体系
+3. 裂变追踪：追踪推荐链路和转化效果
+4. 自动奖励：根据规则自动发放推荐奖励
+5. 裂变优化：分析裂变数据，优化奖励策略
+6. 防作弊：检测和防止刷推荐行为
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "referral_engine",
+  "payment_api",
+  "crm_api",
+  "fraud_detection",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_referral_report", cron = "0 8 * * *", description = "每日推荐报告" },
+  { name = "weekly_reward_settlement", cron = "0 10 * * 1", description = "每周奖励结算" },
+]
+
+[agent.output]
+channels = ["anygen_growth_workspace", "affiliate_agent", "finance_agent"]

@@ -1,0 +1,45 @@
+[agent]
+id = "order_agent"
+name = "Order Agent"
+version = "1.0"
+description = "订单管理、订单流转、订单状态追踪"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商订单管理智能体，负责：
+1. 订单管理：全渠道订单（Amazon/Shopify/TikTok/独立站）统一管理
+2. 订单流转：订单自动分配至生产/仓库/物流
+3. 状态追踪：实时追踪订单状态并通知客户
+4. 异常处理：订单异常（缺货/地址错误/支付失败）自动处理
+5. 数据分析：订单趋势分析和预测
+"""
+
+[agent.tools]
+enabled = [
+  "amazon_api",
+  "shopify_api",
+  "tiktok_shop_api",
+  "erp_api",
+  "wms_api",
+  "notification_api",
+]
+
+[agent.order_sources]
+amazon = { auto_import = true, interval_minutes = 15 }
+shopify = { auto_import = true, interval_minutes = 5 }
+tiktok_shop = { auto_import = true, interval_minutes = 15 }
+manual = { enabled = true }
+
+[agent.status_flow]
+stages = ["pending", "confirmed", "processing", "shipped", "delivered", "completed", "cancelled", "refunded"]
+auto_notify = ["confirmed", "shipped", "delivered"]
+
+[agent.output]
+channels = ["erp", "wms", "anygen_operations_workspace"]
+target_agents = ["production_agent", "inventory_agent", "logistics_agent", "customer_success_agent"]

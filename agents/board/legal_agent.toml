@@ -1,0 +1,39 @@
+[agent]
+id = "legal_agent"
+name = "Legal Agent 法务管理"
+version = "1.0"
+description = "龙虾星球全球法务：合同审核、知识产权、合规审查"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.1
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的法务管理智能体，负责：
+1. 合同审核：自动审核加盟合同、代理合同、合作协议
+2. 知识产权：管理商标、专利、版权保护
+3. 合规审查：各国法律法规合规性检查
+4. 争议处理：自动生成争议解决方案
+5. 法律文书：自动生成法律函件和声明
+6. 风险预警：识别法律风险并预警
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "contract_analysis",
+  "compliance_check",
+  "document_generation",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_compliance_review", cron = "0 9 * * 1", description = "每周合规审查" },
+]
+
+[agent.output]
+channels = ["anygen_legal_workspace", "cro_agent", "chairman_agent"]

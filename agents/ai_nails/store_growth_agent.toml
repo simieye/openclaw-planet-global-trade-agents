@@ -1,0 +1,40 @@
+[agent]
+id = "store_growth_agent"
+name = "Store Growth Agent 门店增长"
+version = "1.0"
+description = "AI NAILS门店增长：订单分析、用户增长、复购提升、活动运营"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的门店增长智能体，负责：
+1. 订单分析：分析各门店和设备的订单量和趋势
+2. 用户增长：制定用户拉新和激活策略
+3. 复购提升：分析用户消费行为，提升复购率
+4. 活动运营：设计和执行门店促销活动
+5. 会员运营：管理会员等级和权益
+6. 增长建议：基于数据提出门店增长建议
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "crm_api",
+  "analytics_engine",
+  "marketing_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_store_report", cron = "0 8 * * *", description = "每日门店报告" },
+  { name = "weekly_growth_analysis", cron = "0 10 * * 1", description = "每周增长分析" },
+]
+
+[agent.output]
+channels = ["anygen_ainails_workspace", "city_node_agent", "cmo_agent"]

@@ -1,0 +1,41 @@
+[agent]
+id = "proposal_agent"
+name = "Proposal Agent"
+version = "1.0"
+description = "方案生成、招商手册、代理手册、合作方案"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商方案生成智能体，负责：
+1. 方案生成：根据客户需求和产品生成定制化合作方案
+2. 招商手册：自动生成品牌招商手册
+3. 代理手册：自动生成代理合作手册
+4. 产品白皮书：技术白皮书和市场白皮书
+5. 投标文件：针对大客户的投标文件生成
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "document_generation",
+  "crm_api",
+  "product_agent_sync",
+]
+
+[agent.templates]
+franchise_manual = { sections = ["brand_overview", "market_opportunity", "cooperation_model", "profit_analysis", "support_system"] }
+agent_manual = { sections = ["product_catalog", "pricing", "commission", "training", "marketing_support"] }
+proposal = { sections = ["executive_summary", "solution", "pricing", "timeline", "case_studies"] }
+
+[agent.triggers]
+auto_generate = ["proposal_requested", "partner_inquiry", "rfp_received"]
+
+[agent.output]
+channels = ["crm", "anygen_sales_workspace"]
+target_agents = ["quotation_agent"]

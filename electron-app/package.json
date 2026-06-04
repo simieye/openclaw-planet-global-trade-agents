@@ -1,0 +1,134 @@
+{
+  "name": "lobster-planet-global-trade-agents",
+  "productName": "龙虾星球共创联盟",
+  "version": "3.0.0",
+  "description": "OpenClaw + AnyGen + HeyGen 跨境电商品牌出海智能体集群桌面应用",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:all": "electron-builder --mac --win --linux",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "com.lobsterplanet.globaltradeagents",
+    "productName": "龙虾星球共创联盟",
+    "copyright": "Copyright © 2026 Lobster Planet Co-Creation Alliance",
+    "directories": {
+      "output": "../dist-electron",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../agents",
+        "to": "agents"
+      },
+      {
+        "from": "../taskflows",
+        "to": "taskflows"
+      },
+      {
+        "from": "../webhooks",
+        "to": "webhooks"
+      },
+      {
+        "from": "../knowledge",
+        "to": "knowledge"
+      },
+      {
+        "from": "../deploy",
+        "to": "deploy"
+      },
+      {
+        "from": "../orchestration",
+        "to": "orchestration"
+      },
+      {
+        "from": "../scripts",
+        "to": "scripts"
+      },
+      {
+        "from": "../dashboard",
+        "to": "dashboard"
+      },
+      {
+        "from": "../tests",
+        "to": "tests"
+      },
+      {
+        "from": "../requirements.txt",
+        "to": "requirements.txt"
+      },
+      {
+        "from": "../.env.example",
+        "to": ".env.example"
+      },
+      {
+        "from": "../README.md",
+        "to": "README.md"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "../icons/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "LSUIElement": false,
+        "NSHighResolutionCapable": true
+      }
+    },
+    "dmg": {
+      "title": "龙虾星球共创联盟安装",
+      "icon": "../icons/icon.icns",
+      "background": "../icons/dmg-background.png",
+      "contents": [
+        { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
+        { "x": 192, "y": 344, "type": "file", "path": "/Applications" }
+      ],
+      "window": { "width": 660, "height": 500 }
+    },
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "../icons/icon.ico"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "../icons/icon.png",
+      "category": "Office"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "simieye",
+      "repo": "openclaw-planet-global-trade-agents"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "electron-store": "^10.0.0"
+  }
+}

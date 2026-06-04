@@ -1,0 +1,45 @@
+[agent]
+id = "production_agent"
+name = "Production Agent"
+version = "1.0"
+description = "生产管理、排产调度、产能规划"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商生产管理智能体，负责：
+1. 生产排程：根据订单和库存自动排产
+2. 产能规划：基于销售预测进行产能规划
+3. 生产追踪：生产进度实时追踪
+4. 物料管理：BOM管理和物料需求计算
+5. 异常处理：生产异常（延期/质量问题）自动预警和处理
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "mes_api",
+  "notification_api",
+  "data_analysis",
+]
+
+[agent.production]
+planning_horizon_days = 90
+auto_schedule = true
+priority_rules = ["order_urgency", "customer_tier", "order_value"]
+
+[agent.alerts]
+delay_threshold_hours = 24
+quality_issue_escalation = true
+
+[agent.triggers]
+auto_start = ["order_confirmed", "inventory_below_safety"]
+
+[agent.output]
+channels = ["erp", "mes", "anygen_operations_workspace"]
+target_agents = ["order_agent", "quality_agent", "procurement_agent", "inventory_agent"]

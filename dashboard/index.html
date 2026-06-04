@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 龙虾星球共创联盟 - AI 管理驾驶舱</title>
+<style>
+:root {
+  --bg: #0a0a1a;
+  --card-bg: #12122a;
+  --border: #1e1e3a;
+  --accent: #ff6b35;
+  --accent2: #00d4aa;
+  --accent3: #6366f1;
+  --text: #e0e0e0;
+  --text-dim: #888;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+.header {
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a1a2a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header h1 {
+  font-size: 20px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.header-actions { display: flex; gap: 8px; }
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: #e85a2a; }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.stat-card .label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+.stat-card .value { font-size: 32px; font-weight: 700; margin: 8px 0; }
+.stat-card .trend { font-size: 12px; }
+.trend-up { color: var(--success); }
+.trend-down { color: var(--danger); }
+.accent { color: var(--accent); }
+.accent2 { color: var(--accent2); }
+.accent3 { color: var(--accent3); }
+
+/* Grid Layout */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-body { padding: 16px 20px; }
+.panel-full { grid-column: 1 / -1; }
+
+/* Agent List */
+.agent-layer { margin-bottom: 20px; }
+.layer-title {
+  font-size: 13px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.agent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 13px;
+}
+.agent-item:last-child { border-bottom: none; }
+.agent-status {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+.status-active { background: rgba(34,197,94,0.15); color: var(--success); }
+.status-idle { background: rgba(136,136,136,0.15); color: var(--text-dim); }
+.status-error { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+/* TaskFlow */
+.tf-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.tf-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.tf-desc { font-size: 12px; color: var(--text-dim); }
+.tf-meta { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+.tf-steps {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.tf-step {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  background: rgba(99,102,241,0.15);
+  color: var(--accent3);
+}
+
+/* Webhook */
+.wh-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 13px;
+}
+.wh-source {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  background: rgba(255,107,53,0.15);
+  color: var(--accent);
+  margin-right: 8px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-dim);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦞 龙虾星球共创联盟 <span class="status-dot"></span></h1>
+  <div class="header-actions">
+    <button class="btn" onclick="refreshAll()">🔄 刷新</button>
+    <button class="btn btn-primary" onclick="startEngine()">▶ 启动引擎</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Stats Grid -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="label">Agent 总数</div>
+      <div class="value accent" id="agentCount">--</div>
+      <div class="trend trend-up">OpenClaw Cluster v3.0</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">TaskFlow</div>
+      <div class="value accent2" id="tfCount">--</div>
+      <div class="trend trend-up">业务流水线</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Webhook</div>
+      <div class="value accent3" id="whCount">--</div>
+      <div class="trend trend-up">外部集成</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">引擎状态</div>
+      <div class="value" style="font-size:24px;color:var(--success);" id="engineStatus">运行中</div>
+      <div class="trend">OpenClaw Engine</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">知识库</div>
+      <div class="value" style="font-size:24px;color:var(--accent2);" id="kbCount">10</div>
+      <div class="trend">分类体系</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">全局节点</div>
+      <div class="value" style="font-size:24px;color:var(--accent3);">🌍</div>
+      <div class="trend trend-up">全球扩张中</div>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="grid-2">
+    <!-- Agent Cluster -->
+    <div class="panel">
+      <div class="panel-header">🤖 Agent 智能体集群</div>
+      <div class="panel-body" id="agentPanel" style="max-height: 500px; overflow-y: auto;">
+        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+      </div>
+    </div>
+
+    <!-- TaskFlow Pipeline -->
+    <div class="panel">
+      <div class="panel-header">⚡ TaskFlow 执行流水线</div>
+      <div class="panel-body" id="tfPanel" style="max-height: 500px; overflow-y: auto;">
+        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- Webhook Integration -->
+    <div class="panel">
+      <div class="panel-header">🌐 Webhook 外部系统集成</div>
+      <div class="panel-body" id="whPanel" style="max-height: 400px; overflow-y: auto;">
+        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+      </div>
+    </div>
+
+    <!-- Ecosystem Status -->
+    <div class="panel">
+      <div class="panel-header">🌍 龙虾星球生态系统</div>
+      <div class="panel-body">
+        <div style="display:grid;gap:12px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>AI董事会</span><span style="color:var(--accent);">10 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>市场品牌层</span><span style="color:var(--accent2);">12 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>内容创意层</span><span style="color:var(--accent3);">5 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>销售成交流</span><span style="color:var(--accent);">10 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>龙虾星球生态层</span><span style="color:var(--accent2);">15 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>AI NAILS设备层</span><span style="color:var(--accent3);">5 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>财务供应链</span><span style="color:var(--accent);">12 Agents</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  龙虾星球共创联盟 · OpenClaw Agent Cluster v3.0 · AnyGen Workspace · HeyGen Digital Human Factory
+  <br>Powered by AI Native Enterprise Architecture
+</div>
+
+<script>
+// 模拟数据 - 生产环境连接 OpenClaw API
+const mockData = {
+  agents: [
+    { layer: "board", agents: [
+      { name: "Chairman Agent 董事长", status: "active" },
+      { name: "CEO Agent 首席执行官", status: "active" },
+      { name: "COO Agent 首席运营官", status: "active" },
+      { name: "CFO Agent 首席财务官", status: "active" },
+      { name: "CMO Agent 首席营销官", status: "active" },
+      { name: "CTO Agent 首席技术官", status: "active" },
+      { name: "CRO Agent 首席风险官", status: "active" },
+      { name: "Legal Agent 法务管理", status: "idle" },
+      { name: "Investment Agent 投资委员会", status: "active" },
+      { name: "Innovation Agent 创新委员会", status: "idle" },
+    ]},
+    { layer: "brand_market", agents: [
+      { name: "Market Agent 市场研究", status: "active" },
+      { name: "Trend Agent 趋势分析", status: "active" },
+      { name: "Branding Agent 品牌建设", status: "active" },
+      { name: "KOL Agent 达人运营", status: "idle" },
+      { name: "Affiliate Agent 联盟营销", status: "active" },
+    ]},
+    { layer: "content", agents: [
+      { name: "Content Agent 内容工厂", status: "active" },
+      { name: "Video Agent 视频生产", status: "active" },
+      { name: "HeyGen Agent 数字人工厂", status: "active" },
+      { name: "Product Agent 产品管理", status: "idle" },
+      { name: "Training Agent 培训认证", status: "idle" },
+    ]},
+    { layer: "ecosystem", agents: [
+      { name: "Ecosystem Agent 生态联盟", status: "active" },
+      { name: "Franchise Agent 全球加盟", status: "active" },
+      { name: "Community Agent 社群运营", status: "active" },
+      { name: "City Node Agent 城市节点", status: "active" },
+      { name: "Partner Agent 合作伙伴", status: "active" },
+      { name: "Project Agent 项目共创", status: "idle" },
+      { name: "Global Expansion Agent", status: "active" },
+    ]},
+    { layer: "ai_nails", agents: [
+      { name: "AI NAILS Device Agent", status: "active" },
+      { name: "AI NAILS Location Agent", status: "idle" },
+      { name: "Store Growth Agent", status: "active" },
+    ]},
+  ],
+  taskflows: [
+    { name: "客户成交流水线", desc: "从线索到成交全流程自动化", steps: 8, priority: "high" },
+    { name: "全球加盟裂变流水线", desc: "加盟线索→评分→招商→签约→培训→上线", steps: 10, priority: "high" },
+    { name: "OPC项目共创流水线", desc: "项目提交→评审→资源匹配→执行→分配", steps: 7, priority: "high" },
+    { name: "CEO经营驾驶舱", desc: "每日汇总所有业务线数据", steps: 8, priority: "high" },
+    { name: "全球扩张流水线", desc: "市场分析→合规→节点建设→运营", steps: 7, priority: "high" },
+    { name: "全球分账流水线", desc: "收入→计算→分账→结算→对账", steps: 6, priority: "critical" },
+    { name: "品牌出海全流程", desc: "市场调研→内容→广告→获客端到端", steps: 9, priority: "high" },
+    { name: "内容工厂流水线", desc: "选题→脚本→HeyGen视频→多语言→发布", steps: 6, priority: "medium" },
+    { name: "联盟裂变流水线", desc: "招募→评分→培训→激活→裂变", steps: 7, priority: "high" },
+    { name: "AI NAILS设备运营", desc: "选址→投放→激活→运营→维护", steps: 6, priority: "critical" },
+  ],
+  webhooks: [
+    { name: "CRM新线索", source: "crm", path: "/hooks/crm/new-lead" },
+    { name: "WhatsApp消息", source: "whatsapp", path: "/hooks/whatsapp/message" },
+    { name: "Shopify订单", source: "shopify", path: "/hooks/shopify/order" },
+    { name: "Amazon评论", source: "amazon", path: "/hooks/amazon/review" },
+    { name: "TikTok Shop订单", source: "tiktok_shop", path: "/hooks/tiktok/order" },
+    { name: "Stripe到账", source: "stripe", path: "/hooks/payment/stripe" },
+    { name: "AI NAILS设备上线", source: "ai_nails", path: "/hooks/ainails/device-online" },
+    { name: "城市节点申请", source: "website", path: "/hooks/city/application" },
+    { name: "加盟申请", source: "website", path: "/hooks/franchise/apply" },
+    { name: "项目共创提交", source: "website", path: "/hooks/project/submit" },
+    { name: "合伙人申请", source: "website", path: "/hooks/partner/apply" },
+    { name: "社群新成员", source: "community", path: "/hooks/community/join" },
+  ]
+};
+
+function renderAgents() {
+  const panel = document.getElementById('agentPanel');
+  let html = '';
+  mockData.agents.forEach(layer => {
+    const layerNames = {
+      board: '🏛️ AI董事会',
+      brand_market: '📊 市场品牌层',
+      content: '🎨 内容创意层',
+      ecosystem: '🌍 龙虾星球生态层',
+      ai_nails: '💅 AI NAILS设备层',
+    };
+    html += `<div class="agent-layer">`;
+    html += `<div class="layer-title">${layerNames[layer.layer] || layer.layer} (${layer.agents.length})</div>`;
+    layer.agents.forEach(a => {
+      const statusClass = a.status === 'active' ? 'status-active' : 'status-idle';
+      const statusText = a.status === 'active' ? '运行中' : '待命';
+      html += `<div class="agent-item">
+        <span>${a.name}</span>
+        <span class="agent-status ${statusClass}">${statusText}</span>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  panel.innerHTML = html;
+}
+
+function renderTaskFlows() {
+  const panel = document.getElementById('tfPanel');
+  let html = '';
+  mockData.taskflows.forEach(tf => {
+    const priColor = tf.priority === 'critical' ? 'var(--danger)' : tf.priority === 'high' ? 'var(--accent)' : 'var(--accent2)';
+    html += `<div class="tf-item">
+      <div class="tf-name">${tf.name}</div>
+      <div class="tf-desc">${tf.desc}</div>
+      <div class="tf-meta">优先级: <span style="color:${priColor}">${tf.priority}</span> · ${tf.steps} 步骤</div>
+      <div class="tf-steps">${'<span class="tf-step">●</span>'.repeat(Math.min(tf.steps, 8))}</div>
+    </div>`;
+  });
+  panel.innerHTML = html;
+}
+
+function renderWebhooks() {
+  const panel = document.getElementById('whPanel');
+  let html = '';
+  mockData.webhooks.forEach(wh => {
+    html += `<div class="wh-item">
+      <span class="wh-source">${wh.source}</span>
+      ${wh.name}
+      <span style="color:var(--text-dim);font-size:11px;margin-left:8px;">${wh.path}</span>
+    </div>`;
+  });
+  panel.innerHTML = html;
+}
+
+function refreshAll() {
+  renderAgents();
+  renderTaskFlows();
+  renderWebhooks();
+  document.getElementById('agentCount').textContent = mockData.agents.reduce((s, l) => s + l.agents.length, 0);
+  document.getElementById('tfCount').textContent = mockData.taskflows.length;
+  document.getElementById('whCount').textContent = mockData.webhooks.length;
+}
+
+function startEngine() {
+  alert('🚀 引擎启动中...\n\n请通过终端运行:\npython scripts/launch.py start');
+}
+
+// 初始化
+refreshAll();
+
+// 每30秒自动刷新
+setInterval(refreshAll, 30000);
+</script>
+
+</body>
+</html>

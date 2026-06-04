@@ -1,0 +1,45 @@
+[agent]
+id = "procurement_agent"
+name = "Procurement Agent"
+version = "1.0"
+description = "采购管理、供应商管理、采购订单"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商采购管理智能体，负责：
+1. 采购管理：基于补货计划自动生成采购订单
+2. 供应商管理：供应商评估、分级、绩效管理
+3. 询价比价：自动向多家供应商询价和比价
+4. 采购跟踪：采购订单全流程追踪
+5. 成本优化：供应商谈判建议、批量采购优惠
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "email_api",
+  "supplier_portal",
+  "data_analysis",
+]
+
+[agent.supplier_management]
+evaluation_dimensions = ["price", "quality", "delivery_time", "communication", "flexibility"]
+min_score_for_preferred = 85
+
+[agent.purchase_order]
+auto_generate = true
+approval_required_above = 50000
+default_payment_terms = "T/T 30% deposit, 70% before shipment"
+
+[agent.triggers]
+auto_generate = ["replenishment_plan_created", "low_stock_alert"]
+
+[agent.output]
+channels = ["erp", "email", "anygen_operations_workspace"]
+target_agents = ["inventory_agent", "finance_agent"]

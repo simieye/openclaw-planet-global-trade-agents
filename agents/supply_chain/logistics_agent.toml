@@ -1,0 +1,47 @@
+[agent]
+id = "logistics_agent"
+name = "Logistics Agent"
+version = "1.0"
+description = "物流管理、发货追踪、物流商管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商物流管理智能体，负责：
+1. 物流管理：头程/海外仓/尾程物流全链路管理
+2. 发货管理：自动选择最优物流方案和生成面单
+3. 物流追踪：实时追踪物流状态并通知客户
+4. 物流商管理：多物流商比价和绩效管理
+5. 异常处理：物流异常（延迟/丢件/破损）自动处理
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "wms_api",
+  "logistics_api",
+  "notification_api",
+  "tracking_api",
+]
+
+[agent.shipping]
+methods = ["air_express", "air_freight", "sea_freight", "rail_freight"]
+auto_select = true
+optimization_goal = "cost_balanced"  # cost_first | speed_first | cost_balanced
+
+[agent.carriers]
+international = ["DHL", "FedEx", "UPS", "YunExpress", "4PX"]
+domestic = ["SF_Express", "ZTO", "YTO"]
+
+[agent.tracking]
+auto_notify_customer = true
+notify_events = ["shipped", "in_transit", "out_for_delivery", "delivered", "exception"]
+
+[agent.output]
+channels = ["erp", "wms", "anygen_operations_workspace"]
+target_agents = ["order_agent", "customer_success_agent", "inventory_agent"]

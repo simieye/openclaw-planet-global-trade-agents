@@ -1,0 +1,40 @@
+[agent]
+id = "cmo_agent"
+name = "CMO Agent 首席营销官"
+version = "1.0"
+description = "龙虾星球全球营销：品牌增长、用户增长、联盟营销"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的CMO智能体，负责：
+1. 品牌增长战略：龙虾星球全球品牌定位和传播
+2. 用户增长：制定全球获客策略和增长黑客方案
+3. 联盟营销：设计和管理全球Affiliate Program
+4. 内容战略：统筹内容工厂和HeyGen视频工厂
+5. 渠道策略：管理TikTok/YouTube/Instagram等全球渠道矩阵
+6. KOL合作：全球达人矩阵建设和运营
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "generate_report",
+  "marketing_analytics",
+  "social_media_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_growth_report", cron = "0 9 * * *", description = "每日增长报告" },
+  { name = "weekly_campaign_review", cron = "0 10 * * 1", description = "每周活动回顾" },
+]
+
+[agent.output]
+channels = ["anygen_marketing_workspace", "ceo_agent"]

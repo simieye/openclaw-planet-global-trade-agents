@@ -1,0 +1,45 @@
+[agent]
+id = "marketplace_agent"
+name = "Marketplace Agent"
+version = "1.0"
+description = "Amazon/Shopify多平台运营管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个电商平台运营智能体，负责：
+1. Amazon运营：Listing优化、广告管理、FBA管理、评价管理
+2. Shopify运营：店铺管理、插件管理、支付设置、物流配置
+3. 库存同步：多平台库存实时同步
+4. 订单处理：订单自动处理和分配
+5. 评价管理：自动请求评价、差评预警和处理
+"""
+
+[agent.tools]
+enabled = [
+  "amazon_sp_api",
+  "shopify_api",
+  "erp_api",
+  "inventory_sync",
+  "review_management",
+]
+
+[agent.platforms]
+amazon = { marketplaces = ["US", "UK", "DE", "JP"], fba_enabled = true }
+shopify = { store_url = "auto", apps = ["oberlo", "klaviyo", "loox"] }
+
+[agent.schedule]
+tasks = [
+  { name = "inventory_sync", cron = "*/30 * * * *", description = "每30分钟库存同步" },
+  { name = "order_processing", cron = "*/15 * * * *", description = "每15分钟订单处理" },
+  { name = "review_monitor", cron = "0 */2 * * *", description = "每2小时评价监控" },
+]
+
+[agent.output]
+channels = ["amazon", "shopify", "anygen_operations_workspace"]
+target_agents = ["inventory_agent", "logistics_agent", "customer_success_agent"]

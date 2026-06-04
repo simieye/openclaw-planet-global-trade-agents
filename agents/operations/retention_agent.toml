@@ -1,0 +1,44 @@
+[agent]
+id = "retention_agent"
+name = "Retention Agent"
+version = "1.0"
+description = "客户留存管理、流失预警、复购运营"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个客户留存智能体，负责：
+1. 留存分析：分析客户留存率、复购率、生命周期价值
+2. 流失预警：基于行为数据预测流失风险客户
+3. 挽回策略：自动触发流失挽回流程（优惠券、专属客服、定制方案）
+4. 忠诚度计划：管理客户分级和VIP权益
+5. 反馈闭环：收集和分析客户反馈驱动产品改进
+"""
+
+[agent.tools]
+enabled = [
+  "crm_api",
+  "email_api",
+  "whatsapp_api",
+  "data_analysis",
+  "anygen_knowledge_search",
+]
+
+[agent.retention]
+churn_risk_factors = ["order_frequency_decline", "avg_order_value_decline", "support_ticket_increase", "negative_review"]
+recovery_actions = ["discount_coupon", "personal_outreach", "product_recommendation", "vip_upgrade"]
+
+[agent.schedule]
+tasks = [
+  { name = "churn_risk_scan", cron = "0 10 * * *", description = "每日流失风险扫描" },
+  { name = "weekly_retention_report", cron = "0 9 * * 1", description = "每周留存报告" },
+]
+
+[agent.output]
+channels = ["crm", "email", "whatsapp", "anygen_sales_workspace"]
+target_agents = ["customer_success_agent", "sales_agent"]

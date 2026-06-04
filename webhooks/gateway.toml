@@ -1,0 +1,576 @@
+# ============================================================
+# 龙虾星球共创联盟 - Webhook Gateway
+# 统一外部系统事件接入网关
+# 50个业务自动化Webhook工作流
+# ============================================================
+
+[meta]
+version = "3.0"
+engine = "openclaw"
+cluster = "lobster-planet-alliance"
+
+[gateway]
+enabled = true
+port = 8080
+secret_token = "${WEBHOOK_SECRET}"
+rate_limit_per_minute = 600
+
+# ============================================================
+# 一、CRM系统Webhook（01-08）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_crm_new_lead"
+name = "新线索自动评分"
+description = "CRM新增客户 → Lead Agent → SDR Agent"
+event = "new_lead"
+source = "crm"
+method = "POST"
+path = "/hooks/crm/new-lead"
+agent = "lead_agent"
+action = "enrich_and_score_lead"
+taskflow = "customer_acquisition"
+payload = { lead_id = "$.lead_id", source = "$.source", contact = "$.contact" }
+
+[[gateway.routes]]
+id = "wh_crm_lead_enrichment"
+name = "客户画像补全"
+description = "新客户录入 → LinkedIn Agent → Company Research"
+event = "lead_created"
+source = "crm"
+method = "POST"
+path = "/hooks/crm/lead-created"
+agent = "lead_agent"
+action = "enrich_lead_profile"
+payload = { lead_id = "$.id", company = "$.company", email = "$.email" }
+
+[[gateway.routes]]
+id = "wh_crm_deal_stage"
+name = "商机阶段变更"
+description = "商机阶段变更 → Pipeline Agent → Sales Agent"
+event = "deal_stage_changed"
+source = "crm"
+method = "POST"
+path = "/hooks/crm/deal-stage"
+agent = "crm_agent"
+action = "handle_stage_change"
+payload = { deal_id = "$.deal_id", from_stage = "$.from", to_stage = "$.to" }
+
+[[gateway.routes]]
+id = "wh_crm_deal_lost"
+name = "丢单分析"
+description = "商机关闭 → Loss Analysis Agent"
+event = "deal_lost"
+source = "crm"
+method = "POST"
+path = "/hooks/crm/deal-lost"
+agent = "crm_agent"
+action = "analyze_loss_reason"
+payload = { deal_id = "$.deal_id", close_reason = "$.reason" }
+
+# ============================================================
+# 二、邮件系统Webhook（09-14）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_email_inquiry"
+name = "询盘自动分析"
+description = "收到询盘邮件 → Email Agent → Intent Agent → Proposal Agent"
+event = "email_received"
+source = "email"
+method = "POST"
+path = "/hooks/email/inquiry"
+agent = "sales_agent"
+action = "analyze_inquiry"
+payload = { email_id = "$.id", from = "$.from", subject = "$.subject", body = "$.body" }
+
+[[gateway.routes]]
+id = "wh_email_reply"
+name = "客户回复分析"
+description = "收到邮件回复 → Intent Analysis Agent"
+event = "email_reply"
+source = "email"
+method = "POST"
+path = "/hooks/email/reply"
+agent = "sales_agent"
+action = "analyze_reply_intent"
+payload = { thread_id = "$.thread_id", from = "$.from", body = "$.body" }
+
+[[gateway.routes]]
+id = "wh_email_bounce"
+name = "邮件退信处理"
+description = "邮件退信 → CRM Agent 更新联系人状态"
+event = "email_bounced"
+source = "email"
+method = "POST"
+path = "/hooks/email/bounce"
+agent = "crm_agent"
+action = "handle_bounce"
+payload = { email = "$.email", reason = "$.bounce_reason" }
+
+# ============================================================
+# 三、WhatsApp系统Webhook（15-20）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_whatsapp_message"
+name = "WhatsApp消息自动接待"
+description = "收到WhatsApp消息 → Customer Support Agent"
+event = "whatsapp_message_received"
+source = "whatsapp"
+method = "POST"
+path = "/hooks/whatsapp/message"
+agent = "sales_agent"
+action = "auto_respond_whatsapp"
+payload = { phone = "$.from", message = "$.body", media = "$.media" }
+
+[[gateway.routes]]
+id = "wh_whatsapp_product_inquiry"
+name = "WhatsApp产品咨询"
+description = "产品咨询 → Product Recommendation → Quotation Agent"
+event = "whatsapp_product_inquiry"
+source = "whatsapp"
+method = "POST"
+path = "/hooks/whatsapp/product"
+agent = "sales_agent"
+action = "handle_product_inquiry"
+payload = { phone = "$.from", product = "$.product", quantity = "$.qty" }
+
+# ============================================================
+# 四、Shopify系统Webhook（21-26）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_shopify_order"
+name = "Shopify新订单处理"
+description = "Shopify订单 → Order Agent → Inventory Agent → Logistics Agent"
+event = "order_created"
+source = "shopify"
+method = "POST"
+path = "/hooks/shopify/order"
+agent = "order_agent"
+action = "process_shopify_order"
+taskflow = "factory_production"
+payload = { order_id = "$.id", items = "$.line_items", customer = "$.customer", total = "$.total_price" }
+
+[[gateway.routes]]
+id = "wh_shopify_cart_abandon"
+name = "弃购挽回"
+description = "购物车放弃 → Email Marketing Agent 自动挽回"
+event = "cart_abandoned"
+source = "shopify"
+method = "POST"
+path = "/hooks/shopify/cart-abandon"
+agent = "retention_agent"
+action = "send_cart_recovery"
+payload = { cart_id = "$.id", customer = "$.customer", items = "$.items" }
+
+[[gateway.routes]]
+id = "wh_shopify_refund"
+name = "退款预警"
+description = "退款申请 → Risk Agent 分析"
+event = "refund_created"
+source = "shopify"
+method = "POST"
+path = "/hooks/shopify/refund"
+agent = "cro_agent"
+action = "analyze_refund_risk"
+payload = { order_id = "$.order_id", amount = "$.amount", reason = "$.reason" }
+
+# ============================================================
+# 五、Amazon系统Webhook（27-32）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_amazon_review"
+name = "Amazon新评论分析"
+description = "Review出现 → Review Agent 分析情感"
+event = "review_posted"
+source = "amazon"
+method = "POST"
+path = "/hooks/amazon/review"
+agent = "marketplace_agent"
+action = "analyze_review"
+payload = { asin = "$.asin", rating = "$.rating", body = "$.body", reviewer = "$.reviewer" }
+
+[[gateway.routes]]
+id = "wh_amazon_order"
+name = "Amazon订单处理"
+description = "Amazon订单 → Order Agent 同步"
+event = "order_created"
+source = "amazon"
+method = "POST"
+path = "/hooks/amazon/order"
+agent = "order_agent"
+action = "process_amazon_order"
+payload = { order_id = "$.amazon_order_id", items = "$.items", buyer = "$.buyer" }
+
+[[gateway.routes]]
+id = "wh_amazon_inventory"
+name = "Amazon库存预警"
+description = "库存低于阈值 → Inventory Agent → Forecast Agent"
+event = "inventory_low"
+source = "amazon"
+method = "POST"
+path = "/hooks/amazon/inventory-low"
+agent = "inventory_agent"
+action = "handle_low_stock"
+payload = { sku = "$.sku", current_stock = "$.stock", threshold = "$.threshold" }
+
+# ============================================================
+# 六、TikTok Shop系统Webhook（33-38）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_tiktok_order"
+name = "TikTok Shop订单处理"
+description = "TikTok订单 → TikTok Shop Agent 自动处理"
+event = "order_created"
+source = "tiktok_shop"
+method = "POST"
+path = "/hooks/tiktok/order"
+agent = "tiktok_shop_agent"
+action = "process_tiktok_order"
+payload = { order_id = "$.order_id", items = "$.items", buyer = "$.buyer" }
+
+[[gateway.routes]]
+id = "wh_tiktok_viral"
+name = "热视频发现"
+description = "视频爆火 → Trend Agent 分析"
+event = "video_viral"
+source = "tiktok_shop"
+method = "POST"
+path = "/hooks/tiktok/viral"
+agent = "trend_agent"
+action = "analyze_viral_video"
+payload = { video_id = "$.video_id", views = "$.views", engagement = "$.engagement" }
+
+[[gateway.routes]]
+id = "wh_tiktok_live"
+name = "直播数据同步"
+description = "直播数据 → Live Agent 分析"
+event = "live_ended"
+source = "tiktok_shop"
+method = "POST"
+path = "/hooks/tiktok/live"
+agent = "tiktok_shop_agent"
+action = "analyze_live_performance"
+payload = { live_id = "$.live_id", gmv = "$.gmv", viewers = "$.viewers", orders = "$.orders" }
+
+# ============================================================
+# 七、ERP系统Webhook（39-43）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_erp_inventory"
+name = "ERP库存同步"
+description = "库存变化 → Inventory Agent 同步"
+event = "inventory_changed"
+source = "erp"
+method = "POST"
+path = "/hooks/erp/inventory"
+agent = "inventory_agent"
+action = "sync_inventory"
+payload = { sku = "$.sku", warehouse = "$.warehouse", quantity = "$.qty" }
+
+[[gateway.routes]]
+id = "wh_erp_production"
+name = "ERP生产排程"
+description = "生产订单 → Production Agent 排产"
+event = "production_order"
+source = "erp"
+method = "POST"
+path = "/hooks/erp/production"
+agent = "production_agent"
+action = "schedule_production"
+payload = { order_id = "$.order_id", product = "$.product", quantity = "$.qty", deadline = "$.deadline" }
+
+[[gateway.routes]]
+id = "wh_erp_procurement"
+name = "ERP采购申请"
+description = "采购需求 → Procurement Agent"
+event = "procurement_request"
+source = "erp"
+method = "POST"
+path = "/hooks/erp/procurement"
+agent = "procurement_agent"
+action = "handle_procurement"
+payload = { material = "$.material", quantity = "$.qty", supplier = "$.supplier" }
+
+[[gateway.routes]]
+id = "wh_erp_quality"
+name = "ERP质检结果"
+description = "质检完成 → Quality Agent 分析"
+event = "quality_completed"
+source = "erp"
+method = "POST"
+path = "/hooks/erp/quality"
+agent = "quality_agent"
+action = "analyze_quality"
+payload = { batch_id = "$.batch_id", result = "$.result", defects = "$.defects" }
+
+# ============================================================
+# 八、支付系统Webhook（44-46）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_payment_stripe"
+name = "Stripe到账通知"
+description = "Stripe付款成功 → Payment Agent → Commission Agent"
+event = "payment_succeeded"
+source = "stripe"
+method = "POST"
+path = "/hooks/payment/stripe"
+agent = "payment_agent"
+action = "process_payment"
+taskflow = "global_settlement"
+payload = { payment_id = "$.id", amount = "$.amount", currency = "$.currency", customer = "$.customer" }
+
+[[gateway.routes]]
+id = "wh_payment_paypal"
+name = "PayPal到账通知"
+description = "PayPal付款 → Payment Agent 处理"
+event = "payment_completed"
+source = "paypal"
+method = "POST"
+path = "/hooks/payment/paypal"
+agent = "payment_agent"
+action = "process_paypal_payment"
+payload = { transaction_id = "$.id", amount = "$.amount", payer = "$.payer" }
+
+[[gateway.routes]]
+id = "wh_payment_refund"
+name = "退款处理"
+description = "退款请求 → Payment Agent → Risk Agent"
+event = "refund_requested"
+source = "payment"
+method = "POST"
+path = "/hooks/payment/refund"
+agent = "payment_agent"
+action = "process_refund"
+payload = { transaction_id = "$.id", amount = "$.amount", reason = "$.reason" }
+
+# ============================================================
+# 九、物流系统Webhook（47-49）
+# ============================================================
+
+[[gateway.routes]]
+id = "wh_logistics_shipped"
+name = "发货通知"
+description = "发货 → Logistics Agent → Customer Agent"
+event = "shipment_created"
+source = "logistics"
+method = "POST"
+path = "/hooks/logistics/shipped"
+agent = "logistics_agent"
+action = "track_shipment"
+payload = { tracking = "$.tracking_number", carrier = "$.carrier", order = "$.order_id" }
+
+[[gateway.routes]]
+id = "wh_logistics_exception"
+name = "物流异常预警"
+description = "物流异常 → Risk Agent 预警"
+event = "delivery_exception"
+source = "logistics"
+method = "POST"
+path = "/hooks/logistics/exception"
+agent = "cro_agent"
+action = "handle_logistics_exception"
+payload = { tracking = "$.tracking", status = "$.status", exception = "$.exception" }
+
+[[gateway.routes]]
+id = "wh_logistics_delivered"
+name = "签收确认"
+description = "签收 → Customer Success Agent"
+event = "delivery_confirmed"
+source = "logistics"
+method = "POST"
+path = "/hooks/logistics/delivered"
+agent = "customer_success_agent"
+action = "post_delivery_engagement"
+payload = { order_id = "$.order_id", delivery_date = "$.date", recipient = "$.recipient" }
+
+# ============================================================
+# 十、龙虾星球生态Webhook
+# ============================================================
+
+# --- AI NAILS设备Webhook ---
+[[gateway.routes]]
+id = "wh_ainails_device_online"
+name = "AI NAILS设备上线"
+description = "设备激活 → Device Agent 注册"
+event = "device_online"
+source = "ai_nails"
+method = "POST"
+path = "/hooks/ainails/device-online"
+agent = "ainails_device_agent"
+action = "register_device"
+payload = { device_id = "$.id", location = "$.location", ip = "$.ip", firmware = "$.version" }
+
+[[gateway.routes]]
+id = "wh_ainails_device_error"
+name = "AI NAILS设备异常"
+description = "设备故障 → Device Agent → Risk Agent"
+event = "device_error"
+source = "ai_nails"
+method = "POST"
+path = "/hooks/ainails/device-error"
+agent = "ainails_device_agent"
+action = "handle_device_error"
+payload = { device_id = "$.id", error_code = "$.code", error_msg = "$.message" }
+
+[[gateway.routes]]
+id = "wh_ainails_transaction"
+name = "AI NAILS交易记录"
+description = "设备交易 → Payment Agent → Commission Agent"
+event = "device_transaction"
+source = "ai_nails"
+method = "POST"
+path = "/hooks/ainails/transaction"
+agent = "payment_agent"
+action = "record_transaction"
+taskflow = "global_settlement"
+payload = { device_id = "$.device_id", amount = "$.amount", service = "$.service" }
+
+# --- 城市节点Webhook ---
+[[gateway.routes]]
+id = "wh_city_node_application"
+name = "城市节点申请"
+description = "节点申请 → City Node Agent 审核"
+event = "node_application"
+source = "website"
+method = "POST"
+path = "/hooks/city/application"
+agent = "city_node_agent"
+action = "review_application"
+payload = { applicant = "$.name", city = "$.city", country = "$.country", plan = "$.plan" }
+
+[[gateway.routes]]
+id = "wh_city_node_metrics"
+name = "城市节点数据上报"
+description = "节点KPI → City Node Agent 更新"
+event = "node_metrics"
+source = "city_node"
+method = "POST"
+path = "/hooks/city/metrics"
+agent = "city_node_agent"
+action = "update_metrics"
+payload = { node_id = "$.id", revenue = "$.revenue", members = "$.members", devices = "$.devices" }
+
+# --- 加盟系统Webhook ---
+[[gateway.routes]]
+id = "wh_franchise_application"
+name = "加盟申请"
+description = "加盟申请 → Franchise Agent 处理"
+event = "franchise_application"
+source = "website"
+method = "POST"
+path = "/hooks/franchise/apply"
+agent = "franchise_agent"
+action = "process_application"
+taskflow = "franchise_expansion"
+payload = { name = "$.name", country = "$.country", type = "$.type", investment = "$.investment" }
+
+[[gateway.routes]]
+id = "wh_franchise_lead_whatsapp"
+name = "加盟WhatsApp咨询"
+description = "WhatsApp加盟咨询 → Franchise Agent"
+event = "franchise_inquiry"
+source = "whatsapp"
+method = "POST"
+path = "/hooks/franchise/whatsapp"
+agent = "franchise_agent"
+action = "handle_franchise_inquiry"
+payload = { phone = "$.from", message = "$.body" }
+
+# --- OPC项目共创Webhook ---
+[[gateway.routes]]
+id = "wh_project_submit"
+name = "项目共创提交"
+description = "项目提交 → Project Agent → Ecosystem Agent"
+event = "project_submitted"
+source = "website"
+method = "POST"
+path = "/hooks/project/submit"
+agent = "project_agent"
+action = "receive_project"
+taskflow = "opc_project_cocreation"
+payload = { title = "$.title", category = "$.category", description = "$.description", budget = "$.budget" }
+
+[[gateway.routes]]
+id = "wh_project_resource_request"
+name = "项目资源申请"
+description = "资源请求 → Resource Matching Agent"
+event = "resource_request"
+source = "project"
+method = "POST"
+path = "/hooks/project/resource"
+agent = "project_agent"
+action = "match_resource"
+payload = { project_id = "$.id", resource_type = "$.type", quantity = "$.qty" }
+
+# --- 合伙人系统Webhook ---
+[[gateway.routes]]
+id = "wh_partner_application"
+name = "合伙人申请"
+description = "合伙人申请 → Partner Agent"
+event = "partner_application"
+source = "website"
+method = "POST"
+path = "/hooks/partner/apply"
+agent = "partner_agent"
+action = "evaluate_partner"
+payload = { name = "$.name", level = "$.level", resources = "$.resources", experience = "$.experience" }
+
+[[gateway.routes]]
+id = "wh_partner_referral"
+name = "合伙人推荐"
+description = "推荐新合伙人 → Referral Agent → Partner Agent"
+event = "partner_referral"
+source = "referral"
+method = "POST"
+path = "/hooks/partner/referral"
+agent = "referral_agent"
+action = "track_referral"
+payload = { referrer = "$.referrer_id", referee = "$.referee", level = "$.level" }
+
+# --- 社群Webhook ---
+[[gateway.routes]]
+id = "wh_community_member_join"
+name = "社群新成员加入"
+description = "新成员 → Community Agent 欢迎"
+event = "member_joined"
+source = "community"
+method = "POST"
+path = "/hooks/community/join"
+agent = "community_agent"
+action = "welcome_member"
+payload = { member_id = "$.id", name = "$.name", channel = "$.channel", city = "$.city" }
+
+[[gateway.routes]]
+id = "wh_community_event"
+name = "社群活动报名"
+description = "活动报名 → Event Agent → Community Agent"
+event = "event_registration"
+source = "community"
+method = "POST"
+path = "/hooks/community/event"
+agent = "event_agent"
+action = "handle_registration"
+payload = { event_id = "$.event_id", member_id = "$.member_id", type = "$.type" }
+
+# ============================================================
+# 十一、CEO驾驶舱Webhook
+# ============================================================
+[[gateway.routes]]
+id = "wh_ceo_daily_report"
+name = "CEO经营日报"
+description = "每日08:00自动汇总所有业务线数据"
+event = "scheduled_daily_report"
+source = "scheduler"
+method = "POST"
+path = "/hooks/ceo/daily-report"
+agent = "ceo_agent"
+action = "generate_daily_report"
+taskflow = "ceo_dashboard"
+payload = { date = "$.date", departments = ["sales", "finance", "marketing", "operations", "franchise"] }

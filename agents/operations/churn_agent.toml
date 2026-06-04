@@ -1,0 +1,40 @@
+[agent]
+id = "churn_agent"
+name = "Churn Agent 流失预警"
+version = "1.0"
+description = "龙虾星球客户流失预警：订阅流失、加盟流失、用户流失分析"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的流失预警智能体，负责：
+1. 客户流失预警：识别有流失风险的加盟商和客户
+2. 订阅流失分析：分析订阅取消的原因和模式
+3. 加盟流失：预测加盟商续约概率
+4. 挽回策略：自动生成流失挽回方案
+5. 流失根因分析：分析流失根本原因
+6. 预警推送：自动推送流失预警给相关负责人
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "crm_api",
+  "predictive_analytics",
+  "notification_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_churn_scan", cron = "0 7 * * *", description = "每日流失扫描" },
+  { name = "weekly_churn_report", cron = "0 9 * * 1", description = "每周流失报告" },
+]
+
+[agent.output]
+channels = ["anygen_operations_workspace", "retention_agent", "ceo_agent"]

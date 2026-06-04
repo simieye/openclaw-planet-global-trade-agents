@@ -1,0 +1,45 @@
+[agent]
+id = "crm_agent"
+name = "CRM Agent"
+version = "1.0"
+description = "CRM客户关系管理、客户数据库维护、销售漏斗管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个CRM管理智能体，负责：
+1. 客户数据库：维护所有客户档案、联系人、公司信息
+2. 销售漏斗：追踪销售阶段转换，发现瓶颈
+3. 数据同步：与ERP/WMS/电商平台双向同步
+4. 客户分析：客户分层、RFM分析、生命周期管理
+5. 自动化：自动创建客户档案、更新跟进记录
+"""
+
+[agent.tools]
+enabled = [
+  "crm_api",
+  "erp_api",
+  "shopify_api",
+  "amazon_api",
+  "data_analysis",
+  "anygen_knowledge_store",
+]
+
+[agent.pipeline_stages]
+stages = ["new_lead", "contacted", "qualified", "proposal_sent", "negotiation", "closed_won", "closed_lost"]
+sla = { new_lead_to_contacted_hours = 24, proposal_sent_to_follow_up_days = 3 }
+
+[agent.schedule]
+tasks = [
+  { name = "pipeline_health_check", cron = "0 9 * * *", description = "每日销售漏斗健康检查" },
+  { name = "data_sync", cron = "0 */2 * * *", description = "每2小时数据同步" },
+]
+
+[agent.output]
+channels = ["crm", "anygen_sales_workspace"]
+target_agents = ["ceo_agent", "sales_agent"]

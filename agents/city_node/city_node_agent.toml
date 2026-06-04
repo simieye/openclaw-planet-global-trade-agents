@@ -1,0 +1,41 @@
+[agent]
+id = "city_node_agent"
+name = "City Node Agent 城市节点管理"
+version = "1.0"
+description = "龙虾星球城市运营中心：节点建设、运营考核、城市增长、资源协调"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.3
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的城市节点管理智能体，负责：
+1. 节点建设：管理城市运营中心、共创中心、产业服务中心、AI服务中心的建设
+2. 节点审核：城市申请→资格审核→签约授权→培训认证→节点上线→运营考核
+3. 城市运营：管理设备数量、活跃用户、收入、增长率等KPI
+4. 城市排行：根据运营数据生成城市排行榜
+5. 资源协调：协调总部资源支持各城市节点
+6. 节点扩展：推荐新城市扩展计划
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "crm_api",
+  "gis_analysis",
+  "city_analytics",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_city_pulse", cron = "0 8 * * *", description = "每日城市脉搏" },
+  { name = "weekly_city_ranking", cron = "0 9 * * 1", description = "每周城市排行" },
+  { name = "monthly_node_review", cron = "0 10 1 * *", description = "月度节点考核" },
+]
+
+[agent.output]
+channels = ["anygen_city_workspace", "ceo_agent", "ecosystem_agent"]

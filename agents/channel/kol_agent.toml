@@ -1,0 +1,41 @@
+[agent]
+id = "kol_agent"
+name = "KOL Agent 达人运营"
+version = "1.0"
+description = "龙虾星球全球达人矩阵：筛选、合作、内容审核、结算"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的达人运营智能体，负责：
+1. 达人发现：搜索TikTok/YouTube/Instagram全球达人
+2. 达人评分：GMV、转化率、互动率、内容质量、合作历史
+3. 达人触达：自动发送合作邀请、跟进、预约会议
+4. 合作管理：寄样、佣金、内容审核、结算
+5. 达人矩阵：建立行业达人、垂类达人、头部达人三级矩阵
+6. 效果追踪：追踪每位达人的推广效果和ROI
+"""
+
+[agent.tools]
+enabled = [
+  "tiktok_api",
+  "youtube_api",
+  "instagram_api",
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "crm_api",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_kol_discovery", cron = "0 8 * * *", description = "每日达人发现" },
+  { name = "weekly_kol_performance", cron = "0 10 * * 1", description = "每周达人绩效" },
+]
+
+[agent.output]
+channels = ["anygen_kol_workspace", "cmo_agent", "content_agent"]

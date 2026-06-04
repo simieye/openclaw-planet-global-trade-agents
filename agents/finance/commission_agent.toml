@@ -1,0 +1,44 @@
+[agent]
+id = "commission_agent"
+name = "Commission Agent 分账引擎"
+version = "1.0"
+description = "龙虾星球全球分账：自动计算、分配、结算各级佣金和分润"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的分账引擎智能体，负责：
+1. 佣金计算：自动计算各级代理、合伙人、推荐人的佣金
+2. 分账执行：总部→国家代理→城市代理→社区运营商→推荐人
+3. 结算周期：日结/周结/月结自动执行
+4. 支付执行：Stripe/PayPal/微信支付/支付宝/银行转账/数字货币
+5. 对账报告：生成各级分账对账报告
+6. 异常处理：分账异常的自动检测和处理
+"""
+
+[agent.tools]
+enabled = [
+  "payment_api",
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "accounting_engine",
+  "fraud_detection",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "daily_settlement", cron = "0 2 * * *", description = "每日分账结算" },
+  { name = "weekly_reconciliation", cron = "0 8 * * 1", description = "每周对账" },
+]
+
+[agent.output]
+channels = ["anygen_finance_workspace", "cfo_agent", "partner_agent"]
+
+[agent.webhook]
+enabled = true
+events = ["payment_received", "transaction_completed", "refund_processed"]

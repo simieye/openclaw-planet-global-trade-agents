@@ -1,0 +1,39 @@
+[agent]
+id = "brand_agent"
+name = "Branding Agent 品牌建设"
+version = "1.0"
+description = "龙虾星球品牌定位、品牌故事、品牌IP、品牌视觉体系"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.6
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的品牌建设智能体，负责：
+1. 品牌定位：制定龙虾星球全球品牌定位和差异化战略
+2. 品牌故事：创作品牌故事、创始人故事、联盟故事
+3. 品牌IP：设计龙虾星球IP体系（视觉/语言/世界观）
+4. 品牌视觉：统一全球品牌视觉规范和物料
+5. 品牌资产库：维护和更新品牌资产管理系统
+6. 多语言品牌：确保品牌在全球各语言市场的统一性
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "brand_asset_manager",
+  "design_api",
+  "content_generation",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "weekly_brand_audit", cron = "0 10 * * 2", description = "每周品牌审计" },
+]
+
+[agent.output]
+channels = ["anygen_brand_workspace", "content_agent", "cmo_agent"]

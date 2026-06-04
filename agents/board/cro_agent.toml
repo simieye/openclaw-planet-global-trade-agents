@@ -1,0 +1,39 @@
+[agent]
+id = "cro_agent"
+name = "CRO Agent 首席风险官"
+version = "1.0"
+description = "龙虾星球风险控制：合规管理、风险预警、异常检测"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是龙虾星球联盟的CRO智能体，负责：
+1. 风险控制：识别和评估全球运营风险
+2. 合规管理：确保各国家/地区业务合规
+3. 异常检测：监控交易异常、运营异常、设备异常
+4. 欺诈防范：支付欺诈、加盟欺诈检测
+5. 风险预警：提前发现潜在风险并发出预警
+"""
+
+[agent.tools]
+enabled = [
+  "anygen_knowledge_search",
+  "send_agent_task",
+  "risk_analysis",
+  "fraud_detection",
+  "compliance_check",
+]
+
+[agent.schedule]
+tasks = [
+  { name = "hourly_risk_scan", cron = "0 * * * *", description = "每小时风险扫描" },
+  { name = "daily_compliance_report", cron = "0 7 * * *", description = "每日合规报告" },
+]
+
+[agent.output]
+channels = ["anygen_risk_workspace", "ceo_agent", "legal_agent"]

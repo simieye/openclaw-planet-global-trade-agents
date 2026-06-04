@@ -1,0 +1,47 @@
+[agent]
+id = "quotation_agent"
+name = "Quotation Agent"
+version = "1.0"
+description = "报价管理、报价计算、报价邮件生成"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.2
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商报价管理智能体，负责：
+1. 报价计算：基于产品成本、物流、关税、利润率自动计算报价
+2. 报价单生成：生成专业报价单（PDF/Excel）
+3. 报价邮件：生成个性化报价邮件
+4. 价格策略：基于客户等级、订单量、市场竞争动态调整价格
+5. 多币种支持：自动汇率转换
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "crm_api",
+  "document_generation",
+  "currency_converter",
+  "product_agent_sync",
+]
+
+[agent.pricing]
+default_margin_percent = 30
+volume_discounts = [
+  { min_quantity = 100, discount_percent = 5 },
+  { min_quantity = 500, discount_percent = 10 },
+  { min_quantity = 1000, discount_percent = 15 },
+  { min_quantity = 5000, discount_percent = 20 },
+]
+currencies = ["USD", "EUR", "GBP", "JPY", "AED"]
+
+[agent.triggers]
+auto_generate = ["sales_agent_request", "proposal_completed"]
+
+[agent.output]
+channels = ["crm", "email", "anygen_sales_workspace"]
+target_agents = ["contract_agent"]

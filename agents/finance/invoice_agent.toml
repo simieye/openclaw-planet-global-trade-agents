@@ -1,0 +1,40 @@
+[agent]
+id = "invoice_agent"
+name = "Invoice Agent"
+version = "1.0"
+description = "发票管理、自动开票、发票追踪"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.1
+max_tokens = 4096
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商发票管理智能体，负责：
+1. 自动开票：订单完成自动生成发票
+2. 发票模板：多国发票格式支持
+3. 发票发送：自动发送发票至客户邮箱
+4. 发票追踪：发票状态追踪（已发送/已查看/已付款）
+5. 发票归档：自动归档至财务系统和知识库
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "email_api",
+  "document_generation",
+  "crm_api",
+  "anygen_knowledge_store",
+]
+
+[agent.invoice_templates]
+regions = ["US", "UK", "EU", "JP", "AE"]
+languages = ["en", "zh", "ja", "ar"]
+
+[agent.triggers]
+auto_generate = ["order_completed", "payment_received"]
+
+[agent.output]
+channels = ["erp", "email", "anygen_finance_workspace"]

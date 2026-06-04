@@ -1,0 +1,52 @@
+[agent]
+id = "finance_agent"
+name = "Finance Agent"
+version = "1.0"
+description = "ROI分析、财务报表、经营分析、预算管理"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-opus"
+temperature = 0.2
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """
+你是一个跨境电商财务分析智能体，负责：
+1. ROI分析：全渠道ROI分析（广告/内容/渠道/客户）
+2. 财务报表：自动生成P&L、现金流量表、资产负债表
+3. 经营分析：营收分析、成本分析、利润分析
+4. 预算管理：年度预算编制和执行监控
+5. 预警：现金流预警、成本超支预警、利润下滑预警
+"""
+
+[agent.tools]
+enabled = [
+  "erp_api",
+  "crm_api",
+  "payment_api",
+  "data_analysis",
+  "generate_report",
+  "anygen_knowledge_store",
+]
+
+[agent.reports]
+daily = ["revenue_summary", "ad_spend_summary", "order_summary"]
+weekly = ["profit_loss", "channel_performance", "cash_flow"]
+monthly = ["full_financial_statement", "roi_analysis", "budget_variance"]
+
+[agent.alert_thresholds]
+cash_flow_warning_days = 30
+cost_increase_percent = 15
+margin_decline_percent = 5
+
+[agent.schedule]
+tasks = [
+  { name = "daily_revenue_report", cron = "0 9 * * *", description = "每日营收报告" },
+  { name = "weekly_finance_report", cron = "0 10 * * 1", description = "每周财务报告" },
+  { name = "monthly_close", cron = "0 8 1 * *", description = "月度结账" },
+]
+
+[agent.output]
+channels = ["anygen_finance_workspace", "email"]
+target_agents = ["ceo_agent"]
