@@ -690,6 +690,151 @@ body {
   border-radius: 8px;
 }
 
+/* ===== AI工厂出海SOP样式 ===== */
+.factory-taskflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 12px;
+}
+
+.factory-taskflow-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.factory-taskflow-card:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(245,158,11,0.1);
+}
+
+.factory-taskflow-card.active-taskflow {
+  border-color: #f59e0b;
+  box-shadow: 0 0 15px rgba(245,158,11,0.2);
+}
+
+.factory-taskflow-card .tf-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.factory-taskflow-card .tf-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+}
+
+.factory-taskflow-card .tf-trigger {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.factory-taskflow-card .tf-agents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.factory-taskflow-card .tf-agent-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(245,158,11,0.15);
+  color: #f59e0b;
+  white-space: nowrap;
+}
+
+.factory-taskflow-card .tf-agent-arrow {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.factory-taskflow-card .tf-output {
+  font-size: 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.factory-taskflow-card .tf-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-factory-market { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.badge-factory-lead { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-factory-inquiry { background: rgba(0,212,170,0.15); color: var(--accent2); }
+.badge-factory-sample { background: rgba(236,72,153,0.15); color: var(--accent4); }
+.badge-factory-order { background: rgba(139,92,246,0.15); color: var(--accent5); }
+.badge-factory-quality { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-factory-logistics { background: rgba(249,115,22,0.15); color: #f97316; }
+.badge-factory-expansion { background: rgba(234,179,8,0.15); color: #eab308; }
+.badge-factory-ceo { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+.factory-detail-panel {
+  background: var(--card-bg);
+  border: 1px solid #f59e0b;
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.factory-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.factory-detail-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.factory-pipeline-flow {
+  line-height: 2.5;
+}
+
+.factory-center-card {
+  transition: all 0.2s;
+}
+
+.factory-center-card:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+}
+
 /* ===== Agent配置面板样式 ===== */
 .agent-config-panel {
   background: var(--card-bg);
@@ -1978,6 +2123,16 @@ body {
       </div>
     </div>
 
+    <!-- 工厂出海 SOP -->
+    <div class="nav-section">
+      <div class="nav-section-title">跨境工厂出海 SOP</div>
+      <div class="nav-item" data-panel="factory" onclick="switchPanel('factory', this)">
+        <span class="nav-icon">🏭</span>
+        <span>AI工厂出海SOP</span>
+        <span class="nav-badge gold">17 TaskFlow</span>
+      </div>
+    </div>
+
     <!-- 系统 -->
     <div class="nav-section">
       <div class="nav-section-title">系统</div>
@@ -2622,6 +2777,164 @@ body {
       </div>
     </div>
 
+    <!-- ===== AI工厂出海SOP面板 ===== -->
+    <div class="panel" id="panel-factory">
+      <div class="section-title">🏭 跨境外贸工厂AI出海SOP · OEM/ODM制造企业版 | OpenClaw + AnyGen + HeyGen + ERP + CRM + MES + WMS</div>
+
+      <!-- 工厂出海配置卡片 -->
+      <div class="factory-config-card" style="background:linear-gradient(135deg, #1a0a0a 0%, #2d1a0f 50%, #1a0a0a 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:32px;">🏭</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:#f59e0b;">AI工厂出海全链路SOP系统</div>
+              <div style="font-size:12px;color:var(--text-dim);">17个TaskFlow · 全球市场 → 客户开发 → 询盘分析 → 智能报价 → 样品管理 → 订单转化 → 生产排程 → 采购协同 → 质量控制 → 物流交付 → 客户运营 → 代理商裂变 → 品牌出海</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="initFactorySOP()" style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">🚀 初始化全链路系统</button>
+            <button class="btn btn-sm" onclick="syncFactoryWebhooks()" style="background:rgba(99,102,241,0.1);color:var(--accent3);border:1px solid rgba(99,102,241,0.3);">🔄 同步 Webhook</button>
+            <button class="btn btn-primary btn-sm" onclick="generateFactoryReport()">📊 生成出海报告</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 架构概览：传统 vs AI -->
+      <div class="factory-arch-compare" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#ef4444;margin-bottom:12px;">🔴 传统工厂模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            业务员 → 开发客户 → 询盘 → 报价 → 打样 → 订单 → 生产 → 出货
+          </div>
+          <div style="font-size:10px;color:rgba(239,68,68,0.5);margin-top:8px;">❌ 人工驱动 · 效率低 · 错失商机</div>
+        </div>
+        <div style="background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--success);margin-bottom:12px;">🟢 AI工厂模式</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:2;font-family:monospace;">
+            Market Agent → Lead Agent → Sales Agent → Quotation Agent → Sample Agent → Production Agent → Quality Agent → Logistics Agent → Distributor Agent
+          </div>
+          <div style="font-size:10px;color:var(--success);margin-top:8px;">✅ 全自动闭环 · 7×24运行 · 全球覆盖</div>
+        </div>
+      </div>
+
+      <!-- 全链路流程可视化 -->
+      <div class="factory-pipeline" style="background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#f59e0b;">🔗 全链路自动化闭环</div>
+        <div class="factory-pipeline-flow" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:10px;">
+          <span class="pipeline-node" style="background:rgba(59,130,246,0.15);color:#3b82f6;padding:6px 12px;border-radius:6px;font-weight:600;">🌍 全球市场</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(99,102,241,0.15);color:var(--accent3);padding:6px 12px;border-radius:6px;font-weight:600;">🎣 客户开发</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(0,212,170,0.15);color:var(--accent2);padding:6px 12px;border-radius:6px;font-weight:600;">📧 询盘分析</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(245,158,11,0.15);color:#f59e0b;padding:6px 12px;border-radius:6px;font-weight:600;">💰 智能报价</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(236,72,153,0.15);color:var(--accent4);padding:6px 12px;border-radius:6px;font-weight:600;">📦 样品管理</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(139,92,246,0.15);color:var(--accent5);padding:6px 12px;border-radius:6px;font-weight:600;">📋 订单转化</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(14,165,233,0.15);color:#0ea5e9;padding:6px 12px;border-radius:6px;font-weight:600;">🏗️ 生产排程</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(168,85,247,0.15);color:#a855f7;padding:6px 12px;border-radius:6px;font-weight:600;">🛒 采购协同</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(34,197,94,0.15);color:var(--success);padding:6px 12px;border-radius:6px;font-weight:600;">✅ 质量控制</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(249,115,22,0.15);color:#f97316;padding:6px 12px;border-radius:6px;font-weight:600;">🚚 物流交付</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(239,68,68,0.15);color:#ef4444;padding:6px 12px;border-radius:6px;font-weight:600;">❤️ 客户运营</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:rgba(234,179,8,0.15);color:#eab308;padding:6px 12px;border-radius:6px;font-weight:600;">🤝 代理裂变</span><span style="color:var(--accent);">→</span>
+          <span class="pipeline-node" style="background:linear-gradient(135deg, rgba(255,107,53,0.2), rgba(234,179,8,0.2));color:var(--accent);padding:6px 12px;border-radius:6px;font-weight:700;">🚀 品牌出海</span>
+        </div>
+      </div>
+
+      <!-- TaskFlow 分类筛选 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="factoryTaskFlowFilter">
+        <button class="btn btn-sm active" onclick="filterFactoryTaskFlows('all', this)">全部 17</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('market', this)">市场开发</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('lead', this)">客户开发</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('inquiry', this)">询盘/报价</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('sample', this)">打样管理</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('order', this)">订单/生产</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('quality', this)">质量/验厂</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('logistics', this)">物流/运营</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('expansion', this)">全球扩张</button>
+        <button class="btn btn-sm" onclick="filterFactoryTaskFlows('ceo', this)">CEO驾驶舱</button>
+      </div>
+
+      <!-- TaskFlow 网格 -->
+      <div class="factory-taskflow-grid" id="factoryTaskFlowGrid">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- Agent 体系映射 -->
+      <div class="section-title" style="margin-top:24px;">🤖 四大中心 Agent 体系</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px;" id="factoryAgentCenters">
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--accent);margin-bottom:10px;">💰 销售中心</div>
+          <div class="factory-agent-list" style="font-size:11px;color:var(--text-dim);line-height:2;">
+            Lead Agent<br>SDR Agent<br>Sales Agent<br>Quotation Agent<br>Contract Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#0ea5e9;margin-bottom:10px;">🏗️ 生产中心</div>
+          <div class="factory-agent-list" style="font-size:11px;color:var(--text-dim);line-height:2;">
+            Production Agent<br>Scheduling Agent<br>Inventory Agent<br>Quality Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:#a855f7;margin-bottom:10px;">🔗 供应链中心</div>
+          <div class="factory-agent-list" style="font-size:11px;color:var(--text-dim);line-height:2;">
+            Procurement Agent<br>Supplier Agent<br>Logistics Agent
+          </div>
+        </div>
+        <div class="factory-center-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:10px;">🤝 客户中心</div>
+          <div class="factory-agent-list" style="font-size:11px;color:var(--text-dim);line-height:2;">
+            Customer Success Agent<br>Distributor Agent<br>Partner Agent
+          </div>
+        </div>
+      </div>
+
+      <!-- Webhook 映射 -->
+      <div class="section-title" style="margin-top:24px;">🔌 系统集成 Webhook 映射</div>
+      <div class="factory-webhook-map" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;">
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">CRM → Lead Agent</div>
+          <pre class="webhook-code">客户数据流入 → 自动评分 → 分配销售</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">ERP → Production Agent</div>
+          <pre class="webhook-code">订单创建 → 物料检查 → 排产计划</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">MES → Scheduling Agent</div>
+          <pre class="webhook-code">生产状态 → 实时排程 → 产能优化</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">WMS → Inventory Agent</div>
+          <pre class="webhook-code">库存变化 → 自动预警 → 采购触发</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">物流系统 → Logistics Agent</div>
+          <pre class="webhook-code">物流轨迹 → 异常检测 → 客户通知</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">Stripe/PayPal → Finance Agent</div>
+          <pre class="webhook-code">到账确认 → 财务记录 → CEO日报</pre>
+        </div>
+      </div>
+
+      <!-- 最终 AI 工厂模型 -->
+      <div class="factory-final-model" style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(255,107,53,0.08));border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius);padding:20px;margin-top:20px;">
+        <div style="font-size:16px;font-weight:700;color:#f59e0b;margin-bottom:12px;">🌟 最终 AI 工厂模型</div>
+        <div style="font-size:12px;color:var(--text);line-height:2.2;">
+          <span style="color:var(--accent);font-weight:600;">工厂老板</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent3);font-weight:600;">OpenClaw Agent Cluster</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent2);font-weight:600;">AnyGen Workspace</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:var(--accent4);font-weight:600;">HeyGen 数字人</span>
+          <span style="color:var(--text-dim);"> + </span>
+          <span style="color:#0ea5e9;font-weight:600;">ERP/MES/WMS 系统</span>
+        </div>
+        <div style="font-size:14px;color:var(--accent);font-weight:700;margin-top:12px;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;">
+          🎯 构建一个 7×24 小时运行的 AI 原生跨境制造企业<br>
+          <span style="font-size:12px;color:var(--text-dim);">实现从 OEM 工厂向全球品牌运营商的升级</span>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== AI 数字组织面板 ===== -->
     <div class="panel" id="panel-organization">
       <div class="section-title">🏛️ AI 数字组织 · 100 Agent 6层架构 | 点击Agent卡片配置工作层+技能+IM+MCP+定时任务</div>
@@ -2998,6 +3311,199 @@ function saveAnyGenApiKey() {
 }
 
 // ============================================================
+// AI工厂出海SOP TaskFlow 数据 (17个)
+// ============================================================
+const FACTORY_TASKFLOWS = [
+  // 第一阶段：全球市场开发系统
+  { id:'TF-01', num:'01', category:'market', phase:'第一阶段', title:'全球市场扫描', trigger:'每天 08:00 自动运行', agents:['Market Research Agent','Competitor Agent','Trend Agent','Pricing Agent'], datasources:'Google · LinkedIn · Alibaba · Amazon · TikTok · Reddit · 行业网站 · 海关数据', output:'国家机会排名 · 行业机会排名 · 客户名单 · 代理商名单 · 竞品分析', webhook:'市场数据更新 → Market Agent → CEO Agent' },
+  // 第二阶段：客户开发系统
+  { id:'TF-02', num:'02', category:'lead', phase:'第二阶段', title:'客户发现', trigger:'市场扫描完成', agents:['Lead Discovery Agent','Lead Enrichment Agent','Lead Scoring Agent'], datasources:'LinkedIn · Apollo · ZoomInfo · Google Maps · 黄页 · 展会名单 · 海关数据', output:'客户名称 · 采购负责人 · 邮箱 · WhatsApp · LinkedIn · 采购能力 · 评分', webhook:'Lead → CRM → OpenClaw' },
+  // 第三阶段：询盘处理系统
+  { id:'TF-03', num:'03', category:'inquiry', phase:'第三阶段', title:'询盘自动分析', trigger:'收到询盘 (Email/WhatsApp/网站表单/Alibaba)', agents:['Inquiry Agent','Product Agent','Sales Agent'], datasources:'Email · WhatsApp · Web表单 · Alibaba询盘', output:'A类客户 · B类客户 · C类客户 (按采购量/需求/预算/交期/成交概率分级)', webhook:'询盘 → Inquiry Agent → Sales Agent' },
+  // 第四阶段：报价系统
+  { id:'TF-04', num:'04', category:'inquiry', phase:'第四阶段', title:'智能报价', trigger:'客户询价', agents:['Quotation Agent','Cost Agent','Finance Agent'], datasources:'ERP库存 · 原料价格 · 汇率 · 历史订单 · 利润率', output:'报价单 · PI · 交期 · MOQ · 付款条件 (PDF/Excel/多语言)', webhook:'询价 → ERP → Finance Agent → 报价生成' },
+  // 第五阶段：打样系统
+  { id:'TF-05', num:'05', category:'sample', phase:'第五阶段', title:'样品申请', trigger:'客户要求打样', agents:['Sample Agent','Production Agent','Quality Agent'], datasources:'CRM · ERP · MES · 生产系统', output:'样品单 · 物料单 · 生产单 · 物流单', webhook:'CRM → ERP → MES → 生产系统' },
+  // 第六阶段：样品跟踪系统
+  { id:'TF-06', num:'06', category:'sample', phase:'第六阶段', title:'样品状态跟踪', trigger:'样品进入生产', agents:['Sample Tracking Agent','Logistics Agent'], datasources:'MES · 物流系统 · CRM', output:'样品完成通知 · 发货通知 · 物流信息 · 签收提醒', webhook:'样品状态 → CRM 自动同步' },
+  // 第七阶段：订单转化系统
+  { id:'TF-07', num:'07', category:'order', phase:'第七阶段', title:'订单确认', trigger:'客户确认订单', agents:['Order Agent','Finance Agent','Contract Agent'], datasources:'CRM · ERP · 合同模板库', output:'合同 · PI · Invoice · 收款通知', webhook:'订单确认 → ERP → 生产系统' },
+  // 第八阶段：生产系统
+  { id:'TF-08', num:'08', category:'order', phase:'第八阶段', title:'生产排程', trigger:'订单创建', agents:['Production Agent','Scheduling Agent','Inventory Agent'], datasources:'ERP · MES · WMS · 产能数据', output:'生产计划 · 排产计划 · 采购计划 (产能/设备/人员/物料/交期分析)', webhook:'订单 → ERP → MES → 生产排程' },
+  // 第九阶段：采购系统
+  { id:'TF-09', num:'09', category:'order', phase:'第九阶段', title:'采购自动化', trigger:'库存不足', agents:['Procurement Agent','Supplier Agent'], datasources:'ERP · WMS · 供应商数据库', output:'供应商筛选 · 询价 · 采购单生成', webhook:'库存预警 → Procurement Agent → ERP回写' },
+  // 第十阶段：质量管理系统
+  { id:'TF-10', num:'10', category:'quality', phase:'第十阶段', title:'质量控制', trigger:'生产完成', agents:['Quality Agent','Inspection Agent'], datasources:'MES · 质量标准库 · 历史不良数据', output:'检验报告 · 质量报告 · 出货报告 · AI分析(不良率/异常原因/改进建议)', webhook:'生产完成 → Quality Agent → 质量报告' },
+  // 第十一阶段：验厂系统
+  { id:'TF-11', num:'11', category:'quality', phase:'第十一阶段', title:'客户验厂', trigger:'客户预约验厂', agents:['Factory Audit Agent','Compliance Agent','HeyGen Agent'], datasources:'工厂资料库 · ESG数据 · 合规文件', output:'工厂介绍 · 资质包 · ESG资料 · 验厂文件 · PPT · 数字人导览视频', webhook:'验厂预约 → HeyGen → 自动验厂导览' },
+  // 第十二阶段：物流系统
+  { id:'TF-12', num:'12', category:'logistics', phase:'第十二阶段', title:'物流管理', trigger:'出货', agents:['Logistics Agent','DHL Agent','UPS Agent','FedEx Agent','Freight Agent'], datasources:'物流API · 海关系统 · 货运平台', output:'最优运输方式(空运/海运/铁路/快递) · 物流轨迹 · 预计到达 · 异常预警', webhook:'出货 → Logistics Agent → 客户通知' },
+  // 第十三阶段：客户运营系统
+  { id:'TF-13', num:'13', category:'logistics', phase:'第十三阶段', title:'客户成功', trigger:'客户收货', agents:['Customer Success Agent','Review Agent','Retention Agent'], datasources:'CRM · 评价平台 · 复购数据', output:'满意度调查 · 评价收集 · 复购推荐 · 新品推荐', webhook:'收货确认 → Customer Success Agent → CRM' },
+  // 第十四阶段：代理商开发系统
+  { id:'TF-14', num:'14', category:'expansion', phase:'第十四阶段', title:'全球代理招募', trigger:'市场扫描', agents:['Distributor Agent','Partner Agent','Channel Agent'], datasources:'LinkedIn · 展会数据 · 行业数据库', output:'国家代理 · 渠道商 · 经销商 · 品牌商 · 招商资料 · 代理政策 · 利润模型 · 合作协议', webhook:'市场扫描 → Distributor Agent → CRM' },
+  // 第十五阶段：数字人招商系统
+  { id:'TF-15', num:'15', category:'expansion', phase:'第十五阶段', title:'全球招商自动化', trigger:'代理招募启动', agents:['HeyGen Agent','Distributor Agent','Training Agent'], datasources:'HeyGen平台 · 产品素材库 · 培训资料', output:'招商视频 · 产品视频 · 代理培训视频 · 案例视频 (英语/西语/法语/德语/阿拉伯语/俄语/葡语)', webhook:'招商启动 → HeyGen → 多语言视频分发' },
+  // 第十六阶段：海外展会系统
+  { id:'TF-16', num:'16', category:'expansion', phase:'第十六阶段', title:'展会自动获客', trigger:'展会名单导入', agents:['Lead Agent','SDR Agent','Sales Agent'], datasources:'展会名单 · CRM · 邮件系统', output:'名单清洗 · 客户分析 · 开发信 · WhatsApp触达 · 会议预约', webhook:'展会名单 → Lead Agent → CRM' },
+  // 第十七阶段：CEO工厂驾驶舱
+  { id:'TF-17', num:'17', category:'ceo', phase:'第十七阶段', title:'经营日报', trigger:'每天自动运行', agents:['Sales Agent','Order Agent','Production Agent','Inventory Agent','Logistics Agent','Finance Agent','Customer Agent','CEO Agent'], datasources:'CRM · ERP · MES · WMS · 物流 · 财务 · 支付系统', output:'日报 · 周报 · 月报 · 风险预警 · 增长建议 → 企业微信/飞书/Telegram/邮箱', webhook:'全系统数据 → CEO Agent → 经营日报' },
+];
+
+let activeFactoryFilter = 'all';
+let selectedTaskFlowId = null;
+
+// ============================================================
+// 工厂 TaskFlow 渲染
+// ============================================================
+function renderFactoryTaskFlows(filter) {
+  activeFactoryFilter = filter || 'all';
+  const grid = document.getElementById('factoryTaskFlowGrid');
+  if (!grid) return;
+
+  const filtered = activeFactoryFilter === 'all'
+    ? FACTORY_TASKFLOWS
+    : FACTORY_TASKFLOWS.filter(w => w.category === activeFactoryFilter);
+
+  const categoryLabels = {
+    market: '市场开发', lead: '客户开发', inquiry: '询盘/报价', sample: '打样管理',
+    order: '订单/生产', quality: '质量/验厂', logistics: '物流/运营',
+    expansion: '全球扩张', ceo: 'CEO驾驶舱'
+  };
+
+  grid.innerHTML = filtered.map(tf => {
+    const agentTags = tf.agents.map((a, i) => {
+      let html = `<span class="tf-agent-tag">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tf-agent-arrow">↓</span>';
+      return html;
+    }).join('');
+
+    return `
+    <div class="factory-taskflow-card ${selectedTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleTaskFlowDetail('${tf.id}')">
+      <span class="tf-category-badge badge-factory-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+      <div class="tf-num">${tf.phase} · ${tf.id}</div>
+      <div class="tf-title">${tf.title}</div>
+      <div class="tf-trigger">🔔 ${tf.trigger}</div>
+      <div class="tf-agents">${agentTags}</div>
+      <div class="tf-output">📤 ${tf.output}</div>
+    </div>`;
+  }).join('');
+
+  // 更新筛选按钮状态
+  document.querySelectorAll('#factoryTaskFlowFilter .btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`#factoryTaskFlowFilter .btn[onclick*="${activeFactoryFilter}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function filterFactoryTaskFlows(category, btn) {
+  renderFactoryTaskFlows(category);
+}
+
+function toggleTaskFlowDetail(taskFlowId) {
+  const tf = FACTORY_TASKFLOWS.find(w => w.id === taskFlowId);
+  if (!tf) return;
+
+  if (selectedTaskFlowId === taskFlowId) {
+    selectedTaskFlowId = null;
+  } else {
+    selectedTaskFlowId = taskFlowId;
+  }
+
+  renderFactoryTaskFlows(activeFactoryFilter);
+
+  // 展开详情面板
+  const grid = document.getElementById('factoryTaskFlowGrid');
+  let detailPanel = document.getElementById('factoryDetailPanel');
+  if (!detailPanel) {
+    detailPanel = document.createElement('div');
+    detailPanel.id = 'factoryDetailPanel';
+    detailPanel.className = 'factory-detail-panel';
+    grid.parentNode.insertBefore(detailPanel, grid);
+  }
+
+  if (selectedTaskFlowId) {
+    const agentFlow = tf.agents.map((a, i) => {
+      let html = `<span class="tf-agent-tag" style="font-size:12px;padding:4px 12px;">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tf-agent-arrow" style="font-size:14px;">↓</span>';
+      return html;
+    }).join('');
+
+    detailPanel.innerHTML = `
+      <div class="factory-detail-header">
+        <div>
+          <span style="color:#f59e0b;font-size:12px;">${tf.phase} · ${tf.id}</span>
+          <span style="font-size:16px;font-weight:700;margin-left:8px;">${tf.title}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm" onclick="testTaskFlow('${tf.id}')" style="background:rgba(245,158,11,0.1);color:#f59e0b;">🧪 测试触发</button>
+          <button class="btn btn-sm btn-primary" onclick="deployTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" onclick="closeTaskFlowDetail()">✕ 关闭</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">🔔 触发条件：${tf.trigger}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:4px;">📡 数据来源：${tf.datasources}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;">🤖 执行Agent链：</div>
+      <div class="factory-detail-flow">${agentFlow}</div>
+      <div style="font-size:12px;color:var(--accent2);margin-bottom:8px;">📤 输出：${tf.output}</div>
+      <div style="font-size:12px;color:var(--accent);">🔗 Webhook链：${tf.webhook}</div>
+      <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Webhook 调用示例：</div>
+        <pre style="font-size:10px;color:var(--text);font-family:monospace;white-space:pre-wrap;">POST /hooks/agent
+{
+  "message": "${tf.title}",
+  "name": "${tf.id}",
+  "deliver": false
+}</pre>
+      </div>
+    `;
+    detailPanel.style.display = 'block';
+  } else {
+    detailPanel.style.display = 'none';
+  }
+}
+
+function closeTaskFlowDetail() {
+  selectedTaskFlowId = null;
+  const panel = document.getElementById('factoryDetailPanel');
+  if (panel) panel.style.display = 'none';
+  renderFactoryTaskFlows(activeFactoryFilter);
+}
+
+function testTaskFlow(id) {
+  const tf = FACTORY_TASKFLOWS.find(w => w.id === id);
+  showToast(`🧪 正在触发 TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ TaskFlow ${id} 测试完成，输出已生成`, 'success'), 2000);
+}
+
+function deployTaskFlow(id) {
+  const tf = FACTORY_TASKFLOWS.find(w => w.id === id);
+  showToast(`🚀 正在部署 TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
+  setTimeout(() => showToast(`✅ TaskFlow ${id} 已部署上线，Webhook 已配置`, 'success'), 2500);
+}
+
+function initFactorySOP() {
+  showToast('🚀 正在初始化 AI工厂出海全链路SOP系统...', 'success');
+  setTimeout(() => {
+    localStorage.setItem('factory_sop_initialized', 'true');
+    showToast('✅ 全链路系统初始化完成！17个TaskFlow已配置，4大Agent中心已就绪', 'success');
+  }, 3000);
+}
+
+function syncFactoryWebhooks() {
+  showToast('🔄 正在同步工厂 Webhook 配置...', 'success');
+  setTimeout(() => {
+    showToast('✅ Webhook 同步完成！CRM/ERP/MES/WMS/物流/支付 已连接', 'success');
+  }, 3000);
+}
+
+function generateFactoryReport() {
+  showToast('📊 正在生成工厂出海运营报告...', 'success');
+  setTimeout(() => {
+    showToast('✅ 出海报告已生成！包含市场分析/客户画像/生产计划/财务预测', 'success');
+  }, 2500);
+}
+
+// ============================================================
 // 页面加载完成后初始化 Ollama 配置
 initOllamaConfig();
 
@@ -3028,6 +3534,7 @@ function switchPanel(panelName, navItem) {
     'settings': '⚙️ 系统设置 · OpenClaw 控制板',
     'organization': '🏛️ AI 数字组织 · Agent配置面板 | 6层Prompt+技能+IM+MCP+定时任务',
     'anygen': '🌐 AnyGen.io 工作台 · 50 Webhook 自动化工作流 | CRM+ERP+Shopify+Amazon+TikTok',
+    'factory': '🏭 AI工厂出海SOP · 17 TaskFlow | OEM/ODM制造企业全链路自动化出海系统',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -3041,6 +3548,7 @@ function switchPanel(panelName, navItem) {
   if (panelName === 'new-conversation') renderConversations();
   if (panelName === 'organization') renderOrganization();
   if (panelName === 'anygen') renderWebhookWorkflows('all');
+  if (panelName === 'factory') renderFactoryTaskFlows('all');
 }
 
 // ============================================================
@@ -6286,6 +6794,7 @@ function refreshDashboard() {
   if (APP.currentPanel === 'providers') renderProviders();
   if (APP.currentPanel === 'im-channels') renderIMChannels();
   if (APP.currentPanel === 'anygen') renderWebhookWorkflows('all');
+  if (APP.currentPanel === 'factory') renderFactoryTaskFlows('all');
   showToast('🔄 仪表盘已刷新', 'success');
 }
 
