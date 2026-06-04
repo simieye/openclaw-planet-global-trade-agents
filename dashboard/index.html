@@ -312,6 +312,207 @@ body {
   font-weight: 700;
 }
 
+/* Agent 一键加载6层按钮 */
+.org-agent-card {
+  position: relative;
+}
+.org-agent-load-btn {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--accent3);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  z-index: 2;
+}
+.org-agent-card:hover .org-agent-load-btn {
+  opacity: 1;
+}
+.org-agent-load-btn:hover {
+  background: var(--accent3);
+  color: #fff;
+  border-color: var(--accent3);
+  transform: scale(1.15);
+}
+.org-agent-load-btn.active {
+  opacity: 1;
+  background: #22c55e;
+  color: #fff;
+  border-color: #22c55e;
+}
+
+/* Agent 已激活层标签 */
+.org-agent-layers-active {
+  display: flex;
+  gap: 2px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+.org-layer-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+.org-layer-dot.active {
+  opacity: 1;
+  box-shadow: 0 0 4px currentColor;
+}
+
+/* 6层加载模态框 */
+.six-layer-modal {
+  max-width: 520px;
+  width: 90vw;
+}
+.six-layer-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.six-layer-modal-subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.six-layer-check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.six-layer-check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.six-layer-check-item:hover {
+  border-color: var(--accent3);
+}
+.six-layer-check-item.checked {
+  border-color: var(--accent3);
+  background: rgba(99,102,241,0.06);
+}
+.six-layer-check-item .check-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  transition: all 0.15s;
+}
+.six-layer-check-item.checked .check-box {
+  background: var(--accent3);
+  border-color: var(--accent3);
+  color: #fff;
+}
+.six-layer-check-info {
+  flex: 1;
+  min-width: 0;
+}
+.six-layer-check-name {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.six-layer-check-name .layer-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+.six-layer-check-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.six-layer-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.six-layer-modal-actions button {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.six-layer-modal-actions .btn-confirm {
+  background: var(--accent3);
+  color: #fff;
+  border-color: var(--accent3);
+  font-weight: 600;
+}
+.six-layer-modal-actions .btn-confirm:hover {
+  opacity: 0.9;
+}
+.six-layer-modal-actions .btn-openclaw {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+.six-layer-modal-actions .btn-openclaw:hover {
+  opacity: 0.9;
+}
+
+/* Agent 加载后的提示横幅 */
+.agent-prompt-banner {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--accent3);
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+.agent-prompt-banner.show {
+  display: flex;
+}
+.agent-prompt-banner .banner-agent-name {
+  font-weight: 700;
+  color: var(--text-bright);
+}
+.agent-prompt-banner .banner-layers {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
 /* 组织架构6层颜色 */
 .org-layer-identity { border-left: 3px solid #ef4444; }
 .org-layer-soul { border-left: 3px solid #f59e0b; }
@@ -319,6 +520,89 @@ body {
 .org-layer-user { border-left: 3px solid #06b6d4; }
 .org-layer-agent { border-left: 3px solid #3b82f6; }
 .org-layer-tools { border-left: 3px solid #10b981; }
+
+/* ===== Agent配置面板样式 ===== */
+.agent-config-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.agent-config-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.agent-tab {
+  padding: 6px 14px;
+  border-radius: 6px 6px 0 0;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.agent-tab:hover {
+  color: var(--text-bright);
+  background: rgba(255,255,255,0.03);
+}
+
+.agent-tab.active {
+  color: var(--accent);
+  background: rgba(255,107,53,0.08);
+  border-bottom: 2px solid var(--accent);
+}
+
+.agent-layer-editor {
+  transition: all 0.2s;
+}
+
+.agent-layer-editor.collapsed .agent-layer-body {
+  display: none;
+}
+
+.agent-item-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.agent-item-card:hover {
+  border-color: var(--accent3);
+}
+
+/* Agent配置面板响应式 */
+@media (max-width: 768px) {
+  .agent-config-tabs {
+    flex-direction: column;
+  }
+  .agent-tab {
+    border-radius: 6px;
+  }
+  .agent-tab.active {
+    border-bottom: none;
+    border-left: 2px solid var(--accent);
+  }
+}
 
 /* 6层文档卡片 */
 .six-layer-docs {
@@ -774,6 +1058,19 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-bottom-left-radius: 4px;
+}
+
+.message.system {
+  align-self: flex-start;
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.2);
+  border-left: 3px solid var(--accent3);
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
 }
 
 /* Typing indicator (Ollama 加载中动画) */
@@ -2040,7 +2337,7 @@ body {
 
     <!-- ===== AI 数字组织面板 ===== -->
     <div class="panel" id="panel-organization">
-      <div class="section-title">🏛️ AI 数字组织 · OpenClaw 企业 100 Agent 角色体系</div>
+      <div class="section-title">🏛️ AI 数字组织 · 100 Agent 6层架构 | 点击Agent卡片配置工作层+技能+IM+MCP+定时任务</div>
 
       <!-- 6层智能体配置文档 -->
       <div class="six-layer-docs" id="sixLayerDocs"></div>
@@ -2202,7 +2499,7 @@ function switchPanel(panelName, navItem) {
     'providers': '🧠 AI 大模型服务商',
     'im-channels': '📡 IM 频道集成',
     'settings': '⚙️ 系统设置 · OpenClaw 控制板',
-    'organization': '🏛️ AI 数字组织 · 100 Agent 6层架构',
+    'organization': '🏛️ AI 数字组织 · Agent配置面板 | 6层Prompt+技能+IM+MCP+定时任务',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -2899,6 +3196,843 @@ function startTemplateChat(template) {
 }
 
 // ============================================================
+// AI 数字组织 - 6层 Prompt 数据
+// ============================================================
+const SIX_LAYER_PROMPTS = {
+  identity: {
+    name: 'Identity 身份中枢',
+    icon: '🆔',
+    color: '#ef4444',
+    tagColor: 'rgba(239,68,68,0.15)',
+    desc: '企业身份定义、使命愿景、权限范围',
+    prompt: `【Identity 身份中枢 — Layer 1】
+你是龙虾星球共创联盟 (Lobster Planet Co-Creation Alliance) 的一员。
+企业使命：构建全球商业文明AI原生企业生态系统。
+企业愿景：成为全球领先的AI驱动跨境电商品牌出海平台。
+核心价值观：协同创造 > 零和竞争，商业文明 > 商业利益。
+AI企业类型：7×24持续运行的AI原生企业。
+总Agent数量：100个，运行引擎：OpenClaw Agent Runtime。
+身份标签：全球跨境电商品牌出海AI驱动平台 | 品牌出海专家 × 产业协同顾问 × AI自动化工程师。
+数据访问级别：企业级（全量数据）。
+可调用工具：OpenClaw + AnyGen + HeyGen 全工具链。`
+  },
+  soul: {
+    name: 'Soul 灵魂核心',
+    icon: '💛',
+    color: '#f59e0b',
+    tagColor: 'rgba(245,158,11,0.15)',
+    desc: '核心价值观、决策伦理、品牌精神',
+    prompt: `【Soul 灵魂核心 — Layer 2】
+核心价值观体系：
+1. 协同创造 > 零和竞争：产业联盟、OPC共生体系、资源协同、收益共享
+2. 商业文明 > 商业利益：可持续发展、社会责任、生态共赢
+3. 全球视野 > 地域局限：跨国界、跨文化、跨时区的全球化运营
+4. AI赋能 > 人工替代：AI增强人类能力，而非取代人类
+
+决策伦理框架：
+- 客户第一原则：所有决策以客户价值最大化为出发点
+- 数据驱动决策：基于实时数据和分析，而非主观判断
+- 透明与可解释：AI决策过程可追溯、可解释、可审计
+- 风险可控：在风险可控范围内追求最大增长
+- 合规优先：严格遵守各国法律法规和商业道德
+
+品牌调性：专业、创新、开放、协作
+品牌口号：以不可阻挡的速度驱动未来
+品牌承诺：让每一家企业都拥有自己的AI组织`
+  },
+  memory: {
+    name: 'Memory 记忆系统',
+    icon: '🧠',
+    color: '#8b5cf6',
+    tagColor: 'rgba(139,92,246,0.15)',
+    desc: '四级记忆架构：用户/组织/生态/文明',
+    prompt: `【Memory 记忆系统 — Layer 3】
+四级记忆架构：
+1. 用户记忆：用户画像、行为偏好、消费习惯、交互历史、价值路径。10类用户自动识别（消费者/代理商/合伙人/加盟商/供应商/投资人/媒体/KOL/员工/访客）
+2. 组织记忆：企业历史里程碑、组织架构、项目全生命周期、供应链关系、合作伙伴生态
+3. 生态记忆：OPC共生体系成员、全球城市运营中心、行业最佳实践、SOP流程、市场情报
+4. 文明记忆：全球商业演进趋势、AI技术发展里程碑、跨文化商业智慧、跨代际知识传承
+
+记忆操作：写入/检索/更新/遗忘/融合。
+实现方式：短期记忆（会话上下文）+ 长期记忆（向量数据库）+ 共享记忆（团队协作上下文）。`
+  },
+  user: {
+    name: 'User 用户理解',
+    icon: '👤',
+    color: '#06b6d4',
+    tagColor: 'rgba(6,182,212,0.15)',
+    desc: '10类用户识别、6W分析框架',
+    prompt: `【User 用户理解 — Layer 4】
+10类用户自动识别系统：
+1. 消费者：浏览/加购/下单/复购 → 品牌大使路径
+2. 代理商：品牌代理/区域分销 → 签约合作路径
+3. 合伙人：深度合作/资源互补 → 战略协同路径
+4. 加盟商：加盟品牌/开店创业 → 培训开业路径
+5. 供应商：产品/服务供应 → 供应链合作路径
+6. 投资人：投资回报/增长潜力 → 投融资路径
+7. 媒体：品牌报道/行业传播 → PR合作路径
+8. KOL/达人：内容创作/带货合作 → 达人营销路径
+9. 员工/AI员工：人才管理/绩效评估 → 组织发展路径
+10. 访客/生态伙伴：首次接触/探索了解 → 转化路径
+
+6W分析框架：Who（用户是谁）→ What（需要什么）→ Why（为什么需要）→ When（何时需要）→ Where（在哪个触点）→ How（如何满足）`
+  },
+  agent: {
+    name: 'Agent 智能体配置',
+    icon: '🤖',
+    color: '#3b82f6',
+    tagColor: 'rgba(59,130,246,0.15)',
+    desc: '100 Agent角色体系、9大部门',
+    prompt: `【Agent 智能体配置 — Layer 5】
+OpenClaw 企业100个Agent角色体系，分10大部门：
+一、AI董事会(10)：CEO/COO/CFO/CMO/CTO/CHRO/Legal/Investment/Risk/Innovation
+二、市场部(10)：市场调研/竞品分析/趋势预测/SEO/SEM/Meta Ads/TikTok Ads/KOL/PR/品牌建设
+三、内容中心(10)：内容总监/文案/Blog/新闻稿/视频脚本/HeyGen数字人/海报设计/社媒/邮件/本地化
+四、销售部(15)：SDR总监/客户搜索/客户补全/客户评分/开发信/LinkedIn开发/WhatsApp销售/方案/报价/合同/谈判/销售培训/CRM/漏斗分析/成交推进
+五、客服部(10)：客服接待/FAQ/技术支持/投诉处理/工单/升级/满意度/评价/会员运营/客户留存
+六、跨境电商部(15)：Amazon总控/Listing/PPC/评论/TikTok Shop/短视频/直播/Shopify/CRO/邮件营销/联盟营销/多平台/定价/促销/运营分析
+七、供应链部(10)：采购/库存/生产/质量检测/物流/DHL/UPS/FedEx/需求预测/供应商管理
+八、财务部(10)：会计/现金流/预算/成本控制/税务/利润分析/收款/发票/审计/财务看板
+九、加盟招商部(10)：加盟管理/代理商管理/渠道开发/合作伙伴/培训/招商会/线上说明会/社群运营/转介绍系统/生态联盟管理`
+  },
+  tools: {
+    name: 'Tools 工具系统',
+    icon: '🔧',
+    color: '#10b981',
+    tagColor: 'rgba(16,185,129,0.15)',
+    desc: '7层工具矩阵、Webhook连接',
+    prompt: `【Tools 工具系统 — Layer 6】
+7层工具矩阵：
+1. OpenClaw核心：Agent Runtime / TaskFlow Engine / Webhook Gateway / Knowledge Base / Skill Runtime
+2. AnyGen工作空间：AI工作空间 / 知识库语义搜索 / 数据看板查询 / 报告生成 / 内容流水线
+3. 数据工具：CRM连接器(HubSpot/Salesforce) / ERP连接器(SAP/用友) / WMS / Analytics Engine / BI Dashboard
+4. 增长工具：SEO Toolkit / Ads Manager(Google/Meta/TikTok) / Email Engine / Social Scheduler
+5. 电商工具：Amazon SP-API / TikTok Shop API / Shopify API / 多平台Listing / Review管理
+6. Web3工具：Stripe/PayPal支付 / 多币种结算 / 跨境合规 / 税务自动化
+7. 文明工具：HeyGen数字人 / 多语言翻译 / 文化适配 / 合规审查
+
+外部Webhook连接：CRM / ERP / Shopify / Amazon / TikTok Shop / WhatsApp / Email / Stripe / PayPal / 飞书 / 企业微信 / Telegram`
+  }
+};
+
+// 当前选中Agent的6层激活状态
+APP.activeAgentLayers = {};
+
+// Agent 完整配置数据存储（每个Agent的6层prompt、技能、IM频道、MCP、定时任务）
+APP.agentConfigs = (function(){
+  try { return JSON.parse(localStorage.getItem('agent_configs') || '{}'); } catch(e) { return {}; }
+})();
+function saveAgentConfigs() {
+  try { localStorage.setItem('agent_configs', JSON.stringify(APP.agentConfigs)); } catch(e) {}
+}
+
+function getAgentConfig(agentNum) {
+  if (!APP.agentConfigs[agentNum]) {
+    APP.agentConfigs[agentNum] = {
+      prompts: {}, // {identity: 'custom md...', soul: '...', ...}
+      skills: [],  // [{name, source, desc, category}]
+      imChannels: [], // [{platform, name, webhook}]
+      mcpConnectors: [], // [{name, type, url, authType, apiKey}]
+      cronTasks: [], // [{name, schedule, command, enabled}]
+    };
+  }
+  return APP.agentConfigs[agentNum];
+}
+
+// ============================================================
+// 模版数据
+// ============================================================
+const TEMPLATE_SKILLS = [
+  { name:'Brand Story Builder', category:'品牌', desc:'品牌故事创作，包含品牌定位、核心价值主张、品牌叙事' },
+  { name:'SEO Content Optimizer', category:'SEO', desc:'SEO优化内容生成，关键词研究和内容策略' },
+  { name:'Social Media Manager', category:'社媒', desc:'多平台社媒内容管理和发布策略' },
+  { name:'Data Analysis Pro', category:'数据', desc:'数据分析、可视化图表生成、趋势预测' },
+  { name:'Email Campaign Engine', category:'邮件', desc:'邮件营销自动化，序列设计和A/B测试' },
+  { name:'Video Script Writer', category:'视频', desc:'视频脚本创作，分镜设计和文案优化' },
+  { name:'Market Research AI', category:'市场', desc:'市场调研分析，竞品研究和SWOT分析' },
+  { name:'Financial Model Builder', category:'财务', desc:'财务模型构建，估值分析和预测' },
+  { name:'Contract Draft Assistant', category:'法务', desc:'合同起草助手，模板管理和条款审查' },
+  { name:'Customer Support Bot', category:'客服', desc:'智能客服机器人，FAQ自动应答' },
+  { name:'WhatsApp Sales Bot', category:'销售', desc:'WhatsApp自动销售跟进和客户沟通' },
+  { name:'PPT Auto Generator', category:'演示', desc:'自动生成商业演示文稿' },
+];
+
+const TEMPLATE_IM_PLATFORMS = [
+  { platform:'Slack', icon:'💬' },
+  { platform:'Discord', icon:'🎮' },
+  { platform:'Telegram', icon:'✈️' },
+  { platform:'WhatsApp', icon:'💚' },
+  { platform:'微信企业号', icon:'💼' },
+  { platform:'飞书', icon:'🐦' },
+  { platform:'钉钉', icon:'📌' },
+  { platform:'Microsoft Teams', icon:'👥' },
+];
+
+const TEMPLATE_MCP_CONNECTORS = [
+  { name:'CRM HubSpot', type:'MCP', desc:'客户关系管理数据同步' },
+  { name:'CRM Salesforce', type:'MCP', desc:'企业级CRM集成' },
+  { name:'ERP SAP', type:'API', desc:'企业资源计划系统' },
+  { name:'Amazon SP-API', type:'API', desc:'亚马逊卖家平台API' },
+  { name:'Shopify API', type:'API', desc:'独立站电商数据' },
+  { name:'TikTok Shop API', type:'API', desc:'TikTok电商数据' },
+  { name:'Stripe Payment', type:'Webhook', desc:'支付网关Webhook' },
+  { name:'Google Analytics', type:'API', desc:'网站分析数据' },
+  { name:'飞书文档', type:'Webhook', desc:'飞书文档消息推送' },
+];
+
+// ============================================================
+// Agent 配置面板 — 完整配置弹窗（含6层prompt、技能、IM、MCP、定时任务）
+// ============================================================
+function openAgentConfigPanel(agentNum, agentName, agentRole) {
+  const modalContent = document.getElementById('modalContent');
+  const overlay = document.getElementById('modalOverlay');
+  const config = getAgentConfig(agentNum);
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+  const layerColors = { identity:'#ef4444', soul:'#f59e0b', memory:'#8b5cf6', user:'#06b6d4', agent:'#3b82f6', tools:'#10b981' };
+  const layerIcons = { identity:'🆔', soul:'💛', memory:'🧠', user:'👤', agent:'🤖', tools:'🔧' };
+
+  const escapedName = agentName.replace(/'/g, "\\'");
+  const escapedRole = agentRole.replace(/'/g, "\\'");
+
+  // 构建6层prompt编辑区HTML
+  const layersHtml = layerIds.map((id, idx) => {
+    const layer = SIX_LAYER_PROMPTS[id];
+    const customPrompt = config.prompts[id] || '';
+    const hasCustom = customPrompt.trim().length > 0;
+    return `
+      <div class="agent-layer-editor" id="agentLayer_${agentNum}_${id}" style="border-left: 3px solid ${layerColors[id]};background:var(--bg-elevated);border-radius:8px;padding:12px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:pointer;" onclick="this.parentElement.classList.toggle('collapsed')">
+          <span style="font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px;">
+            <span style="color:${layerColors[id]};">${layerIcons[id]}</span> ${layer.name}
+            <span style="font-size:9px;padding:1px 5px;border-radius:3px;background:${layer.tagColor};color:${layerColors[id]};">L${idx+1}</span>
+            ${hasCustom ? '<span style="font-size:9px;color:#22c55e;">● 已自定义</span>' : '<span style="font-size:9px;color:var(--text-dim);">○ 使用模板</span>'}
+          </span>
+          <span style="font-size:10px;color:var(--text-dim);">▼</span>
+        </div>
+        <div class="agent-layer-body">
+          <textarea id="agentPrompt_${agentNum}_${id}" class="config-textarea" style="min-height:80px;font-size:11px;"
+            placeholder="${layer.desc}">${customPrompt || layer.prompt}</textarea>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <button class="btn btn-sm" onclick="resetLayerPrompt('${agentNum}','${id}')" title="恢复默认模板">🔄 恢复模板</button>
+            <button class="btn btn-sm btn-accent3" onclick="applySingleLayerToChat('${agentNum}','${escapedName}','${id}')">💬 加载到对话</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // 技能列表HTML
+  const skillsHtml = config.skills.length === 0
+    ? '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂无自定义技能，点击下方按钮添加</div>'
+    : config.skills.map((s, i) => `
+      <div class="agent-item-card">
+        <span>${getCategoryIcon(s.category)} <strong>${s.name}</strong></span>
+        <span style="font-size:10px;color:var(--text-dim);">${s.category} · ${s.desc}</span>
+        <button class="btn btn-sm" onclick="removeAgentSkill('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+      </div>`).join('');
+
+  // IM频道HTML
+  const imHtml = config.imChannels.length === 0
+    ? '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未绑定IM频道</div>'
+    : config.imChannels.map((ch, i) => `
+      <div class="agent-item-card">
+        <span>📡 <strong>${ch.platform}</strong> · ${ch.name}</span>
+        <span style="font-size:10px;color:var(--text-dim);">${ch.webhook}</span>
+        <button class="btn btn-sm" onclick="removeAgentIM('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+      </div>`).join('');
+
+  // MCP连接器HTML
+  const mcpHtml = config.mcpConnectors.length === 0
+    ? '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未配置MCP连接器</div>'
+    : config.mcpConnectors.map((m, i) => `
+      <div class="agent-item-card">
+        <span>🔌 <strong>${m.name}</strong> · <span style="font-size:10px;color:var(--accent2);">${m.type}</span></span>
+        <span style="font-size:10px;color:var(--text-dim);">${m.url || ''}</span>
+        <button class="btn btn-sm" onclick="removeAgentMCP('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+      </div>`).join('');
+
+  // 定时任务HTML
+  const cronHtml = config.cronTasks.length === 0
+    ? '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未设置定时任务</div>'
+    : config.cronTasks.map((t, i) => `
+      <div class="agent-item-card">
+        <span>⏰ <strong>${t.name}</strong> <span style="font-size:10px;${t.enabled?'color:#22c55e;':'color:var(--text-dim);'}">${t.enabled?'● 启用':'○ 停用'}</span></span>
+        <span style="font-size:10px;color:var(--text-dim);font-family:monospace;">${t.schedule}</span>
+        <button class="btn btn-sm" onclick="removeAgentCron('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+      </div>`).join('');
+
+  modalContent.innerHTML = `
+    <div class="agent-config-panel" style="max-width:720px;width:95vw;">
+      <!-- 头部 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;">
+            🤖 Agent ${agentNum} · ${agentName}
+          </div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">${agentRole}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-primary btn-sm" onclick="openAgentChat('${agentNum}','${escapedName}','${escapedRole}')">💬 独立AI对话</button>
+          <button class="btn btn-accent3 btn-sm" onclick="sendAgentToOpenClaw('${agentNum}','${escapedName}')">🔗 OpenClaw</button>
+        </div>
+      </div>
+
+      <!-- Tab切换 -->
+      <div class="agent-config-tabs" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:8px;">
+        <button class="agent-tab active" onclick="switchAgentTab(this,'tab-prompts-${agentNum}')">📝 6层Prompt</button>
+        <button class="agent-tab" onclick="switchAgentTab(this,'tab-skills-${agentNum}')">⚡ 技能 <span style="font-size:9px;opacity:0.7;">${config.skills.length}</span></button>
+        <button class="agent-tab" onclick="switchAgentTab(this,'tab-im-${agentNum}')">📡 IM频道 <span style="font-size:9px;opacity:0.7;">${config.imChannels.length}</span></button>
+        <button class="agent-tab" onclick="switchAgentTab(this,'tab-mcp-${agentNum}')">🔌 MCP连接器 <span style="font-size:9px;opacity:0.7;">${config.mcpConnectors.length}</span></button>
+        <button class="agent-tab" onclick="switchAgentTab(this,'tab-cron-${agentNum}')">⏰ 定时任务 <span style="font-size:9px;opacity:0.7;">${config.cronTasks.length}</span></button>
+      </div>
+
+      <!-- 6层Prompt Tab -->
+      <div class="agent-tab-content active" id="tab-prompts-${agentNum}">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-sm btn-accent3" onclick="loadTemplatePrompts('${agentNum}')">📋 加载6层模板Prompt</button>
+          <button class="btn btn-sm" onclick="clearAllPrompts('${agentNum}')">🗑️ 清空全部</button>
+        </div>
+        ${layersHtml}
+      </div>
+
+      <!-- 技能Tab -->
+      <div class="agent-tab-content" id="tab-skills-${agentNum}" style="display:none;">
+        <div style="margin-bottom:12px;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="addCustomSkill('${agentNum}')">+ 添加自定义技能</button>
+          <button class="btn btn-sm btn-accent3" onclick="addTemplateSkill('${agentNum}')">📋 从模板添加</button>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;" id="agentSkills_${agentNum}">${skillsHtml}</div>
+      </div>
+
+      <!-- IM频道Tab -->
+      <div class="agent-tab-content" id="tab-im-${agentNum}" style="display:none;">
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-primary btn-sm" onclick="addAgentIMChannel('${agentNum}')">+ 添加IM频道</button>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;" id="agentIM_${agentNum}">${imHtml}</div>
+      </div>
+
+      <!-- MCP连接器Tab -->
+      <div class="agent-tab-content" id="tab-mcp-${agentNum}" style="display:none;">
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-primary btn-sm" onclick="addAgentMCPConnector('${agentNum}')">+ 添加MCP连接器</button>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;" id="agentMCP_${agentNum}">${mcpHtml}</div>
+      </div>
+
+      <!-- 定时任务Tab -->
+      <div class="agent-tab-content" id="tab-cron-${agentNum}" style="display:none;">
+        <div style="margin-bottom:12px;">
+          <button class="btn btn-primary btn-sm" onclick="addAgentCronTask('${agentNum}')">+ 添加定时任务</button>
+        </div>
+        <div style="max-height:300px;overflow-y:auto;" id="agentCron_${agentNum}">${cronHtml}</div>
+      </div>
+
+      <!-- 底部操作 -->
+      <div class="modal-actions" style="border-top:1px solid var(--border);padding-top:14px;margin-top:16px;">
+        <button class="btn" onclick="closeModalDirect()">取消</button>
+        <button class="btn btn-accent3" onclick="saveAgentConfigAndClose('${agentNum}','${escapedName}')">💾 保存全部配置</button>
+        <button class="btn btn-primary" onclick="saveAndApplyAgentConfig('${agentNum}','${escapedName}')">✅ 保存并应用到聊天</button>
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add('show');
+  overlay.style.display = 'flex';
+}
+
+// Tab切换
+function switchAgentTab(btn, tabId) {
+  const panel = btn.closest('.agent-config-panel');
+  panel.querySelectorAll('.agent-tab').forEach(t => t.classList.remove('active'));
+  panel.querySelectorAll('.agent-tab-content').forEach(t => t.style.display = 'none');
+  btn.classList.add('active');
+  const tab = document.getElementById(tabId);
+  if (tab) tab.style.display = 'block';
+}
+
+// 恢复单层默认模板
+function resetLayerPrompt(agentNum, layerId) {
+  const ta = document.getElementById('agentPrompt_' + agentNum + '_' + layerId);
+  if (ta && SIX_LAYER_PROMPTS[layerId]) {
+    ta.value = SIX_LAYER_PROMPTS[layerId].prompt;
+    showToast('🔄 已恢复 ' + SIX_LAYER_PROMPTS[layerId].name + ' 模板', 'success');
+  }
+}
+
+// 加载6层模板Prompt
+function loadTemplatePrompts(agentNum) {
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+  layerIds.forEach(id => {
+    const ta = document.getElementById('agentPrompt_' + agentNum + '_' + id);
+    if (ta && SIX_LAYER_PROMPTS[id]) {
+      ta.value = SIX_LAYER_PROMPTS[id].prompt;
+    }
+  });
+  showToast('📋 已加载6层模板Prompt', 'success');
+}
+
+// 清空全部prompt
+function clearAllPrompts(agentNum) {
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+  layerIds.forEach(id => {
+    const ta = document.getElementById('agentPrompt_' + agentNum + '_' + id);
+    if (ta) ta.value = '';
+  });
+  showToast('🗑️ 已清空全部Prompt', 'success');
+}
+
+// 收集当前编辑的prompts
+function collectAgentPrompts(agentNum) {
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+  const prompts = {};
+  layerIds.forEach(id => {
+    const ta = document.getElementById('agentPrompt_' + agentNum + '_' + id);
+    if (ta) prompts[id] = ta.value;
+  });
+  return prompts;
+}
+
+// 保存Agent全部配置
+function saveAgentConfig(agentNum) {
+  const config = getAgentConfig(agentNum);
+  config.prompts = collectAgentPrompts(agentNum);
+  saveAgentConfigs();
+  // 更新激活状态
+  APP.activeAgentLayers[agentNum] = {};
+  Object.keys(config.prompts).forEach(id => {
+    if (config.prompts[id] && config.prompts[id].trim()) {
+      APP.activeAgentLayers[agentNum][id] = true;
+    }
+  });
+}
+
+// 保存并关闭
+function saveAgentConfigAndClose(agentNum, agentName) {
+  saveAgentConfig(agentNum);
+  closeModalDirect();
+  renderOrganization();
+  showToast('💾 ' + agentName + ' 全部配置已保存', 'success');
+}
+
+// 保存并应用到聊天
+function saveAndApplyAgentConfig(agentNum, agentName) {
+  saveAgentConfig(agentNum);
+  applyAgentToChat(agentNum, agentName);
+  closeModalDirect();
+  renderOrganization();
+}
+
+// 应用Agent配置到聊天
+function applyAgentToChat(agentNum, agentName) {
+  const config = getAgentConfig(agentNum);
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+  const activeLayers = layerIds.filter(id => config.prompts[id] && config.prompts[id].trim());
+
+  if (activeLayers.length === 0) {
+    showToast('⚠️ 请至少配置一个工作层', 'warning');
+    return;
+  }
+
+  // 构建system prompt
+  const parts = [`🤖 **${agentNum}. ${agentName}** 已加载以下工作层提示词：`, ''];
+  activeLayers.forEach(id => {
+    parts.push(`---\n### ${SIX_LAYER_PROMPTS[id].icon} ${SIX_LAYER_PROMPTS[id].name}\n${config.prompts[id]}\n`);
+  });
+
+  // 附加技能信息
+  if (config.skills.length > 0) {
+    parts.push('\n---\n### ⚡ 已激活技能');
+    config.skills.forEach(s => parts.push(`- ${s.name} (${s.category}): ${s.desc}`));
+  }
+
+  // 附加IM频道
+  if (config.imChannels.length > 0) {
+    parts.push('\n---\n### 📡 已绑定IM频道');
+    config.imChannels.forEach(ch => parts.push(`- ${ch.platform}: ${ch.name}`));
+  }
+
+  // 附加MCP连接器
+  if (config.mcpConnectors.length > 0) {
+    parts.push('\n---\n### 🔌 已配置MCP连接器');
+    config.mcpConnectors.forEach(m => parts.push(`- ${m.name} (${m.type})`));
+  }
+
+  parts.push('', '> 💡 以上配置已注入到当前Agent上下文。现在你可以以 **' + agentName + '** 的身份开始工作。');
+
+  APP.chatMessages.push({ role: 'system', content: parts.join('\n') });
+  APP.chatMessages.push({ role: 'assistant', content: '✅ 我已加载 **' + agentName + '** 的 ' + activeLayers.length + ' 层工作提示词' + (config.skills.length > 0 ? ' + ' + config.skills.length + ' 个技能' : '') + '。\n\n请告诉我你需要我执行什么任务？' });
+  renderChatMessages();
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  document.getElementById('chatPanel').style.display = 'flex';
+
+  showToast('✅ ' + agentName + ' 配置已应用，共 ' + activeLayers.length + ' 层Prompt + ' + config.skills.length + ' 技能', 'success');
+}
+
+// 单层prompt加载到聊天
+function applySingleLayerToChat(agentNum, agentName, layerId) {
+  const ta = document.getElementById('agentPrompt_' + agentNum + '_' + layerId);
+  const content = ta ? ta.value : SIX_LAYER_PROMPTS[layerId].prompt;
+  const layer = SIX_LAYER_PROMPTS[layerId];
+
+  APP.chatMessages.push({ role: 'system', content: `### ${layer.icon} ${layer.name}\n${content}` });
+  APP.chatMessages.push({ role: 'assistant', content: '✅ 已加载 **' + layer.icon + ' ' + layer.name + '** 工作层提示词。\n\n' + layer.desc });
+  renderChatMessages();
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  document.getElementById('chatPanel').style.display = 'flex';
+  showToast('✅ ' + layer.icon + ' ' + layer.name + ' 已加载', 'success');
+}
+
+// 打开Agent独立AI对话（清空聊天+注入agent配置）
+function openAgentChat(agentNum, agentName, agentRole) {
+  saveAgentConfig(agentNum);
+  APP.chatMessages = [];
+  const config = getAgentConfig(agentNum);
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+
+  const parts = ['🤖 **Agent ' + agentNum + ': ' + agentName + '** · ' + agentRole, ''];
+
+  layerIds.forEach(id => {
+    if (config.prompts[id] && config.prompts[id].trim()) {
+      parts.push('---\n### ' + SIX_LAYER_PROMPTS[id].icon + ' ' + SIX_LAYER_PROMPTS[id].name + '\n' + config.prompts[id] + '\n');
+    }
+  });
+
+  if (config.skills.length > 0) {
+    parts.push('\n---\n### ⚡ 已激活技能');
+    config.skills.forEach(s => parts.push('- ' + s.name + ': ' + s.desc));
+  }
+
+  if (config.imChannels.length > 0) {
+    parts.push('\n---\n### 📡 已绑定IM频道');
+    config.imChannels.forEach(ch => parts.push('- ' + ch.platform + ': ' + ch.name + ' (' + ch.webhook + ')'));
+  }
+
+  if (config.mcpConnectors.length > 0) {
+    parts.push('\n---\n### 🔌 已配置MCP连接器');
+    config.mcpConnectors.forEach(m => parts.push('- ' + m.name + ' (' + m.type + ')'));
+  }
+
+  if (config.cronTasks.length > 0) {
+    parts.push('\n---\n### ⏰ 定时任务');
+    config.cronTasks.forEach(t => parts.push('- ' + t.name + ': `' + t.schedule + '` → ' + t.command + ' [' + (t.enabled ? '启用' : '停用') + ']'));
+  }
+
+  parts.push('', '> 💡 以 **' + agentName + '** 身份开始独立AI对话。');
+
+  APP.chatMessages.push({ role: 'system', content: parts.join('\n') });
+  APP.chatMessages.push({ role: 'assistant', content: '🦞 **' + agentName + '** 已就绪！\n\n角色：' + agentRole + '\n已加载 ' + layerIds.filter(id => config.prompts[id] && config.prompts[id].trim()).length + ' 层工作层 + ' + config.skills.length + ' 技能 + ' + config.imChannels.length + ' IM频道 + ' + config.mcpConnectors.length + ' MCP + ' + config.cronTasks.length + ' 定时任务\n\n请告诉我你的需求。' });
+  renderChatMessages();
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  document.getElementById('chatPanel').style.display = 'flex';
+  closeModalDirect();
+  renderOrganization();
+  showToast('💬 ' + agentName + ' 独立AI对话已开启', 'success');
+}
+
+// 发送Agent配置到OpenClaw
+function sendAgentToOpenClaw(agentNum, agentName) {
+  saveAgentConfig(agentNum);
+  const config = getAgentConfig(agentNum);
+  const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
+
+  const parts = ['【Agent: ' + agentNum + '. ' + agentName + '】'];
+  layerIds.forEach(id => {
+    if (config.prompts[id] && config.prompts[id].trim()) {
+      parts.push(config.prompts[id]);
+    }
+  });
+
+  const encodedPrompt = encodeURIComponent(parts.join('\n\n'));
+  const openClawUrl = 'http://127.0.0.1:18789/chat?session=' + encodeURIComponent(agentName.replace(/\s/g, '-')) + '&prompt=' + encodedPrompt;
+  window.open(openClawUrl, '_blank');
+  renderOrganization();
+  showToast('🔗 ' + agentName + ' 配置已发送到OpenClaw', 'success');
+}
+
+// ============================================================
+// Agent 技能管理
+// ============================================================
+function addCustomSkill(agentNum) {
+  const config = getAgentConfig(agentNum);
+  const name = prompt('请输入技能名称：');
+  if (!name || !name.trim()) return;
+  const category = prompt('请输入技能分类（如：品牌/SEO/销售）：', '自定义');
+  const desc = prompt('请输入技能描述：', name + ' — 自定义技能');
+
+  config.skills.push({ name: name.trim(), source: '自定义', category: category || '自定义', desc: desc || name });
+  saveAgentConfigs();
+  refreshAgentTab('skills', agentNum);
+  showToast('✅ 技能「' + name + '」已添加', 'success');
+}
+
+function addTemplateSkill(agentNum) {
+  const config = getAgentConfig(agentNum);
+  const modalContent = document.getElementById('modalContent');
+  const skillListHtml = TEMPLATE_SKILLS.map((s, i) => `
+    <div class="six-layer-check-item" style="cursor:pointer;" onclick="addSkillFromTemplate('${agentNum}',${i});closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">
+      <div class="six-layer-check-info">
+        <div class="six-layer-check-name">${getCategoryIcon(s.category)} ${s.name} <span style="font-size:9px;color:var(--accent2);">${s.category}</span></div>
+        <div class="six-layer-check-desc">${s.desc}</div>
+      </div>
+    </div>`).join('');
+
+  modalContent.innerHTML = `
+    <div class="six-layer-modal">
+      <div class="six-layer-modal-title">📋 选择模版技能</div>
+      <div class="six-layer-check-list" style="max-height:400px;overflow-y:auto;">${skillListHtml}</div>
+      <div class="modal-actions"><button class="btn" onclick="closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">返回</button></div>
+    </div>`;
+}
+
+function addSkillFromTemplate(agentNum, skillIdx) {
+  const config = getAgentConfig(agentNum);
+  const s = TEMPLATE_SKILLS[skillIdx];
+  if (!s) return;
+  // 避免重复
+  if (!config.skills.find(x => x.name === s.name)) {
+    config.skills.push({ ...s, source: 'ClawHub' });
+  }
+  saveAgentConfigs();
+  showToast('✅ 技能「' + s.name + '」已添加', 'success');
+}
+
+function removeAgentSkill(agentNum, idx) {
+  const config = getAgentConfig(agentNum);
+  const removed = config.skills[idx];
+  config.skills.splice(idx, 1);
+  saveAgentConfigs();
+  refreshAgentTab('skills', agentNum);
+  showToast('🗑️ 技能「' + (removed ? removed.name : '') + '」已移除', 'success');
+}
+
+// ============================================================
+// Agent IM频道管理
+// ============================================================
+function addAgentIMChannel(agentNum) {
+  const config = getAgentConfig(agentNum);
+  const modalContent = document.getElementById('modalContent');
+
+  const platformOptions = TEMPLATE_IM_PLATFORMS.map(p => `<option value="${p.platform}">${p.icon} ${p.platform}</option>`).join('');
+
+  modalContent.innerHTML = `
+    <div class="six-layer-modal">
+      <div class="six-layer-modal-title">📡 添加IM频道</div>
+      <div class="form-group"><label>平台</label><select id="agentIMPlatform">${platformOptions}</select></div>
+      <div class="form-group"><label>频道名称</label><input type="text" id="agentIMName" placeholder="如：销售通知群"></div>
+      <div class="form-group"><label>Webhook URL</label><input type="text" id="agentIMWebhook" placeholder="https://hooks.example.com/..."></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">取消</button>
+        <button class="btn btn-primary" onclick="saveAgentIM('${agentNum}');closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">添加</button>
+      </div>
+    </div>`;
+}
+
+function saveAgentIM(agentNum) {
+  const platform = document.getElementById('agentIMPlatform')?.value || '';
+  const name = document.getElementById('agentIMName')?.value?.trim() || '';
+  const webhook = document.getElementById('agentIMWebhook')?.value?.trim() || '';
+  if (!platform || !name) { showToast('⚠️ 请填写平台和频道名称', 'warning'); return; }
+
+  const config = getAgentConfig(agentNum);
+  config.imChannels.push({ platform, name, webhook });
+  saveAgentConfigs();
+  showToast('✅ IM频道「' + name + '」已添加', 'success');
+}
+
+function removeAgentIM(agentNum, idx) {
+  const config = getAgentConfig(agentNum);
+  config.imChannels.splice(idx, 1);
+  saveAgentConfigs();
+  refreshAgentTab('im', agentNum);
+  showToast('🗑️ IM频道已移除', 'success');
+}
+
+// ============================================================
+// Agent MCP连接器管理
+// ============================================================
+function addAgentMCPConnector(agentNum) {
+  const config = getAgentConfig(agentNum);
+  const modalContent = document.getElementById('modalContent');
+
+  const templateOptions = TEMPLATE_MCP_CONNECTORS.map(m => `<option value="${m.name}">${m.name} (${m.type})</option>`).join('');
+
+  modalContent.innerHTML = `
+    <div class="six-layer-modal">
+      <div class="six-layer-modal-title">🔌 添加MCP连接器</div>
+      <div class="form-group"><label>模版选择</label><select id="agentMCPTemplate" onchange="fillMCPTemplate(this.value)"><option value="">-- 自定义 --</option>${templateOptions}</select></div>
+      <div class="form-group"><label>连接器名称</label><input type="text" id="agentMCPName" placeholder="如：CRM HubSpot"></div>
+      <div class="form-group"><label>连接类型</label><select id="agentMCPType"><option>MCP</option><option>API</option><option>Webhook</option><option>GraphQL</option></select></div>
+      <div class="form-group"><label>连接地址</label><input type="text" id="agentMCPUrl" placeholder="https://api.example.com/v1"></div>
+      <div class="form-group"><label>认证方式</label><select id="agentMCPAuth"><option>API Key</option><option>OAuth 2.0</option><option>Bearer Token</option></select></div>
+      <div class="form-group"><label>API Key</label><input type="password" id="agentMCPKey" placeholder="输入密钥..."></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">取消</button>
+        <button class="btn btn-primary" onclick="saveAgentMCP('${agentNum}');closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">添加</button>
+      </div>
+    </div>`;
+}
+
+function fillMCPTemplate(name) {
+  const t = TEMPLATE_MCP_CONNECTORS.find(m => m.name === name);
+  if (!t) return;
+  document.getElementById('agentMCPName').value = t.name;
+  document.getElementById('agentMCPType').value = t.type;
+}
+
+function saveAgentMCP(agentNum) {
+  const name = document.getElementById('agentMCPName')?.value?.trim() || '';
+  const type = document.getElementById('agentMCPType')?.value || 'MCP';
+  const url = document.getElementById('agentMCPUrl')?.value?.trim() || '';
+  const authType = document.getElementById('agentMCPAuth')?.value || '';
+  const apiKey = document.getElementById('agentMCPKey')?.value?.trim() || '';
+  if (!name) { showToast('⚠️ 请输入连接器名称', 'warning'); return; }
+
+  const config = getAgentConfig(agentNum);
+  config.mcpConnectors.push({ name, type, url, authType, apiKey });
+  saveAgentConfigs();
+  showToast('✅ MCP连接器「' + name + '」已添加', 'success');
+}
+
+function removeAgentMCP(agentNum, idx) {
+  const config = getAgentConfig(agentNum);
+  config.mcpConnectors.splice(idx, 1);
+  saveAgentConfigs();
+  refreshAgentTab('mcp', agentNum);
+  showToast('🗑️ MCP连接器已移除', 'success');
+}
+
+// ============================================================
+// Agent 定时任务管理
+// ============================================================
+function addAgentCronTask(agentNum) {
+  const config = getAgentConfig(agentNum);
+  const modalContent = document.getElementById('modalContent');
+
+  modalContent.innerHTML = `
+    <div class="six-layer-modal">
+      <div class="six-layer-modal-title">⏰ 添加定时任务</div>
+      <div class="form-group"><label>任务名称</label><input type="text" id="agentCronName" placeholder="如：每日市场报告"></div>
+      <div class="form-group"><label>执行周期（Cron表达式）</label><input type="text" id="agentCronSchedule" placeholder="0 9 * * * （每天早上9点）" style="font-family:monospace;"></div>
+      <div class="form-group"><label>执行命令/Prompt</label><textarea id="agentCronCommand" rows="3" placeholder="输入要执行的prompt或命令..."></textarea></div>
+      <div class="form-group"><label><input type="checkbox" id="agentCronEnabled" checked> 启用此任务</label></div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px;background:rgba(99,102,241,0.06);padding:10px;border-radius:6px;">
+        <strong>Cron表达式参考：</strong><br>
+        <code>*/30 * * * *</code> 每30分钟 · <code>0 9 * * *</code> 每天9点 · <code>0 9 * * 1-5</code> 工作日9点<br>
+        <code>0 0 1 * *</code> 每月1号 · <code>0 */4 * * *</code> 每4小时
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">取消</button>
+        <button class="btn btn-primary" onclick="saveAgentCron('${agentNum}');closeModalDirect();setTimeout(function(){openAgentConfigPanel('${agentNum}','','');},100);">添加</button>
+      </div>
+    </div>`;
+}
+
+function saveAgentCron(agentNum) {
+  const name = document.getElementById('agentCronName')?.value?.trim() || '';
+  const schedule = document.getElementById('agentCronSchedule')?.value?.trim() || '';
+  const command = document.getElementById('agentCronCommand')?.value?.trim() || '';
+  const enabled = document.getElementById('agentCronEnabled')?.checked ?? true;
+  if (!name || !schedule) { showToast('⚠️ 请填写任务名称和执行周期', 'warning'); return; }
+
+  const config = getAgentConfig(agentNum);
+  config.cronTasks.push({ name, schedule, command, enabled, createdAt: new Date().toISOString() });
+  saveAgentConfigs();
+  showToast('✅ 定时任务「' + name + '」已添加', 'success');
+}
+
+function removeAgentCron(agentNum, idx) {
+  const config = getAgentConfig(agentNum);
+  config.cronTasks.splice(idx, 1);
+  saveAgentConfigs();
+  refreshAgentTab('cron', agentNum);
+  showToast('🗑️ 定时任务已移除', 'success');
+}
+
+// 刷新指定Tab内容
+function refreshAgentTab(tabType, agentNum) {
+  const config = getAgentConfig(agentNum);
+  let html = '';
+  const containerId = tabType === 'skills' ? 'agentSkills_' : tabType === 'im' ? 'agentIM_' : tabType === 'mcp' ? 'agentMCP_' : 'agentCron_';
+  const container = document.getElementById(containerId + agentNum);
+  if (!container) return;
+
+  if (tabType === 'skills') {
+    if (config.skills.length === 0) {
+      html = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂无自定义技能，点击下方按钮添加</div>';
+    } else {
+      html = config.skills.map((s, i) => `
+        <div class="agent-item-card">
+          <span>${getCategoryIcon(s.category)} <strong>${s.name}</strong></span>
+          <span style="font-size:10px;color:var(--text-dim);">${s.category} · ${s.desc}</span>
+          <button class="btn btn-sm" onclick="removeAgentSkill('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+        </div>`).join('');
+    }
+  } else if (tabType === 'im') {
+    if (config.imChannels.length === 0) {
+      html = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未绑定IM频道</div>';
+    } else {
+      html = config.imChannels.map((ch, i) => `
+        <div class="agent-item-card">
+          <span>📡 <strong>${ch.platform}</strong> · ${ch.name}</span>
+          <span style="font-size:10px;color:var(--text-dim);">${ch.webhook}</span>
+          <button class="btn btn-sm" onclick="removeAgentIM('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+        </div>`).join('');
+    }
+  } else if (tabType === 'mcp') {
+    if (config.mcpConnectors.length === 0) {
+      html = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未配置MCP连接器</div>';
+    } else {
+      html = config.mcpConnectors.map((m, i) => `
+        <div class="agent-item-card">
+          <span>🔌 <strong>${m.name}</strong> · <span style="font-size:10px;color:var(--accent2);">${m.type}</span></span>
+          <span style="font-size:10px;color:var(--text-dim);">${m.url || ''}</span>
+          <button class="btn btn-sm" onclick="removeAgentMCP('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+        </div>`).join('');
+    }
+  } else if (tabType === 'cron') {
+    if (config.cronTasks.length === 0) {
+      html = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:16px;">暂未设置定时任务</div>';
+    } else {
+      html = config.cronTasks.map((t, i) => `
+        <div class="agent-item-card">
+          <span>⏰ <strong>${t.name}</strong> <span style="font-size:10px;${t.enabled?'color:#22c55e;':'color:var(--text-dim);'}">${t.enabled?'● 启用':'○ 停用'}</span></span>
+          <span style="font-size:10px;color:var(--text-dim);font-family:monospace;">${t.schedule}</span>
+          <button class="btn btn-sm" onclick="removeAgentCron('${agentNum}',${i})" style="color:var(--danger);">✕</button>
+        </div>`).join('');
+    }
+  }
+  container.innerHTML = html;
+}
+
+// ============================================================
+// 保留旧版兼容函数
+// ============================================================
+function openSixLayerModal(agentNum, agentName, agentRole) {
+  openAgentConfigPanel(agentNum, agentName, agentRole);
+}
+
+function applySixLayers(agentNum, agentName) {
+  saveAgentConfig(agentNum);
+  applyAgentToChat(agentNum, agentName);
+}
+
+function sendToOpenClaw(agentNum, agentName) {
+  saveAgentConfig(agentNum);
+  sendAgentToOpenClaw(agentNum, agentName);
+}
+
+function applySingleLayerPrompt(layerId) {
+  const layer = SIX_LAYER_PROMPTS[layerId];
+  if (!layer) return;
+  APP.chatMessages.push({ role: 'system', content: `### ${layer.icon} ${layer.name}\n${layer.prompt}` });
+  APP.chatMessages.push({ role: 'assistant', content: `✅ 已加载 **${layer.icon} ${layer.name}** 工作层提示词。\n\n${layer.desc}` });
+  renderChatMessages();
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  document.getElementById('chatPanel').style.display = 'flex';
+  showToast(`✅ ${layer.icon} ${layer.name} 已加载`, 'success');
+}
+
+// ============================================================
 // AI 数字组织渲染
 // ============================================================
 function renderOrganization() {
@@ -2913,12 +4047,12 @@ function renderOrganization() {
   ];
 
   const docsHtml = layerDocs.map(d => `
-    <div class="layer-doc-card ${d.cssClass}" onclick="showToast('📄 ${d.file} · ${d.name} 配置已就绪', 'success')">
+    <div class="layer-doc-card ${d.cssClass}" onclick="applySingleLayerPrompt('${d.id}')">
       <div class="layer-doc-header">
         <div class="layer-doc-icon" style="background:${d.bg};color:${d.color};">${d.icon}</div>
         <div>
           <div class="layer-doc-name" style="color:${d.color};">${d.name}</div>
-          <div class="layer-doc-file">${d.file}</div>
+          <div class="layer-doc-file">${d.file} · 点击加载此层Prompt</div>
         </div>
       </div>
       <div class="layer-doc-desc">${d.desc}</div>
@@ -3055,13 +4189,37 @@ function renderOrganization() {
       '</div>' +
       '<div class="org-agent-grid">' +
         level.agents.map(function(a) {
-          return '<div class="org-agent-card" onclick="showToast(\'🤖 ' + a.name + ' · ' + a.role + '\', \'success\')" title="Skills: ' + a.skills + '">' +
+          // 从agentConfigs获取激活状态
+          var agentCfg = APP.agentConfigs[a.num] || {};
+          var activeLayers = APP.activeAgentLayers[a.num] || {};
+          // 同步：如果agentConfigs有prompt但没有activeAgentLayers，自动同步
+          if (agentCfg.prompts) {
+            ['identity','soul','memory','user','agent','tools'].forEach(function(lid) {
+              if (agentCfg.prompts[lid] && agentCfg.prompts[lid].trim() && !activeLayers[lid]) {
+                activeLayers[lid] = true;
+              }
+            });
+            if (Object.keys(activeLayers).length > 0) APP.activeAgentLayers[a.num] = activeLayers;
+          }
+          var activeCount = Object.keys(activeLayers).filter(function(k) { return activeLayers[k]; }).length;
+          var layerDotsHtml = ['identity','soul','memory','user','agent','tools'].map(function(lid) {
+            var isActive = activeLayers[lid] === true;
+            var lc = SIX_LAYER_PROMPTS[lid].color;
+            return '<span class="org-layer-dot' + (isActive ? ' active' : '') + '" style="background:' + lc + ';color:' + lc + ';" title="' + SIX_LAYER_PROMPTS[lid].name + (isActive ? ' ✓已激活' : '') + '"></span>';
+          }).join('');
+          var loadBtnClass = activeCount > 0 ? 'org-agent-load-btn active' : 'org-agent-load-btn';
+          var loadBtnTitle = activeCount > 0 ? (activeCount + '层已激活，点击管理') : '配置Agent工作层';
+          var configCount = (APP.agentConfigs[a.num] && APP.agentConfigs[a.num].skills ? APP.agentConfigs[a.num].skills.length : 0) + (APP.agentConfigs[a.num] && APP.agentConfigs[a.num].imChannels ? APP.agentConfigs[a.num].imChannels.length : 0) + (APP.agentConfigs[a.num] && APP.agentConfigs[a.num].mcpConnectors ? APP.agentConfigs[a.num].mcpConnectors.length : 0) + (APP.agentConfigs[a.num] && APP.agentConfigs[a.num].cronTasks ? APP.agentConfigs[a.num].cronTasks.length : 0);
+          var extraBadge = configCount > 0 ? '<span style="font-size:8px;background:rgba(0,212,170,0.15);color:var(--accent2);padding:1px 4px;border-radius:3px;margin-left:4px;">+' + configCount + '</span>' : '';
+          return '<div class="org-agent-card" onclick="openAgentConfigPanel(\'' + a.num + '\', \'' + a.name.replace(/'/g, "\\'") + '\', \'' + a.role.replace(/'/g, "\\'") + '\')" title="点击配置 Agent ' + a.name + '">' +
             '<div class="org-agent-num" style="background:' + level.bg + ';color:' + level.color + ';">' + a.num + '</div>' +
             '<div class="org-agent-info">' +
-              '<div class="org-agent-name">' + a.name + '</div>' +
+              '<div class="org-agent-name">' + a.name + extraBadge + '</div>' +
               '<div class="org-agent-role">' + a.role + '</div>' +
               '<div class="org-agent-skills">' + a.skills.split(', ').map(function(s) { return '<span class="org-skill-tag">' + s + '</span>'; }).join('') + '</div>' +
+              '<div class="org-agent-layers-active">' + layerDotsHtml + '</div>' +
             '</div>' +
+            '<button class="' + loadBtnClass + '" onclick="event.stopPropagation();openAgentConfigPanel(\'' + a.num + '\', \'' + a.name.replace(/'/g, "\\'") + '\', \'' + a.role.replace(/'/g, "\\'") + '\')" title="' + loadBtnTitle + '">⚡</button>' +
           '</div>';
         }).join('') +
       '</div>' +
