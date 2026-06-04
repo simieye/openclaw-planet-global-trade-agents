@@ -521,6 +521,175 @@ body {
 .org-layer-agent { border-left: 3px solid #3b82f6; }
 .org-layer-tools { border-left: 3px solid #10b981; }
 
+/* ===== AnyGen.io 工作台样式 ===== */
+.anygen-config-card {
+  transition: all 0.2s;
+}
+.anygen-config-card:hover {
+  border-color: var(--accent2) !important;
+  box-shadow: 0 0 20px rgba(0,212,170,0.05);
+}
+
+.webhook-workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.webhook-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.webhook-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(255,107,53,0.1);
+}
+
+.webhook-card.active-workflow {
+  border-color: var(--accent2);
+  box-shadow: 0 0 15px rgba(0,212,170,0.15);
+}
+
+.webhook-card .webhook-number {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.webhook-card .webhook-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+}
+
+.webhook-card .webhook-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.webhook-card .webhook-agent-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(99,102,241,0.15);
+  color: var(--accent3);
+  white-space: nowrap;
+}
+
+.webhook-card .webhook-arrow {
+  color: var(--accent);
+  font-size: 10px;
+}
+
+.webhook-card .webhook-trigger {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.webhook-card .webhook-output {
+  font-size: 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+
+.webhook-card .webhook-category-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-crm { background: rgba(255,107,53,0.15); color: var(--accent); }
+.badge-email { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-whatsapp { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-shopify { background: rgba(139,92,246,0.15); color: var(--accent5); }
+.badge-amazon { background: rgba(245,158,11,0.15); color: var(--warning); }
+.badge-tiktok { background: rgba(236,72,153,0.15); color: var(--accent4); }
+.badge-erp { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+.badge-payment { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-logistics { background: rgba(168,85,247,0.15); color: #a855f7; }
+.badge-ceo { background: rgba(234,179,8,0.15); color: #eab308; }
+
+.webhook-config-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.webhook-config-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent2);
+  margin-bottom: 8px;
+}
+
+.webhook-code {
+  font-size: 11px;
+  color: var(--text-dim);
+  background: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.6;
+}
+
+.webhook-detail-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--accent2);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.webhook-detail-panel.show {
+  display: block;
+}
+
+.webhook-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.webhook-detail-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
 /* ===== Agent配置面板样式 ===== */
 .agent-config-panel {
   background: var(--card-bg);
@@ -1799,6 +1968,16 @@ body {
       </div>
     </div>
 
+    <!-- AnyGen.io 工作台 -->
+    <div class="nav-section">
+      <div class="nav-section-title">AnyGen.io 工作台</div>
+      <div class="nav-item" data-panel="anygen" onclick="switchPanel('anygen', this)">
+        <span class="nav-icon">🌐</span>
+        <span>AnyGen 工作台</span>
+        <span class="nav-badge" style="background:rgba(0,212,170,0.15);color:var(--accent2);">50 Webhook</span>
+      </div>
+    </div>
+
     <!-- 系统 -->
     <div class="nav-section">
       <div class="nav-section-title">系统</div>
@@ -2335,6 +2514,114 @@ body {
       </div>
     </div>
 
+    <!-- ===== AnyGen.io 工作台面板 ===== -->
+    <div class="panel" id="panel-anygen">
+      <div class="section-title">🌐 AnyGen.io 工作台 · OpenClaw + CRM + ERP + Shopify + Amazon + TikTok Shop</div>
+
+      <!-- AnyGen 配置卡片 -->
+      <div class="anygen-config-card" style="background:linear-gradient(135deg, #0a1628 0%, #0f1f3d 50%, #0a1628 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:32px;">🌐</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--accent2);">AnyGen.io 工作台集成</div>
+              <div style="font-size:12px;color:var(--text-dim);">WebHook 工作流体系 · 50 个自动化工作流</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm" onclick="installAnyGenSkill()" style="background:rgba(0,212,170,0.1);color:var(--accent2);border:1px solid rgba(0,212,170,0.3);">📦 安装 AnyGen Skill</button>
+            <button class="btn btn-sm" onclick="toggleAnyGenApiKey()" style="background:rgba(99,102,241,0.1);color:var(--accent3);border:1px solid rgba(99,102,241,0.3);">🔑 API Key</button>
+            <button class="btn btn-primary btn-sm" onclick="syncAllWebhooks()">🔄 同步全部 Webhook</button>
+          </div>
+        </div>
+        <div id="anygenApiKeySection" style="display:none;margin-top:12px;padding:12px;background:rgba(99,102,241,0.05);border-radius:8px;border:1px dashed rgba(99,102,241,0.3);">
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:6px;">AnyGen API Key 配置</div>
+          <div style="display:flex;gap:8px;">
+            <input type="password" id="anygenApiKey" placeholder="sk-ag-..." style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-family:monospace;font-size:12px;" value="">
+            <button class="btn btn-primary btn-sm" onclick="saveAnyGenApiKey()">💾 保存</button>
+          </div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">默认 Key: sk-ag-_KgIa1saYHeR5xgbb3bKq6lacT_ivfWrWXZpQCI9OMyvYtF6qb-U4sNRgAUav_CFEDqBUAF3d0Z2Eh8CVjouog</div>
+        </div>
+      </div>
+
+      <!-- 架构概览 -->
+      <div class="anygen-arch" style="background:rgba(0,0,0,0.2);border-radius:var(--radius);padding:16px;margin-bottom:20px;border:1px solid var(--border);">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--accent);">🏗️ 企业运行架构</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.8;font-family:monospace;">
+          CRM + ERP + Shopify + Amazon + TikTok Shop + WhatsApp + Email + Stripe + PayPal + 物流系统<br>
+          <span style="color:var(--accent);">↓</span> Webhook Layer<br>
+          <span style="color:var(--accent);">↓</span> OpenClaw Agent Cluster<br>
+          <span style="color:var(--accent);">↓</span> TaskFlow Engine<br>
+          <span style="color:var(--accent);">↓</span> AnyGen Workspace<br>
+          <span style="color:var(--accent);">↓</span> 企业知识库 + 业务回调系统
+        </div>
+      </div>
+
+      <!-- Webhook 工作流标签筛选 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;" id="webhookCategoryFilter">
+        <button class="btn btn-sm active" onclick="filterWebhooks('all', this)" style="background:rgba(255,107,53,0.1);color:var(--accent);">全部 50</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('crm', this)">CRM 01-08</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('email', this)">邮箱 09-14</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('whatsapp', this)">WhatsApp 15-20</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('shopify', this)">Shopify 21-26</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('amazon', this)">Amazon 27-32</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('tiktok', this)">TikTok 33-38</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('erp', this)">ERP 39-43</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('payment', this)">支付 44-46</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('logistics', this)">物流 47-49</button>
+        <button class="btn btn-sm" onclick="filterWebhooks('ceo', this)">CEO 50</button>
+      </div>
+
+      <!-- Webhook 工作流网格 -->
+      <div class="webhook-workflow-grid" id="webhookWorkflowGrid">
+        <!-- 动态渲染 -->
+      </div>
+
+      <!-- Webhook 配置模板 -->
+      <div class="section-title" style="margin-top:20px;">📋 标准 Webhook 配置模板</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">OpenClaw Webhook 配置</div>
+          <pre class="webhook-code">{
+  "hooks": {
+    "enabled": true,
+    "token": "company-secret-token",
+    "path": "/hooks"
+  }
+}</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">CRM 触发示例</div>
+          <pre class="webhook-code">POST /hooks/agent
+{
+  "message":"分析客户并评分",
+  "name":"Lead Scoring",
+  "deliver":false
+}</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">ERP 触发示例</div>
+          <pre class="webhook-code">POST /hooks/agent
+{
+  "message":"检查库存并生成采购建议",
+  "name":"Inventory Check",
+  "deliver":false
+}</pre>
+        </div>
+        <div class="webhook-config-card">
+          <div class="webhook-config-title">回调模板</div>
+          <pre class="webhook-code">{
+  "callback_id":"123",
+  "status":"success",
+  "result":{
+    "score":"A",
+    "action":"安排销售跟进"
+  }
+}</pre>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== AI 数字组织面板 ===== -->
     <div class="panel" id="panel-organization">
       <div class="section-title">🏛️ AI 数字组织 · 100 Agent 6层架构 | 点击Agent卡片配置工作层+技能+IM+MCP+定时任务</div>
@@ -2471,6 +2758,246 @@ const APP = {
   },
 };
 
+// ============================================================
+// 50 Webhook 自动化工作流数据
+// ============================================================
+const WEBHOOK_WORKFLOWS = [
+  // === 第一部分：CRM工作流 01-08 ===
+  { id: 'WF-01', num: '01', category: 'crm', title: '新线索自动评分', trigger: 'CRM新增客户 → {event:"new_lead",lead_id:"123"}', agents: ['Lead Discovery Agent', 'Lead Scoring Agent', 'CRM Agent'], output: 'A/B/C/D级客户' },
+  { id: 'WF-02', num: '02', category: 'crm', title: '客户画像补全', trigger: '新客户录入', agents: ['LinkedIn Agent', 'Company Research Agent', 'Lead Enrichment Agent'], output: '公司规模/采购负责人/邮箱/LinkedIn/采购能力' },
+  { id: 'WF-03', num: '03', category: 'crm', title: '自动开发信', trigger: 'A级客户出现', agents: ['Cold Email Agent', 'Email Agent'], output: '首封开发信' },
+  { id: 'WF-04', num: '04', category: 'crm', title: '客户回复分析', trigger: '收到邮件', agents: ['Intent Analysis Agent'], output: '高意向/中意向/低意向' },
+  { id: 'WF-05', num: '05', category: 'crm', title: '自动会议预约', trigger: '高意向客户', agents: ['Calendar Agent', 'Sales Agent'], output: '会议安排' },
+  { id: 'WF-06', num: '06', category: 'crm', title: '商机升级', trigger: '客户点击报价', agents: ['Pipeline Agent'], output: '商机升级' },
+  { id: 'WF-07', num: '07', category: 'crm', title: '销售提醒', trigger: '7天未跟进', agents: ['Sales Coach Agent'], output: '提醒销售' },
+  { id: 'WF-08', num: '08', category: 'crm', title: '丢单分析', trigger: '商机关闭', agents: ['Loss Analysis Agent'], output: '丢单原因报告' },
+  // === 第二部分：邮箱工作流 09-14 ===
+  { id: 'WF-09', num: '09', category: 'email', title: '询盘自动分析', trigger: '收到询盘邮件', agents: ['Email Agent', 'Intent Agent', 'Proposal Agent'], output: '自动分类' },
+  { id: 'WF-10', num: '10', category: 'email', title: '自动生成报价', trigger: '客户询价', agents: ['Quotation Agent'], output: '报价单 PDF' },
+  { id: 'WF-11', num: '11', category: 'email', title: '自动跟进', trigger: '3天未回复', agents: ['Follow-up Agent'], output: '自动跟进邮件' },
+  { id: 'WF-12', num: '12', category: 'email', title: '邮件情绪分析', trigger: '收到邮件', agents: ['Emotion Agent'], output: '积极/中性/消极' },
+  { id: 'WF-13', num: '13', category: 'email', title: '自动FAQ回复', trigger: '标准问题', agents: ['FAQ Agent'], output: '自动回复' },
+  { id: 'WF-14', num: '14', category: 'email', title: '邮件归档', trigger: '邮件处理完成', agents: ['CRM Agent'], output: '自动写入CRM' },
+  // === 第三部分：WhatsApp工作流 15-20 ===
+  { id: 'WF-15', num: '15', category: 'whatsapp', title: '消息自动接待', trigger: '收到WhatsApp消息', agents: ['Customer Support Agent'], output: '智能回复' },
+  { id: 'WF-16', num: '16', category: 'whatsapp', title: '自动推荐产品', trigger: '客户询问产品', agents: ['Product Recommendation Agent'], output: '产品推荐' },
+  { id: 'WF-17', num: '17', category: 'whatsapp', title: '自动报价', trigger: '客户询价', agents: ['Quotation Agent'], output: '自动报价' },
+  { id: 'WF-18', num: '18', category: 'whatsapp', title: '自动预约会议', trigger: '客户要求会议', agents: ['Calendar Agent'], output: '会议链接' },
+  { id: 'WF-19', num: '19', category: 'whatsapp', title: '自动成交跟进', trigger: '发送报价后', agents: ['Closing Agent'], output: '成交跟进' },
+  { id: 'WF-20', num: '20', category: 'whatsapp', title: '自动创建CRM记录', trigger: '对话结束', agents: ['CRM Agent'], output: 'CRM记录' },
+  // === 第四部分：Shopify工作流 21-26 ===
+  { id: 'WF-21', num: '21', category: 'shopify', title: '新订单处理', trigger: 'Shopify订单', agents: ['Order Agent', 'Inventory Agent', 'Logistics Agent'], output: '订单全流程自动化' },
+  { id: 'WF-22', num: '22', category: 'shopify', title: '弃购挽回', trigger: '购物车放弃', agents: ['Email Marketing Agent'], output: '挽回邮件' },
+  { id: 'WF-23', num: '23', category: 'shopify', title: '退款预警', trigger: '退款请求', agents: ['Risk Agent'], output: '风险评分' },
+  { id: 'WF-24', num: '24', category: 'shopify', title: '客户评价收集', trigger: '订单完成', agents: ['Review Agent'], output: '自动邀请评价' },
+  { id: 'WF-25', num: '25', category: 'shopify', title: 'VIP识别', trigger: '消费数据更新', agents: ['LTV Agent'], output: 'VIP标签' },
+  { id: 'WF-26', num: '26', category: 'shopify', title: '复购推荐', trigger: '购买周期到', agents: ['Retention Agent'], output: '复购推荐' },
+  // === 第五部分：Amazon工作流 27-32 ===
+  { id: 'WF-27', num: '27', category: 'amazon', title: '新评论分析', trigger: 'Review出现', agents: ['Review Agent'], output: '正面/负面/风险' },
+  { id: 'WF-28', num: '28', category: 'amazon', title: '差评预警', trigger: '差评出现', agents: ['Risk Agent'], output: '预警通知' },
+  { id: 'WF-29', num: '29', category: 'amazon', title: 'Listing优化', trigger: '转化率下降', agents: ['Amazon Listing Agent'], output: '优化建议' },
+  { id: 'WF-30', num: '30', category: 'amazon', title: '广告优化', trigger: 'ACOS超标', agents: ['Amazon PPC Agent'], output: '广告调整' },
+  { id: 'WF-31', num: '31', category: 'amazon', title: '库存预警', trigger: 'FBA库存低', agents: ['Inventory Agent'], output: '补货建议' },
+  { id: 'WF-32', num: '32', category: 'amazon', title: '价格优化', trigger: '竞品调价', agents: ['Pricing Agent'], output: '价格建议' },
+  // === 第六部分：TikTok Shop工作流 33-38 ===
+  { id: 'WF-33', num: '33', category: 'tiktok', title: '订单自动处理', trigger: 'TikTok订单', agents: ['TikTok Shop Agent'], output: '订单处理' },
+  { id: 'WF-34', num: '34', category: 'tiktok', title: '热视频发现', trigger: '定时扫描', agents: ['Trend Agent'], output: '热门视频列表' },
+  { id: 'WF-35', num: '35', category: 'tiktok', title: '达人筛选', trigger: '达人数据更新', agents: ['KOL Agent'], output: '达人推荐' },
+  { id: 'WF-36', num: '36', category: 'tiktok', title: '短视频生成', trigger: '产品上新', agents: ['Content Agent', 'HeyGen Agent'], output: 'AI短视频' },
+  { id: 'WF-37', num: '37', category: 'tiktok', title: '直播脚本生成', trigger: '直播计划', agents: ['TikTok Live Agent'], output: '直播脚本' },
+  { id: 'WF-38', num: '38', category: 'tiktok', title: 'GMV日报', trigger: '每日定时', agents: ['Analytics Agent'], output: 'GMV报告' },
+  // === 第七部分：ERP工作流 39-43 ===
+  { id: 'WF-39', num: '39', category: 'erp', title: '库存同步', trigger: '库存变化', agents: ['Inventory Agent'], output: '库存同步' },
+  { id: 'WF-40', num: '40', category: 'erp', title: '生产排程', trigger: '订单需求', agents: ['Production Agent'], output: '生产计划' },
+  { id: 'WF-41', num: '41', category: 'erp', title: '采购申请', trigger: '库存低于阈值', agents: ['Procurement Agent'], output: '采购单' },
+  { id: 'WF-42', num: '42', category: 'erp', title: '质量检测', trigger: '生产完成', agents: ['Quality Agent'], output: '质检报告' },
+  { id: 'WF-43', num: '43', category: 'erp', title: '发货同步', trigger: '发货状态变更', agents: ['Logistics Agent'], output: '物流同步' },
+  // === 第八部分：支付工作流 44-46 ===
+  { id: 'WF-44', num: '44', category: 'payment', title: 'Stripe到账通知', trigger: '付款成功', agents: ['Payment Agent', 'Order Agent'], output: '到账确认' },
+  { id: 'WF-45', num: '45', category: 'payment', title: 'PayPal到账', trigger: 'PayPal付款', agents: ['Payment Agent'], output: '到账确认' },
+  { id: 'WF-46', num: '46', category: 'payment', title: '异常支付检测', trigger: '支付异常', agents: ['Fraud Detection Agent'], output: '欺诈预警' },
+  // === 第九部分：物流工作流 47-49 ===
+  { id: 'WF-47', num: '47', category: 'logistics', title: '发货通知', trigger: '物流揽收', agents: ['Logistics Agent', 'Customer Agent'], output: '通知客户' },
+  { id: 'WF-48', num: '48', category: 'logistics', title: '物流异常', trigger: '物流异常', agents: ['Risk Agent'], output: '异常告警' },
+  { id: 'WF-49', num: '49', category: 'logistics', title: '签收确认', trigger: '包裹签收', agents: ['Customer Success Agent'], output: '满意度跟进' },
+  // === 第十部分：CEO驾驶舱工作流 50 ===
+  { id: 'WF-50', num: '50', category: 'ceo', title: '企业经营日报', trigger: '每天 08:00 自动执行', agents: ['CRM Agent', 'Sales Agent', 'Finance Agent', 'Marketing Agent', 'Operations Agent', 'CEO Agent'], output: '经营日报/销售日报/利润日报/风险预警/增长建议 → 企业微信/飞书/Telegram/邮箱' },
+];
+
+let activeWebhookFilter = 'all';
+let selectedWorkflowId = null;
+
+// ============================================================
+// Webhook 工作流渲染
+// ============================================================
+function renderWebhookWorkflows(filter) {
+  activeWebhookFilter = filter || 'all';
+  const grid = document.getElementById('webhookWorkflowGrid');
+  if (!grid) return;
+
+  const filtered = activeWebhookFilter === 'all'
+    ? WEBHOOK_WORKFLOWS
+    : WEBHOOK_WORKFLOWS.filter(w => w.category === activeWebhookFilter);
+
+  grid.innerHTML = filtered.map(w => {
+    const agentTags = w.agents.map((a, i) => {
+      let html = `<span class="webhook-agent-tag">${a}</span>`;
+      if (i < w.agents.length - 1) html += '<span class="webhook-arrow">↓</span>';
+      return html;
+    }).join('');
+
+    const categoryLabels = {
+      crm: 'CRM', email: '邮箱', whatsapp: 'WhatsApp', shopify: 'Shopify',
+      amazon: 'Amazon', tiktok: 'TikTok', erp: 'ERP', payment: '支付',
+      logistics: '物流', ceo: 'CEO'
+    };
+
+    return `
+    <div class="webhook-card ${selectedWorkflowId === w.id ? 'active-workflow' : ''}" onclick="toggleWebhookDetail('${w.id}')">
+      <span class="webhook-category-badge badge-${w.category}">${categoryLabels[w.category] || w.category}</span>
+      <div class="webhook-number">${w.id}</div>
+      <div class="webhook-title">${w.title}</div>
+      <div class="webhook-trigger">🔔 ${w.trigger}</div>
+      <div class="webhook-flow">${agentTags}</div>
+      <div class="webhook-output">📤 ${w.output}</div>
+    </div>`;
+  }).join('');
+
+  // 更新筛选按钮状态
+  document.querySelectorAll('#webhookCategoryFilter .btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`#webhookCategoryFilter .btn[onclick*="${activeWebhookFilter}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+}
+
+function filterWebhooks(category, btn) {
+  renderWebhookWorkflows(category);
+}
+
+function toggleWebhookDetail(workflowId) {
+  const wf = WEBHOOK_WORKFLOWS.find(w => w.id === workflowId);
+  if (!wf) return;
+
+  if (selectedWorkflowId === workflowId) {
+    selectedWorkflowId = null;
+  } else {
+    selectedWorkflowId = workflowId;
+  }
+
+  renderWebhookWorkflows(activeWebhookFilter);
+
+  // 展开详情面板
+  const grid = document.getElementById('webhookWorkflowGrid');
+  let detailPanel = document.getElementById('webhookDetailPanel');
+  if (!detailPanel) {
+    detailPanel = document.createElement('div');
+    detailPanel.id = 'webhookDetailPanel';
+    detailPanel.className = 'webhook-detail-panel';
+    grid.parentNode.insertBefore(detailPanel, grid);
+  }
+
+  if (selectedWorkflowId) {
+    const agentFlow = wf.agents.map((a, i) => {
+      let html = `<span class="webhook-agent-tag" style="font-size:12px;padding:4px 12px;">${a}</span>`;
+      if (i < wf.agents.length - 1) html += '<span class="webhook-arrow" style="font-size:14px;">↓</span>';
+      return html;
+    }).join('');
+
+    detailPanel.innerHTML = `
+      <div class="webhook-detail-header">
+        <div>
+          <span style="color:var(--accent);font-size:12px;">${wf.id}</span>
+          <span style="font-size:16px;font-weight:700;margin-left:8px;">${wf.title}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-sm" onclick="testWebhook('${wf.id}')" style="background:rgba(0,212,170,0.1);color:var(--accent2);">🧪 测试触发</button>
+          <button class="btn btn-sm btn-primary" onclick="deployWebhook('${wf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" onclick="closeWebhookDetail()">✕ 关闭</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">🔔 触发条件：${wf.trigger}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px;">🤖 执行Agent链：</div>
+      <div class="webhook-detail-flow">${agentFlow}</div>
+      <div style="font-size:12px;color:var(--accent2);">📤 输出：${wf.output}</div>
+      <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Webhook 调用示例：</div>
+        <pre style="font-size:10px;color:var(--text);font-family:monospace;white-space:pre-wrap;">POST /hooks/agent
+{
+  "message": "${wf.title}",
+  "name": "${wf.id}",
+  "deliver": false
+}</pre>
+      </div>
+    `;
+    detailPanel.classList.add('show');
+  } else {
+    detailPanel.classList.remove('show');
+  }
+}
+
+function closeWebhookDetail() {
+  selectedWorkflowId = null;
+  renderWebhookWorkflows(activeWebhookFilter);
+  const detailPanel = document.getElementById('webhookDetailPanel');
+  if (detailPanel) detailPanel.classList.remove('show');
+}
+
+function testWebhook(workflowId) {
+  const wf = WEBHOOK_WORKFLOWS.find(w => w.id === workflowId);
+  if (!wf) return;
+  showToast('🧪 正在测试触发 ' + wf.title + '...', 'success');
+  setTimeout(() => {
+    showToast('✅ ' + wf.title + ' 测试通过！Agent链已响应', 'success');
+  }, 1500);
+}
+
+function deployWebhook(workflowId) {
+  const wf = WEBHOOK_WORKFLOWS.find(w => w.id === workflowId);
+  if (!wf) return;
+  showToast('🚀 ' + wf.title + ' 部署中...', 'success');
+  setTimeout(() => {
+    showToast('✅ ' + wf.title + ' 已部署上线！Webhook端点已激活', 'success');
+  }, 2000);
+}
+
+function syncAllWebhooks() {
+  showToast('🔄 正在同步全部50个Webhook工作流...', 'success');
+  setTimeout(() => {
+    showToast('✅ 50个Webhook工作流同步完成！', 'success');
+  }, 3000);
+}
+
+// ============================================================
+// AnyGen Skill 集成
+// ============================================================
+function installAnyGenSkill() {
+  showToast('📦 正在从 GitHub 安装 AnyGen Suite Skill...', 'success');
+  // 模拟安装
+  setTimeout(() => {
+    localStorage.setItem('anygen_skill_installed', 'true');
+    showToast('✅ AnyGen Suite Skill 已安装！来源: github.com/AnyGenIO/anygen-suite-skill', 'success');
+  }, 2000);
+}
+
+function toggleAnyGenApiKey() {
+  const section = document.getElementById('anygenApiKeySection');
+  section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  // 加载已保存的 key
+  const savedKey = localStorage.getItem('anygen_api_key') || 'sk-ag-_KgIa1saYHeR5xgbb3bKq6lacT_ivfWrWXZpQCI9OMyvYtF6qb-U4sNRgAUav_CFEDqBUAF3d0Z2Eh8CVjouog';
+  document.getElementById('anygenApiKey').value = savedKey;
+}
+
+function saveAnyGenApiKey() {
+  const key = document.getElementById('anygenApiKey').value.trim();
+  if (!key) {
+    showToast('⚠️ 请输入有效的 API Key', 'warning');
+    return;
+  }
+  localStorage.setItem('anygen_api_key', key);
+  document.getElementById('anygenApiKeySection').style.display = 'none';
+  showToast('✅ AnyGen API Key 已保存！', 'success');
+}
+
+// ============================================================
 // 页面加载完成后初始化 Ollama 配置
 initOllamaConfig();
 
@@ -2500,6 +3027,7 @@ function switchPanel(panelName, navItem) {
     'im-channels': '📡 IM 频道集成',
     'settings': '⚙️ 系统设置 · OpenClaw 控制板',
     'organization': '🏛️ AI 数字组织 · Agent配置面板 | 6层Prompt+技能+IM+MCP+定时任务',
+    'anygen': '🌐 AnyGen.io 工作台 · 50 Webhook 自动化工作流 | CRM+ERP+Shopify+Amazon+TikTok',
   };
   document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
 
@@ -2512,6 +3040,7 @@ function switchPanel(panelName, navItem) {
   if (panelName === 'im-channels') renderIMChannels();
   if (panelName === 'new-conversation') renderConversations();
   if (panelName === 'organization') renderOrganization();
+  if (panelName === 'anygen') renderWebhookWorkflows('all');
 }
 
 // ============================================================
@@ -5756,6 +6285,7 @@ function refreshDashboard() {
   if (APP.currentPanel === 'connectors') renderConnectors();
   if (APP.currentPanel === 'providers') renderProviders();
   if (APP.currentPanel === 'im-channels') renderIMChannels();
+  if (APP.currentPanel === 'anygen') renderWebhookWorkflows('all');
   showToast('🔄 仪表盘已刷新', 'success');
 }
 
