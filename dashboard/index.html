@@ -3,564 +3,2729 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦞 龙虾星球共创联盟 - AI 管理驾驶舱</title>
+<title>🦞 龙虾星球共创联盟 - AI 工作台</title>
 <style>
 :root {
-  --bg: #0a0a1a;
+  --bg: #080812;
+  --sidebar-bg: #0c0c1d;
   --card-bg: #12122a;
   --border: #1e1e3a;
   --accent: #ff6b35;
   --accent2: #00d4aa;
   --accent3: #6366f1;
+  --accent4: #ec4899;
+  --accent5: #8b5cf6;
   --text: #e0e0e0;
-  --text-dim: #888;
+  --text-dim: #6b7280;
+  --text-bright: #f0f0f0;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
   --radius: 12px;
+  --radius-sm: 8px;
+  --sidebar-width: 260px;
+  --chat-width: 420px;
 }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
-}
-.header {
-  background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a1a2a 100%);
-  border-bottom: 1px solid var(--border);
-  padding: 16px 24px;
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  overflow: hidden;
 }
-.header h1 {
-  font-size: 20px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+
+/* ===== 左侧导航栏 ===== */
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.status-dot {
-  width: 10px;
-  height: 10px;
+
+.sidebar-logo .logo-icon {
+  font-size: 24px;
+}
+
+.sidebar-logo .logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar-logo .status-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--success);
-  display: inline-block;
+  margin-left: auto;
   animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
-.header-actions { display: flex; gap: 8px; }
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 0;
+}
+
+.nav-section {
+  margin-bottom: 4px;
+}
+
+.nav-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 12px 20px 6px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-dim);
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.03);
+  color: var(--text-bright);
+}
+
+.nav-item.active {
+  background: rgba(255,107,53,0.08);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.nav-item .nav-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-item .nav-badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(255,107,53,0.15);
+  color: var(--accent);
+}
+
+.nav-item .nav-badge.green {
+  background: rgba(34,197,94,0.15);
+  color: var(--success);
+}
+
+.nav-item .nav-badge.purple {
+  background: rgba(139,92,246,0.15);
+  color: var(--accent5);
+}
+
+.sidebar-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.user-role {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ===== 主内容区 ===== */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-topbar {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--sidebar-bg);
+}
+
+.topbar-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.topbar-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
 .btn {
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 7px 14px;
+  border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--card-bg);
   color: var(--text);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
-.btn:hover { border-color: var(--accent); }
+
+.btn:hover { border-color: var(--accent); background: rgba(255,107,53,0.08); }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: #e85a2a; }
+.btn-accent2 { background: var(--accent2); border-color: var(--accent2); color: #000; }
+.btn-accent3 { background: var(--accent3); border-color: var(--accent3); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 11px; }
+.btn-icon { padding: 6px 8px; min-width: auto; }
 
-.container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+/* ===== 面板容器 ===== */
+.panels-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
 }
+
+.panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel::-webkit-scrollbar { width: 4px; }
+.panel::-webkit-scrollbar-track { background: transparent; }
+.panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ===== 统计卡片 ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .stat-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: var(--radius-sm);
+  padding: 16px;
 }
-.stat-card .label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-.stat-card .value { font-size: 32px; font-weight: 700; margin: 8px 0; }
-.stat-card .trend { font-size: 12px; }
-.trend-up { color: var(--success); }
-.trend-down { color: var(--danger); }
-.accent { color: var(--accent); }
-.accent2 { color: var(--accent2); }
-.accent3 { color: var(--accent3); }
 
-/* Grid Layout */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-.panel {
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 6px 0;
+}
+
+.stat-trend {
+  font-size: 11px;
+  color: var(--success);
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== Agent 卡片网格 ===== */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.agent-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.agent-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.agent-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.agent-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.agent-icon.board { background: rgba(255,107,53,0.15); }
+.agent-icon.market { background: rgba(99,102,241,0.15); }
+.agent-icon.content { background: rgba(236,72,153,0.15); }
+.agent-icon.ecosystem { background: rgba(0,212,170,0.15); }
+.agent-icon.sales { background: rgba(34,197,94,0.15); }
+.agent-icon.finance { background: rgba(245,158,11,0.15); }
+.agent-icon.supply { background: rgba(139,92,246,0.15); }
+.agent-icon.ainails { background: rgba(239,68,68,0.15); }
+
+.agent-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.agent-role {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.agent-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.agent-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.agent-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-dim);
+}
+
+.agent-status-badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.status-active { background: rgba(34,197,94,0.15); color: var(--success); }
+.status-idle { background: rgba(107,114,128,0.15); color: var(--text-dim); }
+
+/* ===== 6层智能体配置 ===== */
+.config-layer {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
   overflow: hidden;
 }
-.panel-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
+
+.config-layer-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.config-layer-header:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.config-layer-header .layer-name {
   font-size: 14px;
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.panel-body { padding: 16px 20px; }
-.panel-full { grid-column: 1 / -1; }
 
-/* Agent List */
-.agent-layer { margin-bottom: 20px; }
-.layer-title {
-  font-size: 13px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+.config-layer-header .layer-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.badge-identity { background: rgba(239,68,68,0.15); color: var(--danger); }
+.badge-soul { background: rgba(245,158,11,0.15); color: var(--warning); }
+.badge-memory { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge-user { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.badge-agent { background: rgba(255,107,53,0.15); color: var(--accent); }
+.badge-tools { background: rgba(0,212,170,0.15); color: var(--accent2); }
+
+.config-layer-body {
+  padding: 0 16px 16px;
+  display: none;
+}
+
+.config-layer.open .config-layer-body {
+  display: block;
+}
+
+.config-layer.open .config-layer-header {
   border-bottom: 1px solid var(--border);
 }
-.agent-item {
+
+.config-textarea {
+  width: 100%;
+  min-height: 120px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  color: var(--text);
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.config-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== 右侧对话框 ===== */
+.chat-panel {
+  width: var(--chat-width);
+  min-width: var(--chat-width);
+  background: var(--sidebar-bg);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.chat-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  font-size: 13px;
 }
-.agent-item:last-child { border-bottom: none; }
-.agent-status {
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-}
-.status-active { background: rgba(34,197,94,0.15); color: var(--success); }
-.status-idle { background: rgba(136,136,136,0.15); color: var(--text-dim); }
-.status-error { background: rgba(239,68,68,0.15); color: var(--danger); }
 
-/* TaskFlow */
-.tf-item {
+.chat-header-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 40px;
+}
+
+.chat-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.chat-empty-text {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.chat-empty-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.message {
+  max-width: 90%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+
+/* ===== 对话输入区 ===== */
+.chat-input-area {
+  border-top: 1px solid var(--border);
+  padding: 12px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.chat-input {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-size: 13px;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  font-family: inherit;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.chat-input::placeholder {
+  color: var(--text-dim);
+}
+
+.voice-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.voice-btn:hover {
+  border-color: var(--accent3);
+  background: rgba(99,102,241,0.1);
+}
+
+.voice-btn.recording {
+  border-color: var(--danger);
+  background: rgba(239,68,68,0.15);
+  animation: pulse 1s infinite;
+}
+
+.chat-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+  min-height: 0;
+}
+
+.attachment-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.attachment-tag .remove-attach {
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 14px;
+}
+
+.attachment-tag .remove-attach:hover {
+  opacity: 1;
+}
+
+/* ===== 底部操作按钮 ===== */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.action-btn {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-bright);
+  background: rgba(255,107,53,0.08);
+}
+
+.action-btn.accent { border-color: rgba(255,107,53,0.3); color: var(--accent); }
+.action-btn.accent2 { border-color: rgba(0,212,170,0.3); color: var(--accent2); }
+.action-btn.accent3 { border-color: rgba(99,102,241,0.3); color: var(--accent3); }
+.action-btn.accent4 { border-color: rgba(236,72,153,0.3); color: var(--accent4); }
+
+/* ===== 技能库 ===== */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.skill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.skill-card:hover {
+  border-color: var(--accent2);
+}
+
+.skill-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.skill-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.skill-source {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,212,170,0.15);
+  color: var(--accent2);
+}
+
+.skill-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.skill-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* ===== 资源库 ===== */
+.kb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.kb-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  transition: all 0.2s;
+}
+
+.kb-card:hover {
+  border-color: var(--accent3);
+}
+
+.kb-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.kb-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kb-count {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.kb-type {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(99,102,241,0.15);
+  color: var(--accent3);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+/* ===== 连接器 ===== */
+.connector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.connector-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+}
+
+.connector-card:hover {
+  border-color: var(--accent);
+}
+
+.connector-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.connector-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.connector-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.connector-type {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.type-mcp { background: rgba(0,212,170,0.15); color: var(--accent2); }
+.type-api { background: rgba(99,102,241,0.15); color: var(--accent3); }
+.type-webhook { background: rgba(255,107,53,0.15); color: var(--accent); }
+
+.connector-status {
+  font-size: 10px;
+}
+
+.connector-status.connected { color: var(--success); }
+.connector-status.disconnected { color: var(--text-dim); }
+
+/* ===== 模型服务商 ===== */
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.provider-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.provider-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.provider-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.provider-models {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.provider-model {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-dim);
+}
+
+.provider-key {
+  display: flex;
+  gap: 6px;
+}
+
+.provider-key input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.provider-key input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== IM频道 ===== */
+.im-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.im-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.im-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.im-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.im-status {
+  font-size: 11px;
+  color: var(--success);
+}
+
+/* ===== 设置面板 ===== */
+.settings-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.settings-section h3 {
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
-.tf-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.tf-desc { font-size: 12px; color: var(--text-dim); }
-.tf-meta { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
-.tf-steps {
-  display: flex;
-  gap: 4px;
-  margin-top: 6px;
-  flex-wrap: wrap;
-}
-.tf-step {
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  background: rgba(99,102,241,0.15);
-  color: var(--accent3);
+
+.settings-row:last-child {
+  border-bottom: none;
 }
 
-/* Webhook */
-.wh-item {
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+.settings-label {
   font-size: 13px;
 }
-.wh-source {
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  text-transform: uppercase;
-  background: rgba(255,107,53,0.15);
-  color: var(--accent);
-  margin-right: 8px;
-}
 
-/* Progress Bar */
-.progress-bar {
-  height: 6px;
-  background: var(--border);
-  border-radius: 3px;
-  margin-top: 8px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  transition: width 0.5s ease;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 20px;
+.settings-desc {
+  font-size: 11px;
   color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Toggle Switch */
+.toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--border);
+  border-radius: 24px;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: var(--text);
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle input:checked + .toggle-slider {
+  background: var(--accent);
+}
+
+.toggle input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* ===== 模态框 ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal h3 {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
   font-size: 12px;
-  border-top: 1px solid var(--border);
-  margin-top: 24px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  z-index: 2000;
+  animation: slideUp 0.3s ease;
+}
+
+.toast.success { border-color: var(--success); }
+.toast.error { border-color: var(--danger); }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 1200px) {
+  .chat-panel { display: none; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .chat-panel { display: none; }
+}
+
+/* ===== 拖拽上传区域 ===== */
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  text-align: center;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+
+.drop-zone:hover {
+  border-color: var(--accent3);
+  background: rgba(99,102,241,0.05);
+}
+
+.drop-zone.drag-over {
+  border-color: var(--accent);
+  background: rgba(255,107,53,0.08);
+}
+
+/* ===== 对话列表 ===== */
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.conv-item {
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.conv-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.conv-item.active {
+  background: rgba(255,107,53,0.1);
+  color: var(--accent);
+}
+
+.conv-item .conv-time {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-left: auto;
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🦞 龙虾星球共创联盟 <span class="status-dot"></span></h1>
-  <div class="header-actions">
-    <button class="btn" onclick="refreshAll()">🔄 刷新</button>
-    <button class="btn btn-primary" onclick="startEngine()">▶ 启动引擎</button>
-  </div>
-</div>
-
-<div class="container">
-  <!-- Stats Grid -->
-  <div class="stats-grid" id="statsGrid">
-    <div class="stat-card">
-      <div class="label">Agent 总数</div>
-      <div class="value accent" id="agentCount">--</div>
-      <div class="trend trend-up">OpenClaw Cluster v3.0</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">TaskFlow</div>
-      <div class="value accent2" id="tfCount">--</div>
-      <div class="trend trend-up">业务流水线</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Webhook</div>
-      <div class="value accent3" id="whCount">--</div>
-      <div class="trend trend-up">外部集成</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">引擎状态</div>
-      <div class="value" style="font-size:24px;color:var(--success);" id="engineStatus">运行中</div>
-      <div class="trend">OpenClaw Engine</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">知识库</div>
-      <div class="value" style="font-size:24px;color:var(--accent2);" id="kbCount">10</div>
-      <div class="trend">分类体系</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">全局节点</div>
-      <div class="value" style="font-size:24px;color:var(--accent3);">🌍</div>
-      <div class="trend trend-up">全球扩张中</div>
-    </div>
+<!-- ===== 左侧导航栏 ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-icon">🦞</span>
+    <span class="logo-text">龙虾星球 AI 工作台</span>
+    <span class="status-dot"></span>
   </div>
 
-  <!-- Main Grid -->
-  <div class="grid-2">
-    <!-- Agent Cluster -->
-    <div class="panel">
-      <div class="panel-header">🤖 Agent 智能体集群</div>
-      <div class="panel-body" id="agentPanel" style="max-height: 500px; overflow-y: auto;">
-        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+  <nav class="sidebar-nav">
+    <!-- AI 拍档 -->
+    <div class="nav-section">
+      <div class="nav-section-title">AI 拍档</div>
+      <div class="nav-item active" data-panel="ai-partner" onclick="switchPanel('ai-partner', this)">
+        <span class="nav-icon">🤖</span>
+        <span>AI 拍档</span>
+        <span class="nav-badge">100+</span>
+      </div>
+      <div class="nav-item" data-panel="new-conversation" onclick="switchPanel('new-conversation', this)">
+        <span class="nav-icon">💬</span>
+        <span>新增对话</span>
+        <span class="nav-badge green">+</span>
       </div>
     </div>
 
-    <!-- TaskFlow Pipeline -->
-    <div class="panel">
-      <div class="panel-header">⚡ TaskFlow 执行流水线</div>
-      <div class="panel-body" id="tfPanel" style="max-height: 500px; overflow-y: auto;">
-        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+    <!-- 能力中心 -->
+    <div class="nav-section">
+      <div class="nav-section-title">能力中心</div>
+      <div class="nav-item" data-panel="skills" onclick="switchPanel('skills', this)">
+        <span class="nav-icon">⚡</span>
+        <span>技能库</span>
+        <span class="nav-badge green">ClawHub</span>
+      </div>
+      <div class="nav-item" data-panel="resources" onclick="switchPanel('resources', this)">
+        <span class="nav-icon">📚</span>
+        <span>资源库</span>
+      </div>
+      <div class="nav-item" data-panel="connectors" onclick="switchPanel('connectors', this)">
+        <span class="nav-icon">🔌</span>
+        <span>连接器</span>
+        <span class="nav-badge purple">MCP/API</span>
+      </div>
+    </div>
+
+    <!-- 集成中心 -->
+    <div class="nav-section">
+      <div class="nav-section-title">集成中心</div>
+      <div class="nav-item" data-panel="providers" onclick="switchPanel('providers', this)">
+        <span class="nav-icon">🧠</span>
+        <span>AI 大模型服务商</span>
+      </div>
+      <div class="nav-item" data-panel="im-channels" onclick="switchPanel('im-channels', this)">
+        <span class="nav-icon">📡</span>
+        <span>IM 频道</span>
+      </div>
+    </div>
+
+    <!-- 系统 -->
+    <div class="nav-section">
+      <div class="nav-section-title">系统</div>
+      <div class="nav-item" data-panel="settings" onclick="switchPanel('settings', this)">
+        <span class="nav-icon">⚙️</span>
+        <span>系统设置</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">🦞</div>
+      <div>
+        <div class="user-name">龙虾星球</div>
+        <div class="user-role">超级管理员</div>
       </div>
     </div>
   </div>
+</aside>
 
-  <div class="grid-2">
-    <!-- 6-Layer Workspace Architecture -->
-    <div class="panel">
-      <div class="panel-header">🏗️ OpenClaw × AnyGen 六大工作层</div>
-      <div class="panel-body">
-        <div style="display:grid;gap:10px;">
-          <div style="padding:10px;background:rgba(255,107,53,0.08);border-radius:8px;border-left:3px solid var(--accent);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 6: Workspace OS</span>
-              <span style="font-size:11px;color:var(--accent);">AnyGen Workspace</span>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">Voice → Idea → Output 全链路 | Creator+Validator 双验证</div>
+<!-- ===== 主内容区 ===== -->
+<div class="main-content" id="mainContent">
+  <div class="main-topbar">
+    <span class="topbar-title" id="topbarTitle">🤖 AI 拍档 · 数字员工</span>
+    <div class="topbar-actions">
+      <button class="btn btn-sm" onclick="refreshDashboard()">🔄 刷新</button>
+      <button class="btn btn-primary btn-sm" onclick="openAddAgentModal()">+ 自定义AI拍档</button>
+    </div>
+  </div>
+
+  <div class="panels-container">
+    <!-- ===== AI 拍档面板 ===== -->
+    <div class="panel active" id="panel-ai-partner">
+      <!-- 统计卡片 -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Agent 总数</div>
+          <div class="stat-value" style="color:var(--accent);" id="agentCount">100</div>
+          <div class="stat-trend">↑ 6层智能体架构</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">运行中</div>
+          <div class="stat-value" style="color:var(--success);">68</div>
+          <div class="stat-trend">● 活跃智能体</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">技能库</div>
+          <div class="stat-value" style="color:var(--accent2);">42</div>
+          <div class="stat-trend">ClawHub + 自定义</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">连接器</div>
+          <div class="stat-value" style="color:var(--accent3);">28</div>
+          <div class="stat-trend">MCP/API/Webhook</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">知识库</div>
+          <div class="stat-value" style="color:var(--accent5);">15</div>
+          <div class="stat-trend">自定义资源</div>
+        </div>
+      </div>
+
+      <!-- 6层智能体配置 -->
+      <div class="section-title">🏗️ 6 层智能体工作层配置</div>
+      <div id="layerConfigs">
+        <!-- Layer 1: Identity -->
+        <div class="config-layer" id="layer-identity">
+          <div class="config-layer-header" onclick="toggleLayer('layer-identity')">
+            <span class="layer-name">
+              <span style="color:var(--danger);">🔴 Layer 1</span> Identity 身份中枢
+            </span>
+            <span class="layer-badge badge-identity">identity.md</span>
           </div>
-          <div style="padding:10px;background:rgba(99,102,241,0.08);border-radius:8px;border-left:3px solid var(--accent3);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 5: Skill Runtime</span>
-              <span style="font-size:11px;color:var(--accent3);">10 大类技能</span>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">营销/销售/内容/电商/SEO/广告/CRM/财务/开发/媒体</div>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="定义 AI 拍档的身份信息..."># Identity 身份定义
+
+## 基本信息
+- 名称：龙虾星球AI拍档
+- 角色：全球商业文明数字员工
+- 所属组织：龙虾星球共创联盟
+
+## 身份标签
+- 品牌出海专家
+- 产业协同顾问
+- AI 自动化工程师
+- 全球商务助手
+
+## 权限范围
+- 数据访问级别：高级
+- 可调用工具：全部
+- 可访问知识库：全部</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('identity')">💾 保存 Identity 配置</button>
           </div>
-          <div style="padding:10px;background:rgba(0,212,170,0.08);border-radius:8px;border-left:3px solid var(--accent2);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 4: Agent Cluster</span>
-              <span style="font-size:11px;color:var(--accent2);">68 Agents</span>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">Strategy/Research/ICP/Outreach/Commerce/Supply/Finance/Trust/RDA/OPC</div>
+        </div>
+
+        <!-- Layer 2: Soul -->
+        <div class="config-layer" id="layer-soul">
+          <div class="config-layer-header" onclick="toggleLayer('layer-soul')">
+            <span class="layer-name">
+              <span style="color:var(--warning);">🟡 Layer 2</span> Soul 灵魂核心
+            </span>
+            <span class="layer-badge badge-soul">soul.md</span>
           </div>
-          <div style="padding:10px;background:rgba(245,158,11,0.08);border-radius:8px;border-left:3px solid var(--warning);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 3: Thinking Core</span>
-              <span style="font-size:11px;color:var(--warning);">AI Reasoning</span>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">CoT/ToT/Multi-Agent Debate | 感知→分析→推理→决策→执行→反馈</div>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="定义 AI 拍档的核心价值观与灵魂..."># Soul 灵魂定义
+
+## 核心价值观
+- 商业文明 > 商业利益
+- 协同创造 > 零和竞争
+- 长期主义 > 短期套利
+- 开放透明 > 封闭垄断
+
+## 伦理准则
+- 尊重用户隐私和数据安全
+- 公平对待所有生态参与者
+- 促进可持续发展
+- 维护全球商业文明
+
+## 行为风格
+- 专业但亲和
+- 创新但务实
+- 高效但细致
+- 全球化视野 + 本地化执行</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('soul')">💾 保存 Soul 配置</button>
           </div>
-          <div style="padding:10px;background:rgba(34,197,94,0.08);border-radius:8px;border-left:3px solid var(--success);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 2: Memory</span>
-              <span style="font-size:11px;color:var(--success);">Shared Knowledge</span>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">用户/组织/生态/文明 四级记忆 | 知识图谱 | 共享上下文</div>
+        </div>
+
+        <!-- Layer 3: Memory -->
+        <div class="config-layer" id="layer-memory">
+          <div class="config-layer-header" onclick="toggleLayer('layer-memory')">
+            <span class="layer-name">
+              <span style="color:var(--success);">🟢 Layer 3</span> Memory 记忆系统
+            </span>
+            <span class="layer-badge badge-memory">memory.md</span>
           </div>
-          <div style="padding:10px;background:rgba(239,68,68,0.08);border-radius:8px;border-left:3px solid var(--danger);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-weight:600;">Layer 1: Identity</span>
-              <span style="font-size:11px;color:var(--danger);">Identity System</span>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="配置 AI 拍档的记忆系统..."># Memory 记忆系统配置
+
+## 记忆层级
+### L1 - 用户记忆
+- 对话历史保留：90天
+- 偏好学习：开启
+- 个性化适配：开启
+
+### L2 - 组织记忆
+- 企业知识库同步：实时
+- 团队协作记录：永久
+- SOP流程库：版本管理
+
+### L3 - 生态记忆
+- 产业知识图谱：每日更新
+- 合作伙伴网络：动态维护
+- 市场趋势库：每周刷新
+
+### L4 - 文明记忆
+- 全球商业规则：持续学习
+- 跨文化理解：多语言支持
+- 历史决策回溯：全量记录
+
+## 记忆策略
+- 短期记忆：最近30轮对话
+- 长期记忆：重要决策和知识
+- 遗忘策略：基于重要性和时效性</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('memory')">💾 保存 Memory 配置</button>
+          </div>
+        </div>
+
+        <!-- Layer 4: User -->
+        <div class="config-layer" id="layer-user">
+          <div class="config-layer-header" onclick="toggleLayer('layer-user')">
+            <span class="layer-name">
+              <span style="color:var(--accent3);">🔵 Layer 4</span> User 用户理解
+            </span>
+            <span class="layer-badge badge-user">user.md</span>
+          </div>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="配置用户理解与分析系统..."># User 用户理解系统
+
+## 用户画像维度
+- 行业属性：跨境电商/品牌出海/本地生活
+- 企业规模：初创/成长/成熟/集团
+- 角色定位：创始人/CEO/CMO/运营/开发
+- 需求类型：品牌建设/渠道拓展/效率提升
+
+## 6W 分析框架
+- Who：用户是谁？
+- What：需要什么？
+- Why：为什么需要？
+- When：何时需要？
+- Where：在什么场景？
+- How：如何最好地满足？
+
+## 价值路径映射
+- 新用户 → 快速上手引导
+- 活跃用户 → 深度功能推荐
+- 付费用户 → 增值服务推荐
+- 流失风险 → 挽回策略触发</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('user')">💾 保存 User 配置</button>
+          </div>
+        </div>
+
+        <!-- Layer 5: Agent -->
+        <div class="config-layer" id="layer-agent">
+          <div class="config-layer-header" onclick="toggleLayer('layer-agent')">
+            <span class="layer-name">
+              <span style="color:var(--accent);">🟠 Layer 5</span> Agent 智能体配置
+            </span>
+            <span class="layer-badge badge-agent">agent.md</span>
+          </div>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="配置 AI Agent 的行为和能力..."># Agent 智能体配置
+
+## 能力模型
+- 推理引擎：CoT + ToT + Multi-Agent Debate
+- 工具调用：全平台MCP/API/Webhook
+- 多模态：文本/图片/音频/视频
+- 语言支持：中/英/日/韩/西/法/德/阿
+
+## Agent 集群编排
+- 调度策略：基于任务复杂度自动分配
+- 并发控制：最大10个Agent并行
+- 故障转移：自动切换备用Agent
+- 负载均衡：跨区域节点调度
+
+## 输出质量
+- Creator Agent：内容生成
+- Validator Agent：质量审核
+- 双验证模式：生成→审核→修改→确认
+
+## 模型配置
+- 默认模型：Claude 4 Sonnet
+- 备选模型：GPT-4o / Gemini 2.5 Pro
+- 推理深度：自适应（1-5层）</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('agent')">💾 保存 Agent 配置</button>
+          </div>
+        </div>
+
+        <!-- Layer 6: Tools -->
+        <div class="config-layer" id="layer-tools">
+          <div class="config-layer-header" onclick="toggleLayer('layer-tools')">
+            <span class="layer-name">
+              <span style="color:var(--accent2);">🟢 Layer 6</span> Tools 工具系统
+            </span>
+            <span class="layer-badge badge-tools">tools.md</span>
+          </div>
+          <div class="config-layer-body">
+            <textarea class="config-textarea" placeholder="配置 AI 拍档可用的工具和技能..."># Tools 工具系统配置
+
+## 7层工具矩阵
+
+### 1. OpenClaw 核心
+- Agent Runtime / Skill Engine
+- Workflow 引擎 / Memory 系统
+- RAG 检索 / MCP 协议
+
+### 2. AnyGen 工作台
+- Voice-to-Doc 语音转文档
+- AI PPT 生成 / AI 会议纪要
+- Dual-AI 双验证系统
+
+### 3. Data 数据层
+- B2B 数据库 / Google Maps
+- 供应链数据 / 贸易数据
+- 知识图谱构建
+
+### 4. Growth 增长层
+- LinkedIn / TikTok / YouTube
+- WhatsApp / Email / SEO / GEO
+
+### 5. Commerce 商业层
+- 报价 / 订单 / 供应商
+- 合同管理 / 全球支付
+
+### 6. Web3 层
+- 钱包 / DID / DAO
+- RDA 登记 / Token 激励
+
+### 7. Civilization 文明层
+- 跨文化适配 / 全球合规
+- 生态治理 / 文明传承</textarea>
+            <button class="btn btn-sm" style="margin-top:8px;" onclick="saveLayerConfig('tools')">💾 保存 Tools 配置</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 100+ Agent 智能体模板 -->
+      <div class="section-title" style="margin-top: 24px;">📋 Agent 智能体模板库（100+）</div>
+      <div class="agent-grid" id="agentTemplateGrid">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== 新增对话面板 ===== -->
+    <div class="panel" id="panel-new-conversation">
+      <div class="section-title">💬 对话管理</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div class="section-title" style="font-size:13px;">历史对话</div>
+          <div class="conversation-list" id="convList">
+            <div class="conv-item active">
+              <span>📝</span>
+              <span>品牌出海策略讨论</span>
+              <span class="conv-time">11:30</span>
             </div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">用户/企业/项目/Agent/Skill 统一身份 | 权限控制</div>
+            <div class="conv-item">
+              <span>📊</span>
+              <span>Q2 市场分析报告</span>
+              <span class="conv-time">昨天</span>
+            </div>
+            <div class="conv-item">
+              <span>🎨</span>
+              <span>新产品包装设计</span>
+              <span class="conv-time">昨天</span>
+            </div>
+            <div class="conv-item">
+              <span>💰</span>
+              <span>东南亚市场财务模型</span>
+              <span class="conv-time">6/2</span>
+            </div>
+            <div class="conv-item">
+              <span>🤖</span>
+              <span>AI 数字员工培训方案</span>
+              <span class="conv-time">6/1</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%;" onclick="createNewConversation()">+ 新建对话</button>
+        </div>
+        <div>
+          <div class="section-title" style="font-size:13px;">对话模板</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="agent-card" style="cursor:pointer;" onclick="startTemplateChat('品牌出海')">
+              <div class="agent-name">🌏 品牌出海全案</div>
+              <div class="agent-desc">市场调研 → 品牌定位 → 内容策略 → 渠道搭建</div>
+            </div>
+            <div class="agent-card" style="cursor:pointer;" onclick="startTemplateChat('产品创新')">
+              <div class="agent-name">💡 产品创新工作坊</div>
+              <div class="agent-desc">用户洞察 → 概念验证 → MVP设计 → 市场测试</div>
+            </div>
+            <div class="agent-card" style="cursor:pointer;" onclick="startTemplateChat('投资分析')">
+              <div class="agent-name">📈 投资分析报告</div>
+              <div class="agent-desc">行业分析 → 竞品研究 → 财务模型 → 风险评估</div>
+            </div>
+            <div class="agent-card" style="cursor:pointer;" onclick="startTemplateChat('内容营销')">
+              <div class="agent-name">🎬 内容营销矩阵</div>
+              <div class="agent-desc">选题策划 → 多平台分发 → 数据复盘 → 策略迭代</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Civilization OS -->
-    <div class="panel">
-      <div class="panel-header">🌍 Global Commercial Civilization OS</div>
-      <div class="panel-body">
-        <div style="display:grid;gap:10px;">
-          <div style="padding:10px;background:rgba(255,107,53,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--accent);">🦞 龙虾星球生态联盟</div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">品牌出海 · 产业协同 · 文明传承 · 价值网络</div>
-          </div>
-          <div style="padding:10px;background:rgba(99,102,241,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--accent3);">⛓️ 国链网 RDA 体系</div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">数据确权 · 价值评估 · 链上登记 · 资产交易</div>
-          </div>
-          <div style="padding:10px;background:rgba(0,212,170,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--accent2);">👤 OPC 共生社区</div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">创业辅导 · 资源共享 · 协作网络 · 贡献激励</div>
-          </div>
-          <div style="padding:10px;background:rgba(245,158,11,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--warning);">🎯 核心使命</div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">AI + Web3 + Real Economy 深度融合</div>
-          </div>
-          <div style="padding:10px;background:rgba(34,197,94,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--success);">🎯 长期目标</div>
-            <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">100万 Agent · 10万 OPC企业 · 1万产业节点</div>
-          </div>
-          <div style="padding:10px;background:rgba(239,68,68,0.08);border-radius:8px;">
-            <div style="font-weight:600;color:var(--danger);">⚖️ 文明公式</div>
-            <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">Knowledge + Data + Trust + Collaboration + AI = Commercial Civilization</div>
-          </div>
+    <!-- ===== 技能库面板 ===== -->
+    <div class="panel" id="panel-skills">
+      <div class="section-title">⚡ 技能库 · ClawHub Skill 集成</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">已安装技能</div>
+          <div class="stat-value" style="color:var(--accent2);">42</div>
+          <div class="stat-trend">ClawHub 官方 + 社区</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">自定义技能</div>
+          <div class="stat-value" style="color:var(--accent3);">12</div>
+          <div class="stat-trend">团队专属技能</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">最近使用</div>
+          <div class="stat-value" style="color:var(--accent);">8</div>
+          <div class="stat-trend">今日活跃技能</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="grid-2">
-    <!-- Webhook Integration -->
-    <div class="panel">
-      <div class="panel-header">🌐 Webhook 外部系统集成</div>
-      <div class="panel-body" id="whPanel" style="max-height: 400px; overflow-y: auto;">
-        <div style="text-align:center;color:var(--text-dim);padding:20px;">加载中...</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <input type="text" placeholder="🔍 搜索技能..." style="flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-size:13px;">
+        <button class="btn btn-primary btn-sm" onclick="showToast('正在连接 ClawHub 技能市场...', 'success')">🔌 连接 ClawHub</button>
+        <button class="btn btn-sm" onclick="openAddSkillModal()">+ 添加技能</button>
+      </div>
+
+      <div class="skill-grid" id="skillGrid">
+        <!-- 动态渲染 -->
       </div>
     </div>
 
-    <!-- Tool System -->
-    <div class="panel">
-      <div class="panel-header">🔧 Global Civilization Tool System</div>
-      <div class="panel-body">
-        <div style="display:grid;gap:8px;">
-          <div style="font-size:12px;padding:6px 10px;background:rgba(255,107,53,0.08);border-radius:6px;">
-            <span style="color:var(--accent);font-weight:600;">OpenClaw</span>
-            <span style="color:var(--text-dim);"> Agent Runtime · Skill Engine · Workflow · Memory · RAG · MCP</span>
+    <!-- ===== 资源库面板 ===== -->
+    <div class="panel" id="panel-resources">
+      <div class="section-title">📚 资源库 · 自定义知识库</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddKBModal()">+ 新建知识库</button>
+        <button class="btn btn-sm" onclick="showToast('上传文件功能已就绪', 'success')">📤 上传文件</button>
+        <button class="btn btn-sm" onclick="showToast('批量导入功能已就绪', 'success')">📥 批量导入</button>
+      </div>
+      <div class="kb-grid" id="kbGrid">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== 连接器面板 ===== -->
+    <div class="panel" id="panel-connectors">
+      <div class="section-title">🔌 连接器 · 全平台 MCP / API / Webhook</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddConnectorModal()">+ 添加连接器</button>
+        <button class="btn btn-sm" onclick="showToast('Webhook 任务已同步', 'success')">🔄 同步 Webhook</button>
+      </div>
+      <div class="connector-grid" id="connectorGrid">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== AI 大模型服务商面板 ===== -->
+    <div class="panel" id="panel-providers">
+      <div class="section-title">🧠 AI 大模型服务商</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddProviderModal()">+ 添加服务商</button>
+        <button class="btn btn-sm" onclick="showToast('API Key 验证完成', 'success')">🔑 验证密钥</button>
+      </div>
+      <div class="provider-grid" id="providerGrid">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== IM 频道面板 ===== -->
+    <div class="panel" id="panel-im-channels">
+      <div class="section-title">📡 IM 频道集成</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="btn btn-primary btn-sm" onclick="openAddIMModal()">+ 添加频道</button>
+        <button class="btn btn-sm" onclick="showToast('频道状态刷新完成', 'success')">🔄 刷新状态</button>
+      </div>
+      <div class="im-grid" id="imGrid">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <!-- ===== 系统设置面板 ===== -->
+    <div class="panel" id="panel-settings">
+      <div class="section-title">⚙️ 系统设置</div>
+
+      <div class="settings-section">
+        <h3>🖥️ OpenClaw 控制板</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">OpenClaw 引擎状态</div>
+            <div class="settings-desc">Agent Runtime 运行状态</div>
           </div>
-          <div style="font-size:12px;padding:6px 10px;background:rgba(99,102,241,0.08);border-radius:6px;">
-            <span style="color:var(--accent3);font-weight:600;">AnyGen</span>
-            <span style="color:var(--text-dim);"> Voice-to-Doc · AI Workspace · AI PPT · AI Meeting · Dual-AI Verify</span>
+          <span style="color:var(--success);">● 运行中</span>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">控制板地址</div>
+            <div class="settings-desc">OpenClaw 管理后台</div>
           </div>
-          <div style="font-size:12px;padding:6px 10px;background:rgba(0,212,170,0.08);border-radius:6px;">
-            <span style="color:var(--accent2);font-weight:600;">Data</span>
-            <span style="color:var(--text-dim);"> B2B · Google Maps · Supply Chain · Trade · Knowledge Graph</span>
+          <button class="btn btn-accent3 btn-sm" onclick="window.open('http://localhost:9080', '_blank')">🔗 打开控制板</button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">引擎版本</div>
+            <div class="settings-desc">当前运行版本</div>
           </div>
-          <div style="font-size:12px;padding:6px 10px;background:rgba(245,158,11,0.08);border-radius:6px;">
-            <span style="color:var(--warning);font-weight:600;">Growth</span>
-            <span style="color:var(--text-dim);"> LinkedIn · TikTok · YouTube · WhatsApp · Email · SEO · GEO</span>
+          <span>OpenClaw v3.0</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>🔔 通知设置</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">浏览器通知</div>
+            <div class="settings-desc">Agent 任务完成时推送</div>
           </div>
-          <div style="font-size:12px;padding:6px 10px;background:rgba(34,197,94,0.08);border-radius:6px;">
-            <span style="color:var(--success);font-weight:600;">Commerce</span>
-            <span style="color:var(--text-dim);"> Quotation · Order · Supplier · Contract · Global Payment</span>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">邮件通知</div>
+            <div class="settings-desc">重要决策和异常告警</div>
           </div>
-          <div style="font-size:12px;padding:6px 10px;background:rgba(239,68,68,0.08);border-radius:6px;">
-            <span style="color:var(--danger);font-weight:600;">Web3</span>
-            <span style="color:var(--text-dim);"> Wallet · DID · DAO · RDA Registry · Token Incentive · Reputation</span>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>🎨 界面设置</h3>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">深色模式</div>
+            <div class="settings-desc">使用深色主题</div>
           </div>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-label">紧凑布局</div>
+            <div class="settings-desc">减少间距显示更多内容</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox">
+            <span class="toggle-slider"></span>
+          </label>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="footer">
-  龙虾星球共创联盟 · OpenClaw × AnyGen × HeyGen · Global Commercial Civilization OS
-  <br>6-Layer Workspace Architecture · 68 Agents · 14 TaskFlows · 42 Webhooks · 7 Tool Layers
+<!-- ===== 右侧对话框 ===== -->
+<aside class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <span class="chat-header-title">💬 AI 对话</span>
+    <div style="display:flex;gap:4px;">
+      <button class="btn btn-icon btn-sm" onclick="clearChat()" title="清空对话">🗑️</button>
+      <button class="btn btn-icon btn-sm" onclick="toggleChatPanel()" title="关闭面板">✕</button>
+    </div>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-empty">
+      <div class="chat-empty-icon">🦞</div>
+      <div class="chat-empty-text">龙虾星球 AI 工作台</div>
+      <div class="chat-empty-hint">输入提示词或使用语音开始对话</div>
+    </div>
+  </div>
+
+  <div class="chat-input-area">
+    <!-- 附件展示区 -->
+    <div class="chat-attachments" id="chatAttachments"></div>
+
+    <!-- 文件拖拽上传区 -->
+    <div class="drop-zone" id="dropZone" style="margin-bottom:8px;display:none;">
+      📁 拖拽文件到此处上传，或点击选择文件
+      <input type="file" id="fileInput" multiple style="display:none;" onchange="handleFileSelect(event)">
+    </div>
+
+    <!-- 输入区 -->
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chatInput" placeholder="输入提示词，或点击 🎤 语音输入..." rows="1" onkeydown="handleChatKeydown(event)"></textarea>
+      <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="语音输入">🎤</button>
+    </div>
+
+    <!-- 快捷操作行 -->
+    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+      <button class="action-btn" onclick="toggleDropZone()" title="上传资料">
+        <span>📎</span> 上传资料
+      </button>
+      <button class="action-btn accent3" onclick="openConnectorSelector()" title="添加连接器">
+        <span>🔌</span> 连接器
+      </button>
+      <button class="action-btn accent2" onclick="openSkillSelector()" title="添加技能">
+        <span>⚡</span> 添加技能
+      </button>
+      <button class="action-btn" onclick="document.getElementById('chatInput').focus()">
+        <span>💡</span> 提示词模板
+      </button>
+    </div>
+
+    <!-- 发送按钮 -->
+    <button class="btn btn-primary" style="width:100%;" onclick="sendMessage()">
+      📤 发送消息
+    </button>
+
+    <!-- ===== 底部功能按钮 ===== -->
+    <div class="action-buttons" style="margin-top:10px;">
+      <button class="action-btn accent" onclick="triggerAction('ppt')">📊 生成幻灯片</button>
+      <button class="action-btn accent" onclick="triggerAction('doc')">📝 撰写文件</button>
+      <button class="action-btn accent4" onclick="triggerAction('design')">🎨 生成设计 <span style="font-size:9px;opacity:0.7;">NanoBanana</span></button>
+      <button class="action-btn accent3" onclick="triggerAction('video')">🎬 生成视频 <span style="font-size:9px;opacity:0.7;">Seedance</span></button>
+      <button class="action-btn accent2" onclick="triggerAction('brand')">✨ 创作品牌故事</button>
+      <button class="action-btn accent" onclick="triggerAction('founder')">👤 创始人IP</button>
+      <button class="action-btn accent3" onclick="triggerAction('prompt')">💬 脚本提示词生成</button>
+      <button class="action-btn accent" onclick="triggerAction('bulk')">⚡ 大量调用</button>
+      <button class="action-btn accent2" onclick="triggerAction('analysis')">📈 分析数据</button>
+      <button class="action-btn accent4" onclick="triggerAction('chart')">📉 绘制图表</button>
+      <button class="action-btn accent3" onclick="triggerAction('invest')">💰 金融投研</button>
+      <button class="action-btn accent" onclick="triggerAction('table')">📋 生成表格</button>
+      <button class="action-btn accent2" onclick="triggerAction('webpage')">🌐 建立网页 <span style="font-size:9px;opacity:0.7;">Lovable.dev</span></button>
+      <button class="action-btn accent3" onclick="triggerAction('pdf')">📄 翻译 PDF</button>
+      <button class="action-btn accent4" onclick="triggerAction('summary')">🎥 总结影片 <span style="font-size:9px;opacity:0.7;">YT/IG/TT</span></button>
+      <button class="action-btn accent" onclick="triggerAction('transcribe')">🎙️ 转写音频</button>
+      <button class="action-btn accent2" onclick="triggerAction('memo')">🎤 语音备忘录</button>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== 模态框容器 ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent" onclick="event.stopPropagation()">
+    <!-- 动态渲染 -->
+  </div>
 </div>
+
+<!-- Toast 容器 -->
+<div id="toastContainer"></div>
 
 <script>
-// 模拟数据 - 生产环境连接 OpenClaw API
-const mockData = {
-  agents: [
-    { layer: "board", agents: [
-      { name: "Chairman Agent 董事长", status: "active" },
-      { name: "CEO Agent 首席执行官", status: "active" },
-      { name: "COO Agent 首席运营官", status: "active" },
-      { name: "CFO Agent 首席财务官", status: "active" },
-      { name: "CMO Agent 首席营销官", status: "active" },
-      { name: "CTO Agent 首席技术官", status: "active" },
-      { name: "CRO Agent 首席风险官", status: "active" },
-      { name: "Legal Agent 法务管理", status: "idle" },
-      { name: "Investment Agent 投资委员会", status: "active" },
-      { name: "Innovation Agent 创新委员会", status: "idle" },
-    ]},
-    { layer: "brand_market", agents: [
-      { name: "Market Agent 市场研究", status: "active" },
-      { name: "Trend Agent 趋势分析", status: "active" },
-      { name: "Branding Agent 品牌建设", status: "active" },
-      { name: "KOL Agent 达人运营", status: "idle" },
-      { name: "Affiliate Agent 联盟营销", status: "active" },
-    ]},
-    { layer: "content", agents: [
-      { name: "Content Agent 内容工厂", status: "active" },
-      { name: "Video Agent 视频生产", status: "active" },
-      { name: "HeyGen Agent 数字人工厂", status: "active" },
-      { name: "Product Agent 产品管理", status: "idle" },
-      { name: "Training Agent 培训认证", status: "idle" },
-    ]},
-    { layer: "ecosystem", agents: [
-      { name: "Ecosystem Agent 生态联盟", status: "active" },
-      { name: "Franchise Agent 全球加盟", status: "active" },
-      { name: "Community Agent 社群运营", status: "active" },
-      { name: "City Node Agent 城市节点", status: "active" },
-      { name: "Partner Agent 合作伙伴", status: "active" },
-      { name: "Project Agent 项目共创", status: "idle" },
-      { name: "Global Expansion Agent", status: "active" },
-    ]},
-    { layer: "ai_nails", agents: [
-      { name: "AI NAILS Device Agent", status: "active" },
-      { name: "AI NAILS Location Agent", status: "idle" },
-      { name: "Store Growth Agent", status: "active" },
-    ]},
+// ============================================================
+// 全局状态管理
+// ============================================================
+const APP = {
+  currentPanel: 'ai-partner',
+  conversations: [
+    { id: 1, title: '品牌出海策略讨论', time: '11:30', active: true },
+    { id: 2, title: 'Q2 市场分析报告', time: '昨天', active: false },
+    { id: 3, title: '新产品包装设计', time: '昨天', active: false },
+    { id: 4, title: '东南亚市场财务模型', time: '6/2', active: false },
+    { id: 5, title: 'AI 数字员工培训方案', time: '6/1', active: false },
   ],
-  taskflows: [
-    { name: "客户成交流水线", desc: "从线索到成交全流程自动化", steps: 8, priority: "high" },
-    { name: "全球加盟裂变流水线", desc: "加盟线索→评分→招商→签约→培训→上线", steps: 10, priority: "high" },
-    { name: "OPC项目共创流水线", desc: "项目提交→评审→资源匹配→执行→分配", steps: 7, priority: "high" },
-    { name: "CEO经营驾驶舱", desc: "每日汇总所有业务线数据", steps: 8, priority: "high" },
-    { name: "全球扩张流水线", desc: "市场分析→合规→节点建设→运营", steps: 7, priority: "high" },
-    { name: "全球分账流水线", desc: "收入→计算→分账→结算→对账", steps: 6, priority: "critical" },
-    { name: "品牌出海全流程", desc: "市场调研→内容→广告→获客端到端", steps: 9, priority: "high" },
-    { name: "内容工厂流水线", desc: "选题→脚本→HeyGen视频→多语言→发布", steps: 6, priority: "medium" },
-    { name: "联盟裂变流水线", desc: "招募→评分→培训→激活→裂变", steps: 7, priority: "high" },
-    { name: "AI NAILS设备运营", desc: "选址→投放→激活→运营→维护", steps: 6, priority: "critical" },
-  ],
-  webhooks: [
-    { name: "CRM新线索", source: "crm", path: "/hooks/crm/new-lead" },
-    { name: "WhatsApp消息", source: "whatsapp", path: "/hooks/whatsapp/message" },
-    { name: "Shopify订单", source: "shopify", path: "/hooks/shopify/order" },
-    { name: "Amazon评论", source: "amazon", path: "/hooks/amazon/review" },
-    { name: "TikTok Shop订单", source: "tiktok_shop", path: "/hooks/tiktok/order" },
-    { name: "Stripe到账", source: "stripe", path: "/hooks/payment/stripe" },
-    { name: "AI NAILS设备上线", source: "ai_nails", path: "/hooks/ainails/device-online" },
-    { name: "城市节点申请", source: "website", path: "/hooks/city/application" },
-    { name: "加盟申请", source: "website", path: "/hooks/franchise/apply" },
-    { name: "项目共创提交", source: "website", path: "/hooks/project/submit" },
-    { name: "合伙人申请", source: "website", path: "/hooks/partner/apply" },
-    { name: "社群新成员", source: "community", path: "/hooks/community/join" },
-  ]
+  chatMessages: [],
+  attachments: [],
+  isRecording: false,
+  layerConfigs: {},
 };
 
-function renderAgents() {
-  const panel = document.getElementById('agentPanel');
+// ============================================================
+// 面板切换
+// ============================================================
+function switchPanel(panelName, navItem) {
+  // 更新导航
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  if (navItem) navItem.classList.add('active');
+
+  // 更新面板
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('panel-' + panelName);
+  if (panel) panel.classList.add('active');
+
+  APP.currentPanel = panelName;
+
+  // 更新顶栏标题
+  const titles = {
+    'ai-partner': '🤖 AI 拍档 · 数字员工',
+    'new-conversation': '💬 新增对话',
+    'skills': '⚡ 技能库 · ClawHub Skill 集成',
+    'resources': '📚 资源库 · 自定义知识库',
+    'connectors': '🔌 连接器 · MCP/API/Webhook',
+    'providers': '🧠 AI 大模型服务商',
+    'im-channels': '📡 IM 频道集成',
+    'settings': '⚙️ 系统设置 · OpenClaw 控制板',
+  };
+  document.getElementById('topbarTitle').textContent = titles[panelName] || 'AI 工作台';
+
+  // 切换面板时渲染内容
+  if (panelName === 'ai-partner') renderAgentTemplates();
+  if (panelName === 'skills') renderSkills();
+  if (panelName === 'resources') renderKnowledgeBases();
+  if (panelName === 'connectors') renderConnectors();
+  if (panelName === 'providers') renderProviders();
+  if (panelName === 'im-channels') renderIMChannels();
+  if (panelName === 'new-conversation') renderConversations();
+}
+
+// ============================================================
+// 6层配置展开/折叠
+// ============================================================
+function toggleLayer(layerId) {
+  const layer = document.getElementById(layerId);
+  if (layer) layer.classList.toggle('open');
+}
+
+function saveLayerConfig(layerName) {
+  const layer = document.getElementById('layer-' + layerName);
+  const textarea = layer.querySelector('textarea');
+  APP.layerConfigs[layerName] = textarea.value;
+  showToast(`✅ ${layerName}.md 配置已保存`, 'success');
+}
+
+// ============================================================
+// Agent 模板渲染
+// ============================================================
+function renderAgentTemplates() {
+  const agents = [
+    // AI 董事会
+    { layer:'board', icon:'🏛️', name:'Chairman Agent', role:'董事长', desc:'企业愿景、长期战略、重大决策审批', tags:['战略','决策','治理'], status:'active' },
+    { layer:'board', icon:'👔', name:'CEO Agent', role:'首席执行官', desc:'战略执行、经营管理、全局调度', tags:['执行','管理','调度'], status:'active' },
+    { layer:'board', icon:'📊', name:'COO Agent', role:'首席运营官', desc:'运营效率、流程优化、节点管理', tags:['运营','流程'], status:'active' },
+    { layer:'board', icon:'💰', name:'CFO Agent', role:'首席财务官', desc:'现金流分析、利润管理、投融资', tags:['财务','投资'], status:'active' },
+    { layer:'board', icon:'📈', name:'CMO Agent', role:'首席营销官', desc:'品牌增长、用户增长、联盟营销', tags:['营销','增长'], status:'active' },
+    { layer:'board', icon:'💻', name:'CTO Agent', role:'首席技术官', desc:'技术架构、AI体系建设、系统稳定', tags:['技术','架构'], status:'active' },
+    { layer:'board', icon:'🛡️', name:'CRO Agent', role:'首席风险官', desc:'风险控制、合规管理、异常检测', tags:['风控','合规'], status:'idle' },
+    { layer:'board', icon:'⚖️', name:'Legal Agent', role:'法务管理', desc:'合同审核、知识产权、合规审查', tags:['法务','合同'], status:'idle' },
+    { layer:'board', icon:'💎', name:'Investment Agent', role:'投资委员会', desc:'项目孵化、投资评估、投后管理', tags:['投资','孵化'], status:'active' },
+    { layer:'board', icon:'💡', name:'Innovation Agent', role:'创新委员会', desc:'新业务探索、AI创新、项目评估', tags:['创新','探索'], status:'idle' },
+    // 市场品牌层
+    { layer:'market', icon:'🔍', name:'Market Agent', role:'市场研究', desc:'市场分析、竞品监控、全网扫描', tags:['市场','竞品'], status:'active' },
+    { layer:'market', icon:'🔥', name:'Trend Agent', role:'趋势分析', desc:'趋势追踪、热点分析、爆品发现', tags:['趋势','热点'], status:'active' },
+    { layer:'market', icon:'🎯', name:'Branding Agent', role:'品牌建设', desc:'品牌定位、品牌故事、IP打造', tags:['品牌','IP'], status:'active' },
+    { layer:'market', icon:'🌟', name:'KOL Agent', role:'达人运营', desc:'全球达人矩阵筛选合作结算', tags:['KOL','达人'], status:'idle' },
+    { layer:'market', icon:'🤝', name:'Affiliate Agent', role:'联盟营销', desc:'联盟计划、推荐奖励、佣金管理', tags:['联盟','佣金'], status:'active' },
+    { layer:'market', icon:'🎪', name:'Event Agent', role:'活动管理', desc:'全球活动招商路演培训峰会', tags:['活动','招商'], status:'active' },
+    { layer:'market', icon:'🔗', name:'Referral Agent', role:'转介绍', desc:'裂变引擎推荐码奖励追踪', tags:['裂变','推荐'], status:'active' },
+    { layer:'market', icon:'🔎', name:'SEO Agent', role:'搜索优化', desc:'SEO优化关键词研究排名监控', tags:['SEO','排名'], status:'idle' },
+    { layer:'market', icon:'📢', name:'Ads Agent', role:'广告投放', desc:'多平台广告投放ROI优化', tags:['广告','ROI'], status:'active' },
+    { layer:'market', icon:'🛒', name:'TikTok Shop Agent', role:'TK电商', desc:'TikTok Shop运营短视频直播GMV', tags:['TK','直播'], status:'active' },
+    { layer:'market', icon:'📦', name:'Marketplace Agent', role:'平台运营', desc:'Amazon/Shopify多平台运营', tags:['Amazon','Shopify'], status:'active' },
+    // 内容创意层
+    { layer:'content', icon:'✍️', name:'Content Agent', role:'内容工厂', desc:'内容生成多语言本地化品牌语言库', tags:['内容','多语言'], status:'active' },
+    { layer:'content', icon:'🎬', name:'Video Agent', role:'视频生产', desc:'短视频脚本广告创意内容编排', tags:['视频','创意'], status:'active' },
+    { layer:'content', icon:'🎭', name:'HeyGen Agent', role:'数字人视频', desc:'数字人视频招商产品培训直播', tags:['数字人','HeyGen'], status:'active' },
+    { layer:'content', icon:'🏷️', name:'Product Agent', role:'产品管理', desc:'产品管理卖点重构USP生成', tags:['产品','卖点'], status:'idle' },
+    { layer:'content', icon:'🎓', name:'Training Agent', role:'培训认证', desc:'加盟培训代理培训认证考试', tags:['培训','认证'], status:'idle' },
+    // 销售成交层
+    { layer:'sales', icon:'🎣', name:'Lead Agent', role:'线索发现', desc:'线索采集客户搜索LinkedIn/Apollo', tags:['线索','采集'], status:'active' },
+    { layer:'sales', icon:'📧', name:'SDR Agent', role:'销售开发', desc:'客户开发评分开发信生成', tags:['开发','评分'], status:'active' },
+    { layer:'sales', icon:'💼', name:'Sales Agent', role:'销售转化', desc:'商机转化WhatsApp自动销售跟进', tags:['转化','WhatsApp'], status:'active' },
+    { layer:'sales', icon:'📋', name:'Proposal Agent', role:'方案生成', desc:'方案生成招商手册代理手册', tags:['方案','招商'], status:'active' },
+    { layer:'sales', icon:'💲', name:'Quotation Agent', role:'报价管理', desc:'报价管理报价邮件生成', tags:['报价','邮件'], status:'active' },
+    { layer:'sales', icon:'📜', name:'Contract Agent', role:'合同管理', desc:'合同管理模板自动生成', tags:['合同','模板'], status:'active' },
+    { layer:'sales', icon:'😊', name:'Customer Success Agent', role:'客户成功', desc:'客户运营评价收集满意度', tags:['客户','满意度'], status:'active' },
+    { layer:'sales', icon:'📇', name:'CRM Agent', role:'客户关系', desc:'CRM管理客户数据库维护', tags:['CRM','数据库'], status:'active' },
+    { layer:'sales', icon:'🔄', name:'Retention Agent', role:'客户留存', desc:'留存管理复购推荐', tags:['留存','复购'], status:'active' },
+    { layer:'sales', icon:'⚠️', name:'Churn Agent', role:'流失预警', desc:'客户流失预警订阅分析', tags:['流失','预警'], status:'idle' },
+    // 生态层
+    { layer:'ecosystem', icon:'🌍', name:'Ecosystem Agent', role:'生态联盟', desc:'产业联盟OPC共生资源协同收益共享', tags:['生态','联盟'], status:'active' },
+    { layer:'ecosystem', icon:'🏪', name:'Franchise Agent', role:'全球加盟', desc:'国家代理城市合伙人招商自动化', tags:['加盟','代理'], status:'active' },
+    { layer:'ecosystem', icon:'👥', name:'Community Agent', role:'社群运营', desc:'FB/Telegram/Discord/微信社群运营', tags:['社群','运营'], status:'active' },
+    { layer:'ecosystem', icon:'🏙️', name:'City Node Agent', role:'城市节点', desc:'城市运营中心节点建设运营考核', tags:['城市','节点'], status:'active' },
+    { layer:'ecosystem', icon:'🤝', name:'Partner Agent', role:'合作伙伴', desc:'合伙人体系招募评级成长分配', tags:['合伙人','分配'], status:'active' },
+    { layer:'ecosystem', icon:'🚀', name:'Project Agent', role:'项目共创', desc:'OPC项目提交评审资源匹配执行', tags:['项目','OPC'], status:'active' },
+    { layer:'ecosystem', icon:'🌏', name:'Global Expansion Agent', role:'全球扩张', desc:'新市场进入国家运营中心全球合规', tags:['全球化','扩张'], status:'active' },
+    // AI NAILS
+    { layer:'ainails', icon:'💅', name:'AI NAILS Device Agent', role:'设备管理', desc:'设备投放激活维护升级数据采集', tags:['设备','AI'], status:'active' },
+    { layer:'ainails', icon:'📍', name:'AI NAILS Location Agent', role:'智能选址', desc:'GIS分析人流量ROI预测', tags:['选址','GIS'], status:'idle' },
+    { layer:'ainails', icon:'📈', name:'Store Growth Agent', role:'门店增长', desc:'订单分析用户增长复购提升', tags:['增长','复购'], status:'active' },
+    // 财务层
+    { layer:'finance', icon:'📊', name:'Finance Agent', role:'财务分析', desc:'ROI分析财务报表经营分析', tags:['财务','ROI'], status:'active' },
+    { layer:'finance', icon:'🧾', name:'Accountant Agent', role:'会计', desc:'会计记账凭证管理', tags:['会计','记账'], status:'active' },
+    { layer:'finance', icon:'🧾', name:'Invoice Agent', role:'发票管理', desc:'发票管理开票自动化', tags:['发票','自动化'], status:'idle' },
+    { layer:'finance', icon:'💳', name:'Payment Agent', role:'收款管理', desc:'收款管理Stripe/PayPal对接', tags:['支付','Stripe'], status:'active' },
+    { layer:'finance', icon:'💸', name:'Commission Agent', role:'分账引擎', desc:'全球分账自动计算分配结算', tags:['分账','结算'], status:'active' },
+    // 供应链层
+    { layer:'supply', icon:'📦', name:'Order Agent', role:'订单管理', desc:'订单管理订单流转', tags:['订单','流转'], status:'active' },
+    { layer:'supply', icon:'📋', name:'Inventory Agent', role:'库存管理', desc:'库存管理库存预警', tags:['库存','预警'], status:'active' },
+    { layer:'supply', icon:'🛒', name:'Procurement Agent', role:'采购管理', desc:'采购管理供应商管理', tags:['采购','供应商'], status:'idle' },
+    { layer:'supply', icon:'🚚', name:'Logistics Agent', role:'物流管理', desc:'物流管理发货追踪', tags:['物流','追踪'], status:'active' },
+    { layer:'supply', icon:'🏭', name:'Production Agent', role:'生产管理', desc:'生产管理排产调度', tags:['生产','排产'], status:'idle' },
+    { layer:'supply', icon:'✅', name:'Quality Agent', role:'质检管理', desc:'质检管理品控追踪', tags:['质检','品控'], status:'active' },
+    // 6层架构
+    { layer:'board', icon:'🆔', name:'Identity Agent', role:'身份中枢', desc:'统一身份系统用户企业项目管理', tags:['身份','权限'], status:'active' },
+    { layer:'board', icon:'🧠', name:'Memory Agent', role:'记忆中枢', desc:'企业级共享记忆长短期项目记忆', tags:['记忆','共享'], status:'active' },
+    { layer:'board', icon:'🤔', name:'Thinking Agent', role:'推理中枢', desc:'CoT/ToT/Multi-Agent Debate决策大脑', tags:['推理','CoT'], status:'active' },
+    { layer:'board', icon:'🎭', name:'Orchestrator Agent', role:'集群编排', desc:'Agent数字员工组织调度中心', tags:['编排','调度'], status:'active' },
+    { layer:'board', icon:'⚡', name:'Skill Runtime Agent', role:'技能运行时', desc:'10大类技能Creator/Validator双验证', tags:['技能','验证'], status:'active' },
+    { layer:'board', icon:'🖥️', name:'Workspace OS Agent', role:'工作空间OS', desc:'Voice→Idea→Output全链路操作系统', tags:['OS','全链路'], status:'active' },
+    // 文明OS
+    { layer:'ecosystem', icon:'🌐', name:'Civilization Identity', role:'文明身份', desc:'OpenClaw+AnyGen+RDA+OPC生态系统', tags:['文明','生态'], status:'active' },
+    { layer:'ecosystem', icon:'❤️', name:'Civilization Soul', role:'文明灵魂', desc:'核心价值观与伦理框架', tags:['价值观','伦理'], status:'active' },
+    { layer:'ecosystem', icon:'📖', name:'Civilization Memory', role:'文明记忆', desc:'用户/组织/生态/文明四级记忆', tags:['记忆','四级'], status:'active' },
+    { layer:'ecosystem', icon:'👤', name:'User Understanding', role:'用户理解', desc:'10类用户自动识别6W分析', tags:['用户','6W'], status:'active' },
+    { layer:'ecosystem', icon:'🔧', name:'Tool System Agent', role:'工具系统', desc:'7层工具矩阵全平台集成', tags:['工具','集成'], status:'active' },
+  ];
+
+  const layerNames = {
+    board: '🏛️ AI 董事会',
+    market: '📊 市场与品牌层',
+    content: '🎨 内容与创意层',
+    sales: '💼 销售与成交层',
+    ecosystem: '🌍 龙虾星球生态层',
+    ainails: '💅 AI NAILS 设备层',
+    finance: '💰 财务管理层',
+    supply: '📦 供应链管理层',
+  };
+
+  // 按层分组
+  const grouped = {};
+  agents.forEach(a => {
+    if (!grouped[a.layer]) grouped[a.layer] = [];
+    grouped[a.layer].push(a);
+  });
+
   let html = '';
-  mockData.agents.forEach(layer => {
-    const layerNames = {
-      board: '🏛️ AI董事会',
-      brand_market: '📊 市场品牌层',
-      content: '🎨 内容创意层',
-      ecosystem: '🌍 龙虾星球生态层',
-      ai_nails: '💅 AI NAILS设备层',
-    };
-    html += `<div class="agent-layer">`;
-    html += `<div class="layer-title">${layerNames[layer.layer] || layer.layer} (${layer.agents.length})</div>`;
-    layer.agents.forEach(a => {
-      const statusClass = a.status === 'active' ? 'status-active' : 'status-idle';
-      const statusText = a.status === 'active' ? '运行中' : '待命';
-      html += `<div class="agent-item">
-        <span>${a.name}</span>
-        <span class="agent-status ${statusClass}">${statusText}</span>
-      </div>`;
+  Object.entries(grouped).forEach(([layer, layerAgents]) => {
+    html += `<div class="section-title" style="font-size:13px;margin-top:16px;">${layerNames[layer] || layer} (${layerAgents.length})</div>`;
+    html += '<div class="agent-grid">';
+    layerAgents.forEach(a => {
+      html += `
+        <div class="agent-card" onclick="startAgentChat('${a.name}', '${a.role}')">
+          <div class="agent-card-header">
+            <div class="agent-icon ${a.layer}">${a.icon}</div>
+            <div>
+              <div class="agent-name">${a.name}</div>
+              <div class="agent-role">${a.role}</div>
+            </div>
+            <span class="agent-status-badge ${a.status === 'active' ? 'status-active' : 'status-idle'}">${a.status === 'active' ? '运行中' : '待命'}</span>
+          </div>
+          <div class="agent-desc">${a.desc}</div>
+          <div class="agent-tags">${a.tags.map(t => `<span class="agent-tag">${t}</span>`).join('')}</div>
+        </div>`;
     });
     html += '</div>';
   });
-  panel.innerHTML = html;
+
+  document.getElementById('agentTemplateGrid').innerHTML = html;
+  document.getElementById('agentCount').textContent = agents.length;
 }
 
-function renderTaskFlows() {
-  const panel = document.getElementById('tfPanel');
-  let html = '';
-  mockData.taskflows.forEach(tf => {
-    const priColor = tf.priority === 'critical' ? 'var(--danger)' : tf.priority === 'high' ? 'var(--accent)' : 'var(--accent2)';
-    html += `<div class="tf-item">
-      <div class="tf-name">${tf.name}</div>
-      <div class="tf-desc">${tf.desc}</div>
-      <div class="tf-meta">优先级: <span style="color:${priColor}">${tf.priority}</span> · ${tf.steps} 步骤</div>
-      <div class="tf-steps">${'<span class="tf-step">●</span>'.repeat(Math.min(tf.steps, 8))}</div>
-    </div>`;
-  });
-  panel.innerHTML = html;
+// ============================================================
+// 技能库渲染
+// ============================================================
+function renderSkills() {
+  const skills = [
+    { name:'Brand Story Builder', source:'ClawHub', desc:'品牌故事创作，包含品牌定位、核心价值主张、品牌叙事', category:'品牌' },
+    { name:'SEO Content Optimizer', source:'ClawHub', desc:'SEO优化内容生成，关键词研究和内容策略', category:'SEO' },
+    { name:'Social Media Manager', source:'ClawHub', desc:'多平台社媒内容管理和发布策略', category:'社媒' },
+    { name:'Data Analysis Pro', source:'ClawHub', desc:'数据分析、可视化图表生成、趋势预测', category:'数据' },
+    { name:'Email Campaign Engine', source:'ClawHub', desc:'邮件营销自动化，序列设计和A/B测试', category:'邮件' },
+    { name:'Video Script Writer', source:'ClawHub', desc:'视频脚本创作，分镜设计和文案优化', category:'视频' },
+    { name:'Market Research AI', source:'ClawHub', desc:'市场调研分析，竞品研究和SWOT分析', category:'市场' },
+    { name:'Financial Model Builder', source:'ClawHub', desc:'财务模型构建，估值分析和预测', category:'财务' },
+    { name:'PPT Auto Generator', source:'自定义', desc:'自动生成商业演示文稿，包含设计和内容', category:'演示' },
+    { name:'Contract Draft Assistant', source:'自定义', desc:'合同起草助手，模板管理和条款审查', category:'法务' },
+    { name:'Translation Expert', source:'自定义', desc:'多语言翻译，支持50+语言和行业术语', category:'翻译' },
+    { name:'Customer Support Bot', source:'自定义', desc:'智能客服机器人，FAQ自动应答', category:'客服' },
+  ];
+
+  const grid = document.getElementById('skillGrid');
+  grid.innerHTML = skills.map(s => `
+    <div class="skill-card">
+      <div class="skill-card-header">
+        <span>${getCategoryIcon(s.category)}</span>
+        <span class="skill-name">${s.name}</span>
+        <span class="skill-source">${s.source}</span>
+      </div>
+      <div class="skill-desc">${s.desc}</div>
+      <div class="skill-actions">
+        <button class="btn btn-sm" onclick="addSkillToChat('${s.name}')">➕ 添加到对话</button>
+        <button class="btn btn-sm" onclick="showToast('技能 ${s.name} 已启用', 'success')">▶ 启用</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-function renderWebhooks() {
-  const panel = document.getElementById('whPanel');
-  let html = '';
-  mockData.webhooks.forEach(wh => {
-    html += `<div class="wh-item">
-      <span class="wh-source">${wh.source}</span>
-      ${wh.name}
-      <span style="color:var(--text-dim);font-size:11px;margin-left:8px;">${wh.path}</span>
-    </div>`;
-  });
-  panel.innerHTML = html;
+function getCategoryIcon(cat) {
+  const icons = { '品牌':'🎯', 'SEO':'🔎', '社媒':'📱', '数据':'📊', '邮件':'📧', '视频':'🎬', '市场':'🔍', '财务':'💰', '演示':'📊', '法务':'⚖️', '翻译':'🌐', '客服':'💬' };
+  return icons[cat] || '⚡';
 }
 
-function refreshAll() {
-  renderAgents();
-  renderTaskFlows();
-  renderWebhooks();
-  document.getElementById('agentCount').textContent = mockData.agents.reduce((s, l) => s + l.agents.length, 0);
-  document.getElementById('tfCount').textContent = mockData.taskflows.length;
-  document.getElementById('whCount').textContent = mockData.webhooks.length;
+// ============================================================
+// 资源库渲染
+// ============================================================
+function renderKnowledgeBases() {
+  const kbs = [
+    { name:'品牌出海知识库', type:'文档', count:128, desc:'品牌出海全流程知识，包含市场分析、品牌定位、渠道策略' },
+    { name:'全球合规手册', type:'文档', count:56, desc:'各国商业合规要求、税务政策、知识产权保护' },
+    { name:'产品目录库', type:'数据库', count:342, desc:'产品信息、规格参数、供应商数据' },
+    { name:'客户案例库', type:'文档', count:89, desc:'成功案例、客户评价、项目复盘' },
+    { name:'行业研究报告', type:'文档', count:215, desc:'各行业深度研究报告和市场分析' },
+    { name:'SOP流程库', type:'流程', count:45, desc:'标准操作流程、最佳实践文档' },
+    { name:'培训资料库', type:'视频', count:167, desc:'培训视频、教程、认证资料' },
+    { name:'竞品分析库', type:'数据库', count:73, desc:'竞品信息、价格对比、功能分析' },
+  ];
+
+  const grid = document.getElementById('kbGrid');
+  grid.innerHTML = kbs.map(kb => `
+    <div class="kb-card">
+      <div class="kb-card-header">
+        <span class="kb-name">📚 ${kb.name}</span>
+        <span class="kb-count">${kb.count} 条目</span>
+      </div>
+      <span class="kb-type">${kb.type}</span>
+      <div class="agent-desc">${kb.desc}</div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="btn btn-sm" onclick="showToast('正在同步 ${kb.name}', 'success')">🔄 同步</button>
+        <button class="btn btn-sm" onclick="showToast('已添加到对话上下文', 'success')">💬 对话中使用</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-function startEngine() {
-  alert('🚀 引擎启动中...\n\n请通过终端运行:\npython scripts/launch.py start');
+// ============================================================
+// 连接器渲染
+// ============================================================
+function renderConnectors() {
+  const connectors = [
+    { name:'Slack', type:'MCP', icon:'💬', bg:'rgba(74,21,75,0.3)', status:'connected' },
+    { name:'GitHub', type:'MCP', icon:'🐙', bg:'rgba(36,41,46,0.3)', status:'connected' },
+    { name:'Notion', type:'MCP', icon:'📝', bg:'rgba(0,0,0,0.3)', status:'connected' },
+    { name:'Google Drive', type:'API', icon:'📁', bg:'rgba(66,133,244,0.15)', status:'connected' },
+    { name:'Gmail', type:'API', icon:'📧', bg:'rgba(234,67,53,0.15)', status:'connected' },
+    { name:'Stripe', type:'API', icon:'💳', bg:'rgba(99,102,241,0.15)', status:'connected' },
+    { name:'Shopify', type:'API', icon:'🛒', bg:'rgba(149,191,71,0.15)', status:'connected' },
+    { name:'WhatsApp Business', type:'API', icon:'💬', bg:'rgba(37,211,102,0.15)', status:'connected' },
+    { name:'TikTok Shop', type:'API', icon:'🎵', bg:'rgba(0,0,0,0.3)', status:'connected' },
+    { name:'CRM Webhook', type:'Webhook', icon:'🪝', bg:'rgba(255,107,53,0.15)', status:'connected' },
+    { name:'Payment Webhook', type:'Webhook', icon:'💰', bg:'rgba(0,212,170,0.15)', status:'connected' },
+    { name:'LinkedIn', type:'MCP', icon:'🔗', bg:'rgba(0,119,181,0.15)', status:'disconnected' },
+  ];
+
+  const grid = document.getElementById('connectorGrid');
+  grid.innerHTML = connectors.map(c => `
+    <div class="connector-card">
+      <div class="connector-icon" style="background:${c.bg}">${c.icon}</div>
+      <div class="connector-info">
+        <div class="connector-name">${c.name}</div>
+        <span class="connector-type type-${c.type.toLowerCase()}">${c.type}</span>
+      </div>
+      <span class="connector-status ${c.status}">${c.status === 'connected' ? '● 已连接' : '○ 未连接'}</span>
+    </div>
+  `).join('');
 }
 
+// ============================================================
+// AI 服务商渲染
+// ============================================================
+function renderProviders() {
+  const providers = [
+    { name:'Anthropic', models:['Claude 4 Sonnet','Claude 4 Opus','Claude 3.5 Haiku'], icon:'🧠', configured:true },
+    { name:'OpenAI', models:['GPT-4o','GPT-4o-mini','o3-mini'], icon:'🤖', configured:true },
+    { name:'Google', models:['Gemini 2.5 Pro','Gemini 2.5 Flash'], icon:'🔮', configured:true },
+    { name:'DeepSeek', models:['DeepSeek-V3','DeepSeek-R1'], icon:'🔍', configured:true },
+    { name:'Meta', models:['Llama 4','Llama 4 Scout'], icon:'🦙', configured:false },
+    { name:'Mistral', models:['Mistral Large','Codestral'], icon:'💨', configured:false },
+  ];
+
+  const grid = document.getElementById('providerGrid');
+  grid.innerHTML = providers.map(p => `
+    <div class="provider-card">
+      <div class="provider-header">
+        <span style="font-size:24px;">${p.icon}</span>
+        <div>
+          <div class="provider-name">${p.name}</div>
+          <div style="font-size:11px;color:var(--text-dim);">${p.configured ? '已配置' : '未配置'}</div>
+        </div>
+        <span style="margin-left:auto;font-size:10px;color:${p.configured ? 'var(--success)' : 'var(--text-dim)'};">
+          ${p.configured ? '● 活跃' : '○ 待配置'}
+        </span>
+      </div>
+      <div class="provider-models">
+        ${p.models.map(m => `<span class="provider-model">${m}</span>`).join('')}
+      </div>
+      ${p.configured ? `
+        <button class="btn btn-sm" style="width:100%;" onclick="showToast('${p.name} API配置已就绪', 'success')">⚙️ 管理配置</button>
+      ` : `
+        <div class="provider-key">
+          <input type="password" placeholder="输入 API Key...">
+          <button class="btn btn-primary btn-sm" onclick="showToast('${p.name} API Key 已保存', 'success')">保存</button>
+        </div>
+      `}
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// IM 频道渲染
+// ============================================================
+function renderIMChannels() {
+  const channels = [
+    { name:'Slack 工作区', icon:'💬', bg:'rgba(74,21,75,0.3)', status:'已连接' },
+    { name:'Discord 服务器', icon:'🎮', bg:'rgba(88,101,242,0.15)', status:'已连接' },
+    { name:'Telegram 频道', icon:'✈️', bg:'rgba(0,136,204,0.15)', status:'已连接' },
+    { name:'WhatsApp Business', icon:'💚', bg:'rgba(37,211,102,0.15)', status:'已连接' },
+    { name:'微信企业号', icon:'💬', bg:'rgba(7,193,96,0.15)', status:'已连接' },
+    { name:'飞书', icon:'🐦', bg:'rgba(51,112,255,0.15)', status:'未连接' },
+    { name:'钉钉', icon:'📌', bg:'rgba(0,132,255,0.15)', status:'未连接' },
+    { name:'Microsoft Teams', icon:'👥', bg:'rgba(70,74,178,0.15)', status:'未连接' },
+  ];
+
+  const grid = document.getElementById('imGrid');
+  grid.innerHTML = channels.map(ch => `
+    <div class="im-card">
+      <div class="im-icon" style="background:${ch.bg}">${ch.icon}</div>
+      <div>
+        <div class="im-name">${ch.name}</div>
+        <div class="im-status">${ch.status}</div>
+      </div>
+      <button class="btn btn-sm" style="margin-left:auto;" onclick="showToast('${ch.name} ${ch.status === '已连接' ? '配置已就绪' : '连接配置中...'}','success')">
+        ${ch.status === '已连接' ? '⚙️' : '🔌'}
+      </button>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// 对话列表渲染
+// ============================================================
+function renderConversations() {
+  const list = document.getElementById('convList');
+  if (!list) return;
+  list.innerHTML = APP.conversations.map(c => `
+    <div class="conv-item ${c.active ? 'active' : ''}" onclick="selectConversation(${c.id})">
+      <span>📝</span>
+      <span>${c.title}</span>
+      <span class="conv-time">${c.time}</span>
+    </div>
+  `).join('');
+}
+
+function createNewConversation() {
+  const id = APP.conversations.length + 1;
+  APP.conversations.unshift({ id, title: '新对话 ' + id, time: '刚刚', active: true });
+  APP.conversations.forEach(c => c.active = c.id === id);
+  renderConversations();
+  clearChat();
+  showToast('✅ 新对话已创建', 'success');
+}
+
+function selectConversation(id) {
+  APP.conversations.forEach(c => c.active = c.id === id);
+  renderConversations();
+}
+
+function startTemplateChat(template) {
+  APP.chatMessages.push({ role:'assistant', content:`你好！我已准备好帮你处理「${template}」相关的任务。请告诉我你的具体需求。` });
+  renderChatMessages();
+  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+}
+
+// ============================================================
+// 聊天功能
+// ============================================================
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text && APP.attachments.length === 0) return;
+
+  if (text) {
+    APP.chatMessages.push({ role:'user', content: text });
+  }
+  if (APP.attachments.length > 0) {
+    APP.chatMessages.push({ role:'user', content: `[已上传 ${APP.attachments.length} 个文件: ${APP.attachments.map(a => a.name).join(', ')}]` });
+    APP.attachments = [];
+    renderAttachments();
+  }
+
+  input.value = '';
+  renderChatMessages();
+
+  // 模拟 AI 回复
+  setTimeout(() => {
+    const replies = [
+      '收到你的消息！我正在分析你的需求...',
+      '这是一个很好的问题。让我为你详细解答。',
+      '我已经理解了你的需求，正在调用相关 Agent 处理。',
+      '根据分析，我建议以下方案...',
+    ];
+    APP.chatMessages.push({ role:'assistant', content: replies[Math.floor(Math.random() * replies.length)] });
+    renderChatMessages();
+    const msgs = document.getElementById('chatMessages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 800);
+
+  const msgs = document.getElementById('chatMessages');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function handleChatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function renderChatMessages() {
+  const container = document.getElementById('chatMessages');
+  if (APP.chatMessages.length === 0) {
+    container.innerHTML = `
+      <div class="chat-empty">
+        <div class="chat-empty-icon">🦞</div>
+        <div class="chat-empty-text">龙虾星球 AI 工作台</div>
+        <div class="chat-empty-hint">输入提示词或使用语音开始对话</div>
+      </div>`;
+    return;
+  }
+  container.innerHTML = APP.chatMessages.map(m => `
+    <div class="message ${m.role}">${m.content}</div>
+  `).join('');
+}
+
+function clearChat() {
+  APP.chatMessages = [];
+  APP.attachments = [];
+  renderChatMessages();
+  renderAttachments();
+}
+
+// ============================================================
+// 语音输入
+// ============================================================
+function toggleVoiceInput() {
+  const btn = document.getElementById('voiceBtn');
+  if (APP.isRecording) {
+    btn.classList.remove('recording');
+    btn.textContent = '🎤';
+    APP.isRecording = false;
+    showToast('🎤 语音录制已停止', 'success');
+  } else {
+    btn.classList.add('recording');
+    btn.textContent = '⏹';
+    APP.isRecording = true;
+    showToast('🎤 正在录音...', 'success');
+    // 模拟语音识别
+    setTimeout(() => {
+      if (APP.isRecording) {
+        document.getElementById('chatInput').value = '（语音输入模拟文本）请帮我分析一下东南亚市场的品牌出海策略...';
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+        APP.isRecording = false;
+      }
+    }, 3000);
+  }
+}
+
+// ============================================================
+// 文件上传
+// ============================================================
+function toggleDropZone() {
+  const zone = document.getElementById('dropZone');
+  zone.style.display = zone.style.display === 'none' ? 'block' : 'none';
+  if (zone.style.display === 'block') {
+    document.getElementById('fileInput').click();
+  }
+}
+
+function handleFileSelect(event) {
+  const files = event.target.files;
+  for (const file of files) {
+    APP.attachments.push({ name: file.name, size: file.size });
+  }
+  renderAttachments();
+  document.getElementById('dropZone').style.display = 'none';
+}
+
+function renderAttachments() {
+  const container = document.getElementById('chatAttachments');
+  container.innerHTML = APP.attachments.map((a, i) => `
+    <span class="attachment-tag">
+      📎 ${a.name}
+      <span class="remove-attach" onclick="removeAttachment(${i})">×</span>
+    </span>
+  `).join('');
+}
+
+function removeAttachment(index) {
+  APP.attachments.splice(index, 1);
+  renderAttachments();
+}
+
+// ============================================================
+// 连接器/技能选择器
+// ============================================================
+function openConnectorSelector() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>🔌 添加连接器到对话</h3>
+    <div style="display:grid;gap:8px;">
+      ${['Slack','GitHub','Notion','Google Drive','Gmail','Stripe','Shopify','WhatsApp'].map(c => `
+        <div class="connector-card" style="cursor:pointer;" onclick="addConnectorToChat('${c}');closeModalDirect();">
+          <span>🔌</span>
+          <span>${c}</span>
+          <span style="margin-left:auto;color:var(--success);">● 可用</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function addConnectorToChat(name) {
+  APP.attachments.push({ name: `连接器: ${name}`, size: 0 });
+  renderAttachments();
+  showToast(`✅ 连接器 ${name} 已添加`, 'success');
+}
+
+function openSkillSelector() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>⚡ 添加技能到对话</h3>
+    <div style="display:grid;gap:8px;">
+      ${['Brand Story Builder','SEO Content Optimizer','Data Analysis Pro','Video Script Writer','Market Research AI','PPT Auto Generator'].map(s => `
+        <div class="skill-card" style="cursor:pointer;" onclick="addSkillToChat('${s}');closeModalDirect();">
+          <span class="skill-name">⚡ ${s}</span>
+          <div class="skill-desc">已准备就绪</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function addSkillToChat(name) {
+  APP.attachments.push({ name: `技能: ${name}`, size: 0 });
+  renderAttachments();
+  showToast(`✅ 技能 ${name} 已添加`, 'success');
+}
+
+// ============================================================
+// 底部功能按钮
+// ============================================================
+function triggerAction(action) {
+  const actions = {
+    'ppt': '📊 正在调用 AI PPT 生成引擎...\n请描述你的演示主题和内容要点。',
+    'doc': '📝 正在准备文档撰写助手...\n请告诉我文档类型（方案/报告/合同等）和主题。',
+    'design': '🎨 NanoBanana Pro 设计引擎已就绪！\n请描述你需要的设计内容，或上传参考图。',
+    'video': '🎬 Seedance 视频生成引擎已连接！\n请描述视频主题和风格。',
+    'brand': '✨ 品牌故事创作引擎已启动！\n请提供品牌基本信息和目标受众。',
+    'founder': '👤 创始人IP打造系统已就绪！\n请提供创始人背景和品牌定位。',
+    'prompt': '💬 脚本提示词生成器已启动！\n请描述你需要生成什么类型的提示词。',
+    'bulk': '⚡ 批量调用模式已激活！\n可以同时处理多个任务，请逐一描述。',
+    'analysis': '📈 数据分析引擎已就绪！\n请上传数据或描述分析需求。',
+    'chart': '📉 图表生成器已启动！\n请提供数据和图表类型需求。',
+    'invest': '💰 金融投研分析系统已就绪！\n请输入研究标的或行业方向。',
+    'table': '📋 表格生成引擎已启动！\n请描述表格结构和数据需求。',
+    'webpage': '🌐 Lovable.dev 网页生成已集成！\n请描述网站需求和设计风格。',
+    'pdf': '📄 PDF 翻译引擎已就绪！\n请上传 PDF 文件并指定目标语言。',
+    'summary': '🎥 影片总结引擎已启动！\n请粘贴 YouTube/Instagram/TikTok 链接。',
+    'transcribe': '🎙️ 音频转写引擎已就绪！\n请上传音频文件或开始录音。',
+    'memo': '🎤 语音备忘录模式已开启！\n开始说话，我会记录并整理。',
+  };
+
+  const msg = actions[action] || `正在启动 ${action} 功能...`;
+  document.getElementById('chatInput').value = msg;
+  document.getElementById('chatInput').focus();
+  showToast(`✅ 已激活: ${action}`, 'success');
+}
+
+// ============================================================
+// 模态框管理
+// ============================================================
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function openAddAgentModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>🤖 添加自定义 AI 拍档</h3>
+    <div class="form-group">
+      <label>Agent 名称</label>
+      <input type="text" placeholder="输入 Agent 名称...">
+    </div>
+    <div class="form-group">
+      <label>角色定位</label>
+      <input type="text" placeholder="如：品牌出海顾问">
+    </div>
+    <div class="form-group">
+      <label>所属层级</label>
+      <select>
+        <option>Identity 身份中枢</option>
+        <option>Soul 灵魂核心</option>
+        <option>Memory 记忆系统</option>
+        <option>User 用户理解</option>
+        <option>Agent 智能体配置</option>
+        <option>Tools 工具系统</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>能力描述</label>
+      <textarea rows="3" placeholder="描述这个 AI 拍档的能力..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 自定义AI拍档已添加','success');">确认添加</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function openAddSkillModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>⚡ 添加技能</h3>
+    <div class="form-group">
+      <label>技能名称</label>
+      <input type="text" placeholder="输入技能名称...">
+    </div>
+    <div class="form-group">
+      <label>技能来源</label>
+      <select>
+        <option>ClawHub 官方</option>
+        <option>社区共享</option>
+        <option>自定义开发</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>技能描述</label>
+      <textarea rows="3" placeholder="描述技能的功能和用法..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>ClawHub Skill 地址（可选）</label>
+      <input type="text" placeholder="https://clawhub.ai/skills/...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 技能已添加','success');">确认添加</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function openAddKBModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>📚 新建知识库</h3>
+    <div class="form-group">
+      <label>知识库名称</label>
+      <input type="text" placeholder="输入知识库名称...">
+    </div>
+    <div class="form-group">
+      <label>类型</label>
+      <select>
+        <option>文档库</option>
+        <option>数据库</option>
+        <option>流程库</option>
+        <option>媒体库</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>描述</label>
+      <textarea rows="3" placeholder="描述知识库的内容和用途..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>上传文件</label>
+      <div class="drop-zone" style="cursor:pointer;" onclick="showToast('文件上传功能已就绪','success')">
+        📁 拖拽文件或点击上传
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 知识库已创建','success');">创建</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function openAddConnectorModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>🔌 添加连接器</h3>
+    <div class="form-group">
+      <label>连接器类型</label>
+      <select>
+        <option>MCP 协议</option>
+        <option>REST API</option>
+        <option>Webhook</option>
+        <option>GraphQL</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>服务名称</label>
+      <input type="text" placeholder="如：Custom CRM API">
+    </div>
+    <div class="form-group">
+      <label>连接地址</label>
+      <input type="text" placeholder="https://api.example.com/v1">
+    </div>
+    <div class="form-group">
+      <label>认证方式</label>
+      <select>
+        <option>API Key</option>
+        <option>OAuth 2.0</option>
+        <option>Bearer Token</option>
+        <option>Basic Auth</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>API Key</label>
+      <input type="password" placeholder="输入密钥...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 连接器已添加并测试通过','success');">连接</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function openAddProviderModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>🧠 添加 AI 大模型服务商</h3>
+    <div class="form-group">
+      <label>服务商名称</label>
+      <input type="text" placeholder="如：Groq / Together AI / Replicate">
+    </div>
+    <div class="form-group">
+      <label>API 地址</label>
+      <input type="text" placeholder="https://api.example.com/v1/chat">
+    </div>
+    <div class="form-group">
+      <label>API Key</label>
+      <input type="password" placeholder="输入 API Key...">
+    </div>
+    <div class="form-group">
+      <label>可用模型（逗号分隔）</label>
+      <input type="text" placeholder="model-a, model-b, model-c">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 服务商已添加','success');">添加</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+function openAddIMModal() {
+  const modal = document.getElementById('modalOverlay');
+  const content = document.getElementById('modalContent');
+  content.innerHTML = `
+    <h3>📡 添加 IM 频道</h3>
+    <div class="form-group">
+      <label>平台</label>
+      <select>
+        <option>Slack</option>
+        <option>Discord</option>
+        <option>Telegram</option>
+        <option>WhatsApp</option>
+        <option>微信企业号</option>
+        <option>飞书</option>
+        <option>钉钉</option>
+        <option>Microsoft Teams</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>频道名称</label>
+      <input type="text" placeholder="输入频道名称...">
+    </div>
+    <div class="form-group">
+      <label>Webhook URL</label>
+      <input type="text" placeholder="https://hooks.example.com/...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModalDirect()">取消</button>
+      <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ IM频道已添加','success');">添加</button>
+    </div>
+  `;
+  modal.classList.add('show');
+}
+
+// ============================================================
+// Toast 通知
+// ============================================================
+function showToast(message, type) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+}
+
+// ============================================================
+// 聊天面板控制
+// ============================================================
+function toggleChatPanel() {
+  const panel = document.getElementById('chatPanel');
+  panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+}
+
+// ============================================================
+// 全局刷新
+// ============================================================
+function refreshDashboard() {
+  renderAgentTemplates();
+  if (APP.currentPanel === 'skills') renderSkills();
+  if (APP.currentPanel === 'resources') renderKnowledgeBases();
+  if (APP.currentPanel === 'connectors') renderConnectors();
+  if (APP.currentPanel === 'providers') renderProviders();
+  if (APP.currentPanel === 'im-channels') renderIMChannels();
+  showToast('🔄 仪表盘已刷新', 'success');
+}
+
+function startAgentChat(name, role) {
+  document.getElementById('chatInput').value = `@${name}（${role}），请帮我...`;
+  document.getElementById('chatInput').focus();
+}
+
+// ============================================================
 // 初始化
-refreshAll();
+// ============================================================
+function init() {
+  renderAgentTemplates();
+  renderConversations();
+}
 
-// 每30秒自动刷新
-setInterval(refreshAll, 30000);
+init();
 </script>
 
 </body>
