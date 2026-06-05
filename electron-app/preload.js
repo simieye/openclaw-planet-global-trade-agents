@@ -13,6 +13,16 @@ contextBridge.exposeInMainWorld('lobsterPlanet', {
   batchImportDialog: () => ipcRenderer.invoke('batch-import-dialog'),
   listUploadedFiles: () => ipcRenderer.invoke('list-uploaded-files'),
 
+  // 认证相关
+  login: (email, password) => ipcRenderer.invoke('auth-login', email, password),
+  register: (userData) => ipcRenderer.invoke('auth-register', userData),
+  registerEnterprise: (enterpriseData) => ipcRenderer.invoke('auth-register-enterprise', enterpriseData),
+  logout: () => ipcRenderer.invoke('auth-logout'),
+  getAuthToken: () => ipcRenderer.invoke('auth-get-token'),
+  refreshToken: (token) => ipcRenderer.invoke('auth-refresh-token', token),
+  getUserInfo: () => ipcRenderer.invoke('auth-get-user'),
+  getEnterpriseInfo: () => ipcRenderer.invoke('auth-get-enterprise'),
+
   // 平台信息
   platform: process.platform,
   isElectron: true,

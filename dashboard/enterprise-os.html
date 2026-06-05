@@ -429,7 +429,8 @@ html[lang="en"] .i18n-en{display:inline;}
     </div>
   </nav>
   <div class="sidebar-footer">
-    <div class="user-card"><div class="user-avatar">H</div><div class="user-info"><div class="user-name">Heming Wang</div><div class="user-role">超级管理员 · CEO</div></div></div>
+    <div class="user-card" id="userCard"><div class="user-avatar">🦞</div><div class="user-info"><div class="user-name" id="userNameDisplay">未登录</div><div class="user-role" id="userRoleDisplay">请先登录</div></div></div>
+    <button class="btn btn-sm" style="width:100%;margin-top:8px;justify-content:center;" onclick="handleLogout()">🚪 退出登录</button>
   </div>
 </aside>
 
@@ -3870,9 +3871,61 @@ function showNotifications(){
 }
 
 // ============================================================
+// AUTH - 认证检查
+// ============================================================
+function getAuth() {
+  try {
+    const auth = localStorage.getItem('lobster-auth');
+    if (!auth) return null;
+    const data = JSON.parse(auth);
+    if (Date.now() > (data.expires_at || 0)) return null;
+    return data;
+  } catch(e) { return null; }
+}
+
+function checkAuthAndRedirect() {
+  const auth = getAuth();
+  if (!auth) {
+    window.location.href = '/login?mode=login';
+    return null;
+  }
+  return auth;
+}
+
+function updateUserDisplay(auth) {
+  if (!auth || !auth.user) return;
+  const user = auth.user;
+  // 更新侧边栏用户卡片
+  const avatarEl = document.querySelector('#userCard .user-avatar');
+  const nameEl = document.getElementById('userNameDisplay');
+  const roleEl = document.getElementById('userRoleDisplay');
+  if (avatarEl) avatarEl.textContent = user.avatar || (user.display_name ? user.display_name[0] : 'U');
+  if (nameEl) nameEl.textContent = user.display_name || user.username;
+  const roleMap = { admin: '超级管理员', enterprise_admin: '企业管理员', enterprise_user: '企业成员', user: '用户' };
+  if (roleEl) roleEl.textContent = (roleMap[user.role] || user.role) + (user.enterprise_name ? ' · ' + user.enterprise_name : '');
+}
+
+function handleLogout() {
+  const auth = getAuth();
+  if (auth) {
+    fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${auth.access_token}`, 'Content-Type': 'application/json' }
+    }).catch(() => {});
+  }
+  localStorage.removeItem('lobster-auth');
+  localStorage.removeItem('lobster-enterprise');
+  window.location.href = '/login';
+}
+
+// ============================================================
 // INIT
 // ============================================================
 (function init(){
+  const auth = checkAuthAndRedirect();
+  if (!auth) return;
+  updateUserDisplay(auth);
+
   // Restore language preference
   const savedLang = localStorage.getItem('openclaw-lang');
   if(savedLang) currentLang = savedLang;

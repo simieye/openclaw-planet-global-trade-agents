@@ -126,6 +126,14 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
             return html_path.read_text(encoding="utf-8")
         return HTMLResponse(content="<h1>Enterprise OS 面板未找到</h1>", status_code=404)
 
+    @app.get("/login", response_class=HTMLResponse)
+    async def login_page():
+        """登录注册页面"""
+        html_path = dashboard_path / "login.html"
+        if html_path.exists():
+            return html_path.read_text(encoding="utf-8")
+        return HTMLResponse(content="<h1>登录页面未找到</h1>", status_code=404)
+
     # ============================================================
     # Health & Status
     # ============================================================
@@ -750,6 +758,179 @@ title = "{target_link.get("title", req.url)}"
             "parsed_links": parsed_count,
             "total_agents": total_agents,
         }
+
+    # ============================================================
+    # Auth APIs - 用户认证与企业管理系统
+    # ============================================================
+
+    from .auth import (
+        get_auth_service,
+        RegisterRequest, EnterpriseRegisterRequest, LoginRequest,
+        UserUpdateRequest, PasswordChangeRequest,
+    )
+    from fastapi import Depends
+    from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+    auth_service = get_auth_service()
+    security = HTTPBearer(auto_error=False)
+
+    async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+        """从请求中提取当前登录用户"""
+        if not credentials:
+            raise HTTPException(status_code=401, detail="请先登录")
+        user = auth_service.verify_access(credentials.credentials)
+        if not user:
+            raise HTTPException(status_code=401, detail="登录已过期，请重新登录")
+        return user
+
+    async def get_current_admin(user: dict = Depends(get_current_user)):
+        """验证管理员权限"""
+        if user["role"] not in ("admin", "enterprise_admin"):
+            raise HTTPException(status_code=403, detail="需要管理员权限")
+        return user
+
+    # ---- 注册 ----
+
+    @app.post("/api/auth/register")
+    async def register(req: RegisterRequest):
+        """用户注册"""
+        result = auth_service.register_user(req)
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    @app.post("/api/auth/register/enterprise")
+    async def register_enterprise(req: EnterpriseRegisterRequest):
+        """企业注册"""
+        result = auth_service.register_enterprise(req)
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    # ---- 登录 ----
+
+    @app.post("/api/auth/login")
+    async def login(req: LoginRequest):
+        """用户登录"""
+        result = auth_service.login(req)
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=401, detail=result["error"])
+
+    # ---- Token 刷新 ----
+
+    @app.post("/api/auth/refresh")
+    async def refresh_token(request: Request):
+        """刷新访问 Token"""
+        body = await request.json()
+        refresh = body.get("refresh_token", "")
+        if not refresh:
+            raise HTTPException(status_code=400, detail="缺少 refresh_token")
+        result = auth_service.refresh_token(refresh)
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=401, detail=result["error"])
+
+    # ---- 退出 ----
+
+    @app.post("/api/auth/logout")
+    async def logout(user: dict = Depends(get_current_user)):
+        """退出登录"""
+        auth_service.logout(user["id"])
+        return {"success": True, "message": "已退出登录"}
+
+    # ---- 用户信息 ----
+
+    @app.get("/api/auth/me")
+    async def get_me(user: dict = Depends(get_current_user)):
+        """获取当前用户信息"""
+        return {"success": True, "user": user}
+
+    @app.put("/api/auth/me")
+    async def update_me(req: UserUpdateRequest, user: dict = Depends(get_current_user)):
+        """更新当前用户信息"""
+        updates = {}
+        if req.display_name:
+            updates["display_name"] = req.display_name
+        if req.avatar:
+            updates["avatar"] = req.avatar
+        updated = auth_service.update_user(user["id"], updates)
+        if updated:
+            return {"success": True, "user": updated}
+        raise HTTPException(status_code=404, detail="用户不存在")
+
+    @app.put("/api/auth/me/password")
+    async def change_my_password(req: PasswordChangeRequest, user: dict = Depends(get_current_user)):
+        """修改当前用户密码"""
+        result = auth_service.change_password(user["id"], req.old_password, req.new_password)
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    # ---- 企业管理 ----
+
+    @app.get("/api/auth/enterprise")
+    async def get_my_enterprise(user: dict = Depends(get_current_user)):
+        """获取当前用户所在企业信息"""
+        ent_id = user.get("enterprise_id")
+        if not ent_id:
+            raise HTTPException(status_code=404, detail="您不属于任何企业")
+        enterprise = auth_service.get_enterprise(ent_id)
+        if not enterprise:
+            raise HTTPException(status_code=404, detail="企业不存在")
+        return {"success": True, "enterprise": enterprise}
+
+    @app.get("/api/auth/enterprise/users")
+    async def list_enterprise_users(user: dict = Depends(get_current_user)):
+        """获取企业用户列表"""
+        ent_id = user.get("enterprise_id")
+        if not ent_id:
+            raise HTTPException(status_code=404, detail="您不属于任何企业")
+        users = auth_service.get_enterprise_users(ent_id)
+        return {"success": True, "users": users, "total": len(users)}
+
+    @app.post("/api/auth/enterprise/users")
+    async def add_enterprise_user(
+        request: Request,
+        user: dict = Depends(get_current_user),
+    ):
+        """企业管理员添加用户"""
+        if user["role"] not in ("admin", "enterprise_admin"):
+            raise HTTPException(status_code=403, detail="需要企业管理员权限")
+        body = await request.json()
+        ent_id = user.get("enterprise_id")
+        if not ent_id:
+            raise HTTPException(status_code=400, detail="未关联企业")
+        result = auth_service.add_enterprise_user(
+            ent_id=ent_id,
+            email=body.get("email", ""),
+            username=body.get("username", ""),
+            password=body.get("password", ""),
+            role=body.get("role", "enterprise_user"),
+        )
+        if result["success"]:
+            return result
+        raise HTTPException(status_code=400, detail=result["error"])
+
+    # ---- 管理员接口 ----
+
+    @app.get("/api/auth/admin/users")
+    async def admin_list_users(user: dict = Depends(get_current_admin)):
+        """管理员查看所有用户"""
+        if user["role"] != "admin":
+            raise HTTPException(status_code=403, detail="需要超级管理员权限")
+        users = auth_service.get_all_users()
+        return {"success": True, "users": users, "total": len(users)}
+
+    @app.get("/api/auth/admin/enterprises")
+    async def admin_list_enterprises(user: dict = Depends(get_current_admin)):
+        """管理员查看所有企业"""
+        if user["role"] != "admin":
+            raise HTTPException(status_code=403, detail="需要超级管理员权限")
+        enterprises = auth_service.get_all_enterprises()
+        return {"success": True, "enterprises": enterprises, "total": len(enterprises)}
+
+    logger.info("🔐 Auth API routes registered (register/login/enterprise management)")
 
     # ============================================================
     # Metrics (Prometheus compatible)

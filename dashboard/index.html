@@ -27,6 +27,163 @@
   --chat-width: 420px;
 }
 
+/* ===== 主题切换系统 ===== */
+/* 原版主题 (default) - 深色科技风 */
+[data-theme="default"] {
+  --bg: #080812; --sidebar-bg: #0c0c1d; --card-bg: #12122a; --border: #1e1e3a;
+  --accent: #ff6b35; --accent2: #00d4aa; --accent3: #6366f1; --accent4: #ec4899; --accent5: #8b5cf6;
+  --text: #e0e0e0; --text-dim: #6b7280; --text-bright: #f0f0f0;
+  --success: #22c55e; --warning: #f59e0b; --danger: #ef4444;
+}
+/* 白天主题 (light) */
+[data-theme="light"] {
+  --bg: #f8f9fa; --sidebar-bg: #ffffff; --card-bg: #ffffff; --border: #e5e7eb;
+  --accent: #d97706; --accent2: #059669; --accent3: #4f46e5; --accent4: #db2777; --accent5: #7c3aed;
+  --text: #1f2937; --text-dim: #6b7280; --text-bright: #111827;
+  --success: #16a34a; --warning: #d97706; --danger: #dc2626;
+}
+/* 黑暗主题 (dark) - 纯黑极简 */
+[data-theme="dark"] {
+  --bg: #000000; --sidebar-bg: #0a0a0a; --card-bg: #111111; --border: #222222;
+  --accent: #f97316; --accent2: #10b981; --accent3: #818cf8; --accent4: #f472b6; --accent5: #a78bfa;
+  --text: #fafafa; --text-dim: #737373; --text-bright: #ffffff;
+  --success: #22c55e; --warning: #fbbf24; --danger: #ef4444;
+}
+/* 简约主题 (minimal) - 米白温暖风（参考 SuperAda） */
+[data-theme="minimal"] {
+  --bg: #fafaf8; --sidebar-bg: #fdfdfd; --card-bg: #ffffff; --border: #eeece8;
+  --accent: #c2853a; --accent2: #7da356; --accent3: #5b6bb0; --accent4: #c77da0; --accent5: #8b7ab8;
+  --text: #2c2416; --text-dim: #9b9080; --text-bright: #1a1510;
+  --success: #5a9c52; --warning: #c48a30; --danger: #c45050;
+  --radius: 14px; --radius-sm: 10px;
+}
+
+/* ===== 主题切换器 ===== */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px;
+  position: relative;
+}
+
+.theme-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: transparent;
+  transition: all 0.2s;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 1;
+}
+
+.theme-btn:hover { color: var(--text); transform: scale(1.1); }
+
+.theme-btn.active {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* 简约主题下的特殊样式 */
+[data-theme="minimal"] body,
+[data-theme="minimal"] .sidebar,
+[data-theme="minimal"] .main-topbar,
+[data-theme="minimal"] .panel {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+}
+[data-theme="minimal"] .sidebar-logo .logo-text {
+  background: linear-gradient(135deg, #c2853a, #7da356);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="minimal"] .nav-item.active {
+  background: rgba(194,133,58,0.08);
+  color: #c2853a;
+  border-left-color: #c2853a;
+}
+[data-theme="minimal"] .stat-card {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+[data-theme="minimal"] .agent-card,
+[data-theme="minimal"] .taskflow-card,
+[data-theme="minimal"] .shopify-taskflow-card,
+[data-theme="minimal"] .amazon-taskflow-card,
+[data-theme="minimal"] .tiktok-taskflow-card {
+  box-shadow: 0 2px 8px rgba(44,36,22,0.06);
+  border: 1px solid #eeece8 !important;
+}
+[data-theme="minimal"] .agent-card:hover,
+[data-theme="minimal"] .taskflow-card:hover,
+[data-theme="minimal"] .shopify-taskflow-card:hover,
+[data-theme="minimal"] .amazon-taskflow-card:hover,
+[data-theme="minimal"] .tiktok-taskflow-card:hover {
+  box-shadow: 0 4px 16px rgba(44,36,22,0.10);
+  border-color: #c2853a !important;
+}
+[data-theme="minimal"] .btn-primary {
+  background: #c2853a;
+  border-color: #c2853a;
+  color: #fff;
+}
+[data-theme="minimal"] .btn-primary:hover { background: #b07a32; }
+[data-theme="minimal"] .section-title,
+[data-theme="minimal"] h2,
+[data-theme="minimal"] h3 {
+  color: #2c2416;
+}
+[data-theme="minimal"] .panel::-webkit-scrollbar-thumb {
+  background: #ddd8cf;
+  border-radius: 4px;
+}
+/* 简约风格：顶部导航更轻盈 */
+[data-theme="minimal"] .main-topbar {
+  background: #fdfdfd;
+  border-bottom: 1px solid #eeece8;
+}
+[data-theme="minimal"] .sidebar {
+  border-right: 1px solid #eeece8;
+  background: #fdfdfd;
+}
+/* 简约风格：卡片更圆润 */
+[data-theme="minimal"] .stat-card,
+[data-theme="minimal"] .config-card,
+[data-theme="minimal"] .webhook-card {
+  border-radius: 16px;
+  border: 1px solid #f0ede8;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+}
+/* 简约风格：导航项 */
+[data-theme="minimal"] .nav-item:hover {
+  background: rgba(194,133,58,0.05);
+}
+/* 白天主题微调 */
+[data-theme="light"] .nav-item.active {
+  background: rgba(217,119,6,0.08);
+  color: #d97706;
+  border-left-color: #d97706;
+}
+[data-theme="light"] .btn-primary {
+  background: #d97706;
+  border-color: #d97706;
+}
+[data-theme="light"] .sidebar-logo .logo-text {
+  background: linear-gradient(90deg, #d97706, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -2657,12 +2814,16 @@ body {
   </nav>
 
   <div class="sidebar-footer">
-    <div class="user-info">
-      <div class="user-avatar">🦞</div>
+    <div class="user-info" id="sidebarUserInfo">
+      <div class="user-avatar" id="sidebarAvatar">🦞</div>
       <div>
-        <div class="user-name">龙虾星球</div>
-        <div class="user-role">超级管理员</div>
+        <div class="user-name" id="sidebarUserName">龙虾星球</div>
+        <div class="user-role" id="sidebarUserRole">超级管理员</div>
       </div>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:6px;">
+      <button class="btn btn-sm" style="flex:1;justify-content:center;" onclick="window.location.href='/enterprise-os'">🏢 企业版</button>
+      <button class="btn btn-sm" style="flex:1;justify-content:center;" onclick="handleLogout()">🚪 退出</button>
     </div>
   </div>
 </aside>
@@ -2672,6 +2833,13 @@ body {
   <div class="main-topbar">
     <span class="topbar-title" id="topbarTitle">🤖 AI 拍档 · 数字员工</span>
     <div class="topbar-actions">
+      <!-- 主题切换器 -->
+      <div class="theme-switcher" title="切换主题">
+        <button class="theme-btn active" data-theme-val="default" onclick="switchTheme('default', this)" title="原版主题（深色科技风）">🌙</button>
+        <button class="theme-btn" data-theme-val="light" onclick="switchTheme('light', this)" title="白天主题（明亮清新）">☀️</button>
+        <button class="theme-btn" data-theme-val="dark" onclick="switchTheme('dark', this)" title="黑夜主题（极简纯黑）">🖤</button>
+        <button class="theme-btn" data-theme-val="minimal" onclick="switchTheme('minimal', this)" title="简约主题（温暖米白）">📜</button>
+      </div>
       <button class="btn btn-sm" onclick="refreshDashboard()">🔄 刷新</button>
       <button class="btn btn-primary btn-sm" onclick="openAddAgentModal()">+ 自定义AI拍档</button>
     </div>
@@ -8610,11 +8778,105 @@ function startAgentChat(name, role) {
 }
 
 // ============================================================
+// 主题切换系统
+// ============================================================
+function switchTheme(themeName, btnEl) {
+  // 设置 data-theme 属性
+  if (themeName === 'default') {
+    document.documentElement.removeAttribute('data-theme');
+    document.documentElement.style.setProperty('--radius', '12px');
+    document.documentElement.style.setProperty('--radius-sm', '8px');
+  } else {
+    document.documentElement.setAttribute('data-theme', themeName);
+    // 简约主题需要恢复默认圆角
+    if (themeName !== 'minimal') {
+      document.documentElement.style.setProperty('--radius', '12px');
+      document.documentElement.style.setProperty('--radius-sm', '8px');
+    }
+  }
+
+  // 更新按钮状态
+  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  // 持久化存储
+  try { localStorage.setItem('lobster-planet-theme', themeName); } catch(e) {}
+
+  // 显示提示
+  const themeNames = { default: '🌙 原版（深色科技风）', light: '☀️ 白天（明亮清新）', dark: '🖤 黑夜（极简纯黑）', minimal: '📜 简约（温暖米白）' };
+  showToast(`已切换到 ${themeNames[themeName] || themeName} 主题`, 'success');
+}
+
+function initTheme() {
+  try {
+    const saved = localStorage.getItem('lobster-planet-theme') || 'default';
+    const btn = document.querySelector(`.theme-btn[data-theme-val="${saved}"]`);
+    switchTheme(saved, btn);
+  } catch(e) {}
+}
+
+// ============================================================
+// 认证检查
+// ============================================================
+function checkAuth() {
+  try {
+    const auth = localStorage.getItem('lobster-auth');
+    if (!auth) return null;
+    const data = JSON.parse(auth);
+    if (Date.now() > (data.expires_at || 0)) {
+      localStorage.removeItem('lobster-auth');
+      return null;
+    }
+    return data;
+  } catch(e) { return null; }
+}
+
+function requireAuth() {
+  const auth = checkAuth();
+  if (!auth) {
+    window.location.href = '/login';
+    return null;
+  }
+  return auth;
+}
+
+// ============================================================
 // 初始化
 // ============================================================
 function init() {
+  // 认证检查（Electron 环境下可跳过）
+  const auth = checkAuth();
+  if (auth && auth.user) {
+    updateSidebarUser(auth.user);
+  }
+  
   renderAgentTemplates();
   renderConversations();
+  initTheme();
+}
+
+function updateSidebarUser(user) {
+  if (!user) return;
+  const avatarEl = document.getElementById('sidebarAvatar');
+  const nameEl = document.getElementById('sidebarUserName');
+  const roleEl = document.getElementById('sidebarUserRole');
+  if (avatarEl) avatarEl.textContent = user.avatar || (user.display_name ? user.display_name[0] : '🦞');
+  if (nameEl) nameEl.textContent = user.display_name || user.username;
+  const roleMap = { admin: '超级管理员', enterprise_admin: '企业管理员', enterprise_user: '企业成员', user: '用户' };
+  if (roleEl) roleEl.textContent = (roleMap[user.role] || user.role) + (user.enterprise_name ? ' · ' + user.enterprise_name : '');
+}
+
+function handleLogout() {
+  const auth = checkAuth();
+  if (auth) {
+    fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${auth.access_token}`, 'Content-Type': 'application/json' }
+    }).catch(() => {});
+  }
+  localStorage.removeItem('lobster-auth');
+  localStorage.removeItem('lobster-enterprise');
+  window.location.href = '/login';
 }
 
 init();

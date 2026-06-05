@@ -687,6 +687,143 @@ ipcMain.handle('list-uploaded-files', async () => {
 });
 
 // ============================================================
+// 认证 IPC Handlers
+// ============================================================
+
+const http = require('http');
+const ENGINE_URL = `http://localhost:${ENGINE_PORT}`;
+
+function httpRequest(method, apiPath, body) {
+  return new Promise((resolve, reject) => {
+    const url = new URL(apiPath, ENGINE_URL);
+    const data = body ? JSON.stringify(body) : null;
+    
+    const options = {
+      hostname: url.hostname,
+      port: url.port,
+      path: url.pathname + url.search,
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const req = http.request(options, (res) => {
+      let chunks = [];
+      res.on('data', chunk => chunks.push(chunk));
+      res.on('end', () => {
+        try {
+          const result = JSON.parse(Buffer.concat(chunks).toString());
+          resolve({ status: res.statusCode, data: result });
+        } catch(e) {
+          resolve({ status: res.statusCode, data: Buffer.concat(chunks).toString() });
+        }
+      });
+    });
+
+    req.on('error', reject);
+    if (data) req.write(data);
+    req.end();
+  });
+}
+
+// 存储 token（在 Electron 主进程内存中）
+let authToken = null;
+let authUser = null;
+
+ipcMain.handle('auth-login', async (event, email, password) => {
+  try {
+    const result = await httpRequest('POST', '/api/auth/login', { email, password });
+    if (result.status === 200 && result.data.access_token) {
+      authToken = result.data.access_token;
+      authUser = result.data.user;
+      return { success: true, ...result.data };
+    }
+    return { success: false, error: result.data.detail || '登录失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('auth-register', async (event, userData) => {
+  try {
+    const result = await httpRequest('POST', '/api/auth/register', userData);
+    if (result.status === 200 && result.data.success) {
+      return { success: true, ...result.data };
+    }
+    return { success: false, error: result.data.detail || '注册失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('auth-register-enterprise', async (event, enterpriseData) => {
+  try {
+    const result = await httpRequest('POST', '/api/auth/register/enterprise', enterpriseData);
+    if (result.status === 200 && result.data.success) {
+      return { success: true, ...result.data };
+    }
+    return { success: false, error: result.data.detail || '企业注册失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('auth-logout', async () => {
+  if (authToken) {
+    try {
+      await httpRequest('POST', '/api/auth/logout');
+    } catch(e) {}
+  }
+  authToken = null;
+  authUser = null;
+  return { success: true };
+});
+
+ipcMain.handle('auth-get-token', async () => {
+  return { success: true, token: authToken, user: authUser };
+});
+
+ipcMain.handle('auth-refresh-token', async (event, refreshToken) => {
+  try {
+    const result = await httpRequest('POST', '/api/auth/refresh', { refresh_token: refreshToken });
+    if (result.status === 200 && result.data.access_token) {
+      authToken = result.data.access_token;
+      return { success: true, ...result.data };
+    }
+    return { success: false, error: '刷新失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('auth-get-user', async () => {
+  if (!authToken) return { success: false, error: '未登录' };
+  try {
+    const result = await httpRequest('GET', '/api/auth/me');
+    if (result.status === 200 && result.data.success) {
+      return { success: true, user: result.data.user };
+    }
+    return { success: false, error: '获取用户信息失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('auth-get-enterprise', async () => {
+  if (!authToken) return { success: false, error: '未登录' };
+  try {
+    const result = await httpRequest('GET', '/api/auth/enterprise');
+    if (result.status === 200 && result.data.success) {
+      return { success: true, enterprise: result.data.enterprise };
+    }
+    return { success: false, error: '获取企业信息失败' };
+  } catch(err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// ============================================================
 // 自动更新
 // ============================================================
 function setupAutoUpdater() {
