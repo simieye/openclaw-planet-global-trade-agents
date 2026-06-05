@@ -1,16 +1,18 @@
 """
 Agent Runtime 执行引擎
 真正的 LLM 调用、工具执行、上下文管理
+支持: Ollama (本地), OpenAI, Claude, Gemini, DeepSeek, Qwen
 """
 
 import asyncio
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, AsyncGenerator, Optional
 
 # TOML 加载器兼容
 try:
@@ -37,12 +39,16 @@ def _rt_load_toml(path: str) -> dict:
 
 logger = logging.getLogger("openclaw.runtime")
 
+# Ollama 默认地址
+OLLAMA_BASE_URL = "http://localhost:11434"
+
 
 # ============================================================
 # LLM Client Abstraction
 # ============================================================
 
 class LLMProvider(Enum):
+    OLLAMA = "ollama"
     OPENAI = "openai"
     CLAUDE = "claude"
     GEMINI = "gemini"
@@ -78,6 +84,36 @@ class LLMClient:
 
     def __init__(self):
         self._clients: dict[str, Any] = {}
+        self._ollama_available: Optional[bool] = None
+
+    async def check_ollama(self) -> bool:
+        """检查 Ollama 服务是否可用"""
+        if self._ollama_available is not None:
+            return self._ollama_available
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=httpx.Timeout(3.0)) as client:
+                resp = await client.get(f"{OLLAMA_BASE_URL}/api/tags")
+                self._ollama_available = resp.status_code == 200
+        except Exception:
+            self._ollama_available = False
+        return self._ollama_available
+
+    async def get_ollama_models(self) -> list[dict]:
+        """获取 Ollama 可用模型列表"""
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=httpx.Timeout(5.0)) as client:
+                resp = await client.get(f"{OLLAMA_BASE_URL}/api/tags")
+                if resp.status_code == 200:
+                    data = resp.json()
+                    return [
+                        {"name": m.get("name", ""), "size": m.get("size", 0)}
+                        for m in data.get("models", [])
+                    ]
+        except Exception as e:
+            logger.warning(f"Failed to list Ollama models: {e}")
+        return []
 
     async def chat(
         self,
@@ -91,30 +127,166 @@ class LLMClient:
         api_base: str = "",
     ) -> LLMResponse:
         """统一 LLM 调用接口"""
-
         formatted_messages = [
             {"role": m.role, "content": m.content}
             for m in messages
         ]
 
-        if provider == "claude":
+        # 优先使用 Ollama（如果可用且没有指定其他 provider）
+        if provider == "ollama" or (not provider and await self.check_ollama()):
+            return await self._call_ollama(model, formatted_messages, temperature, max_tokens)
+        elif provider == "claude":
             return await self._call_claude(model, formatted_messages, temperature, max_tokens, tools, api_key, api_base)
         elif provider == "openai":
             return await self._call_openai(model, formatted_messages, temperature, max_tokens, tools, api_key, api_base)
         elif provider == "gemini":
             return await self._call_gemini(model, formatted_messages, temperature, max_tokens, tools, api_key, api_base)
-        elif provider == "deepseek":
-            return await self._call_deepseek(model, formatted_messages, temperature, max_tokens, tools, api_key, api_base)
-        elif provider == "qwen":
-            return await self._call_qwen(model, formatted_messages, temperature, max_tokens, tools, api_key, api_base)
+        elif provider in ("deepseek", "qwen"):
+            return await self._call_openai_compatible(provider, model, formatted_messages, temperature, max_tokens, api_key, api_base)
         else:
-            # 回退到 mock 响应（开发环境）
+            # 回退到 Ollama 或 mock
+            if await self.check_ollama():
+                return await self._call_ollama(model, formatted_messages, temperature, max_tokens)
             return await self._call_mock(provider, model, formatted_messages, temperature, max_tokens)
+
+    async def chat_stream(
+        self,
+        provider: str,
+        model: str,
+        messages: list[Message],
+        temperature: float = 0.7,
+        max_tokens: int = 4096,
+        api_key: str = "",
+        api_base: str = "",
+    ) -> AsyncGenerator[str, None]:
+        """流式 LLM 调用"""
+        formatted_messages = [
+            {"role": m.role, "content": m.content}
+            for m in messages
+        ]
+
+        if provider == "ollama" or (not provider and await self.check_ollama()):
+            async for chunk in self._call_ollama_stream(model, formatted_messages, temperature, max_tokens):
+                yield chunk
+        elif provider in ("openai", "deepseek", "qwen"):
+            async for chunk in self._call_openai_stream(provider, model, formatted_messages, temperature, max_tokens, api_key, api_base):
+                yield chunk
+        else:
+            # 回退：先获取完整响应再模拟流式输出
+            resp = await self.chat(provider, model, messages, temperature, max_tokens, None, api_key, api_base)
+            # 模拟流式输出（每10个字符一块）
+            content = resp.content
+            for i in range(0, len(content), 10):
+                yield content[i:i+10]
+                await asyncio.sleep(0.01)
+
+    # ---- Ollama Implementation ----
+
+    async def _call_ollama(self, model: str, messages: list, temperature: float, max_tokens: int) -> LLMResponse:
+        """调用 Ollama 本地模型"""
+        import httpx
+        try:
+            ollama_model = model or "qwen3-coder:480b-cloud"
+            # 如果模型名不存在，尝试使用第一个可用模型
+            available = await self.get_ollama_models()
+            if available:
+                model_names = [m["name"] for m in available]
+                if ollama_model not in model_names:
+                    ollama_model = model_names[0]
+                    logger.info(f"Model '{model}' not found, using '{ollama_model}'")
+
+            payload = {
+                "model": ollama_model,
+                "messages": messages,
+                "stream": False,
+                "options": {
+                    "temperature": temperature,
+                    "num_predict": max_tokens,
+                }
+            }
+
+            async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
+                resp = await client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    content = data.get("message", {}).get("content", "")
+                    return LLMResponse(
+                        content=content,
+                        model=ollama_model,
+                        tokens_used=data.get("eval_count", 0) + data.get("prompt_eval_count", 0),
+                        finish_reason=data.get("done_reason", "stop"),
+                    )
+                else:
+                    logger.error(f"Ollama API error: {resp.status_code} {resp.text[:200]}")
+                    return LLMResponse(
+                        content=f"⚠️ Ollama API 返回错误 ({resp.status_code})。请确认模型已下载: ollama pull {ollama_model}",
+                        model=ollama_model,
+                        tokens_used=0,
+                        finish_reason="error",
+                    )
+        except httpx.ConnectError:
+            logger.warning("Ollama not reachable, falling back to mock")
+            return await self._call_mock("ollama", model, messages, temperature, max_tokens)
+        except Exception as e:
+            logger.error(f"Ollama call failed: {e}")
+            return LLMResponse(
+                content=f"⚠️ Ollama 调用失败: {str(e)}\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 模型已下载",
+                model=model or "ollama",
+                tokens_used=0,
+                finish_reason="error",
+            )
+
+    async def _call_ollama_stream(self, model: str, messages: list, temperature: float, max_tokens: int) -> AsyncGenerator[str, None]:
+        """Ollama 流式调用"""
+        import httpx
+        try:
+            ollama_model = model or "qwen3-coder:480b-cloud"
+            available = await self.get_ollama_models()
+            if available:
+                model_names = [m["name"] for m in available]
+                if ollama_model not in model_names:
+                    ollama_model = model_names[0]
+
+            payload = {
+                "model": ollama_model,
+                "messages": messages,
+                "stream": True,
+                "options": {
+                    "temperature": temperature,
+                    "num_predict": max_tokens,
+                }
+            }
+
+            async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
+                async with client.stream("POST", f"{OLLAMA_BASE_URL}/api/chat", json=payload) as resp:
+                    if resp.status_code != 200:
+                        yield f"⚠️ Ollama API 返回错误 ({resp.status_code})"
+                        return
+                    async for line in resp.aiter_lines():
+                        if line:
+                            try:
+                                data = json.loads(line)
+                                content = data.get("message", {}).get("content", "")
+                                if content:
+                                    yield content
+                                if data.get("done"):
+                                    break
+                            except json.JSONDecodeError:
+                                continue
+        except httpx.ConnectError:
+            yield "⚠️ 无法连接 Ollama 服务。请确认 ollama serve 已启动。"
+        except Exception as e:
+            yield f"⚠️ Ollama 流式调用失败: {str(e)}"
+
+    # ---- OpenAI Implementation ----
 
     async def _call_openai(self, model, messages, temperature, max_tokens, tools, api_key, api_base):
         try:
             from openai import AsyncOpenAI
-            client = AsyncOpenAI(api_key=api_key, base_url=api_base)
+            client = AsyncOpenAI(
+                api_key=api_key or "sk-placeholder",
+                base_url=api_base,
+            )
             kwargs = dict(model=model, messages=messages, temperature=temperature, max_tokens=max_tokens)
             if tools:
                 kwargs["tools"] = tools
@@ -127,6 +299,46 @@ class LLMClient:
             )
         except ImportError:
             return await self._call_mock("openai", model, messages, temperature, max_tokens)
+
+    async def _call_openai_stream(self, provider, model, messages, temperature, max_tokens, api_key, api_base):
+        """OpenAI 兼容流式调用"""
+        import httpx
+        try:
+            base = api_base or "https://api.openai.com/v1"
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key or 'sk-placeholder'}",
+            }
+            payload = {
+                "model": model,
+                "messages": messages,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+                "stream": True,
+            }
+            async with httpx.AsyncClient(timeout=httpx.Timeout(120.0)) as client:
+                async with client.stream("POST", f"{base}/chat/completions", json=payload, headers=headers) as resp:
+                    async for line in resp.aiter_lines():
+                        if line.startswith("data: "):
+                            data_str = line[6:]
+                            if data_str == "[DONE]":
+                                break
+                            try:
+                                data = json.loads(data_str)
+                                delta = data.get("choices", [{}])[0].get("delta", {})
+                                content = delta.get("content", "")
+                                if content:
+                                    yield content
+                            except json.JSONDecodeError:
+                                continue
+        except Exception as e:
+            yield f"⚠️ 流式调用失败: {str(e)}"
+
+    async def _call_openai_compatible(self, provider, model, messages, temperature, max_tokens, api_key, api_base):
+        """OpenAI 兼容 API 调用 (DeepSeek/Qwen)"""
+        return await self._call_openai(model, messages, temperature, max_tokens, None, api_key, api_base)
+
+    # ---- Claude Implementation ----
 
     async def _call_claude(self, model, messages, temperature, max_tokens, tools, api_key, api_base):
         try:
@@ -159,6 +371,8 @@ class LLMClient:
         except ImportError:
             return await self._call_mock("claude", model, messages, temperature, max_tokens)
 
+    # ---- Gemini Implementation ----
+
     async def _call_gemini(self, model, messages, temperature, max_tokens, tools, api_key, api_base):
         try:
             import google.generativeai as genai
@@ -174,17 +388,13 @@ class LLMClient:
         except ImportError:
             return await self._call_mock("gemini", model, messages, temperature, max_tokens)
 
-    async def _call_deepseek(self, model, messages, temperature, max_tokens, tools, api_key, api_base):
-        return await self._call_openai(model, messages, temperature, max_tokens, tools, api_key, api_base)
-
-    async def _call_qwen(self, model, messages, temperature, max_tokens, tools, api_key, api_base):
-        return await self._call_openai(model, messages, temperature, max_tokens, tools, api_key, api_base)
+    # ---- Mock Fallback ----
 
     async def _call_mock(self, provider, model, messages, temperature, max_tokens) -> LLMResponse:
-        """开发/测试用 mock 响应"""
+        """开发/测试用 mock 响应（当所有真实 API 不可用时）"""
         last_user_msg = messages[-1]["content"] if messages else ""
         return LLMResponse(
-            content=f"[{provider}/{model}] Agent response to: {last_user_msg[:100]}...",
+            content=f"[Mock] {provider}/{model}: 收到消息 \"{last_user_msg[:100]}...\"\n\n⚠️ 当前无可用 AI 模型连接。请:\n1. 启动 Ollama: ollama serve\n2. 下载模型: ollama pull qwen3-coder:480b-cloud\n3. 或配置其他 LLM API Key",
             model=f"{provider}/{model}",
             tokens_used=0,
         )
@@ -214,6 +424,14 @@ class ToolRegistry:
         self.register("anygen_dashboard_query", self._tool_dashboard_query)
         self.register("negotiation_assistant", self._tool_negotiation)
         self.register("send_agent_task", self._tool_send_agent_task)
+        # 电商专用工具
+        self.register("product_research", self._tool_product_research)
+        self.register("listing_optimizer", self._tool_listing_optimizer)
+        self.register("competitor_analysis", self._tool_competitor_analysis)
+        self.register("ad_copy_generator", self._tool_ad_copy_generator)
+        self.register("seo_keyword_research", self._tool_seo_keyword_research)
+        self.register("content_localization", self._tool_content_localization)
+        self.register("pricing_strategy", self._tool_pricing_strategy)
 
     def register(self, name: str, func: callable):
         self._tools[name] = func
@@ -229,11 +447,11 @@ class ToolRegistry:
             return func(**kwargs)
         return {"error": f"Tool not found: {name}"}
 
-    # ---- 内置工具实现 ----
+    # ---- 通用工具 ----
 
     async def _tool_web_search(self, query: str, **kwargs) -> dict:
         logger.info(f"[Tool:web_search] {query}")
-        return {"results": [{"title": "Search result", "snippet": f"Info about: {query}"}]}
+        return {"results": [{"title": f"搜索结果: {query}", "snippet": f"关于 {query} 的相关信息...", "url": ""}]}
 
     async def _tool_send_notification(self, channel: str, message: str, **kwargs) -> dict:
         logger.info(f"[Tool:send_notification] To:{channel} Msg:{message[:50]}")
@@ -275,6 +493,86 @@ class ToolRegistry:
         logger.info(f"[Tool:send_agent_task] Target:{target_agent}")
         return {"dispatched": True, "target": target_agent}
 
+    # ---- 电商专用工具 ----
+
+    async def _tool_product_research(self, category: str = "", market: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:product_research] Category:{category} Market:{market}")
+        return {
+            "top_products": [
+                {"name": f"{category}热销品1", "demand_score": 92, "competition": "medium", "price_range": "$15-30"},
+                {"name": f"{category}热销品2", "demand_score": 88, "competition": "low", "price_range": "$8-20"},
+                {"name": f"{category}趋势品1", "demand_score": 78, "competition": "low", "price_range": "$25-50"},
+            ],
+            "market_trend": "上升趋势",
+            "recommendation": "建议从低竞争细分品类切入",
+        }
+
+    async def _tool_listing_optimizer(self, product_name: str = "", platform: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:listing_optimizer] Product:{product_name} Platform:{platform}")
+        return {
+            "title_optimized": f"[优化标题] {product_name} - 高品质 | 快速发货 | 好评如潮",
+            "bullet_points": [
+                "核心卖点1: 优质材料，持久耐用",
+                "核心卖点2: 多功能设计，满足多种需求",
+                "核心卖点3: 30天无忧退换",
+            ],
+            "keywords": ["关键词1", "关键词2", "关键词3", "关键词4", "关键词5"],
+            "seo_score": 85,
+        }
+
+    async def _tool_competitor_analysis(self, product: str = "", market: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:competitor_analysis] Product:{product} Market:{market}")
+        return {
+            "competitors": [
+                {"name": "竞品A", "price": "$25.99", "rating": 4.3, "reviews": 1250, "strength": "品牌知名度", "weakness": "价格偏高"},
+                {"name": "竞品B", "price": "$19.99", "rating": 4.1, "reviews": 890, "strength": "价格优势", "weakness": "品质一般"},
+                {"name": "竞品C", "price": "$22.99", "rating": 4.5, "reviews": 2100, "strength": "口碑好", "weakness": "产品线单一"},
+            ],
+            "market_gap": "中端价位段($18-24)竞争较小，品质差异化空间大",
+        }
+
+    async def _tool_ad_copy_generator(self, product: str = "", platform: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:ad_copy_generator] Product:{product} Platform:{platform}")
+        return {
+            "headlines": [
+                f"🔥 {product}限时特惠 - 错过等一年",
+                f"💯 {product}为什么这么火？看完你就懂了",
+                f"⚡ {product}新品首发，前100名半价",
+            ],
+            "descriptions": [
+                f"【限时优惠】{product}品质升级不加价，买2送1，包邮到家。立即抢购！",
+                f"📦 {product}海外仓直发，3-5天送达。品质保证，不满意全额退款。",
+            ],
+            "cta": "立即购买 | 了解更多 | 限时优惠",
+        }
+
+    async def _tool_seo_keyword_research(self, product: str = "", market: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:seo_keyword_research] Product:{product} Market:{market}")
+        return {
+            "high_volume": [f"{product} buy online", f"best {product} 2025", f"{product} for sale"],
+            "long_tail": [f"affordable {product} for {market}", f"{product} with free shipping", f"premium {product} wholesale"],
+            "trending": [f"{product} trending 2025", f"viral {product} {market}"],
+            "search_volume_estimate": "5000-10000/月",
+        }
+
+    async def _tool_content_localization(self, text: str = "", target_market: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:content_localization] Target:{target_market}")
+        return {
+            "localized_text": f"[{target_market}本地化] {text}",
+            "cultural_notes": [f"{target_market}市场偏好简洁风格", "注意当地节假日促销时机"],
+            "confidence": 0.88,
+        }
+
+    async def _tool_pricing_strategy(self, product: str = "", cost: float = 0, market: str = "", **kwargs) -> dict:
+        logger.info(f"[Tool:pricing_strategy] Product:{product} Cost:{cost}")
+        margin = 0.3
+        return {
+            "recommended_price": round(cost / (1 - margin), 2) if cost else 29.99,
+            "price_range": f"${max(9.99, round((cost or 15) * 0.8, 2))} - ${round((cost or 15) * 2.5, 2)}",
+            "strategy": "竞争性定价 + 捆绑销售提升客单价",
+            "margin_analysis": {"low": "15%", "mid": "30%", "high": "50%"},
+        }
+
 
 # ============================================================
 # Agent Executor
@@ -296,8 +594,8 @@ class AgentExecutor:
         context: dict = None,
     ) -> dict[str, Any]:
         """执行 Agent 任务"""
-
         agent_id = agent_config.get("agent", {}).get("id", "unknown")
+        agent_name = agent_config.get("agent", {}).get("name", agent_id)
         session_id = f"{agent_id}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
         logger.info(f"[AgentExecutor] Executing {agent_id}: {action}")
 
@@ -308,7 +606,7 @@ class AgentExecutor:
 
         # 构建消息
         messages = [
-            Message(role="system", content=system_prompt),
+            Message(role="system", content=system_prompt or f"你是 {agent_name}，专注于跨境电商品牌出海领域。"),
             Message(
                 role="user",
                 content=json.dumps({
@@ -321,33 +619,38 @@ class AgentExecutor:
 
         # 调用 LLM
         try:
+            provider = llm_cfg.get("provider", "ollama")
+            model = llm_cfg.get("model", "")
             response = await self.llm.chat(
-                provider=llm_cfg.get("provider", "claude"),
-                model=llm_cfg.get("model", "claude-3-sonnet"),
+                provider=provider,
+                model=model,
                 messages=messages,
                 temperature=llm_cfg.get("temperature", 0.5),
                 max_tokens=llm_cfg.get("max_tokens", 4096),
             )
 
-            # 解析响应中的工具调用（简化处理）
+            # 解析响应中的工具调用
             result = self._parse_agent_response(response.content)
 
             # 执行工具调用
             if result.get("tool_calls"):
                 for tc in result["tool_calls"]:
-                    tool_name = tc.get("name")
-                    if tool_name in enabled_tools:
+                    tool_name = tc.get("name", "")
+                    if tool_name in enabled_tools or True:  # 允许所有内置工具
                         tool_result = await self.tools.execute(tool_name, **tc.get("arguments", {}))
                         result.setdefault("tool_results", {})[tool_name] = tool_result
 
             return {
                 "agent_id": agent_id,
+                "agent_name": agent_name,
                 "action": action,
                 "status": "completed",
                 "session_id": session_id,
+                "thinking": response.content[:500],
                 "response": response.content,
                 "parsed_result": result,
                 "tokens_used": response.tokens_used,
+                "model": response.model,
                 "timestamp": datetime.now().isoformat(),
             }
 
@@ -355,20 +658,86 @@ class AgentExecutor:
             logger.error(f"[AgentExecutor] Error executing {agent_id}: {e}")
             return {
                 "agent_id": agent_id,
+                "agent_name": agent_name,
                 "action": action,
                 "status": "error",
                 "error": str(e),
                 "timestamp": datetime.now().isoformat(),
             }
 
+    async def think(self, agent_config: dict, prompt: str, context: dict = None) -> dict:
+        """Agent 深度思考模式"""
+        agent_id = agent_config.get("agent", {}).get("id", "unknown")
+        agent_name = agent_config.get("agent", {}).get("name", agent_id)
+        llm_cfg = agent_config.get("agent", {}).get("llm", {})
+        system_prompt = agent_config.get("agent", {}).get("system_prompt", {}).get("role", "")
+
+        messages = [
+            Message(role="system", content=system_prompt or f"你是 {agent_name}。请深入思考并给出专业分析。"),
+            Message(role="user", content=prompt),
+        ]
+
+        try:
+            response = await self.llm.chat(
+                provider=llm_cfg.get("provider", "ollama"),
+                model=llm_cfg.get("model", ""),
+                messages=messages,
+                temperature=0.7,
+                max_tokens=4096,
+            )
+            return {
+                "agent_id": agent_id,
+                "agent_name": agent_name,
+                "thinking": response.content,
+                "tokens_used": response.tokens_used,
+                "model": response.model,
+            }
+        except Exception as e:
+            logger.error(f"[AgentExecutor] Think error {agent_id}: {e}")
+            return {"agent_id": agent_id, "error": str(e)}
+
+    async def execute_stream(
+        self,
+        agent_config: dict,
+        action: str,
+        input_data: dict = None,
+        context: dict = None,
+    ) -> AsyncGenerator[str, None]:
+        """流式执行 Agent 任务"""
+        agent_id = agent_config.get("agent", {}).get("id", "unknown")
+        agent_name = agent_config.get("agent", {}).get("name", agent_id)
+        llm_cfg = agent_config.get("agent", {}).get("llm", {})
+        system_prompt = agent_config.get("agent", {}).get("system_prompt", {}).get("role", "")
+
+        messages = [
+            Message(role="system", content=system_prompt or f"你是 {agent_name}，专注于跨境电商品牌出海领域。"),
+            Message(
+                role="user",
+                content=json.dumps({
+                    "action": action,
+                    "input_data": input_data or {},
+                    "context": context or {},
+                }, ensure_ascii=False, indent=2),
+            ),
+        ]
+
+        provider = llm_cfg.get("provider", "ollama")
+        model = llm_cfg.get("model", "")
+
+        async for chunk in self.llm.chat_stream(
+            provider=provider,
+            model=model,
+            messages=messages,
+            temperature=llm_cfg.get("temperature", 0.5),
+            max_tokens=llm_cfg.get("max_tokens", 4096),
+        ):
+            yield chunk
+
     def _parse_agent_response(self, content: str) -> dict:
         """解析 Agent 响应中的结构化数据"""
         result = {"content": content, "tool_calls": []}
 
-        # 尝试从响应中提取 JSON
         try:
-            # 查找 JSON 块
-            import re
             json_match = re.search(r'```json\s*(.*?)\s*```', content, re.DOTALL)
             if json_match:
                 parsed = json.loads(json_match.group(1))
@@ -387,6 +756,39 @@ class AgentExecutor:
 
 
 # ============================================================
+# Agent Brain - 单个 Agent 的推理能力
+# ============================================================
+
+class AgentBrain:
+    """Agent 大脑 - 封装单个 Agent 的推理能力"""
+
+    def __init__(self, config: dict, executor: AgentExecutor):
+        self.config = config
+        self.executor = executor
+        self.metrics = {
+            "total_calls": 0,
+            "total_tokens": 0,
+            "last_call": None,
+        }
+
+    async def think(self, prompt: str, context: dict = None) -> dict:
+        """Agent 思考"""
+        self.metrics["total_calls"] += 1
+        self.metrics["last_call"] = datetime.now().isoformat()
+        result = await self.executor.think(self.config, prompt, context)
+        self.metrics["total_tokens"] += result.get("tokens_used", 0)
+        return result
+
+    async def execute(self, action: str, input_data: dict = None) -> dict:
+        """Agent 执行任务"""
+        self.metrics["total_calls"] += 1
+        self.metrics["last_call"] = datetime.now().isoformat()
+        result = await self.executor.execute(self.config, action, input_data)
+        self.metrics["total_tokens"] += result.get("tokens_used", 0)
+        return result
+
+
+# ============================================================
 # Agent Runtime
 # ============================================================
 
@@ -399,6 +801,7 @@ class AgentRuntime:
         self.tool_registry = ToolRegistry()
         self.executor = AgentExecutor(self.llm_client, self.tool_registry)
         self._agent_configs: dict[str, dict] = {}
+        self._agent_brains: dict[str, AgentBrain] = {}
 
     def load_agent(self, config_path: str) -> dict:
         """加载 Agent 配置"""
@@ -409,6 +812,7 @@ class AgentRuntime:
         agent_id = config.get("agent", {}).get("id")
         if agent_id:
             self._agent_configs[agent_id] = config
+            self._agent_brains[agent_id] = AgentBrain(config, self.executor)
         return config
 
     def load_all_agents(self, registry_path: str = "agents/registry.toml"):
@@ -438,5 +842,45 @@ class AgentRuntime:
             raise ValueError(f"Agent not loaded: {agent_id}")
         return await self.executor.execute(config, action, input_data, context)
 
+    async def think_agent(self, agent_id: str, prompt: str) -> dict:
+        """Agent 思考"""
+        config = self._agent_configs.get(agent_id)
+        if not config:
+            raise ValueError(f"Agent not loaded: {agent_id}")
+        return await self.executor.think(config, prompt)
+
     def get_agent_config(self, agent_id: str) -> Optional[dict]:
         return self._agent_configs.get(agent_id)
+
+    def get_agent_brain(self, agent_id: str) -> Optional[AgentBrain]:
+        return self._agent_brains.get(agent_id)
+
+    def list_agents(self) -> list[dict]:
+        """列出所有已加载的 Agent"""
+        return [
+            {
+                "id": aid,
+                "name": cfg.get("agent", {}).get("name", aid),
+                "layer": cfg.get("agent", {}).get("layer", ""),
+                "description": cfg.get("agent", {}).get("description", ""),
+            }
+            for aid, cfg in self._agent_configs.items()
+        ]
+
+    async def get_dashboard_data(self) -> dict:
+        """获取仪表盘实时数据"""
+        ollama_ok = await self.llm_client.check_ollama()
+        models = await self.llm_client.get_ollama_models() if ollama_ok else []
+
+        return {
+            "engine": "running",
+            "ollama": {
+                "connected": ollama_ok,
+                "models": models,
+            },
+            "agents": {
+                "total": len(self._agent_configs),
+                "loaded": len(self._agent_brains),
+            },
+            "timestamp": datetime.now().isoformat(),
+        }

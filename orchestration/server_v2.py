@@ -415,20 +415,192 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
     @app.get("/api/chat/ollama-status")
     async def ollama_status():
         """检查 Ollama 连接状态"""
-        import httpx
-        try:
-            async with httpx.AsyncClient(timeout=httpx.Timeout(3.0)) as client:
-                resp = await client.get("http://localhost:11434/api/tags")
-                if resp.status_code == 200:
-                    data = resp.json()
-                    return {
-                        "connected": True,
-                        "models_count": len(data.get("models", [])),
-                        "models": [m.get("name") for m in data.get("models", [])],
-                    }
-        except Exception:
-            pass
+        if _engine and _engine.runtime:
+            ok = await _engine.runtime.llm_client.check_ollama()
+            models = await _engine.runtime.llm_client.get_ollama_models()
+            return {
+                "connected": ok,
+                "models_count": len(models),
+                "models": [m.get("name") for m in models],
+            }
         return {"connected": False, "models_count": 0, "models": []}
+
+    # ============================================================
+    # SOP TaskFlow Execution API - 真实执行 SOP 工作流
+    # ============================================================
+
+    class SOPExecuteRequest(BaseModel):
+        taskflow_id: str = ""
+        task_name: str = ""
+        category: str = ""
+        input_data: dict = Field(default_factory=dict)
+        async_mode: bool = True
+
+    @app.post("/api/sop/execute")
+    async def execute_sop_taskflow(req: SOPExecuteRequest, background_tasks: BackgroundTasks):
+        """执行 SOP TaskFlow - 调用 AI 模型执行跨境电商任务"""
+        if not _engine or not _engine.runtime:
+            raise HTTPException(status_code=503, detail="Engine not ready")
+
+        task_name = req.task_name or req.taskflow_id
+        category = req.category or "通用"
+
+        # 构建 SOP 执行提示词
+        system_prompt = _build_sop_system_prompt(category, task_name)
+        user_prompt = _build_sop_user_prompt(category, task_name, req.input_data)
+
+        if req.async_mode:
+            background_tasks.add_task(
+                _execute_sop_async, _engine, system_prompt, user_prompt, task_name
+            )
+            return {
+                "status": "started",
+                "taskflow_id": req.taskflow_id,
+                "task_name": task_name,
+                "category": category,
+                "mode": "async",
+            }
+        else:
+            result = await _execute_sop_sync(_engine, system_prompt, user_prompt, task_name)
+            return result
+
+    @app.post("/api/sop/execute-stream")
+    async def execute_sop_stream(req: SOPExecuteRequest):
+        """流式执行 SOP TaskFlow"""
+        if not _engine or not _engine.runtime:
+            raise HTTPException(status_code=503, detail="Engine not ready")
+
+        task_name = req.task_name or req.taskflow_id
+        category = req.category or "通用"
+        system_prompt = _build_sop_system_prompt(category, task_name)
+        user_prompt = _build_sop_user_prompt(category, task_name, req.input_data)
+
+        llm = _engine.runtime.llm_client
+
+        async def event_generator():
+            yield f"data: {json.dumps({'status': 'started', 'task': task_name}, ensure_ascii=False)}\n\n"
+            try:
+                async for chunk in llm.chat_stream(
+                    provider="ollama",
+                    model="",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt},
+                    ],
+                    temperature=0.7,
+                    max_tokens=4096,
+                ):
+                    yield f"data: {json.dumps({'content': chunk}, ensure_ascii=False)}\n\n"
+                yield f"data: {json.dumps({'status': 'completed'}, ensure_ascii=False)}\n\n"
+            except Exception as e:
+                yield f"data: {json.dumps({'error': str(e)}, ensure_ascii=False)}\n\n"
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
+    @app.post("/api/sop/agent-execute")
+    async def sop_agent_execute(request: Request):
+        """通过指定 Agent 执行 SOP 任务"""
+        if not _engine or not _engine.runtime:
+            raise HTTPException(status_code=503, detail="Engine not ready")
+
+        body = await request.json()
+        agent_id = body.get("agent_id", "")
+        task_name = body.get("task_name", "")
+        input_data = body.get("input_data", {})
+
+        if not agent_id:
+            raise HTTPException(status_code=400, detail="agent_id is required")
+
+        result = await _engine.runtime.think_agent(agent_id, json.dumps({
+            "task": task_name,
+            "input_data": input_data,
+        }, ensure_ascii=False))
+
+        return {
+            "success": True,
+            "agent_id": agent_id,
+            "task_name": task_name,
+            "thinking": result.get("thinking", ""),
+            "tokens_used": result.get("tokens_used", 0),
+        }
+
+    # SOP 系统列表 API
+    @app.get("/api/sop/systems")
+    async def list_sop_systems():
+        """列出所有 SOP 系统及其 TaskFlow"""
+        systems = {
+            "tiktokshop": {
+                "name": "TikTok Shop 全球增长SOP",
+                "icon": "🎵",
+                "total": 30,
+                "categories": [
+                    {"id": "product", "name": "选品调研", "count": 5, "icon": "🔍"},
+                    {"id": "content", "name": "内容创作", "count": 6, "icon": "🎬"},
+                    {"id": "influencer", "name": "达人合作", "count": 4, "icon": "🌟"},
+                    {"id": "live", "name": "直播运营", "count": 4, "icon": "📡"},
+                    {"id": "ads", "name": "广告投放", "count": 4, "icon": "📢"},
+                    {"id": "private", "name": "私域运营", "count": 3, "icon": "👥"},
+                    {"id": "affiliate", "name": "联盟营销", "count": 2, "icon": "🤝"},
+                    {"id": "growth", "name": "GMV增长飞轮", "count": 2, "icon": "🚀"},
+                ],
+            },
+            "amazonbrand": {
+                "name": "Amazon 品牌增长SOP",
+                "icon": "📦",
+                "total": 31,
+                "categories": [
+                    {"id": "product", "name": "选品调研", "count": 4, "icon": "🔍"},
+                    {"id": "listing", "name": "Listing优化", "count": 5, "icon": "📝"},
+                    {"id": "seo", "name": "SEO关键词", "count": 3, "icon": "🔎"},
+                    {"id": "ppc", "name": "PPC广告", "count": 5, "icon": "💸"},
+                    {"id": "review", "name": "Review管理", "count": 3, "icon": "⭐"},
+                    {"id": "brand", "name": "Brand Store", "count": 3, "icon": "🏪"},
+                    {"id": "dsp", "name": "DSP广告", "count": 2, "icon": "🎯"},
+                    {"id": "external", "name": "站外引流", "count": 3, "icon": "🌐"},
+                    {"id": "affiliate", "name": "联盟营销", "count": 2, "icon": "🤝"},
+                    {"id": "matrix", "name": "品牌矩阵", "count": 1, "icon": "🔄"},
+                ],
+            },
+            "shopifydtc": {
+                "name": "Shopify DTC 品牌增长SOP",
+                "icon": "🛍️",
+                "total": 40,
+                "categories": [
+                    {"id": "brand", "name": "品牌战略", "count": 5, "icon": "🎯"},
+                    {"id": "shopify", "name": "Shopify运营", "count": 6, "icon": "🏬"},
+                    {"id": "meta", "name": "Meta广告", "count": 5, "icon": "📱"},
+                    {"id": "google", "name": "Google广告", "count": 4, "icon": "🔍"},
+                    {"id": "seo", "name": "SEO优化", "count": 4, "icon": "📈"},
+                    {"id": "email", "name": "Email营销", "count": 4, "icon": "📧"},
+                    {"id": "whatsapp", "name": "WhatsApp营销", "count": 3, "icon": "💬"},
+                    {"id": "member", "name": "会员体系", "count": 3, "icon": "👑"},
+                    {"id": "community", "name": "社区运营", "count": 3, "icon": "👥"},
+                    {"id": "fulfillment", "name": "履约管理", "count": 3, "icon": "📦"},
+                ],
+            },
+            "factory": {
+                "name": "AI工厂出海SOP",
+                "icon": "🏭",
+                "total": 17,
+                "categories": [
+                    {"id": "market", "name": "市场调研", "count": 3, "icon": "🔍"},
+                    {"id": "product", "name": "产品开发", "count": 3, "icon": "🔧"},
+                    {"id": "supply", "name": "供应链", "count": 3, "icon": "🚚"},
+                    {"id": "sales", "name": "销售渠道", "count": 4, "icon": "💼"},
+                    {"id": "brand", "name": "品牌建设", "count": 2, "icon": "🏷️"},
+                    {"id": "compliance", "name": "合规认证", "count": 2, "icon": "✅"},
+                ],
+            },
+        }
+        return {"success": True, "systems": systems}
 
     # ============================================================
     # Knowledge Base File Upload API
@@ -949,6 +1121,112 @@ title = "{target_link.get("title", req.url)}"
         }
 
     return app
+
+
+# ============================================================
+# SOP 辅助函数
+# ============================================================
+
+_SOP_CATEGORY_PROMPTS = {
+    "tiktokshop_product": "你是 TikTok Shop 选品专家。分析市场趋势，找出高潜力产品。",
+    "tiktokshop_content": "你是 TikTok 短视频内容专家。创作高转化率的短视频脚本和内容策略。",
+    "tiktokshop_influencer": "你是 TikTok 达人合作专家。制定达人筛选、合作和效果追踪策略。",
+    "tiktokshop_live": "你是 TikTok 直播运营专家。设计直播脚本、互动策略和转化方案。",
+    "tiktokshop_ads": "你是 TikTok 广告投放专家。优化广告创意、受众定位和ROI。",
+    "tiktokshop_private": "你是私域运营专家。设计私域流量池搭建和用户运营策略。",
+    "tiktokshop_affiliate": "你是联盟营销专家。制定联盟计划和佣金策略。",
+    "tiktokshop_growth": "你是 GMV 增长策略专家。设计增长飞轮和规模化策略。",
+    "amazonbrand_product": "你是 Amazon 选品专家。通过数据分析找出高利润蓝海品类。",
+    "amazonbrand_listing": "你是 Amazon Listing 优化专家。优化标题、五点、A+内容和图片。",
+    "amazonbrand_seo": "你是 Amazon SEO 专家。研究高转化关键词和搜索排名策略。",
+    "amazonbrand_ppc": "你是 Amazon PPC 广告专家。优化广告架构、竞价和ACOS。",
+    "amazonbrand_review": "你是 Amazon Review 管理专家。制定评价获取和维护策略。",
+    "amazonbrand_brand": "你是 Amazon Brand Store 专家。设计品牌旗舰店和品牌体验。",
+    "amazonbrand_dsp": "你是 Amazon DSP 广告专家。制定程序化广告和受众策略。",
+    "amazonbrand_external": "你是站外引流专家。设计多渠道引流到 Amazon 的策略。",
+    "amazonbrand_affiliate": "你是 Amazon 联盟营销专家。制定联盟计划和达人合作策略。",
+    "amazonbrand_matrix": "你是品牌矩阵策略专家。设计多品牌多店铺运营矩阵。",
+    "shopifydtc_brand": "你是 DTC 品牌战略专家。制定品牌定位、故事和价值主张。",
+    "shopifydtc_shopify": "你是 Shopify 运营专家。优化店铺设计、转化率和用户体验。",
+    "shopifydtc_meta": "你是 Meta 广告专家。优化 Facebook/Instagram 广告投放策略。",
+    "shopifydtc_google": "你是 Google 广告专家。优化搜索、购物和展示广告策略。",
+    "shopifydtc_seo": "你是 SEO 优化专家。制定技术SEO、内容SEO和外链策略。",
+    "shopifydtc_email": "你是 Email 营销专家。设计自动化邮件序列和细分策略。",
+    "shopifydtc_whatsapp": "你是 WhatsApp 营销专家。设计消息模板和自动化流程。",
+    "shopifydtc_member": "你是会员体系专家。设计会员等级、权益和忠诚度计划。",
+    "shopifydtc_community": "你是社区运营专家。设计社区建设、内容和互动策略。",
+    "shopifydtc_fulfillment": "你是履约管理专家。优化物流、仓储和配送策略。",
+    "factory_market": "你是OEM/ODM市场调研专家。分析海外市场需求和竞争格局。",
+    "factory_product": "你是产品开发专家。从OEM转型自主品牌的产品策略。",
+    "factory_supply": "你是供应链管理专家。优化跨境供应链和物流体系。",
+    "factory_sales": "你是销售渠道专家。制定B2B+B2C多渠道销售策略。",
+    "factory_brand": "你是品牌建设专家。帮助工厂建立自主品牌和品牌出海。",
+    "factory_compliance": "你是合规认证专家。指导CE/FDA/FCC等国际认证流程。",
+}
+
+def _build_sop_system_prompt(category: str, task_name: str) -> str:
+    """构建 SOP 系统提示词"""
+    key = f"{category}_{task_name.split('_')[0]}" if "_" in task_name else f"{category}_{task_name}"
+    base_prompt = _SOP_CATEGORY_PROMPTS.get(key, "")
+    if not base_prompt:
+        # 模糊匹配
+        for k, v in _SOP_CATEGORY_PROMPTS.items():
+            if k.startswith(category):
+                base_prompt = v
+                break
+
+    return f"""{base_prompt or '你是跨境电商品牌出海专家。'}
+
+请提供专业、详细、可执行的方案。回复应包含：
+1. 核心策略和关键步骤
+2. 具体执行方案和时间节点
+3. 关键指标(KPI)和预期效果
+4. 风险提示和应对方案
+5. 所需资源和工具建议
+
+用中文回答，专业但易懂。"""
+
+def _build_sop_user_prompt(category: str, task_name: str, input_data: dict) -> str:
+    """构建 SOP 用户提示词"""
+    parts = [f"请为我执行以下跨境电商任务：\n\n**系统**: {category}\n**任务**: {task_name}"]
+
+    if input_data:
+        parts.append("\n**输入参数**:")
+        for k, v in input_data.items():
+            parts.append(f"- {k}: {v}")
+
+    parts.append("\n请提供详细的执行方案和分析结果。")
+    return "\n".join(parts)
+
+async def _execute_sop_sync(engine, system_prompt: str, user_prompt: str, task_name: str) -> dict:
+    """同步执行 SOP 任务"""
+    llm = engine.runtime.llm_client
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    response = await llm.chat(
+        provider="ollama",
+        model="",
+        messages=messages,
+        temperature=0.7,
+        max_tokens=4096,
+    )
+    return {
+        "success": True,
+        "task_name": task_name,
+        "response": response.content,
+        "model": response.model,
+        "tokens_used": response.tokens_used,
+    }
+
+async def _execute_sop_async(engine, system_prompt: str, user_prompt: str, task_name: str):
+    """异步执行 SOP 任务（后台）"""
+    try:
+        result = await _execute_sop_sync(engine, system_prompt, user_prompt, task_name)
+        logger.info(f"[SOP] Async task completed: {task_name}, tokens={result.get('tokens_used', 0)}")
+    except Exception as e:
+        logger.error(f"[SOP] Async task failed: {task_name}, error={e}")
 
 
 def run_server_v2(engine, host: str = "0.0.0.0", port: int = 8080):

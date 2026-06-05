@@ -3748,18 +3748,82 @@ function showToast(msg,type){
 }
 
 function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
-function sendChat(){
+
+// 真实 Ollama API 调用（企业 OS 版）
+async function sendChat(){
   const input=document.getElementById('chatInput');
   const text=input.value.trim();if(!text)return;
   APP.chat消息s.push({role:'user',content:text});input.value='';renderChatMessages();
-  set时间out(()=>{
-    const repliesZh=['收到！正在分析你的需求，调用相关 Agent 处理...','这是一个很好的问题。让我查询连接器获取最新数据...',
-      '任务已分配给对应 Agent 集群处理，请稍候...','根据当前数据分析，建议如下方案：'];
-    const repliesEn=['Received! Analyzing your request, dispatching relevant agents...','Great question. Let me query connectors for the latest data...',
-      'Task assigned to agent cluster, please wait...','Based on current data analysis, recommendations:'];
-    const replies = currentLang==='zh'?repliesZh:repliesEn;
-    APP.chat消息s.push({role:'assistant',content:replies[Math.floor(Math.random()*replies.length)]});renderChatMessages();
-    document.getElementById('chat消息s').scrollTop=99999;},600+Math.random()*800);
+  
+  // 添加加载占位
+  const loadingId='ent-loading-'+Date.now();
+  APP.chat消息s.push({role:'assistant',content:'<span class="typing-indicator"><span></span><span></span><span></span></span>',_loading:true,_id:loadingId});
+  renderChatMessages();
+  const msgsEl=document.getElementById('chat消息s');
+  if(msgsEl)msgsEl.scrollTop=99999;
+  
+  try{
+    const resp=await fetch('http://localhost:8080/api/chat/stream',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:text,
+        provider:'ollama',
+        model:'',
+        conversation_history:APP.chat消息s.filter(m=>!m._loading&&m.role!=='system').slice(-20).map(m=>({role:m.role,content:m.content})),
+      }),
+    });
+    
+    if(!resp.ok){
+      replaceEntLoading(loadingId,'⚠️ 无法连接后端服务。请确认引擎已启动。');
+      return;
+    }
+    
+    const reader=resp.body.getReader();
+    const decoder=new TextDecoder();
+    let fullContent='';
+    let isFirst=true;
+    
+    while(true){
+      const {done,value}=await reader.read();
+      if(done)break;
+      const text=decoder.decode(value,{stream:true});
+      const lines=text.split('\n');
+      for(const line of lines){
+        if(line.startsWith('data: ')){
+          const d=line.slice(6);
+          if(d==='[DONE]')break;
+          try{
+            const chunk=JSON.parse(d);
+            if(chunk.content){
+              fullContent+=chunk.content;
+              if(isFirst){replaceEntLoading(loadingId,fullContent);isFirst=false;}
+              else updateEntLastAssistant(fullContent);
+            }
+            if(chunk.error){replaceEntLoading(loadingId,'⚠️ '+chunk.error);return;}
+          }catch(e){}
+        }
+      }
+      if(msgsEl)msgsEl.scrollTop=99999;
+    }
+    
+    if(!fullContent)replaceEntLoading(loadingId,'（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
+  }catch(e){
+    replaceEntLoading(loadingId,'⚠️ 连接失败: '+e.message+'\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 引擎已启动');
+  }
+}
+
+function replaceEntLoading(loadingId,content){
+  const idx=APP.chat消息s.findIndex(m=>m._id===loadingId);
+  if(idx>=0)APP.chat消息s[idx]={role:'assistant',content:content,_id:loadingId};
+  renderChatMessages();
+}
+
+function updateEntLastAssistant(content){
+  for(let i=APP.chat消息s.length-1;i>=0;i--){
+    if(APP.chat消息s[i].role==='assistant'){APP.chat消息s[i].content=content;break;}
+  }
+  renderChatMessages();
 }
 function chipAction(action){document.getElementById('chatInput').value=`[${action.toUpperCase()} ${currentLang==='zh'?'模式已激活':'mode activated'}]
 ${currentLang==='zh'?'请描述你的具体需求...':'Please describe your specific needs...'}`;document.getElementById('chatInput').focus();showToast(t('toast.modeActivated'),'success');}

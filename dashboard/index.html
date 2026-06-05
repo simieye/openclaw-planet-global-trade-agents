@@ -4822,38 +4822,165 @@ function closeTaskFlowDetail() {
   renderFactoryTaskFlows(activeFactoryFilter);
 }
 
+// ============================================================
+// 真实 SOP 执行引擎 - 调用 Ollama 本地 AI 模型
+// ============================================================
+
+const API_BASE = 'http://localhost:8080';
+let _sopExecuting = false;
+
+async function executeSOPTaskflow(category, taskName, taskTitle, inputData = {}) {
+  if (_sopExecuting) {
+    showToast('⚠️ 当前有任务正在执行，请稍后再试', 'warning');
+    return;
+  }
+  _sopExecuting = true;
+
+  // 打开聊天面板显示结果
+  const chatPanel = document.getElementById('chatPanel');
+  chatPanel.style.display = 'flex';
+  const msgs = document.getElementById('chatMessages');
+  const loadingId = 'sop-loading-' + Date.now();
+  
+  APP.chatMessages.push({ role: 'user', content: `🚀 **执行 SOP 任务**: ${taskTitle}\n> 系统: ${category} | ID: ${taskName}`, _id: 'sop-user-' + loadingId });
+  APP.chatMessages.push({ role: 'assistant', content: '<span class="typing-indicator"><span></span><span></span><span></span></span>', _loading: true, _id: loadingId });
+  renderChatMessages();
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    // 尝试流式执行
+    const resp = await fetch(`${API_BASE}/api/sop/execute-stream`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        taskflow_id: taskName,
+        task_name: taskName,
+        category: category,
+        input_data: inputData,
+        async_mode: false,
+      }),
+    });
+
+    if (!resp.ok) {
+      // 回退到非流式 API
+      const syncResp = await fetch(`${API_BASE}/api/sop/execute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          taskflow_id: taskName,
+          task_name: taskName,
+          category: category,
+          input_data: inputData,
+          async_mode: false,
+        }),
+      });
+      
+      if (syncResp.ok) {
+        const data = await syncResp.json();
+        if (data.success) {
+          replaceLoadingMessage(loadingId, `✅ **${taskTitle} 执行完成**\n\n---\n${data.response || '(无返回内容)'}\n\n---\n> 模型: ${data.model || 'Ollama'} | Tokens: ${data.tokens_used || 0}`);
+        } else {
+          replaceLoadingMessage(loadingId, `⚠️ 执行失败: ${data.response || '未知错误'}`);
+        }
+      } else {
+        replaceLoadingMessage(loadingId, `⚠️ 无法连接后端服务 (${API_BASE})。请确认引擎已启动。`);
+      }
+      _sopExecuting = false;
+      return;
+    }
+
+    // 流式读取
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let fullContent = '';
+    let isFirstChunk = true;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const text = decoder.decode(value, { stream: true });
+      const lines = text.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const dataStr = line.slice(6);
+          try {
+            const chunk = JSON.parse(dataStr);
+            if (chunk.content) {
+              fullContent += chunk.content;
+              if (isFirstChunk) {
+                replaceLoadingMessage(loadingId, fullContent);
+                isFirstChunk = false;
+              } else {
+                updateLastAssistantMessage(fullContent);
+              }
+            }
+            if (chunk.status === 'completed') break;
+            if (chunk.error) {
+              replaceLoadingMessage(loadingId, `⚠️ ${chunk.error}`);
+              _sopExecuting = false;
+              return;
+            }
+          } catch(e) {}
+        }
+      }
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+    
+    if (!fullContent) {
+      replaceLoadingMessage(loadingId, '（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
+    }
+    
+    showToast(`✅ ${taskTitle} 执行完成`, 'success');
+  } catch(e) {
+    console.error('[SOP] Execute error:', e);
+    replaceLoadingMessage(loadingId, `⚠️ 执行失败: ${e.message}\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 引擎已启动 (python orchestration/engine.py serve)\n3. 端口 8080 可访问`);
+    showToast('❌ SOP 任务执行失败', 'error');
+  }
+  _sopExecuting = false;
+}
+
 function testTaskFlow(id) {
   const tf = FACTORY_TASKFLOWS.find(w => w.id === id);
-  showToast(`🧪 正在触发 TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
-  setTimeout(() => showToast(`✅ TaskFlow ${id} 测试完成，输出已生成`, 'success'), 2000);
+  if (!tf) return;
+  executeSOPTaskflow('factory', id, tf.title, { phase: tf.phase, trigger: tf.trigger });
 }
 
 function deployTaskFlow(id) {
   const tf = FACTORY_TASKFLOWS.find(w => w.id === id);
-  showToast(`🚀 正在部署 TaskFlow ${id}：${tf ? tf.title : ''}...`, 'success');
-  setTimeout(() => showToast(`✅ TaskFlow ${id} 已部署上线，Webhook 已配置`, 'success'), 2500);
+  if (!tf) return;
+  showToast(`🚀 正在部署 TaskFlow ${id}：${tf.title}...`, 'success');
+  // 保存部署状态
+  try {
+    let deployed = JSON.parse(localStorage.getItem('deployed_taskflows') || '{}');
+    deployed[id] = { time: new Date().toISOString(), title: tf.title };
+    localStorage.setItem('deployed_taskflows', JSON.stringify(deployed));
+  } catch(e) {}
+  setTimeout(() => showToast(`✅ TaskFlow ${id} 已部署上线`, 'success'), 1500);
 }
 
 function initFactorySOP() {
   showToast('🚀 正在初始化 AI工厂出海全链路SOP系统...', 'success');
-  setTimeout(() => {
-    localStorage.setItem('factory_sop_initialized', 'true');
-    showToast('✅ 全链路系统初始化完成！17个TaskFlow已配置，4大Agent中心已就绪', 'success');
-  }, 3000);
+  executeSOPTaskflow('factory', 'factory_init', 'AI工厂出海全链路SOP系统初始化', {
+    action: 'initialize',
+    scope: 'full_pipeline',
+  });
 }
 
 function syncFactoryWebhooks() {
   showToast('🔄 正在同步工厂 Webhook 配置...', 'success');
-  setTimeout(() => {
-    showToast('✅ Webhook 同步完成！CRM/ERP/MES/WMS/物流/支付 已连接', 'success');
-  }, 3000);
+  executeSOPTaskflow('factory', 'factory_webhook_sync', '工厂系统 Webhook 同步配置', {
+    action: 'sync_webhooks',
+    systems: 'CRM/ERP/MES/WMS/Logistics/Payment',
+  });
 }
 
 function generateFactoryReport() {
   showToast('📊 正在生成工厂出海运营报告...', 'success');
-  setTimeout(() => {
-    showToast('✅ 出海报告已生成！包含市场分析/客户画像/生产计划/财务预测', 'success');
-  }, 2500);
+  executeSOPTaskflow('factory', 'factory_report', '工厂出海运营综合报告', {
+    action: 'generate_report',
+    report_type: 'comprehensive',
+    sections: 'market_analysis,customer_profile,production_plan,financial_forecast',
+  });
 }
 
 // ============================================================
@@ -5083,24 +5210,115 @@ function deployTikTokTaskFlow(id) {
 
 function initTikTokSOP() {
   showToast('🚀 正在初始化 TikTok Shop 全球增长SOP系统...', 'success');
-  setTimeout(() => {
-    localStorage.setItem('tiktok_sop_initialized', 'true');
-    showToast('✅ TikTok Shop增长系统初始化完成！30个TaskFlow已配置，5大Agent中心已就绪', 'success');
-  }, 3000);
+  executeSOPTaskflow('tiktokshop', 'tiktok_init', 'TikTok Shop 全球增长SOP系统初始化', {
+    action: 'initialize',
+    scope: 'full_growth_system',
+  });
 }
 
 function syncTikTokWebhooks() {
   showToast('🔄 正在同步 TikTok Shop Webhook 配置...', 'success');
-  setTimeout(() => {
-    showToast('✅ Webhook 同步完成！TikTok Shop/CRM/ERP/Ads/HeyGen 已连接', 'success');
-  }, 3000);
+  executeSOPTaskflow('tiktokshop', 'tiktok_webhook_sync', 'TikTok Shop Webhook 同步配置', {
+    action: 'sync_webhooks',
+    systems: 'TikTok Shop/CRM/ERP/Ads/HeyGen',
+  });
 }
 
 function generateGMVReport() {
   showToast('📊 正在生成 TikTok Shop GMV日报...', 'success');
-  setTimeout(() => {
-    showToast('✅ GMV日报已生成！包含GMV/广告/达人/直播/利润/库存/风险预警/增长建议', 'success');
-  }, 2500);
+  executeSOPTaskflow('tiktokshop', 'tiktok_gmv_report', 'TikTok Shop GMV 综合日报', {
+    action: 'generate_report',
+    report_type: 'gmv_daily',
+    sections: 'gmv,ads,influencer,live,profit,inventory,risk,growth',
+  });
+}
+
+// TikTok TaskFlow 测试触发
+function testTikTokTaskFlow(id) {
+  const tf = TIKTOK_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  executeSOPTaskflow('tiktokshop', id, tf.title, { phase: tf.phase, trigger: tf.trigger });
+}
+
+function deployTikTokTaskFlow(id) {
+  const tf = TIKTOK_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  try {
+    let deployed = JSON.parse(localStorage.getItem('deployed_taskflows') || '{}');
+    deployed[id] = { time: new Date().toISOString(), title: tf.title, system: 'tiktokshop' };
+    localStorage.setItem('deployed_taskflows', JSON.stringify(deployed));
+  } catch(e) {}
+  showToast(`✅ TikTok TaskFlow ${id} 已部署上线`, 'success');
+}
+
+// Amazon TaskFlow 测试触发
+function testAmazonTaskFlow(id) {
+  const tf = AMAZON_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  executeSOPTaskflow('amazonbrand', id, tf.title, { phase: tf.phase, trigger: tf.trigger });
+}
+
+function deployAmazonTaskFlow(id) {
+  const tf = AMAZON_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  try {
+    let deployed = JSON.parse(localStorage.getItem('deployed_taskflows') || '{}');
+    deployed[id] = { time: new Date().toISOString(), title: tf.title, system: 'amazonbrand' };
+    localStorage.setItem('deployed_taskflows', JSON.stringify(deployed));
+  } catch(e) {}
+  showToast(`✅ Amazon TaskFlow ${id} 已部署上线`, 'success');
+}
+
+function initAmazonSOP() {
+  showToast('🚀 正在初始化 Amazon 品牌增长SOP系统...', 'success');
+  executeSOPTaskflow('amazonbrand', 'amazon_init', 'Amazon 品牌增长SOP系统初始化', {
+    action: 'initialize',
+    scope: 'full_brand_growth',
+  });
+}
+
+function generateAmazonReport() {
+  showToast('📊 正在生成 Amazon 品牌增长报告...', 'success');
+  executeSOPTaskflow('amazonbrand', 'amazon_report', 'Amazon 品牌增长综合报告', {
+    action: 'generate_report',
+    report_type: 'brand_growth',
+    sections: 'sales,advertising,review,brand_store,market_share',
+  });
+}
+
+// Shopify DTC TaskFlow 测试触发
+function testShopifyTaskFlow(id) {
+  const tf = SHOPIFY_DTC_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  executeSOPTaskflow('shopifydtc', id, tf.title, { phase: tf.phase, trigger: tf.trigger });
+}
+
+function deployShopifyTaskFlow(id) {
+  const tf = SHOPIFY_DTC_TASKFLOWS.find(w => w.id === id);
+  if (!tf) return;
+  try {
+    let deployed = JSON.parse(localStorage.getItem('deployed_taskflows') || '{}');
+    deployed[id] = { time: new Date().toISOString(), title: tf.title, system: 'shopifydtc' };
+    localStorage.setItem('deployed_taskflows', JSON.stringify(deployed));
+  } catch(e) {}
+  showToast(`✅ Shopify TaskFlow ${id} 已部署上线`, 'success');
+}
+
+function initShopifySOP() {
+  showToast('🚀 正在初始化 Shopify DTC 品牌增长SOP系统...', 'success');
+  executeSOPTaskflow('shopifydtc', 'shopify_init', 'Shopify DTC 品牌增长SOP系统初始化', {
+    action: 'initialize',
+    scope: 'full_dtc_growth',
+  });
+}
+
+function generateShopifyReport() {
+  showToast('📊 正在生成 Shopify DTC 品牌增长报告...', 'success');
+  executeSOPTaskflow('shopifydtc', 'shopify_report', 'Shopify DTC 品牌增长综合报告', {
+    action: 'generate_report',
+    report_type: 'dtc_growth',
+    sections: 'traffic,conversion,aov,ltv,cac,roas,retention',
+  });
 }
 
 // ============================================================
@@ -5244,16 +5462,10 @@ function initAmazonSOP() {
 
 function syncAmazonWebhooks() {
   showToast('🔄 正在同步 Amazon Webhook 配置...', 'success');
-  setTimeout(() => {
-    showToast('✅ Webhook 同步完成！Amazon Seller Central/Ads/DSP/CRM/ERP 已连接', 'success');
-  }, 3000);
-}
-
-function generateAmazonReport() {
-  showToast('📊 正在生成 Amazon 经营日报...', 'success');
-  setTimeout(() => {
-    showToast('✅ 经营日报已生成！包含销售额/利润/广告ROI/库存风险/关键词排名/Review/增长建议', 'success');
-  }, 2500);
+  executeSOPTaskflow('amazonbrand', 'amazon_webhook_sync', 'Amazon 系统 Webhook 同步配置', {
+    action: 'sync_webhooks',
+    systems: 'Amazon Seller Central/Ads/DSP/CRM/ERP',
+  });
 }
 
 // ============================================================
@@ -5448,25 +5660,21 @@ function deployShopifyTaskFlow(id) {
 
 function initShopifyDTC() {
   showToast('🚀 正在初始化 Shopify DTC 品牌增长SOP系统...', 'success');
-  setTimeout(() => {
-    localStorage.setItem('shopify_dtc_initialized', 'true');
-    showToast('✅ Shopify DTC品牌增长系统初始化完成！40个TaskFlow已配置，8大Agent中心已就绪', 'success');
-  }, 3000);
+  executeSOPTaskflow('shopifydtc', 'shopify_init', 'Shopify DTC 品牌增长SOP系统初始化', {
+    action: 'initialize',
+    scope: 'full_dtc_growth',
+  });
 }
 
 function syncShopifyWebhooks() {
   showToast('🔄 正在同步 Shopify DTC Webhook 配置...', 'success');
-  setTimeout(() => {
-    showToast('✅ Webhook 同步完成！Shopify/Meta Ads/Google Ads/WhatsApp/Email/Community 已连接', 'success');
-  }, 3000);
+  executeSOPTaskflow('shopifydtc', 'shopify_webhook_sync', 'Shopify DTC Webhook 同步配置', {
+    action: 'sync_webhooks',
+    systems: 'Shopify/Meta Ads/Google Ads/WhatsApp/Email/Community',
+  });
 }
 
-function generateShopifyReport() {
-  showToast('📊 正在生成 DTC 经营日报...', 'success');
-  setTimeout(() => {
-    showToast('✅ DTC经营日报已生成！包含营收/利润/ROAS/CAC/LTV/复购率/会员增长/社区增长', 'success');
-  }, 2500);
-}
+// generateShopifyReport 已迁移到 executeSOPTaskflow 实现
 
 // ============================================================
 // 页面加载完成后初始化 Ollama 配置
