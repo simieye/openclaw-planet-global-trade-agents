@@ -2551,6 +2551,42 @@ body {
   margin-bottom: 16px;
 }
 
+/* 模态框关闭按钮 */
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  z-index: 10;
+  line-height: 1;
+}
+.modal-close-btn:hover {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+  transform: rotate(90deg);
+}
+
+/* 模态框关闭动画 */
+.modal-overlay {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+.modal-overlay.show {
+  opacity: 1;
+}
+
 .modal-actions {
   display: flex;
   gap: 8px;
@@ -2622,6 +2658,25 @@ body {
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .chat-panel { display: none; }
+  /* 移动端模态框优化 */
+  .modal {
+    width: 96%;
+    max-width: 96vw;
+    padding: 16px;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+  .modal-close-btn {
+    top: 6px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  .agent-config-panel {
+    padding: 12px;
+    max-height: 88vh;
+  }
 }
 
 /* ===== 拖拽上传区域 ===== */
@@ -4739,7 +4794,8 @@ body {
 
 <!-- ===== 模态框容器 ===== -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modalContent" onclick="event.stopPropagation()">
+  <div class="modal" id="modalContent" onclick="event.stopPropagation()" style="position:relative;">
+    <button class="modal-close-btn" onclick="closeModalDirect()" title="关闭 (ESC)" style="position:absolute;top:10px;right:14px;">✕</button>
     <!-- 动态渲染 -->
   </div>
 </div>
@@ -6520,7 +6576,7 @@ async function openSelectAgentsModal() {
       <button class="btn btn-primary" onclick="confirmBatchAddToSelectedAgents()">✅ 确认添加到选中智能体</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function toggleAllAgentChecks(checked) {
@@ -6596,7 +6652,7 @@ function openAddLinkModal() {
       <button class="btn btn-primary" id="addLinkBtn" onclick="addKnowledgeLink()">🔗 添加并解析</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
   // 自动聚焦输入框
   setTimeout(() => { const inp = document.getElementById('linkUrlInput'); if (inp) inp.focus(); }, 200);
 }
@@ -7273,9 +7329,11 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
       </div>`).join('');
 
   modalContent.innerHTML = `
-    <div class="agent-config-panel" style="max-width:720px;width:95vw;">
+    <div class="agent-config-panel" style="max-width:720px;width:95vw;position:relative;">
+      <!-- 右上角关闭按钮（在panel内部） -->
+      <button class="modal-close-btn" onclick="closeModalDirect()" title="关闭 (ESC)" style="position:absolute;top:10px;right:14px;z-index:100;">✕</button>
       <!-- 头部 -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);padding-right:40px;">
         <div>
           <div style="font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;">
             🤖 Agent ${agentNum} · ${agentName}
@@ -7348,8 +7406,7 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
     </div>
   `;
 
-  overlay.classList.add('show');
-  overlay.style.display = 'flex';
+  openModal();
 }
 
 // Tab切换
@@ -8847,7 +8904,7 @@ function openConnectorSelector() {
       `).join('')}
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function addConnectorToChat(name) {
@@ -8870,7 +8927,7 @@ function openSkillSelector() {
       `).join('')}
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function addSkillToChat(name) {
@@ -8912,14 +8969,41 @@ function triggerAction(action) {
 // ============================================================
 // 模态框管理
 // ============================================================
+// 统一打开模态框
+function openModal() {
+  const overlay = document.getElementById('modalOverlay');
+  overlay.style.display = 'flex';
+  overlay.offsetHeight; // 强制回流
+  overlay.classList.add('show');
+}
+
 function closeModal(e) {
-  if (e && e.target !== document.getElementById('modalOverlay')) return;
-  document.getElementById('modalOverlay').classList.remove('show');
+  const overlay = document.getElementById('modalOverlay');
+  // 点击遮罩层关闭（点击modal内容区不关闭）
+  if (e && e.target !== overlay) return;
+  closeModalDirect();
 }
 
 function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('show');
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('show');
+  // 动画结束后隐藏
+  setTimeout(() => {
+    if (!overlay.classList.contains('show')) {
+      overlay.style.display = 'none';
+    }
+  }, 200);
 }
+
+// ESC 键关闭模态框
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay && overlay.classList.contains('show')) {
+      closeModalDirect();
+    }
+  }
+});
 
 function openAddAgentModal() {
   const modal = document.getElementById('modalOverlay');
@@ -9176,7 +9260,7 @@ function openAddAgentModal() {
     </div>
   `;
 
-  modal.classList.add('show');
+  openModal();
 
   // 默认展开第一层
   if (!window._customAgents) window._customAgents = JSON.parse(localStorage.getItem('custom_agents') || '[]');
@@ -9336,7 +9420,7 @@ function openAddSkillModal() {
       <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 技能已添加','success');">确认添加</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 // ============================================================
@@ -9400,7 +9484,7 @@ function openUploadFileModal() {
       <button class="btn btn-primary" onclick="executeFileUpload()" id="uploadBtn">⬆️ 开始上传</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
   APP.uploadPendingFiles = [];
 }
 
@@ -9589,7 +9673,7 @@ function openBatchImportModal() {
       <button class="btn btn-primary" onclick="executeBatchImport()" id="batchBtn">🚀 开始批量导入</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
   APP.batchPendingItems = [];
 }
 
@@ -9794,7 +9878,7 @@ function openAddKBModal() {
       <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 知识库已创建','success');">创建</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function openAddConnectorModal() {
@@ -9837,7 +9921,7 @@ function openAddConnectorModal() {
       <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 连接器已添加并测试通过','success');">连接</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function openAddProviderModal() {
@@ -9866,7 +9950,7 @@ function openAddProviderModal() {
       <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ 服务商已添加','success');">添加</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 function openAddIMModal() {
@@ -9900,7 +9984,7 @@ function openAddIMModal() {
       <button class="btn btn-primary" onclick="closeModalDirect();showToast('✅ IM频道已添加','success');">添加</button>
     </div>
   `;
-  modal.classList.add('show');
+  openModal();
 }
 
 // ============================================================
