@@ -348,6 +348,34 @@ html[lang="en"] .i18n-en{display:inline;}
 .settings-section-body{padding:16px;background:var(--bg);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;}
 .settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .settings-row:last-child{border-bottom:none;}
+
+/* 增强聊天体验 */
+.streaming-cursor::after { content:'▋'; animation:cursorBlink .8s infinite; color:var(--accent-primary); }
+@keyframes cursorBlink { 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+.message{position:relative;animation:msgSlideIn .25s ease-out;}
+@keyframes msgSlideIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.message-actions{display:none;position:absolute;top:-8px;right:8px;gap:2px;z-index:5;}
+.message:hover .message-actions{display:flex;}
+.msg-action-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-muted);cursor:pointer;font-size:10px;padding:2px 5px;}
+.msg-action-btn:hover{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary);}
+.chat-sug-item:hover{border-color:var(--accent-primary)!important;color:var(--text-primary)!important;}
+.message.assistant h1,.message.assistant h2,.message.assistant h3{margin:8px 0 4px;font-weight:600;}
+.message.assistant h1{font-size:1.1em;border-bottom:1px solid var(--border);padding-bottom:3px;}
+.message.assistant h2{font-size:1em;}
+.message.assistant h3{font-size:.95em;}
+.message.assistant p{margin:4px 0;}
+.message.assistant ul,.message.assistant ol{margin:4px 0;padding-left:18px;}
+.message.assistant code{background:rgba(0,0,0,.2);padding:1px 5px;border-radius:3px;font-size:.9em;}
+.message.assistant pre{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:6px;padding:10px;margin:6px 0;overflow-x:auto;font-size:11px;}
+.message.assistant pre code{background:none;padding:0;}
+.message.assistant blockquote{border-left:3px solid var(--accent-primary);padding:3px 10px;margin:6px 0;color:var(--text-muted);font-size:.95em;}
+.message.assistant a{color:var(--accent-cyan);}
+.message.assistant strong{color:var(--text-primary);}
+.typing-indicator{display:inline-flex;gap:3px;padding:3px 0;}
+.typing-indicator span{width:7px;height:7px;border-radius:50%;background:var(--accent-primary);animation:typingBounce 1.4s ease-in-out infinite;}
+.typing-indicator span:nth-child(2){animation-delay:.2s;}
+.typing-indicator span:nth-child(3){animation-delay:.4s;}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-5px);opacity:1;}}
 </style>
 </head>
 <body>
@@ -978,21 +1006,48 @@ html[lang="en"] .i18n-en{display:inline;}
 
 <!-- CHAT PANEL -->
 <aside class="chat-panel" id="chatPanel">
-  <div class="chat-header"><span class="chat-header-title">💬 AI Assistant</span><div style="display:flex;gap:4px;"><button class="btn btn-icon btn-sm" onclick="clearChat()">🗑️</button><button class="btn btn-icon btn-sm" onclick="toggleChat()">✕</button></div></div>
-  <div class="chat-messages" id="chat消息s">
-    <div class="chat-empty"><div class="chat-empty-icon">🦞</div><div class="chat-empty-text">OpenClaw Enterprise OS</div><div class="chat-empty-hint">8-层级 AI OS Ready<br>类型 a message or use quick actions below</div></div>
+  <div class="chat-header">
+    <span class="chat-header-title" id="chatPanelTitle">💬 AI Assistant</span>
+    <div style="display:flex;gap:4px;">
+      <button class="btn btn-icon btn-sm" onclick="exportChat()" title="导出">📥</button>
+      <button class="btn btn-icon btn-sm" onclick="clearChat()" title="清空">🗑️</button>
+      <button class="btn btn-icon btn-sm" onclick="toggleChat()" title="关闭">✕</button>
+    </div>
+  </div>
+  <div class="chat-messages" id="chat消息s" style="position:relative;">
+    <button class="scroll-bottom-btn" id="scrollBottomBtn" onclick="scrollChatToBottom()" style="display:none;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:32px;height:32px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;font-size:14px;z-index:5;">↓</button>
+    <button class="stop-gen-btn" id="stopGenBtn" onclick="stopGeneration()" style="display:none;align-self:center;padding:4px 12px;border-radius:12px;border:1px solid var(--accent-rose);background:rgba(244,63,94,.1);color:var(--accent-rose);font-size:11px;cursor:pointer;margin:4px 0;">⏹ 停止生成</button>
+    <div class="chat-empty" id="entEmptyState">
+      <div class="chat-empty-icon">🦞</div>
+      <div class="chat-empty-text">OpenClaw Enterprise OS</div>
+      <div class="chat-empty-hint">8-层级 AI OS Ready</div>
+      <div class="chat-suggestions" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:10px;width:100%;max-width:300px;">
+        <button class="chat-sug-item" onclick="quickAsk('Analyze current agent performance')" style="font-size:10px;padding:7px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);cursor:pointer;text-align:left;">📊 分析Agent性能</button>
+        <button class="chat-sug-item" onclick="quickAsk('Generate a weekly SOP report')" style="font-size:10px;padding:7px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);cursor:pointer;text-align:left;">📋 生成周报</button>
+        <button class="chat-sug-item" onclick="quickAsk('Optimize enterprise workflow')" style="font-size:10px;padding:7px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);cursor:pointer;text-align:left;">⚡ 优化工作流</button>
+        <button class="chat-sug-item" onclick="quickAsk('Check system health status')" style="font-size:10px;padding:7px 8px;border-radius:6px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);cursor:pointer;text-align:left;">🔍 系统健康检查</button>
+      </div>
+    </div>
   </div>
   <div class="chat-input-area">
-    <div class="chat-input-wrapper"><textarea class="chat-input" id="chatInput" placeholder="Ask anything... @mention agents, use skills, query connectors..." rows="1" onkeydown="handleChatKey(event)"></textarea><button class="send-btn" onclick="sendChat()">➤</button></div>
+    <!-- 模型状态 -->
+    <div class="model-status" id="modelStatusBar" style="display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:10px;color:var(--text-muted);"></div>
+    <div class="chat-input-wrapper">
+      <textarea class="chat-input" id="chatInput" placeholder="输入消息，Enter 发送，Shift+Enter 换行..." rows="1" onkeydown="handleChatKey(event)" oninput="updateCharCount()"></textarea>
+      <button class="send-btn" onclick="sendChat()" id="sendBtn">➤</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span id="charCount" style="font-size:10px;color:var(--text-muted);"></span>
+    </div>
     <div class="action-chips">
-      <span class="chip" onclick="chipAction('ppt')" style="border-color:rgba(59,130,246,.25);color:var(--accent-primary);">📊 PPT</span>
-      <span class="chip" onclick="chipAction('doc')" style="border-color:rgba(16,185,129,.25);color:var(--accent-emerald);">📝 Doc</span>
-      <span class="chip" onclick="chipAction('code')" style="border-color:rgba(139,92,246,.25);color:var(--accent-violet);">💻 Code</span>
-      <span class="chip" onclick="chipAction('design')" style="border-color:rgba(244,63,94,.25);color:var(--accent-rose);">🎨 Design</span>
-      <span class="chip" onclick="chipAction('video')" style="border-color:rgba(245,158,11,.25);color:var(--accent-gold);">🎬 Video</span>
-      <span class="chip" onclick="chipAction('data')">📈 Data</span>
-      <span class="chip" onclick="chipAction('translate')" style="border-color:rgba(6,182,212,.25);color:var(--accent-cyan);">🌐 Translate</span>
-      <span class="chip" onclick="chipAction('analysis')">🔍 Analysis</span>
+      <span class="chip" onclick="quickCmd('/analyze')" style="border-color:rgba(59,130,246,.25);color:var(--accent-primary);">/analyze</span>
+      <span class="chip" onclick="quickCmd('/optimize')" style="border-color:rgba(16,185,129,.25);color:var(--accent-emerald);">/optimize</span>
+      <span class="chip" onclick="quickCmd('/report')" style="border-color:rgba(139,92,246,.25);color:var(--accent-violet);">/report</span>
+      <span class="chip" onclick="quickCmd('/deploy')" style="border-color:rgba(244,63,94,.25);color:var(--accent-rose);">/deploy</span>
+      <span class="chip" onclick="quickCmd('/monitor')" style="border-color:rgba(245,158,11,.25);color:var(--accent-gold);">/monitor</span>
+      <span class="chip" onclick="quickCmd('/translate')" style="border-color:rgba(6,182,212,.25);color:var(--accent-cyan);">/translate</span>
+      <span class="chip" onclick="quickCmd('/summarize')">/summarize</span>
+      <span class="chip" onclick="quickCmd('/brainstorm')">/brainstorm</span>
     </div>
   </div>
 </aside>
@@ -3753,15 +3808,19 @@ function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();se
 async function sendChat(){
   const input=document.getElementById('chatInput');
   const text=input.value.trim();if(!text)return;
-  APP.chat消息s.push({role:'user',content:text});input.value='';renderChatMessages();
-  
+  var now = new Date();
+  var timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  APP.chat消息s.push({role:'user',content:text,time:timeStr});input.value='';updateCharCount();renderChatMessages();
+
   // 添加加载占位
   const loadingId='ent-loading-'+Date.now();
-  APP.chat消息s.push({role:'assistant',content:'<span class="typing-indicator"><span></span><span></span><span></span></span>',_loading:true,_id:loadingId});
+  APP.chat消息s.push({role:'assistant',content:'<span class="typing-indicator"><span></span><span></span><span></span></span>',_loading:true,_id:loadingId,_streaming:true});
   renderChatMessages();
-  const msgsEl=document.getElementById('chat消息s');
-  if(msgsEl)msgsEl.scrollTop=99999;
-  
+  scrollChatToBottom();
+  document.getElementById('stopGenBtn').style.display = 'block';
+
+  APP._abortController = new AbortController();
+
   try{
     const resp=await fetch('http://localhost:8080/api/chat/stream',{
       method:'POST',
@@ -3770,26 +3829,28 @@ async function sendChat(){
         message:text,
         provider:'ollama',
         model:'',
-        conversation_history:APP.chat消息s.filter(m=>!m._loading&&m.role!=='system').slice(-20).map(m=>({role:m.role,content:m.content})),
+        conversation_history:APP.chat消息s.filter(function(m){return !m._loading&&m.role!=='system';}).slice(-20).map(function(m){return {role:m.role,content:m.content};}),
       }),
+      signal: APP._abortController.signal,
     });
-    
+
     if(!resp.ok){
       replaceEntLoading(loadingId,'⚠️ 无法连接后端服务。请确认引擎已启动。');
       return;
     }
-    
+
     const reader=resp.body.getReader();
     const decoder=new TextDecoder();
     let fullContent='';
     let isFirst=true;
-    
+
     while(true){
       const {done,value}=await reader.read();
       if(done)break;
-      const text=decoder.decode(value,{stream:true});
-      const lines=text.split('\n');
-      for(const line of lines){
+      const chunkText=decoder.decode(value,{stream:true});
+      const lines=chunkText.split('\n');
+      for(var li=0;li<lines.length;li++){
+        var line=lines[li];
         if(line.startsWith('data: ')){
           const d=line.slice(6);
           if(d==='[DONE]')break;
@@ -3804,35 +3865,116 @@ async function sendChat(){
           }catch(e){}
         }
       }
-      if(msgsEl)msgsEl.scrollTop=99999;
+      scrollChatToBottom();
     }
-    
+
+    // 完成，移除 streaming 标记
+    var finalIdx = APP.chat消息s.findIndex(function(m){return m._id===loadingId;});
+    if(finalIdx>=0) {
+      APP.chat消息s[finalIdx]._streaming = false;
+      APP.chat消息s[finalIdx].time = new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0');
+    }
+    renderChatMessages();
+
     if(!fullContent)replaceEntLoading(loadingId,'（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
   }catch(e){
+    if(e.name==='AbortError'){
+      var abortIdx=APP.chat消息s.findIndex(function(m){return m._id===loadingId;});
+      if(abortIdx>=0){APP.chat消息s[abortIdx]._streaming=false;APP.chat消息s[abortIdx].content+='\n\n*[已停止生成]*';}
+      renderChatMessages();
+      return;
+    }
     replaceEntLoading(loadingId,'⚠️ 连接失败: '+e.message+'\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 引擎已启动');
+  }finally{
+    APP._abortController = null;
+    document.getElementById('stopGenBtn').style.display = 'none';
   }
 }
 
+function stopGeneration(){
+  if(APP._abortController){APP._abortController.abort();showToast('⏹ 已停止生成','success');}
+}
+
 function replaceEntLoading(loadingId,content){
-  const idx=APP.chat消息s.findIndex(m=>m._id===loadingId);
+  const idx=APP.chat消息s.findIndex(function(m){return m._id===loadingId;});
   if(idx>=0)APP.chat消息s[idx]={role:'assistant',content:content,_id:loadingId};
   renderChatMessages();
 }
 
 function updateEntLastAssistant(content){
-  for(let i=APP.chat消息s.length-1;i>=0;i--){
+  for(var i=APP.chat消息s.length-1;i>=0;i--){
     if(APP.chat消息s[i].role==='assistant'){APP.chat消息s[i].content=content;break;}
   }
   renderChatMessages();
 }
-function chipAction(action){document.getElementById('chatInput').value=`[${action.toUpperCase()} ${currentLang==='zh'?'模式已激活':'mode activated'}]
-${currentLang==='zh'?'请描述你的具体需求...':'Please describe your specific needs...'}`;document.getElementById('chatInput').focus();showToast(t('toast.modeActivated'),'success');}
+
+// 增强交互
+function quickAsk(text){document.getElementById('chatInput').value=text;sendChat();}
+function quickCmd(cmd){var input=document.getElementById('chatInput');input.value=cmd+' ';input.focus();}
+function scrollChatToBottom(){var msgs=document.getElementById('chat消息s');if(msgs)msgs.scrollTop=99999;}
+function updateCharCount(){var input=document.getElementById('chatInput');var count=document.getElementById('charCount');if(count)count.textContent=input.value.length+' 字符';}
+
+function exportChat(){
+  if(APP.chat消息s.length===0){showToast('⚠️ 没有对话内容可导出','warning');return;}
+  var text=APP.chat消息s.map(function(m){
+    var role=m.role==='user'?'🧑 用户':'🦞 AI';
+    return '## '+role+(m.time?' ('+m.time+')':'')+'\n\n'+m.content.replace(/<[^>]*>/g,'')+'\n';
+  }).join('\n---\n\n');
+  var blob=new Blob([text],{type:'text/markdown'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='ent-chat-export-'+new Date().toISOString().slice(0,10)+'.md';a.click();
+  URL.revokeObjectURL(url);showToast('📥 对话已导出','success');
+}
+
+function chipAction(action){document.getElementById('chatInput').value='/'+action+' ';document.getElementById('chatInput').focus();}
 
 function renderChatMessages(){
-  const c=document.getElementById('chat消息s');
-  const emptyHtml = currentLang==='zh' ? '<div class="chat-empty"><div class="chat-empty-icon">🦞</div><div class="chat-empty-text">OpenClaw Enterprise OS</div><div class="chat-empty-hint">8层AI操作系统就绪<br>输入消息或使用快捷操作</div></div>' : '<div class="chat-empty"><div class="chat-empty-icon">🦞</div><div class="chat-empty-text">OpenClaw Enterprise OS</div><div class="chat-empty-hint">8-层级 AI OS Ready<br>类型 a message or use quick actions</div></div>';
-  if(APP.chat消息s.length===0){c.innerHTML=emptyHtml;return;}
-  c.innerHTML=APP.chat消息s.map(m=>`<div class="message ${m.role}">${m.content}</div>`).join('');
+  var c=document.getElementById('chat消息s');
+  var emptyEl=document.getElementById('entEmptyState');
+
+  if(APP.chat消息s.length===0){
+    c.innerHTML='';
+    if(emptyEl)emptyEl.style.display='flex';
+    c.appendChild(document.getElementById('scrollBottomBtn'));
+    c.appendChild(document.getElementById('stopGenBtn'));
+    return;
+  }
+
+  if(emptyEl)emptyEl.style.display='none';
+
+  // 简易 Markdown 渲染
+  function md(text){
+    if(!text)return'';
+    var html=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    html=html.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code>$2</code></pre>');
+    html=html.replace(/`([^`]+)`/g,'<code>$1</code>');
+    html=html.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+    html=html.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+    html=html.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+    html=html.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    html=html.replace(/\*(.+?)\*/g,'<em>$1</em>');
+    html=html.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
+    html=html.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+    html=html.replace(/^[\-\*] (.+)$/gm,'<li>$1</li>');
+    html=html.replace(/(<li>.*<\/li>\n?)+/g,'<ul>$&</ul>');
+    html=html.replace(/\n\n+/g,'</p><p>');
+    html='<p>'+html+'</p>';
+    html=html.replace(/<p><\/p>/g,'');
+    return html;
+  }
+
+  c.innerHTML = APP.chat消息s.map(function(m){
+    var content = m.role==='assistant'&&!m._loading ? md(m.content) : m.content;
+    var cursorClass = m._streaming ? ' streaming-cursor' : '';
+    var timeHtml = m.time ? '<div style="font-size:10px;color:var(--text-muted);opacity:.6;margin-top:4px;">'+m.time+'</div>' : '';
+    return '<div class="message '+m.role+cursorClass+'">'+content+timeHtml+'</div>';
+  }).join('');
+
+  // 重新挂载固定按钮
+  var sb=document.getElementById('scrollBottomBtn');
+  var sg=document.getElementById('stopGenBtn');
+  if(sb)c.appendChild(sb);
+  if(sg)c.appendChild(sg);
 }
 
 // ============================================================

@@ -2678,6 +2678,367 @@ body {
   color: var(--text-dim);
   margin-left: auto;
 }
+
+/* ===== 增强聊天体验 ===== */
+
+/* 消息操作按钮（hover 时显示） */
+.message {
+  position: relative;
+}
+.message-actions {
+  display: none;
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  gap: 2px;
+  z-index: 5;
+}
+.message:hover .message-actions {
+  display: flex;
+}
+.message.user .message-actions { right: auto; left: 8px; }
+.msg-action-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 6px;
+  transition: all 0.15s;
+}
+.msg-action-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Markdown 渲染增强 */
+.message.assistant h1, .message.assistant h2, .message.assistant h3 {
+  margin: 12px 0 6px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.message.assistant h1 { font-size: 1.2em; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+.message.assistant h2 { font-size: 1.1em; }
+.message.assistant h3 { font-size: 1em; }
+.message.assistant p { margin: 6px 0; }
+.message.assistant ul, .message.assistant ol { margin: 6px 0; padding-left: 20px; }
+.message.assistant li { margin: 2px 0; }
+.message.assistant blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 4px 12px;
+  margin: 8px 0;
+  background: rgba(255,107,53,0.05);
+  border-radius: 0 4px 4px 0;
+  color: var(--text-dim);
+}
+.message.assistant code {
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'SF Mono', 'Menlo', 'Monaco', monospace;
+  font-size: 0.9em;
+}
+.message.assistant pre {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.message.assistant pre code {
+  background: none;
+  padding: 0;
+}
+.message.assistant table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 8px 0;
+  font-size: 12px;
+}
+.message.assistant th, .message.assistant td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}
+.message.assistant th {
+  background: rgba(255,107,53,0.08);
+  font-weight: 600;
+}
+.message.assistant a {
+  color: var(--accent2);
+  text-decoration: underline;
+}
+.message.assistant hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 10px 0;
+}
+.message.assistant strong { color: var(--text-bright); font-weight: 600; }
+
+/* 消息时间戳 */
+.message-time {
+  font-size: 10px;
+  color: var(--text-dim);
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* 流式光标闪烁 */
+.streaming-cursor::after {
+  content: '▋';
+  animation: cursorBlink 0.8s infinite;
+  color: var(--accent);
+}
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* 消息动画 */
+.message {
+  animation: msgSlideIn 0.25s ease-out;
+}
+@keyframes msgSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.message.system { animation: none; }
+
+/* 停止生成按钮 */
+.stop-gen-btn {
+  display: none;
+  align-self: center;
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--danger);
+  background: rgba(239,68,68,0.1);
+  color: var(--danger);
+  font-size: 11px;
+  cursor: pointer;
+  margin: 4px 0;
+  transition: all 0.15s;
+}
+.stop-gen-btn.visible { display: block; }
+.stop-gen-btn:hover { background: rgba(239,68,68,0.2); }
+
+/* 重试按钮 */
+.retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-dim);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.retry-btn:hover { border-color: var(--accent); color: var(--text); }
+
+/* Token 计数 */
+.token-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  opacity: 0.5;
+  text-align: center;
+  padding: 4px;
+}
+
+/* 对话搜索 */
+.conv-search {
+  padding: 8px 12px;
+}
+.conv-search input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 12px;
+}
+.conv-search input:focus { outline: none; border-color: var(--accent); }
+.conv-search input::placeholder { color: var(--text-dim); }
+
+/* 快捷指令建议 */
+.quick-cmds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 0;
+}
+.quick-cmd-chip {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.15);
+  color: var(--accent3);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.quick-cmd-chip:hover {
+  background: rgba(99,102,241,0.18);
+  border-color: var(--accent3);
+}
+
+/* 模型选择快速切换 */
+.model-switcher {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.model-switch-chip {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.model-switch-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+.model-switch-chip.active {
+  background: rgba(0,212,170,0.15);
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+
+/* 对话空状态增强 */
+.chat-empty-suggestions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+.chat-suggestion-item {
+  font-size: 11px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-dim);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+.chat-suggestion-item:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: rgba(255,107,53,0.05);
+}
+
+/* 消息复制提示 */
+.copy-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  border: 1px solid var(--accent2);
+  color: var(--accent2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 10000;
+  animation: copyToastIn 0.3s ease-out;
+}
+@keyframes copyToastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* 输入区域增强 */
+.chat-input-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.chat-char-count {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+.chat-char-count.warning { color: var(--warning); }
+
+/* Agent 头像 */
+.agent-avatar-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.message-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.message-header .agent-name {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* 对话列表增强 */
+.conv-item-actions {
+  display: none;
+  margin-left: auto;
+  gap: 2px;
+}
+.conv-item:hover .conv-item-actions { display: flex; }
+.conv-item:hover .conv-time { display: none; }
+.conv-action-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px;
+  border-radius: 4px;
+}
+.conv-action-btn:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
+
+/* 滚动到底部按钮 */
+.scroll-bottom-btn {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: all 0.15s;
+}
+.scroll-bottom-btn.visible { display: flex; }
+.scroll-bottom-btn:hover { border-color: var(--accent); color: var(--text); }
 </style>
 </head>
 <body>
@@ -3113,32 +3474,11 @@ body {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div>
           <div class="section-title" style="font-size:13px;">历史对话</div>
+          <div class="conv-search">
+            <input type="text" id="convSearchInput" placeholder="🔍 搜索对话..." oninput="filterConversations(this.value)">
+          </div>
           <div class="conversation-list" id="convList">
-            <div class="conv-item active">
-              <span>📝</span>
-              <span>品牌出海策略讨论</span>
-              <span class="conv-time">11:30</span>
-            </div>
-            <div class="conv-item">
-              <span>📊</span>
-              <span>Q2 市场分析报告</span>
-              <span class="conv-time">昨天</span>
-            </div>
-            <div class="conv-item">
-              <span>🎨</span>
-              <span>新产品包装设计</span>
-              <span class="conv-time">昨天</span>
-            </div>
-            <div class="conv-item">
-              <span>💰</span>
-              <span>东南亚市场财务模型</span>
-              <span class="conv-time">6/2</span>
-            </div>
-            <div class="conv-item">
-              <span>🤖</span>
-              <span>AI 数字员工培训方案</span>
-              <span class="conv-time">6/1</span>
-            </div>
+            <!-- 动态渲染 -->
           </div>
           <button class="btn btn-primary btn-sm" style="margin-top:12px;width:100%;" onclick="createNewConversation()">+ 新建对话</button>
         </div>
@@ -4309,22 +4649,34 @@ body {
 <!-- ===== 右侧对话框 ===== -->
 <aside class="chat-panel" id="chatPanel">
   <div class="chat-header">
-    <span class="chat-header-title">💬 AI 对话</span>
+    <span class="chat-header-title" id="chatPanelTitle">💬 AI 对话</span>
     <div style="display:flex;gap:4px;">
+      <button class="btn btn-icon btn-sm" onclick="exportChat()" title="导出对话">📥</button>
       <button class="btn btn-icon btn-sm" onclick="clearChat()" title="清空对话">🗑️</button>
       <button class="btn btn-icon btn-sm" onclick="toggleChatPanel()" title="关闭面板">✕</button>
     </div>
   </div>
 
-  <div class="chat-messages" id="chatMessages">
-    <div class="chat-empty">
+  <div class="chat-messages" id="chatMessages" style="position:relative;">
+    <div class="scroll-bottom-btn" id="scrollBottomBtn" onclick="scrollChatToBottom()" title="滚动到底部">↓</div>
+    <div class="stop-gen-btn" id="stopGenBtn" onclick="stopGeneration()">⏹ 停止生成</div>
+    <div class="chat-empty" id="chatEmptyState">
       <div class="chat-empty-icon">🦞</div>
       <div class="chat-empty-text">龙虾星球 AI 工作台</div>
-      <div class="chat-empty-hint">输入提示词或使用语音开始对话</div>
+      <div class="chat-empty-hint">选择一个建议开始，或输入你的问题</div>
+      <div class="chat-empty-suggestions">
+        <button class="chat-suggestion-item" onclick="quickAsk('帮我分析一下东南亚市场的选品趋势')">🔍 东南亚市场选品分析</button>
+        <button class="chat-suggestion-item" onclick="quickAsk('为我的新品写一份TikTok短视频脚本')">🎬 新品TikTok脚本</button>
+        <button class="chat-suggestion-item" onclick="quickAsk('优化我的亚马逊Listing标题和五点描述')">📦 亚马逊Listing优化</button>
+        <button class="chat-suggestion-item" onclick="quickAsk('分析竞品独立站的SEO策略')">🔎 竞品SEO策略分析</button>
+      </div>
     </div>
   </div>
 
   <div class="chat-input-area">
+    <!-- 模型快速切换 -->
+    <div class="model-switcher" id="modelSwitcher"></div>
+
     <!-- 附件展示区 -->
     <div class="chat-attachments" id="chatAttachments"></div>
 
@@ -4334,56 +4686,53 @@ body {
       <input type="file" id="fileInput" multiple style="display:none;" onchange="handleFileSelect(event)">
     </div>
 
+    <!-- 快捷指令 -->
+    <div class="quick-cmds" id="quickCmds">
+      <span class="quick-cmd-chip" onclick="quickCmd('/analyze')">/analyze 分析</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('/optimize')">/optimize 优化</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('/translate')">/translate 翻译</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('/summarize')">/summarize 总结</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('/brainstorm')">/brainstorm 头脑风暴</span>
+    </div>
+
     <!-- 输入区 -->
     <div class="chat-input-row">
-      <textarea class="chat-input" id="chatInput" placeholder="输入提示词，或点击 🎤 语音输入..." rows="1" onkeydown="handleChatKeydown(event)"></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="输入消息，Enter 发送，Shift+Enter 换行..." rows="1" onkeydown="handleChatKeydown(event)" oninput="updateCharCount()"></textarea>
       <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="语音输入">🎤</button>
     </div>
 
-    <!-- 快捷操作行 -->
-    <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center;">
+    <!-- 输入工具栏 -->
+    <div class="chat-input-toolbar">
       <span id="ollamaStatusBadge" class="ollama-status disconnected" style="display:none;" title="Ollama 本地 LLM 状态">🔴 未连接</span>
-      <button class="action-btn" onclick="toggleDropZone()" title="上传资料">
-        <span>📎</span> 上传资料
-      </button>
-      <button class="action-btn accent3" onclick="openConnectorSelector()" title="添加连接器">
-        <span>🔌</span> 连接器
-      </button>
-      <button class="action-btn accent2" onclick="openSkillSelector()" title="添加技能">
-        <span>⚡</span> 添加技能
-      </button>
-      <button class="action-btn" onclick="document.getElementById('chatInput').focus()">
-        <span>💡</span> 提示词模板
-      </button>
-      <button class="action-btn" onclick="toggleOllamaSettings()" title="Ollama 模型设置" style="font-size:10px;">
-        <span>⚙️</span> 模型
-      </button>
+      <button class="action-btn" onclick="toggleDropZone()" title="上传资料"><span>📎</span></button>
+      <button class="action-btn accent3" onclick="openConnectorSelector()" title="连接器"><span>🔌</span></button>
+      <button class="action-btn accent2" onclick="openSkillSelector()" title="技能"><span>⚡</span></button>
+      <button class="action-btn" onclick="toggleOllamaSettings()" title="模型设置"><span>⚙️</span></button>
+      <span class="chat-char-count" id="charCount"></span>
     </div>
 
     <!-- 发送按钮 -->
-    <button class="btn btn-primary" style="width:100%;" onclick="sendMessage()">
-      📤 发送消息
+    <button class="btn btn-primary" style="width:100%;" onclick="sendMessage()" id="sendBtn">
+      📤 发送消息 <span style="font-size:10px;opacity:0.7;" id="sendShortcut">(Enter)</span>
     </button>
 
     <!-- ===== 底部功能按钮 ===== -->
-    <div class="action-buttons" style="margin-top:10px;">
-      <button class="action-btn accent" onclick="triggerAction('ppt')">📊 生成幻灯片</button>
-      <button class="action-btn accent" onclick="triggerAction('doc')">📝 撰写文件</button>
-      <button class="action-btn accent4" onclick="triggerAction('design')">🎨 生成设计 <span style="font-size:9px;opacity:0.7;">NanoBanana</span></button>
-      <button class="action-btn accent3" onclick="triggerAction('video')">🎬 生成视频 <span style="font-size:9px;opacity:0.7;">Seedance</span></button>
-      <button class="action-btn accent2" onclick="triggerAction('brand')">✨ 创作品牌故事</button>
-      <button class="action-btn accent" onclick="triggerAction('founder')">👤 创始人IP</button>
-      <button class="action-btn accent3" onclick="triggerAction('prompt')">💬 脚本提示词生成</button>
-      <button class="action-btn accent" onclick="triggerAction('bulk')">⚡ 大量调用</button>
-      <button class="action-btn accent2" onclick="triggerAction('analysis')">📈 分析数据</button>
-      <button class="action-btn accent4" onclick="triggerAction('chart')">📉 绘制图表</button>
-      <button class="action-btn accent3" onclick="triggerAction('invest')">💰 金融投研</button>
-      <button class="action-btn accent" onclick="triggerAction('table')">📋 生成表格</button>
-      <button class="action-btn accent2" onclick="triggerAction('webpage')">🌐 建立网页 <span style="font-size:9px;opacity:0.7;">Lovable.dev</span></button>
-      <button class="action-btn accent3" onclick="triggerAction('pdf')">📄 翻译 PDF</button>
-      <button class="action-btn accent4" onclick="triggerAction('summary')">🎥 总结影片 <span style="font-size:9px;opacity:0.7;">YT/IG/TT</span></button>
-      <button class="action-btn accent" onclick="triggerAction('transcribe')">🎙️ 转写音频</button>
-      <button class="action-btn accent2" onclick="triggerAction('memo')">🎤 语音备忘录</button>
+    <div class="action-buttons" style="margin-top:8px;">
+      <button class="action-btn accent" onclick="triggerAction('ppt')">📊 PPT</button>
+      <button class="action-btn accent" onclick="triggerAction('doc')">📝 文档</button>
+      <button class="action-btn accent4" onclick="triggerAction('design')">🎨 设计</button>
+      <button class="action-btn accent3" onclick="triggerAction('video')">🎬 视频</button>
+      <button class="action-btn accent2" onclick="triggerAction('brand')">✨ 品牌</button>
+      <button class="action-btn accent" onclick="triggerAction('founder')">👤 IP</button>
+      <button class="action-btn accent3" onclick="triggerAction('prompt')">💬 脚本</button>
+      <button class="action-btn accent2" onclick="triggerAction('analysis')">📈 分析</button>
+      <button class="action-btn accent4" onclick="triggerAction('chart')">📉 图表</button>
+      <button class="action-btn accent3" onclick="triggerAction('invest')">💰 投研</button>
+      <button class="action-btn accent2" onclick="triggerAction('webpage')">🌐 网页</button>
+      <button class="action-btn accent3" onclick="triggerAction('pdf')">📄 PDF</button>
+      <button class="action-btn accent4" onclick="triggerAction('summary')">🎥 影片</button>
+      <button class="action-btn accent" onclick="triggerAction('transcribe')">🎙️ 音频</button>
+      <button class="action-btn accent2" onclick="triggerAction('memo')">🎤 备忘</button>
     </div>
   </div>
 </aside>
@@ -6406,10 +6755,116 @@ function selectConversation(id) {
 }
 
 function startTemplateChat(template) {
-  APP.chatMessages.push({ role:'assistant', content:`你好！我已准备好帮你处理「${template}」相关的任务。请告诉我你的具体需求。` });
+  APP.chatMessages.push({ role:'assistant', content:'你好！我已准备好帮你处理「' + template + '」相关的任务。请告诉我你的具体需求。', time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0') });
   renderChatMessages();
-  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  scrollChatToBottom();
 }
+
+// ============================================================
+// 对话管理
+// ============================================================
+function renderConvList(filter) {
+  var list = document.getElementById('convList');
+  if (!list) return;
+  var convs = APP.conversations || [];
+  if (filter) {
+    convs = convs.filter(function(c) { return c.title.toLowerCase().indexOf(filter.toLowerCase()) >= 0; });
+  }
+  list.innerHTML = convs.map(function(c) {
+    return '<div class="conv-item' + (c.active ? ' active' : '') + '" onclick="switchConversation(' + c.id + ')">' +
+      '<span>' + (c.icon || '💬') + '</span>' +
+      '<span>' + c.title + '</span>' +
+      '<span class="conv-time">' + c.time + '</span>' +
+      '<span class="conv-item-actions">' +
+        '<button class="conv-action-btn" onclick="event.stopPropagation();renameConversation(' + c.id + ')" title="重命名">✏️</button>' +
+        '<button class="conv-action-btn" onclick="event.stopPropagation();deleteConversation(' + c.id + ')" title="删除">🗑️</button>' +
+      '</span>' +
+    '</div>';
+  }).join('');
+  if (convs.length === 0) {
+    list.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-dim);font-size:12px;">暂无对话</div>';
+  }
+}
+
+function switchConversation(id) {
+  // 保存当前对话
+  saveCurrentConversation();
+  // 加载新对话
+  APP.conversations.forEach(function(c) { c.active = c.id === id; });
+  renderConvList();
+  // TODO: 实际加载对话历史
+  showToast('📂 已切换到: ' + (APP.conversations.find(function(c) { return c.id === id; }) || {}).title || '', 'success');
+}
+
+function saveCurrentConversation() {
+  var active = APP.conversations.find(function(c) { return c.active; });
+  if (active && APP.chatMessages.length > 0) {
+    active.messages = APP.chatMessages.slice();
+    active.time = '刚刚';
+  }
+}
+
+function createNewConversation() {
+  saveCurrentConversation();
+  APP.conversations.forEach(function(c) { c.active = false; });
+  var newId = Math.max.apply(null, APP.conversations.map(function(c) { return c.id; }).concat([0])) + 1;
+  APP.conversations.unshift({
+    id: newId,
+    title: '新对话 ' + newId,
+    time: '刚刚',
+    active: true,
+    icon: '💬',
+    messages: []
+  });
+  APP.chatMessages = [];
+  APP._activeAgentChat = null;
+  document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
+  renderChatMessages();
+  renderConvList();
+  showToast('✅ 新对话已创建', 'success');
+}
+
+function renameConversation(id) {
+  var conv = APP.conversations.find(function(c) { return c.id === id; });
+  if (!conv) return;
+  var name = prompt('重命名对话：', conv.title);
+  if (name && name.trim()) {
+    conv.title = name.trim();
+    renderConvList();
+    showToast('✏️ 已重命名', 'success');
+  }
+}
+
+function deleteConversation(id) {
+  if (!confirm('确定要删除这个对话吗？此操作不可撤销。')) return;
+  APP.conversations = APP.conversations.filter(function(c) { return c.id !== id; });
+  if (APP.conversations.length === 0) {
+    APP.chatMessages = [];
+    renderChatMessages();
+  }
+  renderConvList();
+  showToast('🗑️ 对话已删除', 'success');
+}
+
+function filterConversations(query) {
+  renderConvList(query);
+}
+
+// 初始化对话列表
+(function initConvList() {
+  setTimeout(function() {
+    if (!APP.conversations || APP.conversations.length === 0) {
+      APP.conversations = [
+        { id: 1, title: '品牌出海策略讨论', time: '11:30', active: true, icon: '📝', messages: [] },
+        { id: 2, title: 'Q2 市场分析报告', time: '昨天', active: false, icon: '📊', messages: [] },
+        { id: 3, title: '新产品包装设计', time: '昨天', active: false, icon: '🎨', messages: [] },
+        { id: 4, title: '东南亚市场财务模型', time: '6/2', active: false, icon: '💰', messages: [] },
+        { id: 5, title: 'AI 数字员工培训方案', time: '6/1', active: false, icon: '🤖', messages: [] },
+      ];
+    }
+    renderConvList();
+  }, 300);
+})();
 
 // ============================================================
 // AI 数字组织 - 6层 Prompt 数据
@@ -6898,6 +7353,9 @@ function applySingleLayerToChat(agentNum, agentName, layerId) {
   showToast('✅ ' + layer.icon + ' ' + layer.name + ' 已加载', 'success');
 }
 
+// Agent 颜色方案
+var AGENT_COLORS = ['#ff6b35','#6366f1','#00d4aa','#ec4899','#8b5cf6','#f59e0b','#3b82f6','#10b981','#ef4444','#06b6d4'];
+
 // 打开Agent独立AI对话（清空聊天+注入agent配置）
 function openAgentChat(agentNum, agentName, agentRole) {
   saveAgentConfig(agentNum);
@@ -6905,40 +7363,87 @@ function openAgentChat(agentNum, agentName, agentRole) {
   const config = getAgentConfig(agentNum);
   const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
 
-  const parts = ['🤖 **Agent ' + agentNum + ': ' + agentName + '** · ' + agentRole, ''];
+  // 设置 Agent 身份标识
+  var agentIcon = '🤖';
+  if (agentRole.indexOf('选品') >= 0 || agentRole.indexOf('产品') >= 0) agentIcon = '🔍';
+  else if (agentRole.indexOf('内容') >= 0 || agentRole.indexOf('创意') >= 0) agentIcon = '🎨';
+  else if (agentRole.indexOf('广告') >= 0 || agentRole.indexOf('投放') >= 0) agentIcon = '📊';
+  else if (agentRole.indexOf('销售') >= 0 || agentRole.indexOf('转化') >= 0) agentIcon = '💼';
+  else if (agentRole.indexOf('客服') >= 0 || agentRole.indexOf('售后') >= 0) agentIcon = '💬';
+  else if (agentRole.indexOf('数据') >= 0 || agentRole.indexOf('分析') >= 0) agentIcon = '📈';
+  else if (agentRole.indexOf('CEO') >= 0 || agentRole.indexOf('决策') >= 0) agentIcon = '👑';
+  else if (agentRole.indexOf('SEO') >= 0 || agentRole.indexOf('搜索') >= 0) agentIcon = '🔎';
+  else if (agentRole.indexOf('品牌') >= 0) agentIcon = '✨';
+  else if (agentRole.indexOf('物流') >= 0 || agentRole.indexOf('仓储') >= 0) agentIcon = '📦';
+  else if (agentRole.indexOf('财务') >= 0) agentIcon = '💰';
+  else if (agentRole.indexOf('法务') >= 0 || agentRole.indexOf('合规') >= 0) agentIcon = '⚖️';
 
-  layerIds.forEach(id => {
+  var agentColor = AGENT_COLORS[parseInt(agentNum) % AGENT_COLORS.length];
+
+  APP._activeAgentChat = {
+    num: agentNum,
+    name: agentName,
+    role: agentRole,
+    icon: agentIcon,
+    color: agentColor,
+    config: config
+  };
+
+  // 更新聊天面板标题
+  document.getElementById('chatPanelTitle').innerHTML = agentIcon + ' ' + agentName + ' <span style="font-size:10px;opacity:0.5;">Agent ' + agentNum + '</span>';
+
+  var loadedLayers = layerIds.filter(function(id) { return config.prompts[id] && config.prompts[id].trim(); }).length;
+
+  var parts = ['🤖 **Agent ' + agentNum + ': ' + agentName + '** · ' + agentRole, ''];
+
+  layerIds.forEach(function(id) {
     if (config.prompts[id] && config.prompts[id].trim()) {
       parts.push('---\n### ' + SIX_LAYER_PROMPTS[id].icon + ' ' + SIX_LAYER_PROMPTS[id].name + '\n' + config.prompts[id] + '\n');
     }
   });
 
   if (config.skills.length > 0) {
-    parts.push('\n---\n### ⚡ 已激活技能');
-    config.skills.forEach(s => parts.push('- ' + s.name + ': ' + s.desc));
+    parts.push('\n---\n### ⚡ 已激活技能 (' + config.skills.length + ')');
+    config.skills.forEach(function(s) { parts.push('- ' + s.name + ': ' + s.desc); });
   }
 
   if (config.imChannels.length > 0) {
-    parts.push('\n---\n### 📡 已绑定IM频道');
-    config.imChannels.forEach(ch => parts.push('- ' + ch.platform + ': ' + ch.name + ' (' + ch.webhook + ')'));
+    parts.push('\n---\n### 📡 已绑定IM频道 (' + config.imChannels.length + ')');
+    config.imChannels.forEach(function(ch) { parts.push('- ' + ch.platform + ': ' + ch.name + ' (' + ch.webhook + ')'); });
   }
 
   if (config.mcpConnectors.length > 0) {
-    parts.push('\n---\n### 🔌 已配置MCP连接器');
-    config.mcpConnectors.forEach(m => parts.push('- ' + m.name + ' (' + m.type + ')'));
+    parts.push('\n---\n### 🔌 已配置MCP连接器 (' + config.mcpConnectors.length + ')');
+    config.mcpConnectors.forEach(function(m) { parts.push('- ' + m.name + ' (' + m.type + ')'); });
   }
 
   if (config.cronTasks.length > 0) {
-    parts.push('\n---\n### ⏰ 定时任务');
-    config.cronTasks.forEach(t => parts.push('- ' + t.name + ': `' + t.schedule + '` → ' + t.command + ' [' + (t.enabled ? '启用' : '停用') + ']'));
+    parts.push('\n---\n### ⏰ 定时任务 (' + config.cronTasks.length + ')');
+    config.cronTasks.forEach(function(t) { parts.push('- ' + t.name + ': `' + t.schedule + '` → ' + t.command + ' [' + (t.enabled ? '启用' : '停用') + ']'); });
   }
 
   parts.push('', '> 💡 以 **' + agentName + '** 身份开始独立AI对话。');
 
   APP.chatMessages.push({ role: 'system', content: parts.join('\n') });
-  APP.chatMessages.push({ role: 'assistant', content: '🦞 **' + agentName + '** 已就绪！\n\n角色：' + agentRole + '\n已加载 ' + layerIds.filter(id => config.prompts[id] && config.prompts[id].trim()).length + ' 层工作层 + ' + config.skills.length + ' 技能 + ' + config.imChannels.length + ' IM频道 + ' + config.mcpConnectors.length + ' MCP + ' + config.cronTasks.length + ' 定时任务\n\n请告诉我你的需求。' });
+
+  var welcomeContent = '🦞 **' + agentName + '** 已就绪！\n\n' +
+    '角色：' + agentRole + '\n' +
+    '已加载 ' + loadedLayers + ' 层工作层 + ' + config.skills.length + ' 技能 + ' +
+    config.imChannels.length + ' IM频道 + ' + config.mcpConnectors.length + ' MCP + ' +
+    config.cronTasks.length + ' 定时任务\n\n' +
+    '请告诉我你的需求，我将以 **' + agentName + '** 的身份为你服务。';
+
+  APP.chatMessages.push({
+    role: 'assistant',
+    content: welcomeContent,
+    _agentName: agentName,
+    _agentColor: agentColor,
+    _agentIcon: agentIcon,
+    time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0')
+  });
+
   renderChatMessages();
-  document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+  scrollChatToBottom();
   document.getElementById('chatPanel').style.display = 'flex';
   closeModalDirect();
   renderOrganization();
@@ -7512,27 +8017,37 @@ function sendMessage() {
   const text = input.value.trim();
   if (!text && APP.attachments.length === 0) return;
 
+  const now = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
   if (text) {
-    APP.chatMessages.push({ role:'user', content: text });
+    APP.chatMessages.push({ role:'user', content: text, time: timeStr });
   }
   if (APP.attachments.length > 0) {
-    APP.chatMessages.push({ role:'user', content: `[已上传 ${APP.attachments.length} 个文件: ${APP.attachments.map(a => a.name).join(', ')}]` });
+    APP.chatMessages.push({ role:'user', content: `[已上传 ${APP.attachments.length} 个文件: ${APP.attachments.map(function(a) { return a.name; }).join(', ')}]`, time: timeStr });
     APP.attachments = [];
     renderAttachments();
   }
 
   input.value = '';
+  updateCharCount();
   renderChatMessages();
+  scrollChatToBottom();
 
   // 添加 AI 加载占位
   const loadingId = 'loading-' + Date.now();
-  APP.chatMessages.push({ role:'assistant', content: '<span class="typing-indicator"><span></span><span></span><span></span></span>', _loading: true, _id: loadingId });
+  var loadingMsg = { role:'assistant', content: '<span class="typing-indicator"><span></span><span></span><span></span></span>', _loading: true, _id: loadingId, time: timeStr };
+  if (APP._activeAgentChat) {
+    loadingMsg._agentName = APP._activeAgentChat.name;
+    loadingMsg._agentColor = APP._activeAgentChat.color;
+    loadingMsg._agentIcon = APP._activeAgentChat.icon;
+  }
+  APP.chatMessages.push(loadingMsg);
   renderChatMessages();
-  const msgs = document.getElementById('chatMessages');
-  msgs.scrollTop = msgs.scrollHeight;
+  scrollChatToBottom();
 
   // 调用真实 LLM API
-  const userMessage = text || (APP.attachments.length > 0 ? `分析这些文件` : '你好');
+  const userMessage = text || (APP.attachments.length > 0 ? '分析这些文件' : '你好');
   const config = APP.chatConfig;
 
   if (config.useStream && config.ollamaConnected) {
@@ -7573,6 +8088,8 @@ async function chatWithAPI(message, loadingId) {
 
 async function chatWithStream(message, loadingId) {
   const config = APP.chatConfig;
+  APP._abortController = new AbortController();
+
   try {
     const resp = await fetch('http://localhost:8080/api/chat/stream', {
       method: 'POST',
@@ -7582,14 +8099,15 @@ async function chatWithStream(message, loadingId) {
         provider: config.provider,
         model: config.model,
         conversation_history: APP.chatMessages
-          .filter(m => !m._loading && m.role !== 'system')
+          .filter(function(m) { return !m._loading && m.role !== 'system'; })
           .slice(-20)
-          .map(m => ({ role: m.role, content: m.content })),
+          .map(function(m) { return { role: m.role, content: m.content }; }),
       }),
+      signal: APP._abortController.signal,
     });
 
     if (!resp.ok) {
-      replaceLoadingMessage(loadingId, `⚠️ API 错误: ${resp.status} ${resp.statusText}`);
+      replaceLoadingMessage(loadingId, '⚠️ API 错误: ' + resp.status + ' ' + resp.statusText);
       return;
     }
 
@@ -7597,6 +8115,7 @@ async function chatWithStream(message, loadingId) {
     const decoder = new TextDecoder();
     let fullContent = '';
     let isFirstChunk = true;
+    let tokenCount = 0;
 
     while (true) {
       const { done, value } = await reader.read();
@@ -7605,7 +8124,8 @@ async function chatWithStream(message, loadingId) {
       const text = decoder.decode(value, { stream: true });
       const lines = text.split('\n');
 
-      for (const line of lines) {
+      for (var li = 0; li < lines.length; li++) {
+        var line = lines[li];
         if (line.startsWith('data: ')) {
           const dataStr = line.slice(6);
           if (dataStr === '[DONE]') break;
@@ -7613,36 +8133,75 @@ async function chatWithStream(message, loadingId) {
             const chunk = JSON.parse(dataStr);
             if (chunk.content) {
               fullContent += chunk.content;
+              tokenCount++;
               if (isFirstChunk) {
                 replaceLoadingMessage(loadingId, fullContent);
                 isFirstChunk = false;
+                // 标记为流式输出中
+                var idx = APP.chatMessages.findIndex(function(m) { return m._id === loadingId; });
+                if (idx >= 0) APP.chatMessages[idx]._streaming = true;
               } else {
                 updateLastAssistantMessage(fullContent);
               }
             }
             if (chunk.error) {
-              replaceLoadingMessage(loadingId, `⚠️ ${chunk.error}`);
+              replaceLoadingMessage(loadingId, '⚠️ ' + chunk.error);
             }
           } catch(e) {}
         }
       }
-      const msgs = document.getElementById('chatMessages');
-      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+      scrollChatToBottom();
     }
+
+    // 流式完成，移除 streaming 标记
+    var finalIdx = APP.chatMessages.findIndex(function(m) { return m._id === loadingId; });
+    if (finalIdx >= 0) {
+      APP.chatMessages[finalIdx]._streaming = false;
+      APP.chatMessages[finalIdx].time = new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0');
+    }
+    renderChatMessages();
 
     if (!fullContent) {
       replaceLoadingMessage(loadingId, '（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
     }
+
+    // Token 统计
+    console.log('[Chat] 流式完成, tokens: ~' + tokenCount);
   } catch(e) {
+    if (e.name === 'AbortError') {
+      // 用户主动停止
+      var abortIdx = APP.chatMessages.findIndex(function(m) { return m._id === loadingId; });
+      if (abortIdx >= 0) {
+        APP.chatMessages[abortIdx]._streaming = false;
+        APP.chatMessages[abortIdx].content += '\n\n*[已停止生成]*';
+      }
+      renderChatMessages();
+      return;
+    }
     console.error('[Chat] Stream error:', e);
-    replaceLoadingMessage(loadingId, `⚠️ 流式连接失败: ${e.message}\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 模型已下载 (ollama pull qwen3-coder:480b-cloud)\n3. 引擎已启动`);
+    replaceLoadingMessage(loadingId, '⚠️ 流式连接失败: ' + e.message + '\n\n请确认:\n1. Ollama 服务已启动 (ollama serve)\n2. 模型已下载\n3. 引擎已启动');
+  } finally {
+    APP._abortController = null;
+    document.getElementById('stopGenBtn').className = 'stop-gen-btn';
+  }
+}
+
+function stopGeneration() {
+  if (APP._abortController) {
+    APP._abortController.abort();
+    showToast('⏹ 已停止生成', 'success');
   }
 }
 
 function replaceLoadingMessage(loadingId, content) {
-  const idx = APP.chatMessages.findIndex(m => m._id === loadingId);
+  var idx = APP.chatMessages.findIndex(function(m) { return m._id === loadingId; });
+  var agentInfo = {};
   if (idx >= 0) {
+    agentInfo._agentName = APP.chatMessages[idx]._agentName;
+    agentInfo._agentColor = APP.chatMessages[idx]._agentColor;
+    agentInfo._agentIcon = APP.chatMessages[idx]._agentIcon;
     APP.chatMessages[idx] = { role: 'assistant', content: content, _id: loadingId };
+    Object.assign(APP.chatMessages[idx], agentInfo);
   }
   renderChatMessages();
   const msgs = document.getElementById('chatMessages');
@@ -7667,28 +8226,264 @@ function handleChatKeydown(e) {
     e.preventDefault();
     sendMessage();
   }
+  // Ctrl+K 聚焦搜索
+  if (e.ctrlKey && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('chatInput').focus();
+  }
+}
+
+// ============================================================
+// 增强交互功能
+// ============================================================
+
+// 快速提问
+function quickAsk(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+// 快捷指令
+function quickCmd(cmd) {
+  var input = document.getElementById('chatInput');
+  input.value = cmd + ' ';
+  input.focus();
+}
+
+// 字符计数
+function updateCharCount() {
+  var input = document.getElementById('chatInput');
+  var count = document.getElementById('charCount');
+  var len = input.value.length;
+  if (count) {
+    count.textContent = len + ' 字符';
+    count.className = 'chat-char-count' + (len > 4000 ? ' warning' : '');
+  }
+}
+
+// 滚动到底部
+function scrollChatToBottom() {
+  var msgs = document.getElementById('chatMessages');
+  if (msgs) {
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+}
+
+// 监听聊天区滚动以显示"回到底部"按钮
+(function initScrollWatch() {
+  setTimeout(function() {
+    var msgs = document.getElementById('chatMessages');
+    if (msgs) {
+      msgs.addEventListener('scroll', function() {
+        var btn = document.getElementById('scrollBottomBtn');
+        if (btn) {
+          var isNearBottom = msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 100;
+          btn.className = 'scroll-bottom-btn' + (isNearBottom ? '' : ' visible');
+        }
+      });
+    }
+  }, 500);
+})();
+
+// 复制消息
+function copyMessage(idx) {
+  var msg = APP.chatMessages[idx];
+  if (!msg) return;
+  var text = msg.content.replace(/<[^>]*>/g, ''); // 去除 HTML 标签
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('📋 已复制到剪贴板', 'success');
+  }).catch(function() {
+    showToast('⚠️ 复制失败', 'warning');
+  });
+}
+
+// 重新生成消息
+function retryMessage(idx) {
+  if (idx < 1) return;
+  var prevMsg = APP.chatMessages[idx - 1];
+  if (prevMsg && prevMsg.role === 'user') {
+    // 删除当前 assistant 消息
+    APP.chatMessages.splice(idx, 1);
+    renderChatMessages();
+    // 重新发送上一条用户消息
+    var input = document.getElementById('chatInput');
+    input.value = prevMsg.content;
+    sendMessage();
+  }
+}
+
+// 导出对话
+function exportChat() {
+  if (APP.chatMessages.length === 0) {
+    showToast('⚠️ 没有对话内容可导出', 'warning');
+    return;
+  }
+  var text = APP.chatMessages.map(function(m) {
+    var role = m.role === 'user' ? '🧑 用户' : (m.role === 'system' ? '⚙️ 系统' : '🦞 AI');
+    var content = m.content.replace(/<[^>]*>/g, '');
+    return '## ' + role + (m.time ? ' (' + m.time + ')' : '') + '\n\n' + content + '\n';
+  }).join('\n---\n\n');
+
+  var blob = new Blob([text], {type: 'text/markdown'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'chat-export-' + new Date().toISOString().slice(0,10) + '.md';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📥 对话已导出为 Markdown', 'success');
+}
+
+// 模型切换器渲染
+function renderModelSwitcher() {
+  var container = document.getElementById('modelSwitcher');
+  if (!container) return;
+  var models = APP.chatConfig.ollamaModels;
+  var current = APP.chatConfig.model;
+
+  if (models.length === 0) {
+    container.innerHTML = '<span style="font-size:10px;color:var(--text-dim);">模型: 自动检测</span>';
+    return;
+  }
+
+  // 显示前3个模型 + 设置按钮
+  var displayModels = models.slice(0, 4);
+  container.innerHTML = displayModels.map(function(m) {
+    var shortName = m.name.length > 20 ? m.name.substring(0, 18) + '…' : m.name;
+    return '<button class="model-switch-chip' + (m.name === current ? ' active' : '') + '" onclick="switchModel(\'' + m.name.replace(/'/g, "\\'") + '\')" title="' + m.name + '">' + shortName + '</button>';
+  }).join('') + (models.length > 4 ? '<button class="model-switch-chip" onclick="toggleOllamaSettings()" title="更多模型">+' + (models.length - 4) + '</button>' : '');
+}
+
+function switchModel(name) {
+  APP.chatConfig.model = name;
+  renderModelSwitcher();
+  showToast('✅ 已切换模型: ' + name, 'success');
+  try {
+    localStorage.setItem('ollama_chat_config', JSON.stringify({
+      model: APP.chatConfig.model,
+      useStream: APP.chatConfig.useStream,
+    }));
+  } catch(e) {}
+}
+
+// 简易 Markdown 转 HTML
+function simpleMarkdown(text) {
+  if (!text) return '';
+  // 转义 HTML
+  let html = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // 代码块
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
+  // 行内代码
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // 标题
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // 粗体/斜体
+  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // 链接
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // 图片
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:6px;margin:4px 0;">');
+  // 引用
+  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  // 分隔线
+  html = html.replace(/^---$/gm, '<hr>');
+  // 无序列表
+  html = html.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  // 有序列表
+  html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+  // 表格
+  html = html.replace(/\|(.+)\|/g, function(match) {
+    var cells = match.split('|').filter(function(c) { return c.trim(); });
+    if (cells.length < 2) return match;
+    var isHeader = cells.every(function(c) { return /^[\s\-:]+$/.test(c.trim()); });
+    if (isHeader) return '';
+    return '<tr>' + cells.map(function(c) { return (isHeader ? '<th>' : '<td>') + c.trim() + (isHeader ? '</th>' : '</td>'); }).join('') + '</tr>';
+  });
+  // 段落（连续的换行）
+  html = html.replace(/\n\n+/g, '</p><p>');
+  html = '<p>' + html + '</p>';
+  // 清理空段落
+  html = html.replace(/<p><\/p>/g, '');
+  html = html.replace(/<p>(\s*<[hul])/g, '$1');
+  html = html.replace(/(<\/[hul][^>]*>)\s*<\/p>/g, '$1');
+  return html;
 }
 
 function renderChatMessages() {
   const container = document.getElementById('chatMessages');
+  const emptyState = document.getElementById('chatEmptyState');
+
   if (APP.chatMessages.length === 0) {
-    container.innerHTML = `
-      <div class="chat-empty">
-        <div class="chat-empty-icon">🦞</div>
-        <div class="chat-empty-text">龙虾星球 AI 工作台</div>
-        <div class="chat-empty-hint">输入提示词或使用语音开始对话</div>
-      </div>`;
+    container.innerHTML = '';
+    if (emptyState) emptyState.style.display = 'flex';
+    container.appendChild(document.getElementById('scrollBottomBtn'));
+    container.appendChild(document.getElementById('stopGenBtn'));
     return;
   }
-  container.innerHTML = APP.chatMessages.map(m => `
-    <div class="message ${m.role}">${m.content}</div>
-  `).join('');
+
+  if (emptyState) emptyState.style.display = 'none';
+
+  // 只更新消息内容，保留 scroll-bottom-btn 和 stop-gen-btn
+  var existingMsgContainer = container.querySelector('.msg-container');
+  if (!existingMsgContainer) {
+    existingMsgContainer = document.createElement('div');
+    existingMsgContainer.className = 'msg-container';
+    existingMsgContainer.style.cssText = 'display:flex;flex-direction:column;gap:12px;';
+    container.insertBefore(existingMsgContainer, container.firstChild);
+  }
+
+  existingMsgContainer.innerHTML = APP.chatMessages.map(function(m, idx) {
+    var timeStr = m.time || '';
+    var isStreaming = m._streaming || false;
+    var content = m.role === 'assistant' && !m._loading ? simpleMarkdown(m.content) : m.content;
+    var cursorClass = isStreaming ? ' streaming-cursor' : '';
+
+    // Agent 名称显示
+    var headerHtml = '';
+    if (m._agentName) {
+      headerHtml = '<div class="message-header"><span class="agent-avatar-sm" style="background:' + (m._agentColor || 'var(--accent)') + ';color:#fff;">' + (m._agentIcon || '🤖') + '</span><span class="agent-name">' + m._agentName + '</span></div>';
+    }
+
+    // 消息操作按钮
+    var actionsHtml = '';
+    if (m.role === 'assistant' && !m._loading) {
+      actionsHtml = '<div class="message-actions">' +
+        '<button class="msg-action-btn" onclick="copyMessage(' + idx + ')" title="复制">📋</button>' +
+        '<button class="msg-action-btn" onclick="retryMessage(' + idx + ')" title="重新生成">🔄</button>' +
+        '</div>';
+    }
+
+    var timeHtml = timeStr ? '<div class="message-time">' + timeStr + '</div>' : '';
+
+    return '<div class="message ' + m.role + cursorClass + '">' +
+      actionsHtml +
+      headerHtml +
+      content +
+      timeHtml +
+      '</div>';
+  }).join('');
+
+  // 显示/隐藏停止按钮
+  var stopBtn = document.getElementById('stopGenBtn');
+  if (stopBtn) {
+    var hasStreaming = APP.chatMessages.some(function(m) { return m._streaming; });
+    stopBtn.className = 'stop-gen-btn' + (hasStreaming ? ' visible' : '');
+  }
 }
 
 function clearChat() {
   APP.chatMessages = [];
   APP.attachments = [];
+  APP._activeAgentChat = null;
+  document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
   renderChatMessages();
+  renderAttachments();
   renderAttachments();
 }
 
@@ -7696,23 +8491,27 @@ function clearChat() {
 // Ollama 状态管理 & 模型设置
 // ============================================================
 function updateOllamaBadge() {
-  const badge = document.getElementById('ollamaStatusBadge');
+  var badge = document.getElementById('ollamaStatusBadge');
   if (!badge) return;
   badge.style.display = 'inline-flex';
   if (APP.chatConfig.ollamaConnected) {
     badge.className = 'ollama-status connected';
-    badge.innerHTML = `🟢 Ollama · ${APP.chatConfig.ollamaModels.length} 模型`;
+    var modelName = APP.chatConfig.model || 'auto';
+    if (modelName.length > 15) modelName = modelName.substring(0, 13) + '…';
+    badge.innerHTML = '🟢 ' + modelName;
+    badge.title = APP.chatConfig.ollamaModels.length + ' 模型可用: ' + APP.chatConfig.ollamaModels.map(function(m) { return m.name; }).join(', ');
   } else {
     badge.className = 'ollama-status disconnected';
-    badge.innerHTML = '🔴 Ollama 未连接';
+    badge.innerHTML = '🔴 离线';
   }
+  renderModelSwitcher();
 }
 
 async function refreshOllamaStatus() {
   await checkOllamaStatus();
   updateOllamaBadge();
   if (APP.chatConfig.ollamaConnected) {
-    showToast(`✅ Ollama 已连接 · ${APP.chatConfig.ollamaModels.length} 个模型可用`, 'success');
+    showToast('✅ Ollama 已连接 · ' + APP.chatConfig.ollamaModels.length + ' 个模型可用', 'success');
   } else {
     showToast('⚠️ Ollama 未连接，请确认 ollama serve 已启动', 'warning');
   }
@@ -7789,16 +8588,16 @@ function saveOllamaSettings() {
 // 初始化 Ollama 配置（从 localStorage 恢复）
 function initOllamaConfig() {
   try {
-    const saved = JSON.parse(localStorage.getItem('ollama_chat_config') || '{}');
+    var saved = JSON.parse(localStorage.getItem('ollama_chat_config') || '{}');
     if (saved.model) APP.chatConfig.model = saved.model;
     if (typeof saved.useStream === 'boolean') APP.chatConfig.useStream = saved.useStream;
   } catch(e) {}
-  checkOllamaStatus().then(() => {
+  checkOllamaStatus().then(function() {
     updateOllamaBadge();
-    // 如果 localStorage 没有保存模型，使用第一个可用模型
     if (!APP.chatConfig.model && APP.chatConfig.ollamaModels.length > 0) {
-      APP.chatConfig.model = APP.chatConfig.ollamaModels[0];
+      APP.chatConfig.model = APP.chatConfig.ollamaModels[0].name;
     }
+    renderModelSwitcher();
   });
 }
 
