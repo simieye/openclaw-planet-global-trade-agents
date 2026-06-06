@@ -2551,31 +2551,33 @@ body {
   margin-bottom: 16px;
 }
 
-/* 模态框关闭按钮 */
+/* 模态框关闭按钮 - 全局固定右上角 */
 .modal-close-btn {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   background: var(--card-bg);
   color: var(--text-dim);
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  z-index: 10;
+  z-index: 10000;
   line-height: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 .modal-close-btn:hover {
   background: var(--danger);
   color: #fff;
   border-color: var(--danger);
   transform: rotate(90deg);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.4);
 }
 
 /* 模态框关闭动画 */
@@ -4795,7 +4797,6 @@ body {
 <!-- ===== 模态框容器 ===== -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modalContent" onclick="event.stopPropagation()" style="position:relative;">
-    <button class="modal-close-btn" onclick="closeModalDirect()" title="关闭 (ESC)" style="position:absolute;top:10px;right:14px;">✕</button>
     <!-- 动态渲染 -->
   </div>
 </div>
@@ -7330,8 +7331,6 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
 
   modalContent.innerHTML = `
     <div class="agent-config-panel" style="max-width:720px;width:95vw;position:relative;">
-      <!-- 右上角关闭按钮（在panel内部） -->
-      <button class="modal-close-btn" onclick="closeModalDirect()" title="关闭 (ESC)" style="position:absolute;top:10px;right:14px;z-index:100;">✕</button>
       <!-- 头部 -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);padding-right:40px;">
         <div>
@@ -7340,8 +7339,9 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
           </div>
           <div style="font-size:12px;color:var(--text-dim);margin-top:4px;">${agentRole}</div>
         </div>
-        <div style="display:flex;gap:6px;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn btn-primary btn-sm" onclick="openAgentChat('${agentNum}','${escapedName}','${escapedRole}')">💬 独立AI对话</button>
+          <button class="btn btn-sm" style="background:linear-gradient(135deg, var(--accent2), var(--accent3));color:#fff;font-weight:600;border:none;" onclick="quickRunAgentTask('${agentNum}','${escapedName}','${escapedRole}')">⚡ 一键执行任务</button>
           <button class="btn btn-accent3 btn-sm" onclick="sendAgentToOpenClaw('${agentNum}','${escapedName}')">🔗 OpenClaw</button>
         </div>
       </div>
@@ -7663,6 +7663,58 @@ function openAgentChat(agentNum, agentName, agentRole) {
   closeModalDirect();
   renderOrganization();
   showToast('💬 ' + agentName + ' 独立AI对话已开启', 'success');
+}
+
+// ⚡ 一键执行Agent任务：打开对话并预填任务指令
+function quickRunAgentTask(agentNum, agentName, agentRole) {
+  // 先保存当前配置
+  saveAgentConfig(agentNum);
+  
+  // 打开Agent独立对话
+  openAgentChat(agentNum, agentName, agentRole);
+  
+  // 延迟填入任务指令（等chat渲染完成）
+  setTimeout(function() {
+    var inputEl = document.getElementById('chatInput');
+    if (inputEl) {
+      // 根据角色生成默认任务指令
+      var taskPrompt = '';
+      if (agentRole.indexOf('选品') >= 0 || agentRole.indexOf('产品') >= 0) {
+        taskPrompt = '请帮我分析当前市场趋势，推荐3个热门选品方向，并给出详细理由。';
+      } else if (agentRole.indexOf('内容') >= 0 || agentRole.indexOf('创意') >= 0) {
+        taskPrompt = '请帮我创作一篇吸引人的营销内容，包括标题和正文。';
+      } else if (agentRole.indexOf('广告') >= 0 || agentRole.indexOf('投放') >= 0) {
+        taskPrompt = '请帮我制定一份广告投放策略，包括目标受众、预算分配和预期ROI。';
+      } else if (agentRole.indexOf('销售') >= 0 || agentRole.indexOf('转化') >= 0) {
+        taskPrompt = '请帮我分析当前销售数据，给出提升转化率的具体建议。';
+      } else if (agentRole.indexOf('客服') >= 0 || agentRole.indexOf('售后') >= 0) {
+        taskPrompt = '请帮我起草一份专业的客户回复模板，涵盖常见问题场景。';
+      } else if (agentRole.indexOf('数据') >= 0 || agentRole.indexOf('分析') >= 0) {
+        taskPrompt = '请帮我分析最近一周的核心业务数据，找出关键趋势和异常点。';
+      } else if (agentRole.indexOf('CEO') >= 0 || agentRole.indexOf('决策') >= 0) {
+        taskPrompt = '请帮我梳理当前业务的核心挑战和下一步战略方向。';
+      } else if (agentRole.indexOf('SEO') >= 0 || agentRole.indexOf('搜索') >= 0) {
+        taskPrompt = '请帮我分析当前网站的SEO表现，给出优化建议和关键词策略。';
+      } else if (agentRole.indexOf('品牌') >= 0) {
+        taskPrompt = '请帮我制定品牌传播方案，包括核心信息、渠道策略和执行计划。';
+      } else if (agentRole.indexOf('物流') >= 0 || agentRole.indexOf('仓储') >= 0) {
+        taskPrompt = '请帮我优化物流路线和仓储布局方案，降低运输成本。';
+      } else if (agentRole.indexOf('财务') >= 0) {
+        taskPrompt = '请帮我分析当前财务状况，给出成本优化和现金流改善建议。';
+      } else if (agentRole.indexOf('法务') >= 0 || agentRole.indexOf('合规') >= 0) {
+        taskPrompt = '请帮我审查当前业务流程的合规风险，给出改进建议。';
+      } else {
+        taskPrompt = '请以 ' + agentName + ' 的身份，帮我完成当前最紧急的任务。';
+      }
+      
+      inputEl.value = taskPrompt;
+      inputEl.focus();
+      // 触发input事件以激活发送按钮
+      inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+      
+      showToast('⚡ 任务指令已就绪，可直接发送或修改后发送', 'success');
+    }
+  }, 300);
 }
 
 // 发送Agent配置到OpenClaw
@@ -8975,6 +9027,20 @@ function openModal() {
   overlay.style.display = 'flex';
   overlay.offsetHeight; // 强制回流
   overlay.classList.add('show');
+  // 动态创建关闭按钮（fixed定位，始终在屏幕右上角可见）
+  ensureCloseBtn();
+}
+
+// 确保全局关闭按钮存在
+function ensureCloseBtn() {
+  if (document.getElementById('globalModalCloseBtn')) return;
+  const btn = document.createElement('button');
+  btn.id = 'globalModalCloseBtn';
+  btn.className = 'modal-close-btn';
+  btn.innerHTML = '✕';
+  btn.title = '关闭 (ESC)';
+  btn.onclick = closeModalDirect;
+  document.body.appendChild(btn);
 }
 
 function closeModal(e) {
@@ -8987,6 +9053,9 @@ function closeModal(e) {
 function closeModalDirect() {
   const overlay = document.getElementById('modalOverlay');
   overlay.classList.remove('show');
+  // 移除全局关闭按钮
+  const closeBtn = document.getElementById('globalModalCloseBtn');
+  if (closeBtn) closeBtn.remove();
   // 动画结束后隐藏
   setTimeout(() => {
     if (!overlay.classList.contains('show')) {
