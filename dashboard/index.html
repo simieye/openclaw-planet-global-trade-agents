@@ -4750,6 +4750,10 @@ body {
       <span class="quick-cmd-chip" onclick="quickCmd('/translate')">/translate 翻译</span>
       <span class="quick-cmd-chip" onclick="quickCmd('/summarize')">/summarize 总结</span>
       <span class="quick-cmd-chip" onclick="quickCmd('/brainstorm')">/brainstorm 头脑风暴</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('执行工厂出海SOP')" style="background:rgba(245,158,11,0.15);color:#f59e0b;">🏭 工厂SOP</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('执行TikTok Shop增长SOP')" style="background:rgba(236,72,153,0.15);color:var(--accent4);">🎵 TikTok</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('执行Amazon品牌增长SOP')" style="background:rgba(245,158,11,0.12);color:#f59e0b;">📦 Amazon</span>
+      <span class="quick-cmd-chip" onclick="quickCmd('执行Shopify DTC增长SOP')" style="background:rgba(16,185,129,0.15);color:#10b981;">🛍️ Shopify</span>
     </div>
 
     <!-- 输入区 -->
@@ -5132,19 +5136,25 @@ function renderFactoryTaskFlows(filter) {
 
   grid.innerHTML = filtered.map(tf => {
     const agentTags = tf.agents.map((a, i) => {
-      let html = `<span class="tf-agent-tag">${a}</span>`;
-      if (i < tf.agents.length - 1) html += '<span class="tf-agent-arrow">↓</span>';
+      let html = `<span class="tf-agent-tag" title="点击配置此Agent" onclick="event.stopPropagation();openAgentByRole('${a}')">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tf-agent-arrow">→</span>';
       return html;
     }).join('');
 
     return `
-    <div class="factory-taskflow-card ${selectedTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleTaskFlowDetail('${tf.id}')">
-      <span class="tf-category-badge badge-factory-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
-      <div class="tf-num">${tf.phase} · ${tf.id}</div>
-      <div class="tf-title">${tf.title}</div>
-      <div class="tf-trigger">🔔 ${tf.trigger}</div>
-      <div class="tf-agents">${agentTags}</div>
-      <div class="tf-output">📤 ${tf.output}</div>
+    <div class="factory-taskflow-card ${selectedTaskFlowId === tf.id ? 'active-taskflow' : ''}">
+      <div onclick="toggleTaskFlowDetail('${tf.id}')" style="cursor:pointer;">
+        <span class="tf-category-badge badge-factory-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+        <div class="tf-num">${tf.phase} · ${tf.id}</div>
+        <div class="tf-title">${tf.title}</div>
+        <div class="tf-trigger">🔔 ${tf.trigger}</div>
+        <div class="tf-agents">${agentTags}</div>
+        <div class="tf-output">📤 ${tf.output}</div>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <button class="btn btn-sm" style="flex:1;background:rgba(0,212,170,0.12);color:var(--accent2);font-size:10px;padding:4px;" onclick="event.stopPropagation();executeTaskFlowToChat('工厂出海','${tf.id}','${tf.title}')" title="将此任务流发送到AI对话执行">⚡ 执行</button>
+        <button class="btn btn-sm" style="flex:1;background:rgba(99,102,241,0.12);color:var(--accent3);font-size:10px;padding:4px;" onclick="event.stopPropagation();toggleTaskFlowDetail('${tf.id}')" title="查看详情">🔍 详情</button>
+      </div>
     </div>`;
   }).join('');
 
@@ -5196,6 +5206,7 @@ function toggleTaskFlowDetail(taskFlowId) {
         <div style="display:flex;gap:8px;">
           <button class="btn btn-sm" onclick="testTaskFlow('${tf.id}')" style="background:rgba(245,158,11,0.1);color:#f59e0b;">🧪 测试触发</button>
           <button class="btn btn-sm btn-primary" onclick="deployTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" style="background:rgba(0,212,170,0.1);color:var(--accent2);" onclick="executeTaskFlowToChat('工厂出海','${tf.id}','${tf.title}');closeTaskFlowDetail();">💬 执行</button>
           <button class="btn btn-sm" onclick="closeTaskFlowDetail()">✕ 关闭</button>
         </div>
       </div>
@@ -5506,19 +5517,25 @@ function renderTikTokTaskFlows(filter) {
 
   grid.innerHTML = filtered.map(tf => {
     const agentTags = tf.agents.map((a, i) => {
-      let html = `<span class="tk-agent-tag">${a}</span>`;
-      if (i < tf.agents.length - 1) html += '<span class="tk-agent-arrow">↓</span>';
+      let html = `<span class="tk-agent-tag" title="点击配置此Agent" onclick="event.stopPropagation();openAgentByRole('${a}')">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="tk-agent-arrow">→</span>';
       return html;
     }).join('');
 
     return `
-    <div class="tiktok-taskflow-card ${selectedTikTokTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleTikTokTaskFlowDetail('${tf.id}')">
-      <span class="tk-category-badge badge-tk-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
-      <div class="tk-num">${tf.phase} · ${tf.id}</div>
-      <div class="tk-title">${tf.title}</div>
-      <div class="tk-trigger">🔔 ${tf.trigger}</div>
-      <div class="tk-agents">${agentTags}</div>
-      <div class="tk-output">📤 ${tf.output}</div>
+    <div class="tiktok-taskflow-card ${selectedTikTokTaskFlowId === tf.id ? 'active-taskflow' : ''}">
+      <div onclick="toggleTikTokTaskFlowDetail('${tf.id}')" style="cursor:pointer;">
+        <span class="tk-category-badge badge-tk-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+        <div class="tk-num">${tf.phase} · ${tf.id}</div>
+        <div class="tk-title">${tf.title}</div>
+        <div class="tk-trigger">🔔 ${tf.trigger}</div>
+        <div class="tk-agents">${agentTags}</div>
+        <div class="tk-output">📤 ${tf.output}</div>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <button class="btn btn-sm" style="flex:1;background:rgba(236,72,153,0.12);color:var(--accent4);font-size:10px;padding:4px;" onclick="event.stopPropagation();executeTaskFlowToChat('TikTok Shop','${tf.id}','${tf.title}')" title="将此任务流发送到AI对话执行">⚡ 执行</button>
+        <button class="btn btn-sm" style="flex:1;background:rgba(99,102,241,0.12);color:var(--accent3);font-size:10px;padding:4px;" onclick="event.stopPropagation();toggleTikTokTaskFlowDetail('${tf.id}')" title="查看详情">🔍 详情</button>
+      </div>
     </div>`;
   }).join('');
 
@@ -5570,6 +5587,7 @@ function toggleTikTokTaskFlowDetail(taskFlowId) {
         <div style="display:flex;gap:8px;">
           <button class="btn btn-sm" onclick="testTikTokTaskFlow('${tf.id}')" style="background:rgba(236,72,153,0.1);color:#ec4899;">🧪 测试触发</button>
           <button class="btn btn-sm btn-primary" onclick="deployTikTokTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" style="background:rgba(236,72,153,0.1);color:var(--accent4);" onclick="executeTaskFlowToChat('TikTok Shop','${tf.id}','${tf.title}');closeTikTokTaskFlowDetail();">💬 执行</button>
           <button class="btn btn-sm" onclick="closeTikTokTaskFlowDetail()">✕ 关闭</button>
         </div>
       </div>
@@ -5751,19 +5769,25 @@ function renderAmazonTaskFlows(filter) {
 
   grid.innerHTML = filtered.map(tf => {
     const agentTags = tf.agents.map((a, i) => {
-      let html = `<span class="am-agent-tag">${a}</span>`;
-      if (i < tf.agents.length - 1) html += '<span class="am-agent-arrow">↓</span>';
+      let html = `<span class="am-agent-tag" title="点击配置此Agent" onclick="event.stopPropagation();openAgentByRole('${a}')">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="am-agent-arrow">→</span>';
       return html;
     }).join('');
 
     return `
-    <div class="amazon-taskflow-card ${selectedAmazonTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleAmazonTaskFlowDetail('${tf.id}')">
-      <span class="am-category-badge badge-am-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
-      <div class="am-num">${tf.phase} · ${tf.id}</div>
-      <div class="am-title">${tf.title}</div>
-      <div class="am-trigger">🔔 ${tf.trigger}</div>
-      <div class="am-agents">${agentTags}</div>
-      <div class="am-output">📤 ${tf.output}</div>
+    <div class="amazon-taskflow-card ${selectedAmazonTaskFlowId === tf.id ? 'active-taskflow' : ''}">
+      <div onclick="toggleAmazonTaskFlowDetail('${tf.id}')" style="cursor:pointer;">
+        <span class="am-category-badge badge-am-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+        <div class="am-num">${tf.phase} · ${tf.id}</div>
+        <div class="am-title">${tf.title}</div>
+        <div class="am-trigger">🔔 ${tf.trigger}</div>
+        <div class="am-agents">${agentTags}</div>
+        <div class="am-output">📤 ${tf.output}</div>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <button class="btn btn-sm" style="flex:1;background:rgba(245,158,11,0.12);color:#f59e0b;font-size:10px;padding:4px;" onclick="event.stopPropagation();executeTaskFlowToChat('Amazon品牌','${tf.id}','${tf.title}')" title="将此任务流发送到AI对话执行">⚡ 执行</button>
+        <button class="btn btn-sm" style="flex:1;background:rgba(99,102,241,0.12);color:var(--accent3);font-size:10px;padding:4px;" onclick="event.stopPropagation();toggleAmazonTaskFlowDetail('${tf.id}')" title="查看详情">🔍 详情</button>
+      </div>
     </div>`;
   }).join('');
 
@@ -5814,6 +5838,7 @@ function toggleAmazonTaskFlowDetail(taskFlowId) {
         <div style="display:flex;gap:8px;">
           <button class="btn btn-sm" onclick="testAmazonTaskFlow('${tf.id}')" style="background:rgba(245,158,11,0.1);color:#f59e0b;">🧪 测试触发</button>
           <button class="btn btn-sm btn-primary" onclick="deployAmazonTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" style="background:rgba(245,158,11,0.1);color:#f59e0b;" onclick="executeTaskFlowToChat('Amazon品牌','${tf.id}','${tf.title}');closeAmazonTaskFlowDetail();">💬 执行</button>
           <button class="btn btn-sm" onclick="closeAmazonTaskFlowDetail()">✕ 关闭</button>
         </div>
       </div>
@@ -5958,19 +5983,25 @@ function renderShopifyTaskFlows(filter) {
 
   grid.innerHTML = filtered.map(tf => {
     const agentTags = tf.agents.map((a, i) => {
-      let html = `<span class="sh-agent-tag">${a}</span>`;
-      if (i < tf.agents.length - 1) html += '<span class="sh-agent-arrow">↓</span>';
+      let html = `<span class="sh-agent-tag" title="点击配置此Agent" onclick="event.stopPropagation();openAgentByRole('${a}')">${a}</span>`;
+      if (i < tf.agents.length - 1) html += '<span class="sh-agent-arrow">→</span>';
       return html;
     }).join('');
 
     return `
-    <div class="shopify-taskflow-card ${selectedShopifyTaskFlowId === tf.id ? 'active-taskflow' : ''}" onclick="toggleShopifyTaskFlowDetail('${tf.id}')">
-      <span class="sh-category-badge badge-sh-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
-      <div class="sh-num">${tf.phase} · ${tf.id}</div>
-      <div class="sh-title">${tf.title}</div>
-      <div class="sh-trigger">🔔 ${tf.trigger}</div>
-      <div class="sh-agents">${agentTags}</div>
-      <div class="sh-output">📤 ${tf.output}</div>
+    <div class="shopify-taskflow-card ${selectedShopifyTaskFlowId === tf.id ? 'active-taskflow' : ''}">
+      <div onclick="toggleShopifyTaskFlowDetail('${tf.id}')" style="cursor:pointer;">
+        <span class="sh-category-badge badge-sh-${tf.category}">${categoryLabels[tf.category] || tf.category}</span>
+        <div class="sh-num">${tf.phase} · ${tf.id}</div>
+        <div class="sh-title">${tf.title}</div>
+        <div class="sh-trigger">🔔 ${tf.trigger}</div>
+        <div class="sh-agents">${agentTags}</div>
+        <div class="sh-output">📤 ${tf.output}</div>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <button class="btn btn-sm" style="flex:1;background:rgba(16,185,129,0.12);color:#10b981;font-size:10px;padding:4px;" onclick="event.stopPropagation();executeTaskFlowToChat('Shopify DTC','${tf.id}','${tf.title}')" title="将此任务流发送到AI对话执行">⚡ 执行</button>
+        <button class="btn btn-sm" style="flex:1;background:rgba(99,102,241,0.12);color:var(--accent3);font-size:10px;padding:4px;" onclick="event.stopPropagation();toggleShopifyTaskFlowDetail('${tf.id}')" title="查看详情">🔍 详情</button>
+      </div>
     </div>`;
   }).join('');
 
@@ -6020,6 +6051,7 @@ function toggleShopifyTaskFlowDetail(taskFlowId) {
         <div style="display:flex;gap:8px;">
           <button class="btn btn-sm" onclick="testShopifyTaskFlow('${tf.id}')" style="background:rgba(34,197,94,0.1);color:#22c55e;">🧪 测试触发</button>
           <button class="btn btn-sm btn-primary" onclick="deployShopifyTaskFlow('${tf.id}')">🚀 部署上线</button>
+          <button class="btn btn-sm" style="background:rgba(16,185,129,0.1);color:#10b981;" onclick="executeTaskFlowToChat('Shopify DTC','${tf.id}','${tf.title}');closeShopifyTaskFlowDetail();">💬 执行</button>
           <button class="btn btn-sm" onclick="closeShopifyTaskFlowDetail()">✕ 关闭</button>
         </div>
       </div>
@@ -7353,6 +7385,7 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
         <button class="agent-tab" onclick="switchAgentTab(this,'tab-im-${agentNum}')">📡 IM频道 <span style="font-size:9px;opacity:0.7;">${config.imChannels.length}</span></button>
         <button class="agent-tab" onclick="switchAgentTab(this,'tab-mcp-${agentNum}')">🔌 MCP连接器 <span style="font-size:9px;opacity:0.7;">${config.mcpConnectors.length}</span></button>
         <button class="agent-tab" onclick="switchAgentTab(this,'tab-cron-${agentNum}')">⏰ 定时任务 <span style="font-size:9px;opacity:0.7;">${config.cronTasks.length}</span></button>
+        <button class="agent-tab" onclick="switchAgentTab(this,'tab-taskflow-${agentNum}')" style="color:var(--accent2);">🔗 关联TaskFlow</button>
       </div>
 
       <!-- 6层Prompt Tab -->
@@ -7395,6 +7428,45 @@ function openAgentConfigPanel(agentNum, agentName, agentRole) {
           <button class="btn btn-primary btn-sm" onclick="addAgentCronTask('${agentNum}')">+ 添加定时任务</button>
         </div>
         <div style="max-height:300px;overflow-y:auto;" id="agentCron_${agentNum}">${cronHtml}</div>
+      </div>
+
+      <!-- 关联TaskFlow Tab -->
+      <div class="agent-tab-content" id="tab-taskflow-${agentNum}" style="display:none;">
+        <div style="font-size:12px;color:var(--text-dim);margin-bottom:10px;">此 Agent 参与的 TaskFlow 工作流（点击可执行）</div>
+        <div id="agentRelatedTaskFlows_${agentNum}" style="max-height:300px;overflow-y:auto;"></div>
+        <script>(function(){
+          // 延迟查找关联的 TaskFlow
+          setTimeout(function() {
+            var container = document.getElementById('agentRelatedTaskFlows_${agentNum}');
+            if (!container) return;
+            var agentName = '${agentName}';
+            var allTfs = [];
+            // 从所有系统收集关联的TaskFlow
+            if (typeof FACTORY_TASKFLOWS !== 'undefined') FACTORY_TASKFLOWS.forEach(function(tf) { 
+              if (tf.agents && tf.agents.some(function(a){ return a.indexOf(agentName.replace(' Agent','')) >= 0 || a.indexOf(agentName) >= 0; })) allTfs.push({sys:'工厂出海', data:tf}); 
+            });
+            if (typeof TIKTOK_TASKFLOWS !== 'undefined') TIKTOK_TASKFLOWS.forEach(function(tf) { 
+              if (tf.agents && tf.agents.some(function(a){ return a.indexOf(agentName.replace(' Agent','')) >= 0 || a.indexOf(agentName) >= 0; })) allTfs.push({sys:'TikTok Shop', data:tf}); 
+            });
+            if (typeof AMAZON_TASKFLOWS !== 'undefined') AMAZON_TASKFLOWS.forEach(function(tf) { 
+              if (tf.agents && tf.agents.some(function(a){ return a.indexOf(agentName.replace(' Agent','')) >= 0 || a.indexOf(agentName) >= 0; })) allTfs.push({sys:'Amazon品牌', data:tf}); 
+            });
+            if (typeof SHOPIFY_DTC_TASKFLOWS !== 'undefined') SHOPIFY_DTC_TASKFLOWS.forEach(function(tf) { 
+              if (tf.agents && tf.agents.some(function(a){ return a.indexOf(agentName.replace(' Agent','')) >= 0 || a.indexOf(agentName) >= 0; })) allTfs.push({sys:'Shopify DTC', data:tf}); 
+            });
+            if (allTfs.length === 0) {
+              container.innerHTML = '<div style="color:var(--text-dim);font-size:12px;text-align:center;padding:20px;">暂无关联 TaskFlow</div>';
+            } else {
+              container.innerHTML = allTfs.map(function(item) {
+                var tf = item.data;
+                return '<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;cursor:pointer;" onclick="executeTaskFlowToChat(\\'' + item.sys + '\\',\\'' + tf.id + '\\',\\'' + tf.title + '\\');closeModalDirect();">' +
+                  '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><span style="font-weight:600;font-size:12px;">' + tf.title + '</span><span style="font-size:9px;background:rgba(0,212,170,0.15);color:var(--accent2);padding:2px 6px;border-radius:4px;">' + item.sys + '</span></div>' +
+                  '<div style="font-size:10px;color:var(--text-dim);">' + tf.id + ' · ' + tf.trigger + '</div>' +
+                  '</div>';
+              }).join('');
+            }
+          }, 100);
+        })();</script>
       </div>
 
       <!-- 底部操作 -->
@@ -7715,6 +7787,138 @@ function quickRunAgentTask(agentNum, agentName, agentRole) {
       showToast('⚡ 任务指令已就绪，可直接发送或修改后发送', 'success');
     }
   }, 300);
+}
+
+// ⚡ 从 TaskFlow 卡片一键执行到 AI 对话
+function executeTaskFlowToChat(systemName, taskFlowId, taskFlowTitle) {
+  // 切换到聊天面板
+  document.getElementById('chatPanel').style.display = 'flex';
+  
+  // 清除当前 Agent 身份（使用通用模式）
+  APP._activeAgentChat = null;
+  document.getElementById('chatPanelTitle').innerHTML = '🦞 AI 对话 · <span style="font-size:10px;opacity:0.5;">' + systemName + '</span>';
+  
+  // 创建新对话
+  var newId = Date.now();
+  APP.conversations.forEach(function(c) { c.active = false; });
+  APP.conversations.unshift({
+    id: newId,
+    title: systemName + ' · ' + taskFlowId + ' ' + taskFlowTitle,
+    time: '刚刚',
+    active: true,
+    icon: '🚀',
+    messages: [],
+    agentChat: null
+  });
+  
+  APP.chatMessages = [];
+  
+  // 构建系统提示
+  var systemPrompt = `## 🚀 ${systemName} SOP 执行\n\n### ${taskFlowId} - ${taskFlowTitle}\n\n你现在是 **${systemName}** 的 AI 助手。用户正在执行 **${taskFlowId}: ${taskFlowTitle}** 这个任务流。\n\n请按照该 TaskFlow 的标准流程，引导用户完成以下操作：\n1. 确认当前阶段和状态\n2. 收集必要的输入信息\n3. 提供专业的执行建议\n4. 输出标准化的结果格式\n\n请以专业、高效的方式协助用户。`;
+  
+  APP.chatMessages.push({ role: 'system', content: systemPrompt });
+  
+  // 添加欢迎消息
+  APP.chatMessages.push({
+    role: 'assistant',
+    content: `🚀 **${taskFlowId}** - ${taskFlowTitle}\n\n已准备就绪！这是 **${systemName}** 的标准作业程序（SOP）。\n\n请告诉我：\n- 你当前处于哪个阶段？\n- 需要我帮你完成哪一步？\n- 或者直接描述你的需求，我会根据 SOP 流程为你提供指导`,
+    time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0')
+  });
+  
+  persistConversations();
+  renderChatMessages();
+  scrollChatToBottom();
+  
+  // 聚焦输入框并预填提示
+  setTimeout(function() {
+    var inputEl = document.getElementById('chatInput');
+    if (inputEl) {
+      inputEl.value = '请帮我执行 ' + taskFlowId + ' ' + taskFlowTitle + ' 的完整流程';
+      inputEl.focus();
+      inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    showToast('⚡ ' + taskFlowId + ' 已加载到对话，可开始执行', 'success');
+  }, 200);
+}
+
+// 🔍 根据角色名打开对应智能体配置
+function openAgentByRole(roleName) {
+  // 遍历组织架构中的所有层级找到匹配的 Agent
+  const orgLevels = [
+    { agents: [
+      { num:'01', name:'CEO Agent', role:'首席执行官 · 企业战略规划' },
+      { num:'02', name:'COO Agent', role:'首席运营官 · 运营管理' },
+      { num:'03', name:'CFO Agent', role:'首席财务官 · 财务分析' },
+      { num:'04', name:'CMO Agent', role:'首席营销官 · 营销战略' },
+      { num:'05', name:'CTO Agent', role:'首席技术官 · 技术架构' },
+      { num:'06', name:'CHRO Agent', role:'首席人力资源官 · 人才管理' },
+      { num:'07', name:'Legal Agent', role:'法务管理 · 法务风险' },
+      { num:'08', name:'Investment Agent', role:'投融资分析 · 投资评估' },
+      { num:'09', name:'Risk Agent', role:'风险预警 · 风控管理' },
+      { num:'10', name:'Innovation Agent', role:'创新项目评估 · 新业务探索' },
+    ]},
+    { agents: [
+      { num:'11', name:'Market Research Agent', role:'市场调研' }, { num:'12', name:'Competitor Agent', role:'竞品分析' },
+      { num:'13', name:'Trend Agent', role:'趋势预测' }, { num:'14', name:'SEO Agent', role:'SEO优化' },
+      { num:'15', name:'SEM Agent', role:'Google广告' }, { num:'16', name:'Meta Ads Agent', role:'Facebook广告' },
+      { num:'17', name:'TikTok Ads Agent', role:'TikTok广告' }, { num:'18', name:'KOL Agent', role:'达人合作' },
+      { num:'19', name:'PR Agent', role:'媒体公关' }, { num:'20', name:'Branding Agent', role:'品牌建设' },
+      { num:'21', name:'Content Director Agent', role:'内容总监' }, { num:'22', name:'Copywriting Agent', role:'文案创作' },
+      { num:'23', name:'Blog Agent', role:'博客写作' }, { num:'24', name:'News Agent', role:'新闻稿' },
+      { num:'25', name:'Video Script Agent', role:'视频脚本' }, { num:'26', name:'HeyGen Agent', role:'数字人视频' },
+      { num:'27', name:'Graphic Design Agent', role:'海报设计' }, { num:'28', name:'Social Media Agent', role:'社媒内容' },
+      { num:'29', name:'Newsletter Agent', role:'邮件内容' }, { num:'30', name:'Localization Agent', role:'多语言本地化' },
+      { num:'31', name:'SDR Manager Agent', role:'销售开发总监' }, { num:'32', name:'Lead Discovery Agent', role:'客户搜索' },
+      { num:'33', name:'Lead Enrichment Agent', role:'客户补全' }, { num:'34', name:'Lead Scoring Agent', role:'客户评分' },
+      { num:'35', name:'Cold Email Agent', role:'开发信' }, { num:'36', name:'LinkedIn Agent', role:'LinkedIn开发' },
+      { num:'37', name:'WhatsApp Agent', role:'WhatsApp销售' }, { num:'38', name:'Proposal Agent', role:'方案生成' },
+      { num:'39', name:'Quotation Agent', role:'报价生成' }, { num:'40', name:'Contract Agent', role:'合同生成' },
+      { num:'41', name:'Negotiation Agent', role:'谈判辅助' }, { num:'42', name:'Sales Coach Agent', role:'销售培训' },
+      { num:'43', name:'CRM Agent', role:'CRM管理' }, { num:'44', name:'Pipeline Agent', role:'销售漏斗' },
+      { num:'45', name:'Closing Agent', role:'成交推进' }, { num:'46', name:'Customer Support Agent', role:'客服接待' },
+      { num:'47', name:'FAQ Agent', role:'FAQ回答' }, { num:'48', name:'Technical Support Agent', role:'技术支持' },
+      { num:'49', name:'Complaint Agent', role:'投诉处理' }, { num:'50', name:'Ticket Agent', role:'工单管理' },
+      { num:'51', name:'Escalation Agent', role:'升级处理' }, { num:'52', name:'Satisfaction Agent', role:'满意度调查' },
+      { num:'53', name:'Review Agent', role:'评价收集' }, { num:'54', name:'Loyalty Agent', role:'会员运营' },
+      { num:'55', name:'Retention Agent', role:'客户留存' }, { num:'56', name:'Amazon Manager Agent', role:'Amazon总控' },
+      { num:'57', name:'Amazon Listing Agent', role:'Listing优化' }, { num:'58', name:'Amazon PPC Agent', role:'广告优化' },
+      { num:'59', name:'Amazon Review Agent', role:'评论运营' }, { num:'60', name:'TikTok Shop Manager Agent', role:'TikTok Shop管理' },
+    ]},
+    { agents: [
+      { num:'61', name:'TikTok Video Agent', role:'短视频运营' }, { num:'62', name:'TikTok Live Agent', role:'直播运营' },
+      { num:'63', name:'Shopify Agent', role:'独立站运营' }, { num:'64', name:'CRO Agent', role:'转化率优化' },
+      { num:'65', name:'Email Marketing Agent', role:'邮件营销' }, { num:'66', name:'Affiliate Agent', role:'联盟营销' },
+      { num:'67', name:'Marketplace Agent', role:'多平台管理' }, { num:'68', name:'Pricing Agent', role:'价格优化' },
+      { num:'69', name:'Promotion Agent', role:'促销活动' }, { num:'70', name:'Analytics Agent', role:'运营分析' },
+      { num:'71', name:'Procurement Agent', role:'采购管理' }, { num:'72', name:'Inventory Agent', role:'库存管理' },
+      { num:'73', name:'Production Agent', role:'生产管理' }, { num:'74', name:'Quality Agent', role:'质量检测' },
+      { num:'75', name:'Logistics Agent', role:'物流管理' }, { num:'76', name:'DHL Agent', role:'DHL物流' },
+      { num:'77', name:'UPS Agent', role:'UPS物流' }, { num:'78', name:'FedEx Agent', role:'FedEx物流' },
+      { num:'79', name:'Forecast Agent', role:'需求预测' }, { num:'80', name:'Supplier Agent', role:'供应商管理' },
+      { num:'81', name:'Accounting Agent', role:'会计' }, { num:'82', name:'Cashflow Agent', role:'现金流' },
+      { num:'83', name:'Budget Agent', role:'预算管理' }, { num:'84', name:'Cost Control Agent', role:'成本控制' },
+      { num:'85', name:'Tax Agent', role:'税务管理' }, { num:'86', name:'Profit Agent', role:'利润分析' },
+      { num:'87', name:'Payment Agent', role:'收款管理' }, { num:'88', name:'Invoice Agent', role:'发票管理' },
+      { num:'89', name:'Audit Agent', role:'审计分析' }, { num:'90', name:'Finance Dashboard Agent', role:'财务看板' },
+      { num:'91', name:'Franchise Agent', role:'加盟管理' }, { num:'92', name:'Distributor Agent', role:'代理商管理' },
+      { num:'93', name:'Channel Agent', role:'渠道开发' }, { num:'94', name:'Partner Agent', role:'合作伙伴管理' },
+      { num:'95', name:'Training Agent', role:'培训管理' }, { num:'96', name:'Event Agent', role:'招商会管理' },
+      { num:'97', name:'Webinar Agent', role:'线上说明会' }, { num:'98', name:'Community Agent', role:'社群运营' },
+      { num:'99', name:'Referral Agent', role:'转介绍系统' }, { num:'100', name:'Ecosystem Agent', role:'生态联盟管理' },
+    ]}
+  ];
+  
+  for (var li = 0; li < orgLevels.length; li++) {
+    for (var ai = 0; ai < orgLevels[li].agents.length; ai++) {
+      var a = orgLevels[li].agents[ai];
+      if (a.name === roleName || a.role.indexOf(roleName) >= 0 || roleName.indexOf(a.name.replace(' Agent','')) >= 0) {
+        openAgentConfigPanel(a.num, a.name, a.role);
+        showToast('🔍 已定位到 ' + a.name + ' (' + a.num + ')', 'success');
+        return;
+      }
+    }
+  }
+  showToast('⚠️ 未找到匹配的智能体：' + roleName, 'warning');
 }
 
 // 发送Agent配置到OpenClaw
