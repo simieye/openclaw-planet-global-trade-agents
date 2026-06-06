@@ -146,8 +146,8 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
             status="healthy",
             version="3.0.0",
             uptime_seconds=uptime,
-            agents_count=status.get("agents", {}).get("total", 0),
-            taskflows_count=status.get("taskflows", {}).get("total", 0),
+            agents_count=status.get("total_agents", 0),
+            taskflows_count=status.get("total_taskflows", 0),
         )
 
     @app.get("/api/status")
@@ -157,7 +157,18 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
     @app.get("/api/dashboard")
     async def get_dashboard():
         """获取 Dashboard 实时数据"""
-        return await _engine.get_dashboard_data()
+        if hasattr(_engine, 'get_dashboard_data'):
+            return await _engine.get_dashboard_data()
+        # 回退：从 status 构建 dashboard 数据
+        status = _engine.get_status()
+        return {
+            "engine": status.get("engine", "unknown"),
+            "total_agents": status.get("total_agents", 0),
+            "total_taskflows": status.get("total_taskflows", 0),
+            "total_webhook_routes": status.get("total_webhook_routes", 0),
+            "agents_by_layer": status.get("agents_by_layer", {}),
+            "uptime": (datetime.now() - _start_time).total_seconds(),
+        }
 
     # ============================================================
     # Agent APIs
@@ -166,10 +177,11 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
     @app.get("/api/agents")
     async def list_agents(layer: str = None):
         status = _engine.get_status()
-        agents = status.get("agents", {}).get("by_layer", {})
+        agents = status.get("agents_by_layer", {})
+        total = status.get("total_agents", 0)
         if layer:
             return {"agents": agents.get(layer, [])}
-        return {"agents": agents, "total": status.get("agents", {}).get("total", 0)}
+        return {"agents": agents, "total": total}
 
     @app.get("/api/agents/{agent_id}")
     async def get_agent(agent_id: str):
@@ -203,7 +215,7 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
     @app.get("/api/taskflows")
     async def list_taskflows():
         status = _engine.get_status()
-        return status.get("taskflows", {})
+        return {"taskflows": status.get("total_taskflows", 0), "total": status.get("total_taskflows", 0)}
 
     @app.post("/api/taskflows/{flow_id}/execute")
     async def execute_taskflow(
@@ -265,9 +277,82 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
 
     @app.get("/api/connectors")
     async def list_connectors():
-        if _engine.connector_hub:
+        if hasattr(_engine, 'connector_hub') and _engine.connector_hub:
             return {"connectors": _engine.connector_hub.get_all()}
-        return {"connectors": {}}
+        return {"connectors": {}, "message": "Connector hub not available"}
+
+    # ============================================================
+    # Skills API - 跨境电商技能库
+    # ============================================================
+
+    @app.get("/api/skills")
+    async def list_skills(category: str = ""):
+        """列出所有跨境电商技能"""
+        if not _engine or not _engine.runtime:
+            raise HTTPException(status_code=503, detail="Engine not ready")
+
+        # 从 SkillRegistry 获取所有 SKILL.md 技能
+        all_skills = []
+        if hasattr(_engine.runtime, 'skill_registry'):
+            all_skills = _engine.runtime.skill_registry.list_skill_md()
+
+        if not all_skills and _engine.runtime:
+            # 回退：从 agent_brain 的 SkillRegistry 获取
+            all_skills = _engine.runtime.skills.list_skill_md()
+
+        if category:
+            all_skills = [s for s in all_skills if category.lower() in s.get("category", "").lower()]
+
+        # 按分类组织
+        categories = {}
+        for s in all_skills:
+            cat = s.get("category", "未分类")
+            if cat not in categories:
+                categories[cat] = []
+            categories[cat].append(s)
+
+        return {
+            "success": True,
+            "total": len(all_skills),
+            "categories": categories,
+            "skills": all_skills,
+        }
+
+    @app.get("/api/skills/categories")
+    async def list_skill_categories():
+        """列出技能分类（必须在 /api/skills/{skill_name} 之前注册）"""
+        categories = {
+            "tiktok_video": {"name": "TikTok & 短视频工业化", "count": 7, "icon": "🎵"},
+            "seo_geo": {"name": "SEO/GEO/AI搜索优化", "count": 7, "icon": "🔍"},
+            "ads_roi": {"name": "广告投放与ROI优化", "count": 7, "icon": "📢"},
+            "market_intel": {"name": "竞品监控与市场洞察", "count": 7, "icon": "🔎"},
+            "listing_cro": {"name": "Listing优化与转化率", "count": 7, "icon": "📝"},
+            "social_matrix": {"name": "社媒矩阵与分发", "count": 8, "icon": "🌐"},
+        }
+        return {"success": True, "categories": categories}
+
+    @app.get("/api/skills/{skill_name}")
+    async def get_skill_detail(skill_name: str):
+        """获取单个技能详情"""
+        if not _engine or not _engine.runtime:
+            raise HTTPException(status_code=503, detail="Engine not ready")
+
+        skill = None
+        if hasattr(_engine.runtime, 'skill_registry'):
+            skill = _engine.runtime.skill_registry.get_skill_md(skill_name)
+        if not skill and _engine.runtime:
+            skill = _engine.runtime.skills.get_skill_md(skill_name)
+
+        if not skill:
+            raise HTTPException(status_code=404, detail=f"Skill not found: {skill_name}")
+
+        # 读取 SKILL.md 完整内容
+        skills_dir = Path(__file__).parent.parent / "skills" / skill_name
+        skill_md = skills_dir / "SKILL.md"
+        if skill_md.exists():
+            skill["content"] = skill_md.read_text(encoding="utf-8")
+
+        return {"success": True, "skill": skill}
 
     # ============================================================
     # Webhook Stats
@@ -275,9 +360,14 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
 
     @app.get("/api/webhooks/stats")
     async def webhook_stats():
-        if _engine.webhook_handler:
+        if hasattr(_engine, 'webhook_handler') and _engine.webhook_handler:
             return _engine.webhook_handler.get_stats()
-        return {"total_handlers": 0, "events_processed": 0, "events_failed": 0}
+        status = _engine.get_status()
+        return {
+            "total_handlers": status.get("total_webhook_routes", 0),
+            "events_processed": 0,
+            "events_failed": 0,
+        }
 
     # ============================================================
     # Chat API - Ollama 本地 LLM 聊天 + 流式输出
@@ -935,11 +1025,18 @@ title = "{target_link.get("title", req.url)}"
     # Auth APIs - 用户认证与企业管理系统
     # ============================================================
 
-    from .auth import (
-        get_auth_service,
-        RegisterRequest, EnterpriseRegisterRequest, LoginRequest,
-        UserUpdateRequest, PasswordChangeRequest,
-    )
+    try:
+        from .auth import (
+            get_auth_service,
+            RegisterRequest, EnterpriseRegisterRequest, LoginRequest,
+            UserUpdateRequest, PasswordChangeRequest,
+        )
+    except ImportError:
+        from orchestration.auth import (
+            get_auth_service,
+            RegisterRequest, EnterpriseRegisterRequest, LoginRequest,
+            UserUpdateRequest, PasswordChangeRequest,
+        )
     from fastapi import Depends
     from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 

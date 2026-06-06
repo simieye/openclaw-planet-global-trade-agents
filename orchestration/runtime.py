@@ -14,6 +14,11 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, AsyncGenerator, Optional
 
+try:
+    from .agent_brain import SkillRegistry
+except ImportError:
+    from agent_brain import SkillRegistry
+
 # TOML 加载器兼容
 try:
     import tomllib as _toml_lib_runtime
@@ -127,10 +132,12 @@ class LLMClient:
         api_base: str = "",
     ) -> LLMResponse:
         """统一 LLM 调用接口"""
-        formatted_messages = [
-            {"role": m.role, "content": m.content}
-            for m in messages
-        ]
+        formatted_messages = []
+        for m in messages:
+            if isinstance(m, dict):
+                formatted_messages.append({"role": m.get("role", "user"), "content": m.get("content", "")})
+            else:
+                formatted_messages.append({"role": m.role, "content": m.content})
 
         # 优先使用 Ollama（如果可用且没有指定其他 provider）
         if provider == "ollama" or (not provider and await self.check_ollama()):
@@ -160,10 +167,12 @@ class LLMClient:
         api_base: str = "",
     ) -> AsyncGenerator[str, None]:
         """流式 LLM 调用"""
-        formatted_messages = [
-            {"role": m.role, "content": m.content}
-            for m in messages
-        ]
+        formatted_messages = []
+        for m in messages:
+            if isinstance(m, dict):
+                formatted_messages.append({"role": m.get("role", "user"), "content": m.get("content", "")})
+            else:
+                formatted_messages.append({"role": m.role, "content": m.content})
 
         if provider == "ollama" or (not provider and await self.check_ollama()):
             async for chunk in self._call_ollama_stream(model, formatted_messages, temperature, max_tokens):
@@ -802,6 +811,8 @@ class AgentRuntime:
         self.executor = AgentExecutor(self.llm_client, self.tool_registry)
         self._agent_configs: dict[str, dict] = {}
         self._agent_brains: dict[str, AgentBrain] = {}
+        self.skills = SkillRegistry(base_path=str(base_path / "skills"))
+        self.skill_registry = self.skills  # 别名
 
     def load_agent(self, config_path: str) -> dict:
         """加载 Agent 配置"""

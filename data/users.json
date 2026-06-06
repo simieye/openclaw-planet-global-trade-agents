@@ -1,0 +1,32 @@
+{
+  "admin@lobster.planet": {
+    "id": "u-admin-001",
+    "username": "admin",
+    "email": "admin@lobster.planet",
+    "password": "b17c5091d7c5a71c87edeefbce9e28d6e66e423e9e5820eb585e2ce2ef0e3774",
+    "display_name": "系统管理员",
+    "avatar": "🦞",
+    "role": "admin",
+    "enterprise_id": null,
+    "enterprise_name": "",
+    "plan": "enterprise",
+    "created_at": "2026-06-06T04:33:57.004087",
+    "last_login": "",
+    "is_active": true
+  },
+  "test@test.com": {
+    "id": "u-1089d218",
+    "username": "testuser",
+    "email": "test@test.com",
+    "password": "ec9071da9baa5d9e7170849ea41394efba56fa9f8fdc769ad8b64cb413885c23",
+    "display_name": "testuser",
+    "avatar": "",
+    "role": "user",
+    "enterprise_id": null,
+    "enterprise_name": "",
+    "plan": "free",
+    "created_at": "2026-06-06T04:49:51.737033",
+    "last_login": "2026-06-06T04:49:51.737033",
+    "is_active": true
+  }
+}

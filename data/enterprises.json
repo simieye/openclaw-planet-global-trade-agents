@@ -1,0 +1,34 @@
+{
+  "ent-demo-001": {
+    "id": "ent-demo-001",
+    "name": "龙虾星球示范企业",
+    "industry": "跨境电商",
+    "size": "medium",
+    "country": "中国",
+    "website": "https://lobster.planet",
+    "logo": "🦞",
+    "license_key": "LP-ENT-2026",
+    "plan": "enterprise",
+    "seats_total": 50,
+    "seats_used": 0,
+    "features": [
+      "dashboard",
+      "agents",
+      "taskflows",
+      "webhooks",
+      "analytics",
+      "reports",
+      "team_collaboration",
+      "custom_workflows",
+      "api_access",
+      "priority_support",
+      "white_label",
+      "sso",
+      "audit_log"
+    ],
+    "admin_id": "u-admin-001",
+    "created_at": "2026-06-06T04:33:57.005383",
+    "expires_at": "2027-06-06T04:33:57.005388",
+    "is_active": true
+  }
+}

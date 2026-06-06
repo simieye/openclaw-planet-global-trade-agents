@@ -115,9 +115,54 @@ class AgentMemory:
 class SkillRegistry:
     """技能注册中心 - 可复用的Agent技能"""
 
-    def __init__(self):
+    def __init__(self, base_path: str = None):
         self._skills: dict[str, dict] = {}
+        self._skill_md_cache: dict[str, dict] = {}
+        self._base_path = base_path or str(Path(__file__).parent.parent / "skills")
         self._register_builtin_skills()
+        self._load_skill_md_files()
+
+    def _load_skill_md_files(self):
+        """自动加载 skills/ 目录下所有 SKILL.md 文件"""
+        import re
+        skills_dir = Path(self._base_path)
+        if not skills_dir.exists():
+            return
+        for skill_dir in skills_dir.iterdir():
+            if not skill_dir.is_dir():
+                continue
+            skill_md = skill_dir / "SKILL.md"
+            if not skill_md.exists():
+                continue
+            try:
+                content = skill_md.read_text(encoding="utf-8")
+                skill_name = skill_dir.name
+                # 解析 SKILL.md 元数据
+                meta = {"name": skill_name, "path": str(skill_dir)}
+                # 提取标题
+                title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+                if title_match:
+                    meta["title"] = title_match.group(1).strip()
+                # 提取描述
+                desc_match = re.search(r'##\s+描述\s*\n\s*(.+?)(?:\n|$)', content, re.DOTALL)
+                if desc_match:
+                    meta["description"] = desc_match.group(1).strip()
+                # 提取分类
+                cat_match = re.search(r'##\s+分类\s*\n\s*(.+?)(?:\n|$)', content, re.DOTALL)
+                if cat_match:
+                    meta["category"] = cat_match.group(1).strip()
+                # 提取触发词
+                trigger_match = re.search(r'##\s+触发词\s*\n\s*(.+?)(?:\n##|\n\Z)', content, re.DOTALL)
+                if trigger_match:
+                    triggers = trigger_match.group(1).strip()
+                    meta["triggers"] = [t.strip() for t in re.split(r'[、,，]', triggers) if t.strip()]
+                # 提取来源
+                source_match = re.search(r'##\s+来源\s*\n\s*(.+?)(?:\n|$)', content, re.DOTALL)
+                if source_match:
+                    meta["source"] = source_match.group(1).strip()
+                self._skill_md_cache[skill_name] = meta
+            except Exception as e:
+                logger.warning(f"Failed to load skill {skill_dir.name}: {e}")
 
     def _register_builtin_skills(self):
         """注册内置技能"""
@@ -190,6 +235,24 @@ class SkillRegistry:
 
     def list_all(self) -> list[str]:
         return list(self._skills.keys())
+
+    def list_skill_md(self) -> list[dict]:
+        """列出所有 SKILL.md 注册的技能"""
+        return [
+            {
+                "id": name,
+                "name": meta.get("title", name),
+                "description": meta.get("description", ""),
+                "category": meta.get("category", ""),
+                "triggers": meta.get("triggers", []),
+                "source": meta.get("source", ""),
+            }
+            for name, meta in self._skill_md_cache.items()
+        ]
+
+    def get_skill_md(self, skill_name: str) -> Optional[dict]:
+        """获取单个 SKILL.md 技能详情"""
+        return self._skill_md_cache.get(skill_name)
 
     async def execute(self, skill_name: str, **kwargs) -> dict:
         skill = self._skills.get(skill_name)

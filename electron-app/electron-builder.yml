@@ -36,6 +36,9 @@ extraResources:
     from: "../dashboard"
     to: "dashboard"
   -
+    from: "../skills"
+    to: "skills"
+  -
     from: "../tests"
     to: "tests"
   -

@@ -3512,18 +3512,18 @@ body {
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-label">已安装技能</div>
-          <div class="stat-value" style="color:var(--accent2);">42</div>
+          <div class="stat-value" style="color:var(--accent2);" id="skillTotalCount">44</div>
           <div class="stat-trend">ClawHub 官方 + 社区</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">自定义技能</div>
-          <div class="stat-value" style="color:var(--accent3);">12</div>
-          <div class="stat-trend">团队专属技能</div>
+          <div class="stat-label">技能分类</div>
+          <div class="stat-value" style="color:var(--accent3);" id="skillCatCount">6</div>
+          <div class="stat-trend">跨境电商全链路</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">最近使用</div>
-          <div class="stat-value" style="color:var(--accent);">8</div>
-          <div class="stat-trend">今日活跃技能</div>
+          <div class="stat-label">数据来源</div>
+          <div class="stat-value" style="color:var(--accent);">API</div>
+          <div class="stat-trend">实时同步后端</div>
         </div>
       </div>
 
@@ -6264,42 +6264,85 @@ function renderAgentTemplates() {
 // ============================================================
 // 技能库渲染
 // ============================================================
-function renderSkills() {
-  const skills = [
-    { name:'Brand Story Builder', source:'ClawHub', desc:'品牌故事创作，包含品牌定位、核心价值主张、品牌叙事', category:'品牌' },
-    { name:'SEO Content Optimizer', source:'ClawHub', desc:'SEO优化内容生成，关键词研究和内容策略', category:'SEO' },
-    { name:'Social Media Manager', source:'ClawHub', desc:'多平台社媒内容管理和发布策略', category:'社媒' },
-    { name:'Data Analysis Pro', source:'ClawHub', desc:'数据分析、可视化图表生成、趋势预测', category:'数据' },
-    { name:'Email Campaign Engine', source:'ClawHub', desc:'邮件营销自动化，序列设计和A/B测试', category:'邮件' },
-    { name:'Video Script Writer', source:'ClawHub', desc:'视频脚本创作，分镜设计和文案优化', category:'视频' },
-    { name:'Market Research AI', source:'ClawHub', desc:'市场调研分析，竞品研究和SWOT分析', category:'市场' },
-    { name:'Financial Model Builder', source:'ClawHub', desc:'财务模型构建，估值分析和预测', category:'财务' },
-    { name:'PPT Auto Generator', source:'自定义', desc:'自动生成商业演示文稿，包含设计和内容', category:'演示' },
-    { name:'Contract Draft Assistant', source:'自定义', desc:'合同起草助手，模板管理和条款审查', category:'法务' },
-    { name:'Translation Expert', source:'自定义', desc:'多语言翻译，支持50+语言和行业术语', category:'翻译' },
-    { name:'Customer Support Bot', source:'自定义', desc:'智能客服机器人，FAQ自动应答', category:'客服' },
-  ];
-
+async function renderSkills() {
   const grid = document.getElementById('skillGrid');
-  grid.innerHTML = skills.map(s => `
-    <div class="skill-card">
-      <div class="skill-card-header">
-        <span>${getCategoryIcon(s.category)}</span>
-        <span class="skill-name">${s.name}</span>
-        <span class="skill-source">${s.source}</span>
-      </div>
-      <div class="skill-desc">${s.desc}</div>
-      <div class="skill-actions">
-        <button class="btn btn-sm" onclick="addSkillToChat('${s.name}')">➕ 添加到对话</button>
-        <button class="btn btn-sm" onclick="showToast('技能 ${s.name} 已启用', 'success')">▶ 启用</button>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = '<div style="color:var(--text-dim);font-size:14px;text-align:center;padding:40px;">⏳ 正在加载技能库...</div>';
+
+  try {
+    const resp = await fetch('http://localhost:8080/api/skills');
+    const data = await resp.json();
+    const categories = data.categories || {};
+
+    // 统计总数
+    let totalCount = 0;
+    for (const catSkills of Object.values(categories)) {
+      totalCount += catSkills.length;
+    }
+
+    if (totalCount === 0) {
+      grid.innerHTML = '<div style="color:var(--text-dim);font-size:14px;text-align:center;padding:40px;">📭 技能库为空，请添加技能</div>';
+      return;
+    }
+
+    // 更新统计卡片
+    const totalEl = document.getElementById('skillTotalCount');
+    if (totalEl) totalEl.textContent = totalCount;
+    const catCountEl = document.getElementById('skillCatCount');
+    const validCats = Object.entries(categories).filter(([k, v]) => k && k.trim() && v && v.length > 0);
+    if (catCountEl) catCountEl.textContent = validCats.length;
+
+    // 按分类渲染
+    let html = '';
+    for (const [catName, catSkills] of validCats) {
+      const catIcon = getCategoryIcon(catName);
+      html += `<div class="skill-category-section" style="margin-bottom:20px;">
+        <div class="skill-category-title" style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);">
+          ${catIcon} ${catName} <span style="font-size:12px;color:var(--text-dim);font-weight:400;">(${catSkills.length})</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">`;
+
+      for (const s of catSkills) {
+        const source = (s.source || '').includes('playbooks.com') ? 'ClawHub' : (s.source || 'ClawHub');
+        const triggers = (s.triggers || []).slice(0, 4).join(' · ');
+        html += `
+          <div class="skill-card">
+            <div class="skill-card-header">
+              <span>${getCategoryIcon(catName)}</span>
+              <span class="skill-name">${s.name}</span>
+              <span class="skill-source">${source}</span>
+            </div>
+            <div class="skill-desc">${s.description || ''}</div>
+            ${triggers ? `<div style="font-size:10px;color:var(--text-dim);margin-top:4px;">触发词: ${triggers}</div>` : ''}
+            <div class="skill-actions">
+              <button class="btn btn-sm" onclick="addSkillToChat('${s.name.replace(/'/g, "\\'")}')">➕ 添加到对话</button>
+              <button class="btn btn-sm" onclick="showToast('技能 ${s.name.replace(/'/g, "\\'")} 已启用', 'success')">▶ 启用</button>
+            </div>
+          </div>`;
+      }
+      html += '</div></div>';
+    }
+
+    grid.innerHTML = html;
+  } catch (e) {
+    grid.innerHTML = '<div style="color:var(--text-dim);font-size:14px;text-align:center;padding:40px;">⚠️ 无法加载技能库（请确保后端服务已启动）<br><small>' + e.message + '</small></div>';
+  }
 }
 
 function getCategoryIcon(cat) {
-  const icons = { '品牌':'🎯', 'SEO':'🔎', '社媒':'📱', '数据':'📊', '邮件':'📧', '视频':'🎬', '市场':'🔍', '财务':'💰', '演示':'📊', '法务':'⚖️', '翻译':'🌐', '客服':'💬' };
-  return icons[cat] || '⚡';
+  const icons = {
+    '品牌':'🎯', 'SEO':'🔎', '社媒':'📱', '数据':'📊', '邮件':'📧', '视频':'🎬', '市场':'🔍', '财务':'💰', '演示':'📊', '法务':'⚖️', '翻译':'🌐', '客服':'💬',
+    'TikTok & 短视频内容工业化':'🎬',
+    'SEO / GEO / AI搜索优化':'🔎',
+    '广告投放与ROI动态优化':'📈',
+    '竞品监控与市场洞察':'🔍',
+    'Listing优化与前端转化率提升':'📋',
+    '社媒矩阵自动驾驶与多平台分发':'📱',
+  };
+  // 模糊匹配
+  for (const [key, icon] of Object.entries(icons)) {
+    if (cat === key || cat.includes(key) || key.includes(cat)) return icon;
+  }
+  return '⚡';
 }
 
 // ============================================================
@@ -6726,101 +6769,155 @@ function renderIMChannels() {
 }
 
 // ============================================================
-// 对话列表渲染
 // ============================================================
-function renderConversations() {
-  const list = document.getElementById('convList');
-  if (!list) return;
-  list.innerHTML = APP.conversations.map(c => `
-    <div class="conv-item ${c.active ? 'active' : ''}" onclick="selectConversation(${c.id})">
-      <span>📝</span>
-      <span>${c.title}</span>
-      <span class="conv-time">${c.time}</span>
-    </div>
-  `).join('');
-}
-
-function createNewConversation() {
-  const id = APP.conversations.length + 1;
-  APP.conversations.unshift({ id, title: '新对话 ' + id, time: '刚刚', active: true });
-  APP.conversations.forEach(c => c.active = c.id === id);
-  renderConversations();
-  clearChat();
-  showToast('✅ 新对话已创建', 'success');
-}
-
-function selectConversation(id) {
-  APP.conversations.forEach(c => c.active = c.id === id);
-  renderConversations();
-}
-
-function startTemplateChat(template) {
-  APP.chatMessages.push({ role:'assistant', content:'你好！我已准备好帮你处理「' + template + '」相关的任务。请告诉我你的具体需求。', time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0') });
-  renderChatMessages();
-  scrollChatToBottom();
-}
-
+// 对话管理 - 统一渲染、切换、重命名、删除、搜索、持久化
 // ============================================================
-// 对话管理
-// ============================================================
+
+// 自动保存到 localStorage
+function persistConversations() {
+  try {
+    var data = APP.conversations.map(function(c) {
+      return {
+        id: c.id, title: c.title, time: c.time, active: c.active,
+        icon: c.icon, messages: c.messages || [],
+        agentChat: c.agentChat || null
+      };
+    });
+    localStorage.setItem('lobster_planet_conversations', JSON.stringify(data));
+  } catch(e) { /* quota exceeded, ignore */ }
+}
+
+// 从 localStorage 恢复
+function restoreConversations() {
+  try {
+    var raw = localStorage.getItem('lobster_planet_conversations');
+    if (raw) {
+      var data = JSON.parse(raw);
+      if (Array.isArray(data) && data.length > 0) {
+        APP.conversations = data;
+        var active = APP.conversations.find(function(c) { return c.active; });
+        if (active) {
+          if (active.messages && active.messages.length > 0) {
+            APP.chatMessages = active.messages.slice();
+          }
+          APP._activeAgentChat = active.agentChat || null;
+          // 恢复面板标题
+          if (APP._activeAgentChat) {
+            document.getElementById('chatPanelTitle').innerHTML = APP._activeAgentChat.icon + ' ' + APP._activeAgentChat.name + ' <span style="font-size:10px;opacity:0.5;">Agent ' + APP._activeAgentChat.num + '</span>';
+          } else {
+            document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
+          }
+          renderChatMessages();
+        }
+        return true;
+      }
+    }
+  } catch(e) { /* corrupted data, use defaults */ }
+  return false;
+}
+
+// 生成摘要标题（取第一条用户消息前20字）
+function autoTitle(messages) {
+  var firstUser = null;
+  for (var i = 0; i < messages.length; i++) {
+    if (messages[i].role === 'user') { firstUser = messages[i]; break; }
+  }
+  if (firstUser) {
+    var txt = firstUser.content.replace(/<[^>]+>/g, '').replace(/\n/g, ' ').trim();
+    return txt.length > 20 ? txt.slice(0, 20) + '…' : txt;
+  }
+  return null;
+}
+
 function renderConvList(filter) {
   var list = document.getElementById('convList');
   if (!list) return;
   var convs = APP.conversations || [];
-  if (filter) {
-    convs = convs.filter(function(c) { return c.title.toLowerCase().indexOf(filter.toLowerCase()) >= 0; });
+  var query = (filter || '').trim().toLowerCase();
+  if (query) {
+    convs = convs.filter(function(c) { return c.title.toLowerCase().indexOf(query) >= 0; });
   }
   list.innerHTML = convs.map(function(c) {
-    return '<div class="conv-item' + (c.active ? ' active' : '') + '" onclick="switchConversation(' + c.id + ')">' +
+    var isActive = c.active;
+    // 搜索高亮
+    var displayTitle = c.title;
+    if (query) {
+      var idx = c.title.toLowerCase().indexOf(query);
+      if (idx >= 0) {
+        displayTitle = c.title.slice(0, idx) + '<mark class="search-highlight">' + c.title.slice(idx, idx + query.length) + '</mark>' + c.title.slice(idx + query.length);
+      }
+    }
+    return '<div class="conv-item' + (isActive ? ' active' : '') + '" onclick="switchConversation(' + c.id + ')">' +
       '<span>' + (c.icon || '💬') + '</span>' +
-      '<span>' + c.title + '</span>' +
-      '<span class="conv-time">' + c.time + '</span>' +
+      '<span class="conv-title-text" title="' + c.title.replace(/"/g, '&quot;') + '">' + displayTitle + '</span>' +
+      '<span class="conv-time">' + (c.time || '') + '</span>' +
       '<span class="conv-item-actions">' +
         '<button class="conv-action-btn" onclick="event.stopPropagation();renameConversation(' + c.id + ')" title="重命名">✏️</button>' +
-        '<button class="conv-action-btn" onclick="event.stopPropagation();deleteConversation(' + c.id + ')" title="删除">🗑️</button>' +
+        '<button class="conv-action-btn conv-delete-btn" onclick="event.stopPropagation();deleteConversation(' + c.id + ')" title="删除">🗑️</button>' +
       '</span>' +
     '</div>';
   }).join('');
   if (convs.length === 0) {
-    list.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-dim);font-size:12px;">暂无对话</div>';
+    var emptyMsg = query ? '没有匹配「' + query + '」的对话' : '✨ 暂无对话，点击下方按钮开始';
+    list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-dim);font-size:12px;">' + emptyMsg + '</div>';
   }
 }
 
 function switchConversation(id) {
-  // 保存当前对话
   saveCurrentConversation();
-  // 加载新对话
   APP.conversations.forEach(function(c) { c.active = c.id === id; });
+  var conv = APP.conversations.find(function(c) { return c.id === id; });
+  if (conv) {
+    // 加载消息历史
+    APP.chatMessages = (conv.messages && conv.messages.length > 0) ? conv.messages.slice() : [];
+    APP._activeAgentChat = conv.agentChat || null;
+    // 更新面板标题
+    if (APP._activeAgentChat) {
+      document.getElementById('chatPanelTitle').innerHTML = APP._activeAgentChat.icon + ' ' + APP._activeAgentChat.name + ' <span style="font-size:10px;opacity:0.5;">Agent ' + APP._activeAgentChat.num + '</span>';
+    } else {
+      document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
+    }
+    renderChatMessages();
+    scrollChatToBottom();
+  }
   renderConvList();
-  // TODO: 实际加载对话历史
-  showToast('📂 已切换到: ' + (APP.conversations.find(function(c) { return c.id === id; }) || {}).title || '', 'success');
+  persistConversations();
 }
 
 function saveCurrentConversation() {
   var active = APP.conversations.find(function(c) { return c.active; });
-  if (active && APP.chatMessages.length > 0) {
+  if (active) {
     active.messages = APP.chatMessages.slice();
+    // 自动生成标题
+    if (!active.title || active.title.indexOf('新对话') === 0) {
+      var auto = autoTitle(APP.chatMessages);
+      if (auto) active.title = auto;
+    }
+    active.agentChat = APP._activeAgentChat ? Object.assign({}, APP._activeAgentChat) : null;
     active.time = '刚刚';
+    persistConversations();
   }
 }
 
 function createNewConversation() {
   saveCurrentConversation();
   APP.conversations.forEach(function(c) { c.active = false; });
-  var newId = Math.max.apply(null, APP.conversations.map(function(c) { return c.id; }).concat([0])) + 1;
+  var newId = Date.now();
   APP.conversations.unshift({
     id: newId,
-    title: '新对话 ' + newId,
+    title: '新对话',
     time: '刚刚',
     active: true,
     icon: '💬',
-    messages: []
+    messages: [],
+    agentChat: null
   });
   APP.chatMessages = [];
   APP._activeAgentChat = null;
   document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
   renderChatMessages();
   renderConvList();
+  persistConversations();
   showToast('✅ 新对话已创建', 'success');
 }
 
@@ -6831,18 +6928,29 @@ function renameConversation(id) {
   if (name && name.trim()) {
     conv.title = name.trim();
     renderConvList();
+    persistConversations();
     showToast('✏️ 已重命名', 'success');
   }
 }
 
 function deleteConversation(id) {
-  if (!confirm('确定要删除这个对话吗？此操作不可撤销。')) return;
+  var conv = APP.conversations.find(function(c) { return c.id === id; });
+  if (!conv) return;
+  if (!confirm('确定删除「' + conv.title + '」吗？此操作不可撤销。')) return;
+  var wasActive = conv.active;
   APP.conversations = APP.conversations.filter(function(c) { return c.id !== id; });
   if (APP.conversations.length === 0) {
     APP.chatMessages = [];
+    APP._activeAgentChat = null;
+    document.getElementById('chatPanelTitle').textContent = '💬 AI 对话';
     renderChatMessages();
+  } else if (wasActive) {
+    // 激活第一个对话
+    APP.conversations[0].active = true;
+    switchConversation(APP.conversations[0].id);
   }
   renderConvList();
+  persistConversations();
   showToast('🗑️ 对话已删除', 'success');
 }
 
@@ -6850,9 +6958,42 @@ function filterConversations(query) {
   renderConvList(query);
 }
 
+// 自动保存当前对话消息（在 sendMessage 成功后调用）
+function autoSaveChat() {
+  var active = APP.conversations.find(function(c) { return c.active; });
+  if (active) {
+    active.messages = APP.chatMessages.slice();
+    var auto = autoTitle(APP.chatMessages);
+    if (auto && (!active.title || active.title === '新对话')) {
+      active.title = auto;
+    }
+    active.time = '刚刚';
+    persistConversations();
+    renderConvList();
+  }
+}
+
+// 启动模板对话
+function startTemplateChat(template) {
+  createNewConversation();
+  var conv = APP.conversations.find(function(c) { return c.active; });
+  if (conv) conv.title = template;
+  APP.chatMessages.push({
+    role: 'assistant',
+    content: '你好！我已准备好帮你处理「' + template + '」相关的任务。请告诉我你的具体需求。',
+    time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0')
+  });
+  renderChatMessages();
+  scrollChatToBottom();
+  persistConversations();
+  renderConvList();
+}
+
 // 初始化对话列表
 (function initConvList() {
   setTimeout(function() {
+    // 先从 localStorage 恢复对话
+    restoreConversations();
     if (!APP.conversations || APP.conversations.length === 0) {
       APP.conversations = [
         { id: 1, title: '品牌出海策略讨论', time: '11:30', active: true, icon: '📝', messages: [] },
@@ -7356,10 +7497,11 @@ function applySingleLayerToChat(agentNum, agentName, layerId) {
 // Agent 颜色方案
 var AGENT_COLORS = ['#ff6b35','#6366f1','#00d4aa','#ec4899','#8b5cf6','#f59e0b','#3b82f6','#10b981','#ef4444','#06b6d4'];
 
-// 打开Agent独立AI对话（清空聊天+注入agent配置）
+// 打开Agent独立AI对话（创建新对话记录+注入agent配置）
 function openAgentChat(agentNum, agentName, agentRole) {
   saveAgentConfig(agentNum);
-  APP.chatMessages = [];
+  saveCurrentConversation();
+
   const config = getAgentConfig(agentNum);
   const layerIds = ['identity', 'soul', 'memory', 'user', 'agent', 'tools'];
 
@@ -7388,6 +7530,21 @@ function openAgentChat(agentNum, agentName, agentRole) {
     color: agentColor,
     config: config
   };
+
+  // 创建新对话记录
+  APP.conversations.forEach(function(c) { c.active = false; });
+  var newId = Date.now();
+  APP.conversations.unshift({
+    id: newId,
+    title: agentName + ' · Agent ' + agentNum,
+    time: '刚刚',
+    active: true,
+    icon: agentIcon,
+    messages: [],
+    agentChat: Object.assign({}, APP._activeAgentChat)
+  });
+
+  APP.chatMessages = [];
 
   // 更新聊天面板标题
   document.getElementById('chatPanelTitle').innerHTML = agentIcon + ' ' + agentName + ' <span style="font-size:10px;opacity:0.5;">Agent ' + agentNum + '</span>';
@@ -7442,6 +7599,7 @@ function openAgentChat(agentNum, agentName, agentRole) {
     time: new Date().getHours().toString().padStart(2,'0') + ':' + new Date().getMinutes().toString().padStart(2,'0')
   });
 
+  persistConversations();
   renderChatMessages();
   scrollChatToBottom();
   document.getElementById('chatPanel').style.display = 'flex';
@@ -8050,6 +8208,9 @@ function sendMessage() {
   const userMessage = text || (APP.attachments.length > 0 ? '分析这些文件' : '你好');
   const config = APP.chatConfig;
 
+  // 保存对话到本地存储
+  autoSaveChat();
+
   if (config.useStream && config.ollamaConnected) {
     chatWithStream(userMessage, loadingId);
   } else {
@@ -8080,6 +8241,7 @@ async function chatWithAPI(message, loadingId) {
     } else {
       replaceLoadingMessage(loadingId, '⚠️ API 返回异常，请检查 Ollama 服务是否运行。');
     }
+    autoSaveChat();
   } catch(e) {
     console.error('[Chat] API error:', e);
     replaceLoadingMessage(loadingId, `⚠️ 无法连接后端服务 (http://localhost:8080)。请确认引擎已启动。\n\n错误: ${e.message}`);
@@ -8165,6 +8327,9 @@ async function chatWithStream(message, loadingId) {
       replaceLoadingMessage(loadingId, '（模型返回了空内容，请检查 Ollama 模型是否正常加载）');
     }
 
+    // 保存对话到本地存储
+    autoSaveChat();
+
     // Token 统计
     console.log('[Chat] 流式完成, tokens: ~' + tokenCount);
   } catch(e) {
@@ -8176,6 +8341,7 @@ async function chatWithStream(message, loadingId) {
         APP.chatMessages[abortIdx].content += '\n\n*[已停止生成]*';
       }
       renderChatMessages();
+      autoSaveChat();
       return;
     }
     console.error('[Chat] Stream error:', e);

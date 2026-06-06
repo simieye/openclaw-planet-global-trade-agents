@@ -585,13 +585,14 @@ class OrchestrationEngine:
         # 启动 HTTP Server
         if with_server:
             try:
-                from .server import run_server
+                from .server_v2 import create_app_v2
             except ImportError:
-                from server import run_server
-            webhook_secret = self.cluster_config.get("webhook", {}).get("webhook_secret", "")
-            self._tasks.append(asyncio.create_task(
-                asyncio.to_thread(run_server, self, host, port, webhook_secret)
-            ))
+                from server_v2 import create_app_v2
+            import uvicorn
+            app = create_app_v2(self, host, port)
+            config = uvicorn.Config(app, host=host, port=port, log_level="info")
+            server = uvicorn.Server(config)
+            self._tasks.append(asyncio.create_task(server.serve()))
             logger.info(f"HTTP Server starting on {host}:{port}")
 
         logger.info("Engine started. All subsystems running.")
