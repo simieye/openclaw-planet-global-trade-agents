@@ -6,6 +6,7 @@ FastAPI 服务器 - Dashboard 管理面板 + REST API + Webhook 接收 + Agent �
 import asyncio
 import json
 import logging
+import os
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -77,9 +78,9 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
     _start_time = datetime.now()
 
     app = FastAPI(
-        title="OpenClaw Unified Engine API v2",
-        description="🦞 龙虾星球共创联盟 - 跨境电商品牌出海智能体集群系统",
-        version="3.0.0",
+        title="Simiaiclaw OS · 全量调度操作系统",
+        description="🦞 龙虾星球共创联盟 - 一万个硅基大脑 · 全量调度操作系统 · Agent First 时代跨境电商品牌出海智能体集群",
+        version="5.2.0",
     )
 
     # CORS
@@ -126,6 +127,14 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
             return html_path.read_text(encoding="utf-8")
         return HTMLResponse(content="<h1>Enterprise OS 面板未找到</h1>", status_code=404)
 
+    @app.get("/brand-os", response_class=HTMLResponse)
+    async def brand_os():
+        """Simiaiclaw OS 品牌叙事页面"""
+        html_path = dashboard_path / "brand-os.html"
+        if html_path.exists():
+            return html_path.read_text(encoding="utf-8")
+        return HTMLResponse(content="<h1>Brand OS 页面未找到</h1>", status_code=404)
+
     @app.get("/login", response_class=HTMLResponse)
     async def login_page():
         """登录注册页面"""
@@ -144,7 +153,7 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
         status = _engine.get_status()
         return HealthResponse(
             status="healthy",
-            version="3.0.0",
+            version="5.2.0",
             uptime_seconds=uptime,
             agents_count=status.get("total_agents", 0),
             taskflows_count=status.get("total_taskflows", 0),
@@ -328,8 +337,217 @@ def create_app_v2(engine, host: str = "0.0.0.0", port: int = 8080) -> FastAPI:
             "market_intel": {"name": "竞品监控与市场洞察", "count": 7, "icon": "🔎"},
             "listing_cro": {"name": "Listing优化与转化率", "count": 7, "icon": "📝"},
             "social_matrix": {"name": "社媒矩阵与分发", "count": 8, "icon": "🌐"},
+            "ai_frontend": {"name": "AI前端 / UI设计", "count": 2, "icon": "🎨"},
+            "doc_parsing": {"name": "文档解析 / RAG", "count": 2, "icon": "📄"},
+            "composio": {"name": "Composio · 1000+应用集成", "count": 1, "icon": "🔌"},
+            "store_management": {"name": "店铺管理", "count": 7, "icon": "🏪"},
+            "store_operations": {"name": "店铺经营", "count": 8, "icon": "📊"},
+            "product_selection": {"name": "选品与商品", "count": 10, "icon": "🎯"},
+            "marketing_content": {"name": "营销与内容", "count": 21, "icon": "📣"},
+            "market_analysis": {"name": "市场分析", "count": 5, "icon": "📈"},
+            "platform_connectors": {"name": "平台连接器", "count": 30, "icon": "🔗"},
+            "claude_document": {"name": "Claude · 文档处理", "count": 4, "icon": "📄"},
+            "claude_dev": {"name": "Claude · 开发与代码", "count": 7, "icon": "💻"},
+            "claude_business": {"name": "Claude · 商业与营销", "count": 6, "icon": "💼"},
+            "claude_creative": {"name": "Claude · 创意与媒体", "count": 5, "icon": "🎨"},
+            "claude_productivity": {"name": "Claude · 生产力工具", "count": 9, "icon": "⚙️"},
+            "amazon_data_intelligence": {"name": "Amazon 数据情报", "count": 1, "icon": "🔍"},
         }
         return {"success": True, "categories": categories}
+
+    @app.get("/api/composio/status")
+    async def composio_status():
+        """检查 Composio 连接状态和已配置的 API Key"""
+        composio_key = os.environ.get("COMPOSIO_API_KEY", "")
+        has_key = bool(composio_key)
+        return {
+            "success": True,
+            "configured": has_key,
+            "masked_key": composio_key[:8] + "***" if has_key else "",
+            "message": "Composio API Key 已配置" if has_key else "未配置 COMPOSIO_API_KEY",
+        }
+
+    @app.post("/api/composio/execute")
+    async def composio_execute(request: Request):
+        """通过 Composio 执行工具调用"""
+        import subprocess
+        body = await request.json()
+        slug = body.get("slug", "")
+        params = body.get("params", {})
+        if not slug:
+            raise HTTPException(status_code=400, detail="slug is required")
+
+        composio_key = os.environ.get("COMPOSIO_API_KEY", "")
+        if not composio_key:
+            raise HTTPException(status_code=503, detail="Composio API Key 未配置")
+
+        cmd = ["composio", "execute", slug]
+        if params:
+            cmd.extend(["--params", json.dumps(params)])
+
+        try:
+            env = os.environ.copy()
+            env["COMPOSIO_API_KEY"] = composio_key
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60, env=env)
+            return {
+                "success": result.returncode == 0,
+                "slug": slug,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "exit_code": result.returncode,
+            }
+        except subprocess.TimeoutExpired:
+            raise HTTPException(status_code=504, detail="Composio 执行超时")
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @app.post("/api/composio/search")
+    async def composio_search(request: Request):
+        """通过 Composio 搜索可用工具"""
+        import subprocess
+        body = await request.json()
+        query = body.get("query", "")
+        if not query:
+            raise HTTPException(status_code=400, detail="query is required")
+
+        composio_key = os.environ.get("COMPOSIO_API_KEY", "")
+        if not composio_key:
+            raise HTTPException(status_code=503, detail="Composio API Key 未配置")
+
+        try:
+            env = os.environ.copy()
+            env["COMPOSIO_API_KEY"] = composio_key
+            result = subprocess.run(
+                ["composio", "search", query],
+                capture_output=True, text=True, timeout=30, env=env,
+            )
+            return {
+                "success": result.returncode == 0,
+                "query": query,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    # ============================================================
+    # Heygen MCP Proxy API
+    # ============================================================
+
+    @app.get("/api/heygen/status")
+    async def heygen_status():
+        """检查 Heygen MCP 连接状态"""
+        heygen_key = os.environ.get("HEYGEN_API_KEY", "")
+        has_key = bool(heygen_key)
+        return {
+            "success": True,
+            "configured": has_key,
+            "mcp_endpoint": "https://mcp.heygen.com/mcp/v1/",
+            "message": "Heygen MCP 已配置" if has_key else "未配置 HEYGEN_API_KEY",
+        }
+
+    @app.post("/api/heygen/proxy")
+    async def heygen_proxy(request: Request):
+        """代理转发 Heygen MCP 请求"""
+        import httpx
+        heygen_key = os.environ.get("HEYGEN_API_KEY", "")
+        if not heygen_key:
+            raise HTTPException(status_code=503, detail="HEYGEN_API_KEY 未配置")
+
+        body = await request.json()
+        method = body.get("method", "tools/list")
+        params = body.get("params", {})
+
+        try:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(30.0)) as client:
+                resp = await client.post(
+                    "https://mcp.heygen.com/mcp/v1/",
+                    json={"jsonrpc": "2.0", "method": method, "params": params, "id": 1},
+                    headers={
+                        "Authorization": f"Bearer {heygen_key}",
+                        "Content-Type": "application/json",
+                    },
+                )
+                return {"success": resp.status_code == 200, "data": resp.json()}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    # ============================================================
+    # AnyGen Suite API
+    # ============================================================
+
+    @app.get("/api/anygen/status")
+    async def anygen_status():
+        """检查 AnyGen Suite 配置状态"""
+        anygen_key = os.environ.get("ANYGEN_API_KEY", "")
+        has_key = bool(anygen_key)
+        return {
+            "success": True,
+            "configured": has_key,
+            "masked_key": anygen_key[:10] + "***" if has_key else "",
+            "message": "AnyGen API Key 已配置" if has_key else "未配置 ANYGEN_API_KEY",
+        }
+
+    # ============================================================
+    # Platform Connectors API
+    # ============================================================
+
+    @app.get("/api/connectors/platforms")
+    async def list_platform_connectors():
+        """列出所有平台连接器及其状态"""
+        connectors = {
+            "电商": [
+                {"id": "shopify", "name": "Shopify", "status": "disconnected", "icon": "🛒"},
+                {"id": "amazon", "name": "Amazon", "status": "disconnected", "icon": "📦"},
+                {"id": "wix", "name": "Wix", "status": "disconnected", "icon": "🏬"},
+                {"id": "woocommerce", "name": "WooCommerce", "status": "disconnected", "icon": "🛍️"},
+                {"id": "genstore", "name": "Genstore", "status": "connected", "icon": "🏪"},
+                {"id": "ebay", "name": "eBay", "status": "disconnected", "icon": "🔨"},
+                {"id": "etsy", "name": "Etsy", "status": "coming_soon", "icon": "🎨"},
+                {"id": "tiktokshop", "name": "TikTok Shop", "status": "coming_soon", "icon": "🎵"},
+            ],
+            "社媒": [
+                {"id": "tiktok", "name": "TikTok", "status": "connected", "icon": "🎵"},
+                {"id": "instagram", "name": "Instagram", "status": "connected", "icon": "📷"},
+                {"id": "twitter", "name": "Twitter/X", "status": "connected", "icon": "🐦"},
+                {"id": "youtube", "name": "YouTube", "status": "connected", "icon": "▶️"},
+                {"id": "facebook", "name": "Facebook", "status": "connected", "icon": "📘"},
+                {"id": "linkedin", "name": "LinkedIn", "status": "connected", "icon": "💼"},
+                {"id": "reddit", "name": "Reddit", "status": "connected", "icon": "🤖"},
+            ],
+            "营销": [
+                {"id": "google_ads", "name": "Google Ads", "status": "connected", "icon": "📢"},
+                {"id": "meta_ads", "name": "Meta Ads", "status": "coming_soon", "icon": "📱"},
+                {"id": "tiktok_ads", "name": "TikTok Ads", "status": "coming_soon", "icon": "🎯"},
+                {"id": "omnisend", "name": "Omnisend", "status": "disconnected", "icon": "📧"},
+                {"id": "mailchimp", "name": "Mailchimp", "status": "disconnected", "icon": "✉️"},
+            ],
+            "ERP/物流": [
+                {"id": "linking_erp", "name": "领星ERP", "status": "disconnected", "icon": "📊"},
+                {"id": "shipstation", "name": "ShipStation", "status": "disconnected", "icon": "🚚"},
+                {"id": "cin7", "name": "Cin7 Core", "status": "disconnected", "icon": "📋"},
+                {"id": "shipbob", "name": "ShipBob", "status": "disconnected", "icon": "📦"},
+            ],
+            "CRM/客服": [
+                {"id": "gorgias", "name": "Gorgias", "status": "disconnected", "icon": "💬"},
+                {"id": "intercom", "name": "Intercom", "status": "disconnected", "icon": "🗨️"},
+                {"id": "salesforce", "name": "Salesforce", "status": "disconnected", "icon": "☁️"},
+            ],
+            "生产力/支付": [
+                {"id": "gmail", "name": "Gmail", "status": "connected", "icon": "📧"},
+                {"id": "google_docs", "name": "Google Docs", "status": "connected", "icon": "📄"},
+                {"id": "google_drive", "name": "Google Drive", "status": "connected", "icon": "📁"},
+                {"id": "google_sheets", "name": "Google Sheets", "status": "connected", "icon": "📊"},
+                {"id": "google_analytics", "name": "Google Analytics", "status": "connected", "icon": "📈"},
+                {"id": "google_calendar", "name": "Google 日历", "status": "connected", "icon": "📅"},
+                {"id": "notion", "name": "Notion", "status": "connected", "icon": "📝"},
+                {"id": "stripe", "name": "Stripe", "status": "disconnected", "icon": "💳"},
+                {"id": "whatsapp", "name": "WhatsApp Business", "status": "disconnected", "icon": "💬"},
+                {"id": "sellersprite", "name": "SellerSprite", "status": "connected", "icon": "🔍"},
+                {"id": "sorftime", "name": "Sorftime", "status": "disconnected", "icon": "📊"},
+            ],
+        }
+        return {"success": True, "connectors": connectors}
 
     @app.get("/api/skills/{skill_name}")
     async def get_skill_detail(skill_name: str):
@@ -1202,6 +1420,208 @@ title = "{target_link.get("title", req.url)}"
     logger.info("🔐 Auth API routes registered (register/login/enterprise management)")
 
     # ============================================================
+    # SellerSprite API - Amazon 全维度数据情报代理
+    # ============================================================
+
+    @app.get("/api/sellersprite/status")
+    async def sellersprite_status():
+        """SellerSprite 集成状态"""
+        api_key = os.environ.get("SELLERSPRITE_SECRET_KEY", "")
+        return {
+            "success": True,
+            "integration": "SellerSprite 卖家精灵",
+            "platform": "https://open.sellersprite.com",
+            "status": "connected" if api_key else "unconfigured",
+            "api_key_configured": bool(api_key),
+            "tools": {
+                "total": 43,
+                "categories": {
+                    "asin_analysis": {"name": "ASIN 分析", "count": 6},
+                    "product_selection": {"name": "选品与市场", "count": 16},
+                    "keyword_research": {"name": "关键词研究", "count": 6},
+                    "aba_trends": {"name": "ABA 数据与趋势", "count": 6},
+                    "traffic_analysis": {"name": "流量分析", "count": 4},
+                    "review": {"name": "评论分析", "count": 1},
+                    "trademark": {"name": "全球商标库", "count": 4},
+                }
+            },
+            "sites": ["US", "JP", "UK", "DE", "FR", "IT", "ES", "CA", "IN", "MX"],
+            "data_volume": "2亿+ ASIN · 500万+ 关键词",
+            "access_methods": ["API", "CLI", "MCP", "Agent"],
+            "mcp_clients": ["Chatbox", "CherryStudio", "Claude Desktop", "Codex", "ChatGPT", "Antigravity", "Coze", "OpenClaw", "Accio", "Refly AI", "WorkBuddy"],
+        }
+
+    @app.get("/api/sellersprite/tools")
+    async def sellersprite_tools():
+        """获取 SellerSprite 43 个工具完整列表"""
+        tools = [
+            # ASIN 分析
+            {"id": "competitor_lookup", "category": "asin_analysis", "name": "查竞品", "endpoint": "/api/1", "description": "查目标ASIN的销量和销额等详细数据"},
+            {"id": "asin_detail", "category": "asin_analysis", "name": "ASIN详情", "endpoint": "/api/3", "description": "上架日期、BSR排名、A+等信息"},
+            {"id": "asin_sales_trend", "category": "asin_analysis", "name": "销量趋势", "endpoint": "/api/61", "description": "父体/子体销量销售额趋势"},
+            {"id": "asin_prediction", "category": "asin_analysis", "name": "销量预测", "endpoint": "/api/27", "description": "ASIN销量预测"},
+            {"id": "asin_coupon_trend", "category": "asin_analysis", "name": "优惠趋势", "endpoint": "/api/56", "description": "ASIN优惠趋势数据"},
+            {"id": "asin_detail_with_coupon", "category": "asin_analysis", "name": "详情+优惠趋势", "endpoint": "/api/57", "description": "详情及优惠趋势组合"},
+            # 选品与市场
+            {"id": "product_research", "category": "product_selection", "name": "选产品", "endpoint": "/api/2", "description": "多维度筛选潜力商品"},
+            {"id": "product_node", "category": "product_selection", "name": "产品类目", "endpoint": "/api/9", "description": "查询类目ID/名称/节点"},
+            {"id": "market_research", "category": "product_selection", "name": "选市场列表", "endpoint": "/api/29", "description": "细分类目市场分析"},
+            {"id": "market_statistics", "category": "product_selection", "name": "市场统计", "endpoint": "/api/30", "description": "类目统计数据"},
+            {"id": "market_product_concentration", "category": "product_selection", "name": "商品集中度", "endpoint": "/api/31", "description": "商品集中度分析"},
+            {"id": "market_brand_concentration", "category": "product_selection", "name": "品牌集中度", "endpoint": "/api/32", "description": "品牌集中度分析"},
+            {"id": "market_seller_concentration", "category": "product_selection", "name": "卖家集中度", "endpoint": "/api/33", "description": "卖家集中度分析"},
+            {"id": "market_seller_country", "category": "product_selection", "name": "卖家所属地", "endpoint": "/api/35", "description": "卖家所属地分布"},
+            {"id": "market_seller_type", "category": "product_selection", "name": "卖家类型", "endpoint": "/api/34", "description": "卖家类型分布"},
+            {"id": "market_demand_trend", "category": "product_selection", "name": "需求趋势", "endpoint": "/api/36", "description": "商品需求趋势"},
+            {"id": "market_listing_date", "category": "product_selection", "name": "上架时间", "endpoint": "/api/37", "description": "上架时间分布"},
+            {"id": "market_listing_trend", "category": "product_selection", "name": "上架趋势", "endpoint": "/api/38", "description": "上架趋势分布"},
+            {"id": "market_ratings_count", "category": "product_selection", "name": "评分数分布", "endpoint": "/api/39", "description": "评分数分布"},
+            {"id": "market_rating", "category": "product_selection", "name": "评分值分布", "endpoint": "/api/40", "description": "评分值分布"},
+            {"id": "market_price", "category": "product_selection", "name": "价格分布", "endpoint": "/api/41", "description": "价格分布"},
+            {"id": "market_ebc", "category": "product_selection", "name": "A+视频分布", "endpoint": "/api/42", "description": "A+视频分布"},
+            # 关键词研究
+            {"id": "traffic_keyword", "category": "keyword_research", "name": "关键词反查", "endpoint": "/api/14", "description": "ASIN近30天前3页搜索流量词"},
+            {"id": "keyword_miner", "category": "keyword_research", "name": "关键词挖掘", "endpoint": "/api/6", "description": "衍生词及长尾关键词"},
+            {"id": "keyword_research", "category": "keyword_research", "name": "关键词选品", "endpoint": "/api/10", "description": "月搜索量/购买率"},
+            {"id": "keyword_trends", "category": "keyword_research", "name": "关键词趋势", "endpoint": "/api/11", "description": "关键词历史趋势"},
+            {"id": "keyword_order", "category": "keyword_research", "name": "出单词反查", "endpoint": "/api/24", "description": "竞品Top出单词"},
+            {"id": "traffic_extend", "category": "keyword_research", "name": "拓展流量词", "endpoint": "/api/46", "description": "多ASIN拓展流量词"},
+            # ABA与趋势
+            {"id": "aba_weekly", "category": "aba_trends", "name": "ABA周选品", "endpoint": "/api/19", "description": "ABA数据选品-按周"},
+            {"id": "aba_monthly", "category": "aba_trends", "name": "ABA月选品", "endpoint": "/api/20", "description": "ABA数据选品-按月"},
+            {"id": "aba_trend", "category": "aba_trends", "name": "ABA关键词趋势", "endpoint": "/api/60", "description": "ABA关键词历史趋势"},
+            {"id": "google_trend", "category": "aba_trends", "name": "谷歌趋势", "endpoint": "/api/12", "description": "关键词谷歌趋势"},
+            {"id": "bsr_prediction", "category": "aba_trends", "name": "BSR销量预测", "endpoint": "/api/26", "description": "根据BSR预测销量"},
+            {"id": "keepa_info", "category": "aba_trends", "name": "商品趋势详情", "endpoint": "/api/22", "description": "价格/BSR/评论历史趋势"},
+            # 流量分析
+            {"id": "traffic_source", "category": "traffic_analysis", "name": "流量来源", "endpoint": "/api/17", "description": "关键词流向分析"},
+            {"id": "traffic_listing", "category": "traffic_analysis", "name": "关联流量列表", "endpoint": "/api/16", "description": "产品及变体关联流量"},
+            {"id": "traffic_keyword_stat", "category": "traffic_analysis", "name": "流量词统计", "endpoint": "/api/13", "description": "流量词统计"},
+            {"id": "traffic_listing_stat", "category": "traffic_analysis", "name": "关联流量统计", "endpoint": "/api/15", "description": "关联流量统计"},
+            # 评论
+            {"id": "review", "category": "review", "name": "查评论", "endpoint": "/api/25", "description": "查询Product Review"},
+            # 商标
+            {"id": "trademark_countries", "category": "trademark", "name": "商标数据范围", "endpoint": "/api/50", "description": "支持商标查询的国家"},
+            {"id": "trademark_detail", "category": "trademark", "name": "商标详情", "endpoint": "/api/49", "description": "商标详细信息"},
+            {"id": "trademark_list", "category": "trademark", "name": "商标列表", "endpoint": "/api/48", "description": "商标列表数据"},
+            {"id": "trademark_stats", "category": "trademark", "name": "商标统计", "endpoint": "/api/47", "description": "商标统计数据"},
+            # 工具
+            {"id": "image_text_recognition", "category": "utility", "name": "图片文字识别", "endpoint": "/api/44", "description": "图片文字识别"},
+        ]
+        return {"success": True, "total": len(tools), "tools": tools}
+
+    @app.post("/api/sellersprite/proxy")
+    async def sellersprite_proxy(request: dict):
+        """代理 SellerSprite API 调用"""
+        api_key = os.environ.get("SELLERSPRITE_SECRET_KEY", "")
+        if not api_key:
+            raise HTTPException(status_code=401, detail="SELLERSPRITE_SECRET_KEY 未配置")
+
+        endpoint = request.get("endpoint", "")
+        method = request.get("method", "POST").upper()
+        payload = request.get("payload", {})
+
+        headers = {
+            "secret-key": api_key,
+            "Content-Type": "application/json;charset=utf-8",
+        }
+
+        url = f"https://api.sellersprite.com{endpoint}"
+
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                if method == "GET":
+                    resp = await client.get(url, headers=headers, params=payload)
+                else:
+                    resp = await client.post(url, headers=headers, json=payload)
+                return {"success": True, "status_code": resp.status_code, "data": resp.json()}
+        except Exception as e:
+            logger.error(f"SellerSprite proxy error: {e}")
+            return {"success": False, "error": str(e)}
+
+    @app.get("/api/sellersprite/visits")
+    async def sellersprite_visits():
+        """查询 SellerSprite API 可用次数"""
+        api_key = os.environ.get("SELLERSPRITE_SECRET_KEY", "")
+        if not api_key:
+            raise HTTPException(status_code=401, detail="SELLERSPRITE_SECRET_KEY 未配置")
+
+        headers = {
+            "secret-key": api_key,
+            "Content-Type": "application/json;charset=utf-8",
+        }
+
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                resp = await client.get("https://api.sellersprite.com/v1/visits", headers=headers)
+                return {"success": True, "data": resp.json()}
+        except Exception as e:
+            logger.error(f"SellerSprite visits error: {e}")
+            return {"success": False, "error": str(e)}
+
+    logger.info("🔍 SellerSprite API routes registered (43 tools · 10 sites · Amazon Data Intelligence)")
+
+    # ============================================================
+    # Brand Narrative API - 品牌叙事 · 微软 Build 2026 对齐
+    # ============================================================
+
+    @app.get("/api/brand/narrative")
+    async def brand_narrative():
+        """获取 Simiaiclaw OS 品牌叙事和微软 Build 2026 战略对齐"""
+        return {
+            "success": True,
+            "brand": {
+                "name": "Simiaiclaw OS",
+                "full_name": "龙虾星球共创联盟 · Simiaiclaw OS",
+                "tagline": "一万个硅基大脑 · 全量调度操作系统",
+                "version": "5.2.0"
+            },
+            "narrative": {
+                "core_theme": "硅基大脑网络 · 全量调度操作系统",
+                "ms_build_2026_alignment": "微软 Build 2026 宣布正在用「一万个硅基大脑」的网络涌现逻辑去重构下一代计算平台。他们不再满足于做「输入框里的聊天助手」，而是要直接做控制所有自动化管线的「全量调度操作系统」。而这，与 Simiaiclaw OS 龙虾星球系统不谋而合。"
+            },
+            "architecture": {
+                "layers": [
+                    {"name": "战略决策层", "agents": ["Board CEO", "Board CTO", "Board CFO", "Board CMO", "Board COO"]},
+                    {"name": "市场情报层", "agents": ["Market Intel", "Competitor", "Trend", "PR/SEM/Ads"]},
+                    {"name": "品牌与内容层", "agents": ["Brand", "Content", "Video", "Localization", "Design"]},
+                    {"name": "销售与增长层", "agents": ["Amazon", "Shopify", "TikTok Shop", "Channel", "CRM"]},
+                    {"name": "运营执行层", "agents": ["Operations", "Ads Ops", "Churn", "Retention", "Marketplace"]},
+                    {"name": "供应链层", "agents": ["Inventory", "Logistics", "Supplier", "Quality", "Order"]},
+                    {"name": "财务与合规层", "agents": ["Finance", "Tax", "Invoice", "Payment", "Cost Control"]},
+                    {"name": "基础设施层", "agents": ["OpenClaw", "AnyGen", "HeyGen", "Composio", "InsForge"]}
+                ]
+            },
+            "alignment": {
+                "agent_first": {"ms": "Agent First 战略：从 Copilot 到 Autopilot", "simiaiclaw": "100+ Agent 集群 · 8 层组织架构自治运行"},
+                "multi_agent": {"ms": "Copilot Studio 多 Agent 编排", "simiaiclaw": "118 SOP TaskFlow · Board → Sales 协同调度"},
+                "context_layer": {"ms": "Microsoft IQ (Work/Fabric/Foundry IQ)", "simiaiclaw": "知识库 + InsForge BaaS + Agent 记忆系统"},
+                "security": {"ms": "MXC 沙箱 + Agent 365 + ACS 策略", "simiaiclaw": "Electron 沙箱 + 企业权限 + Skills 安全审核"},
+                "open_ecosystem": {"ms": "MCP 协议 + 1000+ Composio Apps", "simiaiclaw": "Composio 1000+ + 30+ 平台连接器"},
+                "os_evolution": {"ms": "Windows 365 for Agents + Project Solara", "simiaiclaw": "Electron Desktop OS + Dashboard 全量调度面板"}
+            },
+            "stats": {
+                "agent_count": "100+",
+                "skill_count": "1000+",
+                "connector_count": "30+",
+                "sop_taskflow_count": 118,
+                "model_engines": ["Ollama", "OpenAI", "Claude", "AnyGen", "HeyGen"]
+            }
+        }
+
+    @app.get("/api/brand/os")
+    async def brand_os_page():
+        """返回品牌叙事 OS 页面 HTML"""
+        brand_html_path = Path(__file__).parent.parent / "dashboard" / "brand-os.html"
+        if brand_html_path.exists():
+            return HTMLResponse(content=brand_html_path.read_text(encoding="utf-8"))
+        return HTMLResponse(content="<h1>Brand OS page not found</h1>", status_code=404)
+
+    logger.info("🦞 Brand Narrative API routes registered (Simiaiclaw OS · Build 2026 alignment)")
+
+    # ============================================================
     # Metrics (Prometheus compatible)
     # ============================================================
 
@@ -1214,7 +1634,7 @@ title = "{target_link.get("title", req.url)}"
             "openclaw_agents_total": agents_total,
             "openclaw_taskflows_total": taskflows_total,
             "openclaw_engine_status": 1 if status.get("engine") == "running" else 0,
-            "openclaw_version": "3.0.0",
+            "openclaw_version": "5.2.0",
         }
 
     return app

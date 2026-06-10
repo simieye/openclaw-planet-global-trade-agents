@@ -1,13 +1,13 @@
-# 🦞 龙虾星球共创联盟 v3.1
+# 🦞 Simiaiclaw OS v5.2
 
-## OpenClaw + AnyGen + HeyGen 跨境电商品牌出海智能体集群
+## 一万个硅基大脑 · 全量调度操作系统 · SellerSprite 43 Tools · Amazon 全维度数据情报
 
 [![Build DMG](https://github.com/simieye/openclaw-planet-global-trade-agents/actions/workflows/build-dmg.yml/badge.svg)](https://github.com/simieye/openclaw-planet-global-trade-agents/actions/workflows/build-dmg.yml)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
-[![Version](https://img.shields.io/badge/version-3.1.0-orange)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
+[![Version](https://img.shields.io/badge/version-5.2.0-orange)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-> 🚀 v3.1 全新升级：AI 工作台 + 6层智能体配置 + AnyGen风格对话 + ClawHub技能库 + 全平台连接器
+> 🚀 v5.2 重大升级：SellerSprite 卖家精灵 43 Tools 集成 · Amazon 全维度数据情报 · API/CLI/MCP/Agent 四种接入
 
 ---
 

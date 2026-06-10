@@ -66,7 +66,7 @@ function startEngine() {
     '--no-scheduler'
   ], {
     cwd: resourcesPath,
-    env: { ...process.env, PYTHONUNBUFFERED: '1' },
+    env: { ...process.env, PYTHONUNBUFFERED: '1', COMPOSIO_API_KEY: process.env.COMPOSIO_API_KEY || 'ak_hFYEURBG1n_r7pMYWNSY', ANYGEN_API_KEY: process.env.ANYGEN_API_KEY || 'sk-ag-ete-4Z9Ku5F1npH8tJYQSwkkTLYqew7G0pa7LEAGa8m1m-hghzf7JHwSj-WMfDNMcpzWQLafhQu0wKUq2QAbqw' },
     stdio: ['pipe', 'pipe', 'pipe']
   });
 
@@ -150,6 +150,7 @@ function createMainWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
+      spellcheck: true,
     },
     titleBarStyle: 'hiddenInset',
     vibrancy: 'under-window',
@@ -208,8 +209,8 @@ function createMenu() {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: '关于 龙虾星球共创联盟',
-              message: '🦞 龙虾星球共创联盟 v3.0',
-              detail: `OpenClaw Agent Cluster\nAnyGen Workspace Integration\nHeyGen Digital Human Factory\n\n全球跨境电商品牌出海 AI 驱动平台\n\nCopyright © 2026 Lobster Planet Co-Creation Alliance`,
+              message: '🦞 Simiaiclaw OS v5.2.0 · 一万个硅基大脑 · 全量调度操作系统',
+              detail: `微软 Build 2026 Agent First 战略对齐\n100+ AI 智能体集群 · 8层组织架构 · 全链路SOP\nOpenClaw · AnyGen · HeyGen · Composio 多引擎集成\n1000+ Claude Skills · 30+ 平台连接器\nSellerSprite 43 Tools · Amazon 全维度数据情报\n\n跨境电商品牌出海 AI 驱动平台\n企业级知识库 · Webhook工作流 · TaskFlow自动化\n\nCopyright © 2026 Lobster Planet Co-Creation Alliance`,
               icon: nativeImage.createFromPath(path.join(resourcesPath, 'icons', 'icon.png')),
             });
           }
@@ -295,6 +296,18 @@ function createMenu() {
             });
           }
         },
+      ]
+    },
+    {
+      label: '编辑',
+      submenu: [
+        { label: '撤销', accelerator: 'Cmd+Z', role: 'undo' },
+        { label: '重做', accelerator: 'Shift+Cmd+Z', role: 'redo' },
+        { type: 'separator' },
+        { label: '剪切', accelerator: 'Cmd+X', role: 'cut' },
+        { label: '复制', accelerator: 'Cmd+C', role: 'copy' },
+        { label: '粘贴', accelerator: 'Cmd+V', role: 'paste' },
+        { label: '全选', accelerator: 'Cmd+A', role: 'selectAll' },
       ]
     },
     {

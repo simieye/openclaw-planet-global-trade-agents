@@ -1,17 +1,17 @@
-version: 4.2.0
+version: 5.2.0
 files:
-  - url: lobster-planet-global-trade-agents-4.2.0-arm64-mac.zip
-    sha512: zXfAZ1xErIZcQxNaNBpgZ4SwZADoaK9KR0ihyOtW5Vq52XyOkfji5P3T9cL/mQY6gzLhuGL5cmFIwg+Fdux+hg==
-    size: 97816340
-  - url: lobster-planet-global-trade-agents-4.2.0-mac.zip
-    sha512: 3DvaaTjtBJgFrVwz2sfQgB4mdnEpFd1Sr7TRsFAMjJKttU6EAFES7/RpoUe3Z8PRnvpoSptJeBnJEftq95I4mw==
-    size: 102443533
-  - url: lobster-planet-global-trade-agents-4.2.0.dmg
-    sha512: zBLZ+pao8jgm2H2IVDSKU53rlezWBCfNB22arABq58jzQZP++xiOkwWNv7NcJTGflIWKfrdAlhLOjuGqk/LVCg==
-    size: 101168626
-  - url: lobster-planet-global-trade-agents-4.2.0.dmg
-    sha512: 8PwLQMC3IqL+fcVWPqmxftdkhHeo2OLCj4U5Nzr6MkZGRmQ4gMNVtP9hHRg+WJPT1s2MgArjWbt6Tg349I0uRw==
-    size: 105816874
-path: lobster-planet-global-trade-agents-4.2.0-arm64-mac.zip
-sha512: zXfAZ1xErIZcQxNaNBpgZ4SwZADoaK9KR0ihyOtW5Vq52XyOkfji5P3T9cL/mQY6gzLhuGL5cmFIwg+Fdux+hg==
-releaseDate: '2026-06-06T06:26:18.599Z'
+  - url: lobster-planet-global-trade-agents-5.2.0-arm64-mac.zip
+    sha512: PLACEHOLDER
+    size: 101641211
+  - url: lobster-planet-global-trade-agents-5.2.0-mac.zip
+    sha512: PLACEHOLDER
+    size: 106268404
+  - url: lobster-planet-global-trade-agents-5.2.0.dmg
+    sha512: PLACEHOLDER
+    size: 109986144
+  - url: lobster-planet-global-trade-agents-5.2.0-arm64.dmg
+    sha512: PLACEHOLDER
+    size: 105425404
+path: lobster-planet-global-trade-agents-5.2.0-arm64-mac.zip
+sha512: PLACEHOLDER
+releaseDate: '2026-06-10T17:20:00.000Z'
