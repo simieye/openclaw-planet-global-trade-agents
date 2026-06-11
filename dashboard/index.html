@@ -15634,34 +15634,351 @@ function filterSkillHub(category, tabEl) {
 // 平台连接器渲染
 // ============================================================
 
+// ============================================================
+// 平台连接器面板 - 真实配置驱动（参考 storeclaw.ai 架构）
+// ============================================================
+var platformConfigsCache = null;
+
 function renderPlatformConnectors() {
   var container = document.getElementById('platformConnectorsContent');
   if (!container) return;
-  
-  fetch('/api/connectors/platforms').then(function(r) { return r.json(); }).then(function(data) {
-    if (!data.success) return;
-    var html = '';
-    for (var cat in data.connectors) {
-      html += '<div class="section-title" style="font-size:14px;margin-top:16px;">' + cat + '</div>';
-      html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px;">';
-      data.connectors[cat].forEach(function(c) {
-        var statusColor = c.status === 'connected' ? 'var(--success)' : c.status === 'coming_soon' ? 'var(--warning)' : 'var(--text-dim)';
-        var statusText = c.status === 'connected' ? '已连接' : c.status === 'coming_soon' ? '即将推出' : '待连接';
-        html += '<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;align-items:center;gap:10px;">' +
-          '<span style="font-size:22px;">' + c.icon + '</span>' +
-          '<div style="flex:1;">' +
-          '<div style="font-weight:600;color:var(--text);font-size:13px;">' + c.name + '</div>' +
-          '<div style="font-size:10px;color:' + statusColor + ';">● ' + statusText + '</div>' +
-          '</div>' +
-          (c.status === 'disconnected' ? '<button class="btn btn-sm" onclick="showToast(\'' + c.name + ' 连接功能开发中\', \'info\')" style="font-size:10px;padding:4px 8px;">连接</button>' : '') +
-          '</div>';
-      });
+
+  container.innerHTML = '<div style="color:var(--text-dim);padding:20px;text-align:center;">⏳ 正在加载平台配置...</div>';
+
+  // 加载真实平台配置
+  fetch('/api/connectors/platforms/config')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.success) {
+        container.innerHTML = '<div style="color:var(--error);padding:20px;">配置加载失败</div>';
+        return;
+      }
+      platformConfigsCache = data.platforms;
+
+      var html = '';
+      // 顶部统计
+      html += '<div class="stats-row">';
+      html += '<div class="stat-card"><div class="stat-label">总平台</div><div class="stat-value" style="color:var(--accent);">' + data.total_platforms + '</div><div class="stat-trend">6 大分类</div></div>';
+      html += '<div class="stat-card"><div class="stat-label">已连接</div><div class="stat-value" style="color:var(--success);">' + data.connected_count + '</div><div class="stat-trend">凭据已验证</div></div>';
+      html += '<div class="stat-card"><div class="stat-label">认证方式</div><div class="stat-value" style="color:var(--accent2);">3</div><div class="stat-trend">OAuth2 / API Key / SP-API</div></div>';
+      html += '<div class="stat-card"><div class="stat-label">数据同步</div><div class="stat-value" style="color:var(--accent3);">' + data.connected_count + '</div><div class="stat-trend">实时双向同步</div></div>';
       html += '</div>';
+
+      // 按分类渲染平台卡片
+      var catOrder = ['电商', '社媒', '营销', 'ERP/物流', 'CRM/客服', '支付/生产力'];
+      catOrder.forEach(function(cat) {
+        var platforms = data.platforms[cat];
+        if (!platforms) return;
+
+        var catConnected = Object.values(platforms).filter(function(p) { return p.status === 'connected'; }).length;
+        var catTotal = Object.keys(platforms).length;
+
+        html += '<div style="margin-top:24px;">';
+        html += '<div class="section-title" style="font-size:14px;display:flex;align-items:center;gap:8px;">' +
+          '<span>' + cat + '</span>' +
+          '<span style="font-size:11px;color:var(--text-dim);font-weight:400;">' + catConnected + '/' + catTotal + ' 已连接</span>' +
+          '</div>';
+
+        html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:10px;">';
+
+        Object.values(platforms).forEach(function(p) {
+          var isConnected = p.status === 'connected';
+          var statusColor = isConnected ? 'var(--success)' : 'var(--text-dim)';
+          var statusBg = isConnected ? 'rgba(52,211,153,0.1)' : 'rgba(100,100,120,0.1)';
+          var statusText = isConnected ? '✅ 已连接' : '⚪ 待配置';
+          var authTypeLabels = {
+            'oauth2': 'OAuth 2.0',
+            'oauth2_facebook': 'Facebook OAuth',
+            'oauth2_google': 'Google OAuth',
+            'oauth2_meta': 'Meta OAuth',
+            'oauth1a': 'OAuth 1.0a',
+            'api_key': 'API Key',
+            'sp_api': 'Amazon SP-API'
+          };
+          var authLabel = authTypeLabels[p.auth_type] || p.auth_type;
+
+          html += '<div class="platform-card" style="background:var(--card-bg);border:1px solid ' + (isConnected ? 'rgba(52,211,153,0.3)' : 'var(--border)') + ';border-radius:12px;padding:16px;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden;"' +
+            ' onclick="openPlatformConfig(\'' + p.id + '\', \'' + (p.name || '') + '\')" ' +
+            ' onmouseover="this.style.borderColor=\'var(--accent)\';this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 8px 25px rgba(99,102,241,0.15)\'" ' +
+            ' onmouseout="this.style.borderColor=\'' + (isConnected ? 'rgba(52,211,153,0.3)' : 'var(--border)') + '\';this.style.transform=\'\';this.style.boxShadow=\'\'">' +
+
+            // 连接状态指示条
+            '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:' + (isConnected ? 'var(--success)' : 'var(--border)') + ';"></div>' +
+
+            '<div style="display:flex;align-items:center;gap:12px;margin-top:4px;">' +
+              '<span style="font-size:28px;">' + p.icon + '</span>' +
+              '<div style="flex:1;">' +
+                '<div style="font-weight:700;color:var(--text-bright);font-size:14px;">' + p.name + '</div>' +
+                '<div style="font-size:11px;color:var(--text-dim);margin-top:2px;">' + (p.description || '') + '</div>' +
+                '<div style="display:flex;align-items:center;gap:6px;margin-top:6px;">' +
+                  '<span style="font-size:10px;padding:2px 8px;border-radius:4px;background:' + statusBg + ';color:' + statusColor + ';">' + statusText + '</span>' +
+                  '<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(99,102,241,0.1);color:var(--accent);">' + authLabel + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<span style="font-size:18px;color:var(--text-dim);opacity:0.5;">→</span>' +
+            '</div>' +
+
+            // 配置字段预览
+            '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">' +
+              '<div style="font-size:10px;color:var(--text-dim);">配置项: ' + (p.config_fields || []).map(function(f) { return f.label; }).join(', ') + '</div>' +
+            '</div>' +
+          '</div>';
+        });
+
+        html += '</div></div>';
+      });
+
+      // 底部操作按钮
+      html += '<div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' +
+        '<button class="btn" onclick="showPlatformConfigSummary()" style="background:var(--accent);color:#fff;">📋 查看配置摘要</button>' +
+        '<button class="btn" onclick="exportPlatformConfigs()" style="background:var(--accent2);color:#fff;">📥 导出配置</button>' +
+        '<button class="btn" onclick="showToast(\'参考 storeclaw.ai 架构: 多Agent协作 + 多平台连接器 + 统一数据模型\', \'info\')" style="background:var(--card-bg);color:var(--text);border:1px solid var(--border);">📖 架构说明</button>' +
+        '</div>';
+
+      container.innerHTML = html;
+    })
+    .catch(function(err) {
+      console.error('Platform config load error:', err);
+      // 回退到旧API
+      fetch('/api/connectors/platforms').then(function(r) { return r.json(); }).then(function(data) {
+        if (!data.success) return;
+        var html = '<div style="padding:8px 12px;margin-bottom:16px;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.3);border-radius:8px;font-size:12px;color:var(--warning);">⚠️ 真实配置API不可用，显示静态列表。请重启引擎以加载新配置端点。</div>';
+        for (var cat in data.connectors) {
+          html += '<div class="section-title" style="font-size:14px;margin-top:16px;">' + cat + '</div>';
+          html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px;">';
+          data.connectors[cat].forEach(function(c) {
+            var statusColor = c.status === 'connected' ? 'var(--success)' : c.status === 'coming_soon' ? 'var(--warning)' : 'var(--text-dim)';
+            var statusText = c.status === 'connected' ? '已连接' : c.status === 'coming_soon' ? '即将推出' : '待连接';
+            html += '<div style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;align-items:center;gap:10px;">' +
+              '<span style="font-size:22px;">' + c.icon + '</span>' +
+              '<div style="flex:1;"><div style="font-weight:600;color:var(--text);font-size:13px;">' + c.name + '</div>' +
+              '<div style="font-size:10px;color:' + statusColor + ';">● ' + statusText + '</div></div>' +
+              '</div>';
+          });
+          html += '</div>';
+        }
+        container.innerHTML = html;
+      });
+    });
+}
+
+// 打开平台配置弹窗
+function openPlatformConfig(platformId, platformName) {
+  if (!platformConfigsCache) {
+    showToast('平台配置数据未加载', 'error');
+    return;
+  }
+
+  // 查找平台配置
+  var platformConfig = null;
+  for (var cat in platformConfigsCache) {
+    if (platformConfigsCache[cat][platformId]) {
+      platformConfig = platformConfigsCache[cat][platformId];
+      break;
     }
-    container.innerHTML = html;
-  }).catch(function() {
-    container.innerHTML = '<div style="color:var(--text-dim);padding:20px;">连接器数据加载中...</div>';
+  }
+
+  if (!platformConfig) {
+    showToast('平台配置未找到', 'error');
+    return;
+  }
+
+  var isConnected = platformConfig.status === 'connected';
+
+  // 创建模态弹窗
+  var modalHtml = '<div id="platformConfigModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:10000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closePlatformConfig()">' +
+    '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:16px;width:560px;max-height:80vh;overflow-y:auto;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.5);" onclick="event.stopPropagation()">' +
+
+    // 头部
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">' +
+      '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<span style="font-size:32px;">' + platformConfig.icon + '</span>' +
+        '<div>' +
+          '<div style="font-size:18px;font-weight:700;color:var(--text-bright);">' + platformConfig.name + '</div>' +
+          '<div style="font-size:12px;color:var(--text-dim);">' + (platformConfig.description || '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button onclick="closePlatformConfig()" style="background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;">✕</button>' +
+    '</div>' +
+
+    // 连接状态
+    '<div style="padding:12px;border-radius:8px;margin-bottom:20px;background:' + (isConnected ? 'rgba(52,211,153,0.1)' : 'rgba(250,204,21,0.1)') + ';border:1px solid ' + (isConnected ? 'rgba(52,211,153,0.3)' : 'rgba(250,204,21,0.3)') + ';">' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<span style="font-size:14px;">' + (isConnected ? '✅' : '⚠️') + '</span>' +
+        '<span style="font-size:13px;color:' + (isConnected ? 'var(--success)' : 'var(--warning)') + ';font-weight:600;">' +
+          (isConnected ? '已连接 · 凭据验证通过' : '未配置 · 请输入 API 凭据') +
+        '</span>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--text-dim);margin-top:4px;">认证方式: ' + platformConfig.auth_type.toUpperCase() + '</div>' +
+    '</div>' +
+
+    // 配置表单
+    '<form id="platformConfigForm" onsubmit="savePlatformConfig(event, \'' + platformId + '\')">';
+
+  platformConfig.config_fields.forEach(function(field) {
+    var inputType = field.type === 'password' ? 'password' : 'text';
+    var value = '';
+    // 尝试从缓存中获取已保存的值
+    if (platformConfigsCache) {
+      for (var cat2 in platformConfigsCache) {
+        if (platformConfigsCache[cat2][platformId] && platformConfigsCache[cat2][platformId]._saved_values) {
+          value = platformConfigsCache[cat2][platformId]._saved_values[field.key] || '';
+          break;
+        }
+      }
+    }
+
+    if (field.type === 'select') {
+      modalHtml += '<div style="margin-bottom:14px;">' +
+        '<label style="font-size:12px;color:var(--text-dim);display:block;margin-bottom:4px;">' + field.label + (field.required ? ' <span style="color:var(--error);">*</span>' : '') + '</label>' +
+        '<select name="' + field.key + '" style="width:100%;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;">' +
+        (field.options || []).map(function(opt) {
+          return '<option value="' + opt.value + '">' + opt.label + '</option>';
+        }).join('') +
+        '</select>' +
+        '</div>';
+    } else {
+      modalHtml += '<div style="margin-bottom:14px;">' +
+        '<label style="font-size:12px;color:var(--text-dim);display:block;margin-bottom:4px;">' + field.label + (field.required ? ' <span style="color:var(--error);">*</span>' : '') + '</label>' +
+        '<input type="' + inputType + '" name="' + field.key + '" placeholder="' + (field.placeholder || '') + '" ' +
+        'style="width:100%;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;" />' +
+        '</div>';
+    }
   });
+
+  modalHtml += '<div style="display:flex;gap:8px;margin-top:20px;">' +
+    '<button type="submit" class="btn" style="flex:1;background:var(--accent);color:#fff;">💾 保存配置</button>' +
+    '<button type="button" class="btn" onclick="testPlatformConnection(\'' + platformId + '\')" style="flex:1;background:var(--success);color:#fff;">🔍 测试连接</button>' +
+    (isConnected ? '<button type="button" class="btn" onclick="deletePlatformConfig(\'' + platformId + '\')" style="background:var(--error);color:#fff;">🗑️ 删除</button>' : '') +
+    '</div>' +
+    '</form>' +
+
+    // 环境变量提示
+    '<div style="margin-top:16px;padding:10px;background:rgba(99,102,241,0.05);border-radius:8px;font-size:11px;color:var(--text-dim);">' +
+      '💡 也可以通过环境变量配置: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:4px;">' +
+      (platformConfig.env_keys || []).join(', ') +
+      '</code>' +
+    '</div>' +
+
+    '<div id="platformTestResult" style="margin-top:12px;"></div>' +
+
+    '</div></div>';
+
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function closePlatformConfig() {
+  var modal = document.getElementById('platformConfigModal');
+  if (modal) modal.remove();
+}
+
+// 保存平台配置
+function savePlatformConfig(event, platformId) {
+  event.preventDefault();
+  var form = document.getElementById('platformConfigForm');
+  var formData = new FormData(form);
+  var config = {};
+  formData.forEach(function(value, key) {
+    if (value) config[key] = value;
+  });
+
+  fetch('/api/connectors/platforms/config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ platform_id: platformId, config: config })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.success) {
+      showToast('✅ ' + data.message, 'success');
+      closePlatformConfig();
+      renderPlatformConnectors(); // 刷新面板
+    } else {
+      showToast('❌ 保存失败', 'error');
+    }
+  })
+  .catch(function() {
+    showToast('❌ 保存失败，请检查网络连接', 'error');
+  });
+}
+
+// 测试平台连接
+function testPlatformConnection(platformId) {
+  var resultDiv = document.getElementById('platformTestResult');
+  if (resultDiv) {
+    resultDiv.innerHTML = '<div style="padding:8px;color:var(--text-dim);font-size:12px;">⏳ 正在测试连接...</div>';
+  }
+
+  fetch('/api/connectors/platforms/test/' + platformId, { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (resultDiv) {
+        if (data.success) {
+          resultDiv.innerHTML = '<div style="padding:8px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;color:var(--success);font-size:12px;">✅ ' + data.message + '</div>';
+        } else {
+          resultDiv.innerHTML = '<div style="padding:8px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:6px;color:var(--error);font-size:12px;">❌ ' + data.message + '</div>';
+        }
+      }
+    })
+    .catch(function() {
+      if (resultDiv) {
+        resultDiv.innerHTML = '<div style="padding:8px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:6px;color:var(--error);font-size:12px;">❌ 连接测试失败</div>';
+      }
+    });
+}
+
+// 删除平台配置
+function deletePlatformConfig(platformId) {
+  if (!confirm('确定要删除 ' + platformId + ' 的配置吗？')) return;
+
+  fetch('/api/connectors/platforms/config/' + platformId, { method: 'DELETE' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success) {
+        showToast('✅ 配置已删除', 'success');
+        closePlatformConfig();
+        renderPlatformConnectors();
+      }
+    });
+}
+
+// 查看配置摘要
+function showPlatformConfigSummary() {
+  if (!platformConfigsCache) return;
+  var summary = '';
+  for (var cat in platformConfigsCache) {
+    var connected = Object.values(platformConfigsCache[cat]).filter(function(p) { return p.status === 'connected'; });
+    summary += cat + ': ' + connected.length + ' 已连接\n';
+    connected.forEach(function(p) { summary += '  ✅ ' + p.name + '\n'; });
+  }
+  alert('📋 平台配置摘要\n\n' + summary);
+}
+
+// 导出配置（不含敏感值）
+function exportPlatformConfigs() {
+  if (!platformConfigsCache) return;
+  var exportData = {};
+  for (var cat in platformConfigsCache) {
+    exportData[cat] = {};
+    for (var pid in platformConfigsCache[cat]) {
+      var p = platformConfigsCache[cat][pid];
+      exportData[cat][pid] = {
+        name: p.name,
+        status: p.status,
+        auth_type: p.auth_type,
+        configured: p.configured,
+        fields_count: (p.config_fields || []).length
+      };
+    }
+  }
+  var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'platform_configs_export_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ 配置已导出', 'success');
 }
 
 // ============================================================

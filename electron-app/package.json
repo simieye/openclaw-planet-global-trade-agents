@@ -1,8 +1,8 @@
 {
   "name": "lobster-planet-global-trade-agents",
   "productName": "龙虾星球共创联盟",
-  "version": "5.2.0",
-  "description": "Simiaiclaw OS · 一万个硅基大脑 · 全量调度操作系统 · SellerSprite 43 Tools · Amazon 全维度数据情报",
+  "version": "5.3.0",
+  "description": "Simiaiclaw OS · 一万个硅基大脑 · 全量调度操作系统 · SellerSprite 43 Tools · 30+ 真实平台连接器 · 全球社媒分发",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -86,11 +86,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "icon": "../icons/icon.icns",
@@ -108,17 +114,35 @@
       "icon": "../icons/icon.icns",
       "background": "build/dmg-background.png",
       "contents": [
-        { "x": 448, "y": 344, "type": "link", "path": "/Applications" },
-        { "x": 192, "y": 344, "type": "file" }
+        {
+          "x": 448,
+          "y": 344,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 192,
+          "y": 344,
+          "type": "file"
+        }
       ],
-      "window": { "width": 660, "height": 500 }
+      "window": {
+        "width": 660,
+        "height": 500
+      }
     },
     "win": {
-      "target": ["nsis", "portable"],
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "../icons/icon.ico"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "icon": "../icons/icon.png",
       "category": "Office"
     },
@@ -133,6 +157,9 @@
     "electron-builder": "^25.0.0"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.82",
+    "@composio/core": "^0.10.0",
+    "@composio/vercel": "^0.9.2",
     "electron-store": "^10.0.0",
     "electron-updater": "^6.3.0"
   }

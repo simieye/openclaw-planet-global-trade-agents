@@ -1,13 +1,13 @@
-# 🦞 Simiaiclaw OS v5.2
+# 🦞 Simiaiclaw OS v5.3
 
 ## 一万个硅基大脑 · 全量调度操作系统 · SellerSprite 43 Tools · Amazon 全维度数据情报
 
 [![Build DMG](https://github.com/simieye/openclaw-planet-global-trade-agents/actions/workflows/build-dmg.yml/badge.svg)](https://github.com/simieye/openclaw-planet-global-trade-agents/actions/workflows/build-dmg.yml)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
-[![Version](https://img.shields.io/badge/version-5.2.0-orange)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
+[![Version](https://img.shields.io/badge/version-5.3.0-orange)](https://github.com/simieye/openclaw-planet-global-trade-agents/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-> 🚀 v5.2 重大升级：SellerSprite 卖家精灵 43 Tools 集成 · Amazon 全维度数据情报 · API/CLI/MCP/Agent 四种接入
+> 🚀 v5.3 重大升级：SellerSprite 卖家精灵 43 Tools 集成 · Amazon 全维度数据情报 · API/CLI/MCP/Agent 四种接入
 
 ---
 

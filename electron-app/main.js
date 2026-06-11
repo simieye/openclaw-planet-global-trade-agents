@@ -209,7 +209,7 @@ function createMenu() {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: '关于 龙虾星球共创联盟',
-              message: '🦞 Simiaiclaw OS v5.2.0 · 一万个硅基大脑 · 全量调度操作系统',
+              message: '🦞 Simiaiclaw OS v5.3.0 · 一万个硅基大脑 · 全量调度操作系统',
               detail: `微软 Build 2026 Agent First 战略对齐\n100+ AI 智能体集群 · 8层组织架构 · 全链路SOP\nOpenClaw · AnyGen · HeyGen · Composio 多引擎集成\n1000+ Claude Skills · 30+ 平台连接器\nSellerSprite 43 Tools · Amazon 全维度数据情报\n\n跨境电商品牌出海 AI 驱动平台\n企业级知识库 · Webhook工作流 · TaskFlow自动化\n\nCopyright © 2026 Lobster Planet Co-Creation Alliance`,
               icon: nativeImage.createFromPath(path.join(resourcesPath, 'icons', 'icon.png')),
             });

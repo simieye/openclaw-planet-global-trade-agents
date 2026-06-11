@@ -1,17 +1,17 @@
-version: 5.2.0
+version: 5.3.0
 files:
-  - url: lobster-planet-global-trade-agents-5.2.0-arm64-mac.zip
+  - url: lobster-planet-global-trade-agents-5.3.0-arm64-mac.zip
     sha512: PLACEHOLDER
-    size: 101641211
-  - url: lobster-planet-global-trade-agents-5.2.0-mac.zip
+    size: 105906176
+  - url: lobster-planet-global-trade-agents-5.3.0-mac.zip
     sha512: PLACEHOLDER
-    size: 106268404
-  - url: lobster-planet-global-trade-agents-5.2.0.dmg
+    size: 110100480
+  - url: lobster-planet-global-trade-agents-5.3.0.dmg
     sha512: PLACEHOLDER
-    size: 109986144
-  - url: lobster-planet-global-trade-agents-5.2.0-arm64.dmg
+    size: 114294784
+  - url: lobster-planet-global-trade-agents-5.3.0-arm64.dmg
     sha512: PLACEHOLDER
-    size: 105425404
-path: lobster-planet-global-trade-agents-5.2.0-arm64-mac.zip
+    size: 109051904
+path: lobster-planet-global-trade-agents-5.3.0-arm64-mac.zip
 sha512: PLACEHOLDER
-releaseDate: '2026-06-10T17:20:00.000Z'
+releaseDate: '2026-06-11T03:07:00.000Z'
