@@ -1,0 +1,14 @@
+version: 5.7.0
+files:
+  - url: 龙虾星球共创联盟-5.7.0-arm64-mac.zip
+    sha512: 3e0b9af50c7e580932b720f464d5935e71090d6dc31c1f7ce94896f25449a813
+    size: 106378700
+  - url: 龙虾星球共创联盟-5.7.0-mac.zip
+    sha512: cbe928cd3e69d76ec426622ff2f69d0e8aeeadbe87db8b80d0137c62e3df9578
+    size: 111005893
+  - url: 龙虾星球共创联盟-5.7.0.dmg
+    sha512: a003cf3bf490af0c26ff71e26b558335d5657f0f29099c2e34d6015271d205c4
+    size: 114812230
+path: 龙虾星球共创联盟-5.7.0-arm64-mac.zip
+sha512: 3e0b9af50c7e580932b720f464d5935e71090d6dc31c1f7ce94896f25449a813
+releaseDate: '2026-06-14T05:31:00.000Z'

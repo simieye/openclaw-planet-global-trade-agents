@@ -16,15 +16,12 @@ dist-electron-new/
 release/
 # Keep only latest dmg/zip/blockmap in dist-electron
 dist-electron/*
-!dist-electron/龙虾星球共创联盟-5.3.0*
 !dist-electron/latest-mac.yml
 !dist-electron/builder-debug.yml
+!dist-electron/SHA256SUMS.txt
 *.dmg
-!龙虾星球共创联盟-5.3.0*.dmg
 *.zip
-!龙虾星球共创联盟-5.3.0*.zip
 *.blockmap
-!龙虾星球共创联盟-5.3.0*.blockmap
 
 # IDE
 .idea/
