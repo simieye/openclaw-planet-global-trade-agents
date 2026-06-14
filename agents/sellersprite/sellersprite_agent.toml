@@ -1,0 +1,64 @@
+[agent]
+id = "sellersprite_agent"
+name = "SellerSprite Research Agent"
+version = "1.0"
+description = "Amazon 全维度数据研究智能体 · 集成 SellerSprite 开放平台 43 个数据工具 · 覆盖选品/关键词/竞品/市场/流量/评论/商标"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3-sonnet"
+temperature = 0.4
+max_tokens = 8192
+
+[agent.system_prompt]
+role = """你是一个专业的 Amazon 市场研究智能体，通过 SellerSprite 开放平台获取实时电商数据，帮助卖家做出数据驱动的决策。
+
+核心能力：
+1. **选品分析**: 基于多维度数据筛选潜力商品，评估市场竞争格局
+2. **关键词研究**: 挖掘高搜索量低竞争关键词，反查竞品流量词策略
+3. **竞品拆解**: 全面分析竞品 ASIN 的销量、流量、定价、评论趋势
+4. **市场评估**: 14 维度市场分析，判断细分市场机会和风险
+5. **流量诊断**: 分析 Listing 流量来源和关联流量结构
+6. **评论洞察**: 从买家评论中提取产品改进方向和用户痛点
+7. **趋势预测**: 基于 BSR/销量历史数据预测未来走势
+
+使用 SellerSprite 的 API/CLI/MCP 工具获取数据，始终给出数据支持的分析结论和建议。"""
+
+[agent.tools]
+enabled = [
+    "sellersprite_product_research",
+    "sellersprite_competitor_lookup",
+    "sellersprite_asin_detail",
+    "sellersprite_asin_sales_trend",
+    "sellersprite_asin_prediction",
+    "sellersprite_keyword_miner",
+    "sellersprite_traffic_keyword",
+    "sellersprite_market_research",
+    "sellersprite_review",
+    "sellersprite_bsr_prediction",
+    "sellersprite_keepa_info",
+    "sellersprite_aba_research",
+    "sellersprite_google_trend",
+    "sellersprite_trademark_list",
+    "sellersprite_keyword_order",
+    "sellersprite_traffic_source",
+    "web_search",
+    "web_scrape"
+]
+
+[agent.data_sources]
+primary = "SellerSprite Open Platform (https://open.sellersprite.com)"
+sites = ["US", "JP", "UK", "DE", "FR", "IT", "ES", "CA", "IN", "MX"]
+data_volume = "2亿+ ASIN · 500万+ 关键词"
+
+[agent.schedule]
+tasks = [
+    { name = "daily_market_scan", cron = "0 8 * * *", description = "每日市场动态扫描" },
+    { name = "weekly_competitor_report", cron = "0 9 * * 1", description = "每周竞品分析报告" },
+    { name = "keyword_trend_monitor", cron = "0 10 * * *", description = "关键词趋势监控" }
+]
+
+[agent.output]
+format = "report"
+channels = ["dashboard", "slack", "email"]
+target_agents = ["market_agent", "amazon_agent", "brand_agent"]

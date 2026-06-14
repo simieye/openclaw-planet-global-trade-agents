@@ -1,0 +1,34 @@
+[agent]
+name = "ViMax 多智能体AI视频工厂"
+id = "vimax"
+version = "1.0.0"
+description = "港大HKUDS开源多智能体AI视频生成框架：集编剧/导演/制片/生成于一体，支持Idea2Video/Script2Video/Novel2Video/AutoCameo四大模式，多模式输入一键成片"
+layer = "content"
+icon = "🎬"
+
+[agent.config]
+repo = "https://github.com/HKUDS/ViMax.git"
+install = "git clone https://github.com/HKUDS/ViMax.git skills/vimax"
+license = "MIT"
+stars = "9.7k"
+team = "HKUDS (香港大学数据科学实验室)"
+python_version = "3.12+"
+package_manager = "uv"
+status = "ready_to_install"
+
+[agent.secrets]
+VIMAX_LLM_API_KEY = ""
+VIMAX_IMAGE_API_KEY = ""
+VIMAX_VIDEO_API_KEY = ""
+
+[agent.capabilities]
+idea2video = true
+script2video = true
+novel2video = true
+auto_cameo = true
+multi_agent_pipeline = true
+storyboard_generation = true
+character_consistency = true
+multi_camera_simulation = true
+rag_script_engine = true
+parallel_shot_generation = true

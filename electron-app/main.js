@@ -1,12 +1,25 @@
 const { app, BrowserWindow, Menu, shell, dialog, ipcMain, Tray, nativeImage, Notification } = require('electron');
 const path = require('path');
-const { spawn, exec } = require('child_process');
+const { spawn, exec, execSync } = require('child_process');
 const fs = require('fs');
+const http = require('http');
 const { autoUpdater } = require('electron-updater');
+
+let registerComposioIPC = null;
+let initializeComposioMCP = null;
+try {
+  const composioIpc = require('./composio-ipc');
+  registerComposioIPC = composioIpc.registerComposioIPC;
+  initializeComposioMCP = composioIpc.initializeComposioMCP;
+} catch (e) {
+  console.warn('[Composio IPC] Module not available, skipping:', e.message);
+  registerComposioIPC = () => {};
+  initializeComposioMCP = async () => ({ success: false, error: e.message });
+}
 
 // ============================================================
 // 龙虾星球共创联盟 - macOS 桌面应用
-// OpenClaw + AnyGen + HeyGen 智能体集群
+// OpenClaw + AnyGen + HeyGen 智能体集群 · Composio 1000+ 连接器
 // ============================================================
 
 let mainWindow = null;
@@ -53,17 +66,87 @@ function findPython() {
   return 'python3';
 }
 
+function checkPort(port) {
+  return new Promise((resolve) => {
+    const req = http.get(`http://127.0.0.1:${port}/api/connectors/platforms/config`, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          // 确认返回的是有效的平台配置数据
+          if (parsed && typeof parsed.total_platforms === 'number') {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } catch {
+          resolve(false);
+        }
+      });
+    });
+    req.on('error', () => resolve(false));
+    req.setTimeout(5000, () => { req.destroy(); resolve(false); });
+  });
+}
+
+// 更快速的端口连通性检查（仅检查端口是否可连接）
+function checkPortAlive(port) {
+  return new Promise((resolve) => {
+    const req = http.get(`http://127.0.0.1:${port}/`, (res) => {
+      res.resume();
+      resolve(true);
+    });
+    req.on('error', () => resolve(false));
+    req.setTimeout(3000, () => { req.destroy(); resolve(false); });
+  });
+}
+
 function startEngine() {
   const python = findPython();
-  const enginePath = path.join(resourcesPath, 'orchestration', 'engine.py');
+  const enginePath = path.join(resourcesPath, 'orchestration', 'unified_engine.py');
 
-  console.log(`Starting engine: ${python} ${enginePath}`);
+  console.log(`[Main] Starting engine: ${python} ${enginePath}`);
+
+  // 先检查引擎是否已在运行且健康
+  checkPort(ENGINE_PORT).then((running) => {
+    if (running) {
+      console.log(`[Main] Engine already running on port ${ENGINE_PORT}, reusing existing instance`);
+      engineProcess = { kill: () => {}, killed: false };
+      return;
+    }
+
+    // 检查端口是否被占用（可能被残留进程占用）
+    checkPortAlive(ENGINE_PORT).then((alive) => {
+      if (alive) {
+        console.log(`[Main] Port ${ENGINE_PORT} is occupied but engine not healthy, killing stale process...`);
+        killPort(ENGINE_PORT);
+      }
+      // 等待端口释放后再启动
+      setTimeout(() => doStartEngine(python, enginePath), alive ? 2000 : 0);
+    }).catch(() => {
+      // checkPortAlive 失败，直接尝试启动
+      doStartEngine(python, enginePath);
+    });
+  }).catch((err) => {
+    console.error(`[Main] checkPort error: ${err.message}, attempting to start engine anyway`);
+    killPort(ENGINE_PORT);
+    setTimeout(() => doStartEngine(python, enginePath), 1000);
+  });
+}
+
+function doStartEngine(python, enginePath) {
+  // 如果已有引擎进程在运行，先杀掉
+  if (engineProcess && !engineProcess.killed) {
+    engineProcess.kill('SIGTERM');
+  }
+
+  console.log(`[Main] Spawning engine process...`);
   
   engineProcess = spawn(python, [
     enginePath, 'serve', 
     '--port', String(ENGINE_PORT),
     '--host', '0.0.0.0',
-    '--no-scheduler'
   ], {
     cwd: resourcesPath,
     env: { ...process.env, PYTHONUNBUFFERED: '1', COMPOSIO_API_KEY: process.env.COMPOSIO_API_KEY || 'ak_hFYEURBG1n_r7pMYWNSY', ANYGEN_API_KEY: process.env.ANYGEN_API_KEY || 'sk-ag-ete-4Z9Ku5F1npH8tJYQSwkkTLYqew7G0pa7LEAGa8m1m-hghzf7JHwSj-WMfDNMcpzWQLafhQu0wKUq2QAbqw' },
@@ -75,16 +158,17 @@ function startEngine() {
   });
 
   engineProcess.stderr.on('data', (data) => {
-    console.error(`[Engine Error] ${data.toString().trim()}`);
+    const msg = data.toString().trim();
+    console.error(`[Engine Error] ${msg}`);
   });
 
   engineProcess.on('close', (code) => {
-    console.log(`Engine process exited with code ${code}`);
+    console.log(`[Main] Engine process exited with code ${code}`);
     if (!isQuitting) {
       // 自动重启
       setTimeout(() => {
         if (!isQuitting) {
-          console.log('Auto-restarting engine...');
+          console.log('[Main] Auto-restarting engine...');
           startEngine();
         }
       }, 5000);
@@ -92,34 +176,169 @@ function startEngine() {
   });
 
   engineProcess.on('error', (err) => {
-    console.error('Failed to start engine:', err.message);
+    console.error('[Main] Failed to start engine:', err.message);
   });
 }
 
+function killPort(port) {
+  try {
+    const result = execSync(`lsof -ti :${port} 2>/dev/null`, { encoding: 'utf8' }).trim();
+    if (result) {
+      const pids = result.split('\n').filter(p => p.trim());
+      pids.forEach(pid => {
+        try { 
+          const pidNum = parseInt(pid.trim());
+          if (pidNum && pidNum !== process.pid) {
+            process.kill(pidNum, 'SIGKILL'); 
+            console.log(`[Main] Killed process ${pidNum} on port ${port}`);
+          }
+        } catch(e) {}
+      });
+      if (pids.length > 0) {
+        console.log(`[Main] Killed ${pids.length} old process(es) on port ${port}: ${pids.join(',')}`);
+        // 等待端口释放
+        require('child_process').execSync('sleep 1');
+      }
+    }
+  } catch(e) {
+    console.log(`[Main] No processes to kill on port ${port} (or lsof failed)`);
+  }
+}
+
 function startDashboardServer() {
-  // 启动一个简单的 HTTP 服务器来托管 dashboard
-  const dashboardPath = path.join(resourcesPath, 'dashboard', 'index.html');
+  // 启动 HTTP 服务器托管 dashboard，并代理 /api/ 请求到引擎
+  const dashboardDir = path.join(resourcesPath, 'dashboard');
+  const engineUrl = `http://127.0.0.1:${ENGINE_PORT}`;
   
-  dashboardProcess = spawn('python3', [
-    '-c', `
+  // 先杀掉 9080 端口上的旧进程，确保使用新的 dashboard
+  killPort(DASHBOARD_PORT);
+  
+  console.log(`[Main] Starting dashboard server`);
+  console.log(`[Main] Dashboard dir: ${dashboardDir}`);
+  console.log(`[Main] Engine URL: ${engineUrl}`);
+  console.log(`[Main] Is packaged: ${app.isPackaged}`);
+  
+  // 优先使用独立的 dashboard_server.py 文件（如果存在）
+  const serverScript = path.join(resourcesPath, 'electron-app', 'dashboard_server.py');
+  if (fs.existsSync(serverScript)) {
+    console.log(`[Main] Using dashboard_server.py: ${serverScript}`);
+    dashboardProcess = spawn('python3', [
+      serverScript,
+      dashboardDir,
+      engineUrl,
+      String(DASHBOARD_PORT)
+    ], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, PYTHONUNBUFFERED: '1' }
+    });
+  } else {
+    // 回退：使用内联 Python 代码
+    console.log(`[Main] dashboard_server.py not found, using inline server`);
+    const pythonCode = `
 import http.server
 import socketserver
-import os
+import urllib.request
+import os, sys, json
 
-os.chdir("${path.join(resourcesPath, 'dashboard').replace(/"/g, '\\"')}")
+DASHBOARD_DIR = ${JSON.stringify(dashboardDir)}
+ENGINE_URL = ${JSON.stringify(engineUrl)}
 PORT = ${DASHBOARD_PORT}
-Handler = http.server.SimpleHTTPRequestHandler
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
+os.chdir(DASHBOARD_DIR)
+print(f"Serving dashboard from: {os.getcwd()}", flush=True)
+print(f"Engine URL: {ENGINE_URL}", flush=True)
+
+class ProxyHandler(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, format, *args):
+        pass
+    def do_GET(self):
+        if self.path.startswith('/api/'):
+            self._proxy('GET')
+        else:
+            # 对根路径和HTML文件设置正确的MIME类型
+            super().do_GET()
+    def do_POST(self):
+        if self.path.startswith('/api/'):
+            self._proxy('POST')
+        else:
+            super().do_POST()
+    def do_PUT(self):
+        if self.path.startswith('/api/'):
+            self._proxy('PUT')
+        else:
+            super().do_PUT()
+    def do_DELETE(self):
+        if self.path.startswith('/api/'):
+            self._proxy('DELETE')
+        else:
+            super().do_DELETE()
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        self.end_headers()
+    def _proxy(self, method):
+        try:
+            url = ENGINE_URL + self.path
+            body = None
+            content_length = int(self.headers.get('Content-Length', 0))
+            if content_length > 0:
+                body = self.rfile.read(content_length)
+            req = urllib.request.Request(url, data=body, method=method)
+            for key, val in self.headers.items():
+                if key.lower() not in ('host', 'connection'):
+                    req.add_header(key, val)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                self.send_response(resp.status)
+                for key, val in resp.getheaders():
+                    if key.lower() not in ('transfer-encoding', 'connection'):
+                        self.send_header(key, val)
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(resp.read())
+        except Exception as e:
+            self.send_response(502)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": f"Proxy failed: {str(e)}"}).encode())
+
+socketserver.TCPServer.allow_reuse_address = True
+with socketserver.TCPServer(("", PORT), ProxyHandler) as httpd:
+    print(f"Dashboard server ready on port {PORT}", flush=True)
     httpd.serve_forever()
-    `
-  ], {
-    cwd: path.join(resourcesPath, 'dashboard'),
-    stdio: 'pipe'
-  });
+`;
+
+    dashboardProcess = spawn('python3', ['-c', pythonCode], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, PYTHONUNBUFFERED: '1' }
+    });
+  }
 
   dashboardProcess.stdout.on('data', (data) => {
     console.log(`[Dashboard] ${data.toString().trim()}`);
+  });
+  
+  dashboardProcess.stderr.on('data', (data) => {
+    console.error(`[Dashboard:err] ${data.toString().trim()}`);
+  });
+  
+  dashboardProcess.on('error', (err) => {
+    console.error(`[Dashboard] Failed to start: ${err.message}`);
+  });
+  
+  dashboardProcess.on('close', (code) => {
+    console.log(`[Dashboard] Process exited with code ${code}`);
+    if (!isQuitting) {
+      // 自动重启 dashboard 服务器
+      setTimeout(() => {
+        if (!isQuitting) {
+          console.log('[Main] Auto-restarting dashboard server...');
+          startDashboardServer();
+        }
+      }, 3000);
+    }
   });
 }
 
@@ -159,16 +378,112 @@ function createMainWindow() {
     show: false,
   });
 
-  // 加载 Dashboard
-  if (app.isPackaged) {
-    mainWindow.loadFile(path.join(resourcesPath, 'dashboard', 'index.html'));
-  } else {
-    // 开发模式：启动本地服务器
-    startDashboardServer();
-    setTimeout(() => {
-      mainWindow.loadURL(`http://localhost:${DASHBOARD_PORT}`);
-    }, 1500);
+  // 启动 Dashboard 代理服务器（打包模式和开发模式都需要）
+  startDashboardServer();
+
+  // 等待 dashboard 服务器就绪后加载
+  const MAX_RETRIES = 30;
+  
+  function waitForDashboard(retries = MAX_RETRIES) {
+    const req = http.get(`http://localhost:${DASHBOARD_PORT}/`, (res) => {
+      if (res.statusCode === 200) {
+        console.log('[Main] Dashboard server ready, loading via HTTP');
+        mainWindow.loadURL(`http://localhost:${DASHBOARD_PORT}`).then(() => {
+          // 页面加载后检查 JS 健康状态
+          checkPageHealth();
+        });
+        // 消费响应数据
+        res.resume();
+      } else {
+        console.log(`[Main] Dashboard returned ${res.statusCode}, retrying...`);
+        retryLoad(retries);
+      }
+    });
+    req.on('error', (err) => {
+      console.log(`[Main] Dashboard not ready (${err.code}), retries left: ${retries}`);
+      retryLoad(retries);
+    });
+    req.setTimeout(2000, () => {
+      req.destroy();
+      retryLoad(retries);
+    });
   }
+
+  // JS 健康检查：确保 switchPanel、APP 和 Composio 独立模态框可用
+  function checkPageHealth(attempt = 1) {
+    const MAX_ATTEMPTS = 8;
+    setTimeout(() => {
+      mainWindow.webContents.executeJavaScript(`
+        (function() {
+          if (typeof switchPanel === 'function' && typeof APP !== 'undefined') {
+            // 检查 Composio 独立 modal 函数是否可用
+            if (typeof ensureComposioModal === 'function') {
+              // 预创建 Composio 独立 modal 系统
+              try { ensureComposioModal(); } catch(e) {}
+              return 'ok:composio-ready';
+            }
+            return 'ok:composio-missing-fn';
+          }
+          return 'broken:' + (typeof switchPanel) + ':' + (typeof APP);
+        })()
+      `).then(result => {
+        if (result.startsWith('ok')) {
+          console.log('[Main] Page JS health check passed: ' + result);
+          // 预创建 Composio 独立 modal 并预加载数据
+          mainWindow.webContents.executeJavaScript(`
+            // 预创建独立 modal 系统
+            if (typeof ensureComposioModal === 'function') {
+              try { ensureComposioModal(); } catch(e) { console.warn('[Electron] ensureComposioModal error:', e); }
+            }
+            // 预加载 Composio 数据
+            if (typeof renderComposio === 'function' && !window._composioPreloaded) {
+              window._composioPreloaded = true;
+              console.log('[Electron] Pre-loading Composio data...');
+              setTimeout(function() { renderComposio(); }, 1000);
+            }
+          `);
+        } else {
+          console.log('[Main] Page JS health check failed (' + result + '), attempt ' + attempt + '/' + MAX_ATTEMPTS);
+          if (attempt < MAX_ATTEMPTS) {
+            console.log('[Main] Reloading page to recover...');
+            mainWindow.webContents.reload();
+            checkPageHealth(attempt + 1);
+          } else {
+            console.error('[Main] Page JS health check failed after ' + MAX_ATTEMPTS + ' attempts');
+          }
+        }
+      }).catch(err => {
+        console.log('[Main] Page JS health check error:', err.message, 'attempt', attempt);
+        if (attempt < MAX_ATTEMPTS) {
+          mainWindow.webContents.reload();
+          checkPageHealth(attempt + 1);
+        }
+      });
+    }, 2000); // 给页面 2 秒初始化时间
+  }
+  
+  function retryLoad(retries) {
+    if (retries > 0) {
+      setTimeout(() => waitForDashboard(retries - 1), 500);
+    } else {
+      // 回退：直接加载本地文件
+      const dashFile = path.join(resourcesPath, 'dashboard', 'index.html');
+      console.log(`[Main] Dashboard server timeout after ${MAX_RETRIES} retries, loading file: ${dashFile}`);
+      console.log(`[Main] File exists: ${fs.existsSync(dashFile)}`);
+      try {
+        mainWindow.loadFile(dashFile).catch(err => {
+          console.error(`[Main] loadFile failed: ${err.message}`);
+          // 最后尝试：直接设置 HTML 内容
+          mainWindow.loadURL('data:text/html,<html><body style="background:#0a0a1a;color:white;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif"><div style="text-align:center"><h1>🦞 龙虾星球共创联盟</h1><p>Dashboard 服务启动失败</p><p style="color:#888">请检查 Python3 环境是否正常</p><button onclick="location.reload()" style="margin-top:20px;padding:10px 30px;background:#e74c3c;color:white;border:none;border-radius:6px;cursor:pointer;font-size:16px">重试</button></div></body></html>');
+        });
+      } catch(e) {
+        console.error(`[Main] Critical error: ${e.message}`);
+      }
+    }
+  }
+  
+  // 给 dashboard 服务器一些启动时间
+  setTimeout(() => waitForDashboard(), 1000);
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
@@ -703,7 +1018,6 @@ ipcMain.handle('list-uploaded-files', async () => {
 // 认证 IPC Handlers
 // ============================================================
 
-const http = require('http');
 const ENGINE_URL = `http://localhost:${ENGINE_PORT}`;
 
 function httpRequest(method, apiPath, body) {
@@ -913,6 +1227,20 @@ function setupAutoUpdater() {
 app.whenReady().then(() => {
   console.log(`${APP_NAME} starting...`);
   console.log(`Resources path: ${resourcesPath}`);
+
+  // 注册 Composio IPC（1000+ 连接器集成）
+  registerComposioIPC();
+
+  // 初始化 Composio MCP HTTP 连接 (connect.composio.dev/mcp)
+  if (initializeComposioMCP) {
+    initializeComposioMCP().then(result => {
+      if (result.success) {
+        console.log('[Composio MCP] Initialized successfully');
+      } else {
+        console.warn('[Composio MCP] Init failed:', result.error);
+      }
+    });
+  }
 
   createMenu();
   createMainWindow();

@@ -205,7 +205,7 @@ priority = 4
 triggers = ["order_received", "inventory_low", "review_posted"]
 
 # ============================================================
-# 三、内容与创意层（8个Agent）
+# 三、内容与创意层（9个Agent）
 # ============================================================
 [[agents]]
 id = "content_agent"
@@ -224,6 +224,15 @@ description = "短视频脚本、广告创意、内容编排"
 config = "agents/content/video_agent.toml"
 priority = 3
 triggers = ["video_production_request", "campaign_launch"]
+
+[[agents]]
+id = "vimax_agent"
+name = "ViMax Agent 多智能体AI视频工厂"
+layer = "content"
+description = "HKUDS开源多智能体AI视频生成：Idea2Video/Script2Video/Novel2Video/AutoCameo，集编剧/导演/制片/生成于一体"
+config = "agents/vimax/vimax_agent.toml"
+priority = 3
+triggers = ["video_production_request", "script_to_video", "idea_to_video", "auto_cameo_request"]
 
 [[agents]]
 id = "heygen_agent"
@@ -936,3 +945,15 @@ description = "运营分析：GMV/流量/转化/利润/ROI/增长建议"
 config = "agents/sales/analytics_agent.toml"
 priority = 3
 triggers = ["daily_analytics_report", "weekly_growth_review"]
+
+# ============================================================
+# 十九、数据采集层（1个Agent）
+# ============================================================
+[[agents]]
+id = "firecrawl_agent"
+name = "Firecrawl Agent 网页数据采集"
+layer = "data"
+description = "网页爬取、数据提取、竞品采集、社媒电商监控、搜索引擎抓取"
+config = "agents/data/firecrawl_agent.toml"
+priority = 4
+triggers = ["web_scrape_request", "competitor_data_collection", "social_media_monitor", "ecommerce_product_track", "search_and_scrape", "structured_data_extract", "site_map_discovery", "batch_crawl_request"]

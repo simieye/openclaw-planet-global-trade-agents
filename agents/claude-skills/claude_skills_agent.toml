@@ -1,0 +1,175 @@
+[agent]
+name = "Claude Skills Hub Agent"
+id = "claude-skills-hub"
+version = "1.0"
+description = "Claude Skills 中心智能体 — 管理 31 个来自 awesome-claude-skills 仓库的精选技能，覆盖文档处理、开发工具、商业营销、创意媒体、生产力工具等领域"
+
+[agent.metadata]
+source = "github.com/ComposioHQ/awesome-claude-skills"
+category = "skills_hub"
+total_skills = 31
+icon = "🧠"
+
+[agent.capabilities]
+document_processing = ["docx", "pdf", "pptx", "xlsx"]
+development_tools = ["artifacts-builder", "changelog-generator", "mcp-builder", "webapp-testing", "langsmith-fetch", "developer-growth-analysis", "connect-apps"]
+business_marketing = ["competitive-ads-extractor", "domain-name-brainstormer", "internal-comms", "lead-research-assistant", "content-research-writer", "twitter-algorithm-optimizer"]
+creative_media = ["canvas-design", "image-enhancer", "slack-gif-creator", "theme-factory", "video-downloader"]
+productivity = ["file-organizer", "invoice-organizer", "raffle-winner-picker", "tailored-resume-generator", "brand-guidelines", "meeting-insights-analyzer", "skill-creator", "skill-share", "connect"]
+
+[agent.skills]
+
+[agent.skills.claude-docx]
+name = "DOCX 文档处理"
+path = "skills/claude-docx/SKILL.md"
+description = "创建、编辑、分析 Word 文档，支持修订、批注、格式化"
+
+[agent.skills.claude-pdf]
+name = "PDF 文档处理"
+path = "skills/claude-pdf/SKILL.md"
+description = "提取文本、表格、元数据，合并和注释 PDF"
+
+[agent.skills.claude-pptx]
+name = "PPTX 演示文稿"
+path = "skills/claude-pptx/SKILL.md"
+description = "读取、生成和调整幻灯片、布局和模板"
+
+[agent.skills.claude-xlsx]
+name = "XLSX 电子表格"
+path = "skills/claude-xlsx/SKILL.md"
+description = "电子表格操作：公式、图表、数据转换"
+
+[agent.skills.claude-artifacts-builder]
+name = "Web Artifacts 构建器"
+path = "skills/claude-artifacts-builder/SKILL.md"
+description = "创建多组件 HTML artifacts（React, Tailwind, shadcn/ui）"
+
+[agent.skills.claude-changelog-generator]
+name = "Changelog 生成器"
+path = "skills/claude-changelog-generator/SKILL.md"
+description = "从 git commits 自动生成面向用户的 changelog"
+
+[agent.skills.claude-mcp-builder]
+name = "MCP 服务器构建器"
+path = "skills/claude-mcp-builder/SKILL.md"
+description = "指导创建 MCP 服务器以集成外部 API"
+
+[agent.skills.claude-webapp-testing]
+name = "Web 应用测试"
+path = "skills/claude-webapp-testing/SKILL.md"
+description = "使用 Playwright 进行 Web 应用 UI 测试"
+
+[agent.skills.claude-langsmith-fetch]
+name = "LangSmith 调试"
+path = "skills/claude-langsmith-fetch/SKILL.md"
+description = "通过执行追踪调试 LangChain/LangGraph 智能体"
+
+[agent.skills.claude-developer-growth]
+name = "开发者成长分析"
+path = "skills/claude-developer-growth-analysis/SKILL.md"
+description = "分析开发者技能成长和代码贡献模式"
+
+[agent.skills.claude-connect-apps]
+name = "应用连接器"
+path = "skills/claude-connect-apps/SKILL.md"
+description = "连接 Claude 到 500+ 服务和应用"
+
+[agent.skills.claude-competitive-ads]
+name = "竞品广告提取"
+path = "skills/claude-competitive-ads-extractor/SKILL.md"
+description = "从广告库中提取和分析竞品广告"
+
+[agent.skills.claude-domain-brainstormer]
+name = "域名头脑风暴"
+path = "skills/claude-domain-name-brainstormer/SKILL.md"
+description = "生成域名创意并检查可用性"
+
+[agent.skills.claude-internal-comms]
+name = "内部沟通"
+path = "skills/claude-internal-comms/SKILL.md"
+description = "撰写内部沟通文档（更新、新闻稿、FAQ）"
+
+[agent.skills.claude-lead-research]
+name = "潜在客户研究"
+path = "skills/claude-lead-research-assistant/SKILL.md"
+description = "识别和筛选高质量潜在客户"
+
+[agent.skills.claude-content-research]
+name = "内容研究写作"
+path = "skills/claude-content-research-writer/SKILL.md"
+description = "辅助内容写作，含研究、引用和反馈"
+
+[agent.skills.claude-twitter-optimizer]
+name = "Twitter 算法优化"
+path = "skills/claude-twitter-algorithm-optimizer/SKILL.md"
+description = "使用 Twitter 开源算法洞察优化推文"
+
+[agent.skills.claude-canvas-design]
+name = "画布设计"
+path = "skills/claude-canvas-design/SKILL.md"
+description = "使用设计原则创建 PNG/PDF 视觉艺术"
+
+[agent.skills.claude-image-enhancer]
+name = "图片增强"
+path = "skills/claude-image-enhancer/SKILL.md"
+description = "提升图片质量用于专业演示"
+
+[agent.skills.claude-slack-gif]
+name = "Slack GIF 创建器"
+path = "skills/claude-slack-gif-creator/SKILL.md"
+description = "创建针对 Slack 优化的动画 GIF"
+
+[agent.skills.claude-theme-factory]
+name = "主题工厂"
+path = "skills/claude-theme-factory/SKILL.md"
+description = "应用专业字体和颜色主题到 artifacts"
+
+[agent.skills.claude-video-downloader]
+name = "视频下载器"
+path = "skills/claude-video-downloader/SKILL.md"
+description = "从 YouTube 和其他平台下载视频"
+
+[agent.skills.claude-file-organizer]
+name = "文件整理器"
+path = "skills/claude-file-organizer/SKILL.md"
+description = "智能整理文件和文件夹"
+
+[agent.skills.claude-invoice-organizer]
+name = "发票整理器"
+path = "skills/claude-invoice-organizer/SKILL.md"
+description = "整理发票和收据用于税务准备"
+
+[agent.skills.claude-raffle-picker]
+name = "抽奖选择器"
+path = "skills/claude-raffle-winner-picker/SKILL.md"
+description = "使用密码学安全随机选择获奖者"
+
+[agent.skills.claude-resume-generator]
+name = "简历生成器"
+path = "skills/claude-tailored-resume-generator/SKILL.md"
+description = "根据职位描述生成定制简历"
+
+[agent.skills.claude-brand-guidelines]
+name = "品牌指南"
+path = "skills/claude-brand-guidelines/SKILL.md"
+description = "应用 Anthropic 官方品牌颜色和排版"
+
+[agent.skills.claude-meeting-insights]
+name = "会议洞察分析"
+path = "skills/claude-meeting-insights-analyzer/SKILL.md"
+description = "分析会议记录中的行为模式"
+
+[agent.skills.claude-skill-creator]
+name = "技能创建器"
+path = "skills/claude-skill-creator/SKILL.md"
+description = "创建有效 Claude Skills 的指南"
+
+[agent.skills.claude-skill-share]
+name = "技能分享"
+path = "skills/claude-skill-share/SKILL.md"
+description = "分享和发布 Claude Skills"
+
+[agent.skills.claude-connect]
+name = "通用连接器"
+path = "skills/claude-connect/SKILL.md"
+description = "连接 Claude 到任意应用和服务"

@@ -1,0 +1,158 @@
+# Composio Agent — 1000+ App Integration Hub (v3 API · 真实 SDK 集成)
+# 龙虾星球智能体集群 · 应用集成中枢
+# 升级版本: Vercel AI SDK + Composio Tool Router 双引擎
+
+[agent]
+name = "Composio 应用集成中枢 v3"
+id = "composio"
+version = "2.0.0"
+description = "1000 工具包 / 41837 工具 · Vercel AI SDK + Python SDK 双引擎 · 通过 Composio v3 REST API 为所有 Agent 提供统一的应用集成能力"
+layer = "integration"
+icon = "🔌"
+
+[agent.secrets]
+COMPOSIO_API_KEY = "ak_hFYEURBG1n_r7pMYWNSY"
+
+[agent.model]
+provider = "ollama"
+model = "qwen2.5:14b"
+temperature = 0.3
+max_tokens = 4096
+
+[agent.system_prompt]
+prompt = """
+你是 Composio 应用集成中枢智能体 v3，负责龙虾星球智能体集群的所有外部应用集成。
+
+## 核心能力（双引擎架构）
+
+### TypeScript 引擎（Vercel AI SDK + Tool Router）
+- Agent 流式执行: composioAgent.streamExecute(prompt)
+- Tool Router 会话: composio.create(userId) → session.tools()
+- 实时工具发现: 1000 工具包 / 41837 工具可用
+
+### Python 引擎（REST API + SDK）
+- 工具包搜索: GET /api/composio/toolkits?query=xxx
+- 工具执行: POST /api/composio/execute { slug, params }
+- OAuth 连接: POST /api/composio/connect { app }
+- 连接管理: GET /api/composio/connections
+
+## 集成领域（真实数据 · 1000 工具包）
+
+1000 工具包覆盖 80+ 分类:
+- 开发工具: 284 工具包 (GitHub, GitLab, Vercel, AWS, GCP...)
+- 营销自动化: 98 工具包 (Mailchimp, HubSpot, Klaviyo...)
+- 分析: 94 工具包 (Google Analytics, Mixpanel, Amplitude...)
+- CRM: 71 工具包 (Salesforce, HubSpot CRM, Pipedrive...)
+- AI: 65 工具包 (OpenAI, Anthropic, Pinecone...)
+- 文档: 57 工具包 (Google Drive, Notion, Airtable...)
+- 电商: 38 工具包 (Shopify, Amazon, Stripe, PayPal...)
+- 项目管理: 42 工具包 (Jira, Asana, Trello, Linear...)
+- 更多: 邮件/客服/设计/视频/HR/安全/支付...
+
+## 工作流程
+1. 接收任务 → 分析需要哪些外部应用
+2. 搜索工具包: composioAgent.searchTools("email")
+3. 创建会话: session = composio.create(userId)
+4. 获取工具: tools = session.tools()
+5. 流式执行: streamText({ model, tools, prompt })
+6. 返回结果 → 结构化 JSON 输出
+
+用中文回复，专业且简洁。
+"""
+
+[agent.skills]
+skills = ["composio"]
+
+[agent.capabilities]
+can_search = true
+can_execute = true
+can_link = true
+can_proxy = true
+can_run_script = true
+can_stream_execute = true
+supported_apps = 1000
+supported_tools = 41837
+sdk_version = "v3"
+engines = ["TypeScript (Vercel AI SDK)", "Python (REST API)", "Electron IPC"]
+
+[agent.categories]
+primary = ["app_integration", "automation", "connector"]
+secondary = ["ecommerce", "social_media", "marketing", "communication", "devops"]
+
+[agent.integrations]
+# 电商 (38 工具包)
+shopify = { status = "available", tools_count = 20, auth = "OAUTH2" }
+amazon_seller = { status = "available", tools_count = 15, auth = "OAUTH2" }
+tiktok_shop = { status = "available", tools_count = 12, auth = "OAUTH2" }
+walmart = { status = "available", tools_count = 8, auth = "OAUTH2" }
+shopee = { status = "available", tools_count = 10, auth = "OAUTH2" }
+
+# 社媒 (16 工具包)
+tiktok = { status = "available", tools_count = 15, auth = "OAUTH2" }
+youtube = { status = "available", tools_count = 25, auth = "OAUTH2" }
+instagram = { status = "available", tools_count = 18, auth = "OAUTH2" }
+facebook = { status = "available", tools_count = 20, auth = "OAUTH2" }
+x_twitter = { status = "available", tools_count = 15, auth = "OAUTH2" }
+linkedin = { status = "available", tools_count = 12, auth = "OAUTH2" }
+
+# 营销 (98 工具包)
+google_ads = { status = "available", tools_count = 20, auth = "OAUTH2" }
+google_analytics = { status = "available", tools_count = 15, auth = "OAUTH2" }
+mailchimp = { status = "available", tools_count = 25, auth = "OAUTH2" }
+hubspot = { status = "available", tools_count = 30, auth = "OAUTH2" }
+klaviyo = { status = "available", tools_count = 15, auth = "API_KEY" }
+
+# 沟通 (34 工具包)
+gmail = { status = "available", tools_count = 61, auth = "OAUTH2" }
+slack = { status = "available", tools_count = 30, auth = "OAUTH2" }
+whatsapp = { status = "available", tools_count = 10, auth = "API_KEY" }
+discord = { status = "available", tools_count = 15, auth = "OAUTH2" }
+telegram = { status = "available", tools_count = 12, auth = "API_KEY" }
+
+# 文档 (57 工具包)
+google_drive = { status = "available", tools_count = 25, auth = "OAUTH2" }
+google_sheets = { status = "available", tools_count = 20, auth = "OAUTH2" }
+notion = { status = "available", tools_count = 20, auth = "OAUTH2" }
+github = { status = "available", tools_count = 40, auth = "OAUTH2" }
+airtable = { status = "available", tools_count = 15, auth = "API_KEY" }
+
+# 支付 (19 工具包)
+stripe = { status = "available", tools_count = 25, auth = "API_KEY" }
+paypal = { status = "available", tools_count = 15, auth = "OAUTH2" }
+square = { status = "available", tools_count = 12, auth = "OAUTH2" }
+
+# 项目管理 (42 工具包)
+jira = { status = "available", tools_count = 25, auth = "OAUTH2" }
+asana = { status = "available", tools_count = 20, auth = "OAUTH2" }
+trello = { status = "available", tools_count = 15, auth = "OAUTH2" }
+linear = { status = "available", tools_count = 12, auth = "OAUTH2" }
+
+# AI 模型 (20 工具包)
+openai = { status = "available", tools_count = 10, auth = "API_KEY" }
+anthropic = { status = "available", tools_count = 8, auth = "API_KEY" }
+
+# 日历 (6 工具包)
+google_calendar = { status = "available", tools_count = 12, auth = "OAUTH2" }
+
+# 客服 (32 工具包)
+zendesk = { status = "available", tools_count = 20, auth = "OAUTH2" }
+intercom = { status = "available", tools_count = 15, auth = "OAUTH2" }
+
+# 设计 (44 工具包)
+figma = { status = "available", tools_count = 15, auth = "OAUTH2" }
+canva = { status = "available", tools_count = 10, auth = "OAUTH2" }
+
+# 视频会议 (7 工具包)
+zoom = { status = "available", tools_count = 15, auth = "OAUTH2" }
+
+# 自动化 (5 工具包)
+zapier = { status = "available", tools_count = 10, auth = "OAUTH2" }
+make = { status = "available", tools_count = 10, auth = "API_KEY" }
+
+# 开发运维 (284 工具包)
+aws = { status = "available", tools_count = 30, auth = "API_KEY" }
+gcp = { status = "available", tools_count = 25, auth = "OAUTH2" }
+vercel = { status = "available", tools_count = 10, auth = "API_KEY" }
+docker = { status = "available", tools_count = 8, auth = "NO_AUTH" }
+sentry = { status = "available", tools_count = 10, auth = "API_KEY" }
+datadog = { status = "available", tools_count = 15, auth = "API_KEY" }

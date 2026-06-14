@@ -1,0 +1,158 @@
+# Firecrawl Agent — Web 爬取与数据采集引擎
+# 为所有 1000+ Agent 提供统一的网页数据采集能力
+
+[agent]
+id = "firecrawl_agent"
+name = "Firecrawl Agent 网页数据采集"
+layer = "data"
+version = "1.0.0"
+priority = 4
+enabled = true
+
+[agent.description]
+short = "网页爬取、数据提取、竞品信息采集、社媒与电商数据监控"
+long = """
+Firecrawl Agent 是龙虾星球智能体集群的统一网页数据采集引擎。
+集成 Firecrawl API，为所有 1000+ Agent 提供以下能力：
+
+1. **竞品网站采集** — 自动抓取竞品网站页面内容、产品信息、定价策略
+2. **社媒平台监控** — 采集 LinkedIn/Twitter/Instagram/TikTok/小红书/抖音等平台公开数据
+3. **电商平台数据** — 监控 Amazon/Shopify/eBay/Walmart/Temu/Shein 等全球电商平台产品数据
+4. **搜索引擎抓取** — Web 搜索 + 实时抓取搜索结果页面内容
+5. **结构化提取** — AI 驱动的智能数据解析，提取价格表/产品目录/联系方式等
+6. **网站地图发现** — 自动发现网站所有 URL，用于 SEO 审计和内容发现
+7. **批量爬取** — 异步批量爬取任务，支持状态查询和取消
+"""
+
+[agent.triggers]
+events = [
+    "web_scrape_request",
+    "competitor_data_collection",
+    "social_media_monitor",
+    "ecommerce_product_track",
+    "search_and_scrape",
+    "structured_data_extract",
+    "site_map_discovery",
+    "batch_crawl_request",
+]
+schedule = "on_demand"
+
+[agent.capabilities]
+# 网页采集
+web_scraping = true
+batch_crawling = true
+site_map_discovery = true
+
+# 数据提取
+structured_extraction = true
+ai_parsing = true
+schema_based_extraction = true
+
+# 平台支持
+ecommerce_platforms = [
+    "Amazon", "Shopify", "eBay", "Walmart", "Etsy",
+    "AliExpress", "Temu", "Shein", "Lazada", "Shopee",
+    "TikTok Shop", "Target", "BestBuy", "Costco", "Wayfair"
+]
+social_media_platforms = [
+    "LinkedIn", "Twitter/X", "Instagram", "Facebook", "TikTok",
+    "YouTube", "Pinterest", "Reddit", "Snapchat",
+    "小红书", "抖音", "微信"
+]
+search_engines = ["Google", "Bing", "DuckDuckGo", "Baidu", "Yandex"]
+
+# 输出格式
+output_formats = ["markdown", "html", "screenshot", "structured_json", "links"]
+
+[agent.config]
+api_key_env = "FIRECRAWL_API_KEY"
+api_base_url = "https://api.firecrawl.dev"
+max_pages_per_crawl = 500
+max_depth = 5
+default_timeout = 60000
+rate_limit_rpm = 50
+cache_enabled = true
+cache_ttl_seconds = 3600
+
+[agent.integration]
+module = "firecrawl_integration"
+service_class = "FirecrawlService"
+endpoint_prefix = "/api/firecrawl"
+
+[agent.usage_examples]
+
+# 竞品网站采集
+[agent.usage_examples.competitor_scrape]
+description = "抓取竞品网站，提取产品信息和定价"
+method = "POST /api/firecrawl/scrape"
+body = """
+{
+  "url": "https://competitor.com/products",
+  "source_type": "competitor",
+  "extract_pricing": true,
+  "extract_products": true
+}
+"""
+
+# 社媒数据采集
+[agent.usage_examples.social_media_scrape]
+description = "采集社媒平台公开数据"
+method = "POST /api/firecrawl/scrape"
+body = """
+{
+  "url": "https://instagram.com/brand_profile",
+  "source_type": "social_media",
+  "platform": "instagram",
+  "extract_posts": true,
+  "max_posts": 20
+}
+"""
+
+# 电商产品监控
+[agent.usage_examples.ecommerce_scrape]
+description = "监控电商平台产品数据"
+method = "POST /api/firecrawl/scrape"
+body = """
+{
+  "url": "https://amazon.com/dp/B0XXXXXXX",
+  "source_type": "ecommerce",
+  "platform": "amazon"
+}
+"""
+
+# 搜索 + 抓取
+[agent.usage_examples.search_scrape]
+description = "搜索并实时抓取结果页面"
+method = "POST /api/firecrawl/search"
+body = """
+{
+  "query": "best wireless earbuds 2025",
+  "limit": 10,
+  "sources": ["web", "news"],
+  "scrape_results": true
+}
+"""
+
+# 批量爬取
+[agent.usage_examples.batch_crawl]
+description = "启动异步批量爬取任务"
+method = "POST /api/firecrawl/crawl"
+body = """
+{
+  "url": "https://example.com",
+  "max_pages": 100,
+  "max_depth": 3,
+  "label": "competitor_site_scan"
+}
+"""
+
+# 结构化提取
+[agent.usage_examples.structured_extract]
+description = "AI 驱动的结构化数据提取"
+method = "POST /api/firecrawl/extract"
+body = """
+{
+  "urls": ["https://example.com/pricing"],
+  "prompt": "Extract all pricing plans with their features and prices"
+}
+"""

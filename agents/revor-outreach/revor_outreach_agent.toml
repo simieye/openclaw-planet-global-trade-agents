@@ -1,0 +1,20 @@
+[agent]
+name = "Revor 外联执行引擎"
+id = "revor-outreach"
+version = "1.0.0"
+description = "AI 外联执行智能体，支持 LinkedIn、邮件、WhatsApp 多渠道自动化外联"
+layer = "integration"
+icon = "📨"
+
+[agent.config]
+repo = "https://github.com/laiye-revor/revor-skills"
+install = "npx skills add laiye-revor/revor-skills"
+
+[agent.secrets]
+REVOR_API_KEY = ""
+
+[agent.capabilities]
+linkedin_outreach = true
+email_outreach = true
+whatsapp_outreach = true
+account_warmup = true

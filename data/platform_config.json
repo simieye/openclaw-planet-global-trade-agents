@@ -1,0 +1,187 @@
+{
+  "_metadata": {
+    "version": "5.4.0",
+    "created_at": "2026-06-11T11:47:00",
+    "description": "龙虾星球共创联盟 - 平台连接器配置",
+    "total_platforms": 35,
+    "categories": ["电商", "社媒", "营销", "ERP/物流", "CRM/客服", "支付/生产力"]
+  },
+  "shopify": {
+    "shopify_store": "",
+    "shopify_admin_api_key": "",
+    "shopify_admin_api_secret": "",
+    "shopify_access_token": ""
+  },
+  "amazon": {
+    "amazon_seller_id": "",
+    "amazon_marketplace_id": "ATVPDKIKX0DER",
+    "amazon_access_key": "",
+    "amazon_secret_key": "",
+    "amazon_role_arn": "",
+    "amazon_refresh_token": ""
+  },
+  "tiktokshop": {
+    "tiktokshop_app_key": "",
+    "tiktokshop_app_secret": "",
+    "tiktokshop_shop_id": "",
+    "tiktokshop_region": "US"
+  },
+  "woocommerce": {
+    "woocommerce_url": "",
+    "woocommerce_consumer_key": "",
+    "woocommerce_consumer_secret": ""
+  },
+  "wix": {
+    "wix_site_id": "",
+    "wix_api_key": "",
+    "wix_account_id": ""
+  },
+  "ebay": {
+    "ebay_app_id": "",
+    "ebay_cert_id": "",
+    "ebay_ru_name": "",
+    "ebay_site_id": "0"
+  },
+  "walmart": {
+    "walmart_client_id": "",
+    "walmart_client_secret": "",
+    "walmart_partner_id": ""
+  },
+  "etsy": {
+    "etsy_keystring": "",
+    "etsy_shared_secret": "",
+    "etsy_shop_id": ""
+  },
+  "aliexpress": {
+    "aliexpress_app_key": "",
+    "aliexpress_app_secret": "",
+    "aliexpress_access_token": ""
+  },
+  "lazada": {
+    "lazada_app_key": "",
+    "lazada_app_secret": "",
+    "lazada_region": "SG"
+  },
+  "tiktok": {
+    "tiktok_client_key": "",
+    "tiktok_client_secret": "",
+    "tiktok_advertiser_id": ""
+  },
+  "instagram": {
+    "instagram_app_id": "",
+    "instagram_app_secret": "",
+    "instagram_access_token": ""
+  },
+  "facebook": {
+    "facebook_app_id": "",
+    "facebook_app_secret": "",
+    "facebook_access_token": ""
+  },
+  "youtube": {
+    "youtube_api_key": "",
+    "youtube_channel_id": "",
+    "youtube_client_id": ""
+  },
+  "twitter": {
+    "twitter_api_key": "",
+    "twitter_api_secret": "",
+    "twitter_access_token": "",
+    "twitter_access_secret": ""
+  },
+  "linkedin": {
+    "linkedin_client_id": "",
+    "linkedin_client_secret": "",
+    "linkedin_access_token": ""
+  },
+  "pinterest": {
+    "pinterest_app_id": "",
+    "pinterest_app_secret": "",
+    "pinterest_access_token": ""
+  },
+  "google_ads": {
+    "google_ads_client_id": "",
+    "google_ads_client_secret": "",
+    "google_ads_developer_token": "",
+    "google_ads_customer_id": ""
+  },
+  "meta_ads": {
+    "meta_ads_app_id": "",
+    "meta_ads_app_secret": "",
+    "meta_ads_access_token": "",
+    "meta_ads_ad_account_id": ""
+  },
+  "tiktok_ads": {
+    "tiktok_ads_app_id": "",
+    "tiktok_ads_secret": "",
+    "tiktok_ads_advertiser_id": ""
+  },
+  "amazon_ads": {
+    "amazon_ads_client_id": "",
+    "amazon_ads_client_secret": "",
+    "amazon_ads_profile_id": ""
+  },
+  "linking_erp": {
+    "linking_erp_app_key": "",
+    "linking_erp_app_secret": "",
+    "linking_erp_merchant_id": ""
+  },
+  "shipstation": {
+    "shipstation_api_key": "",
+    "shipstation_api_secret": "",
+    "shipstation_store_id": ""
+  },
+  "easypost": {
+    "easypost_api_key": "",
+    "easypost_test_api_key": ""
+  },
+  "shipbob": {
+    "shipbob_api_key": "",
+    "shipbob_warehouse_id": ""
+  },
+  "gorgias": {
+    "gorgias_subdomain": "",
+    "gorgias_api_key": "",
+    "gorgias_email": ""
+  },
+  "intercom": {
+    "intercom_app_id": "",
+    "intercom_access_token": ""
+  },
+  "zendesk": {
+    "zendesk_subdomain": "",
+    "zendesk_email": "",
+    "zendesk_api_token": ""
+  },
+  "klaviyo": {
+    "klaviyo_public_api_key": "",
+    "klaviyo_private_api_key": ""
+  },
+  "stripe": {
+    "stripe_secret_key": "",
+    "stripe_publishable_key": "",
+    "stripe_webhook_secret": ""
+  },
+  "paypal": {
+    "paypal_client_id": "",
+    "paypal_client_secret": "",
+    "paypal_mode": "sandbox"
+  },
+  "square": {
+    "square_access_token": "",
+    "square_application_id": "",
+    "square_location_id": ""
+  },
+  "notion": {
+    "notion_api_key": "",
+    "notion_database_id": ""
+  },
+  "slack": {
+    "slack_bot_token": "",
+    "slack_signing_secret": "",
+    "slack_channel_id": ""
+  },
+  "discord": {
+    "discord_bot_token": "",
+    "discord_channel_id": ""
+  }
+}

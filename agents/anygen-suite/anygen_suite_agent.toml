@@ -1,0 +1,25 @@
+[agent]
+name = "AnyGen Suite 内容工厂"
+id = "anygen-suite"
+version = "1.0.0"
+description = "All-in-One AI 内容生成智能体，支持 PPT/文档/图表/网站等 9 大内容类型"
+layer = "integration"
+icon = "🎨"
+
+[agent.config]
+repo = "https://github.com/AnyGenIO/anygen-suite-skill"
+install = "git clone https://github.com/AnyGenIO/anygen-suite-skill.git skills/anygen-suite"
+
+[agent.secrets]
+ANYGEN_API_KEY = "sk-ag-ete-4Z9Ku5F1npH8tJYQSwkkTLYqew7G0pa7LEAGa8m1m-hghzf7JHwSj-WMfDNMcpzWQLafhQu0wKUq2QAbqw"
+
+[agent.capabilities]
+slide_generation = true
+doc_generation = true
+smart_draw = true
+storybook = true
+data_analysis = true
+deep_research = true
+website_dev = true
+finance_analysis = true
+ai_designer = true

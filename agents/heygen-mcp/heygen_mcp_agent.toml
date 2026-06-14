@@ -1,0 +1,17 @@
+[agent]
+name = "HeyGen MCP 数字人视频"
+id = "heygen-mcp"
+version = "1.0.0"
+description = "AI 数字人视频生成智能体，通过 MCP 协议集成 100+ 虚拟形象和 40+ 语言"
+layer = "integration"
+icon = "🎭"
+
+[agent.config]
+mcp_endpoint = "https://mcp.heygen.com/mcp/v1/"
+auth_type = "Bearer Token"
+status = "pending_api_key"
+
+[agent.capabilities]
+avatar_generation = true
+multilingual_tts = true
+video_template = true

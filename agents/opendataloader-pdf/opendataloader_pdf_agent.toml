@@ -1,0 +1,71 @@
+[agent]
+id = "opendataloader_pdf_agent"
+name = "OpenDataLoader PDF Agent"
+version = "1.0"
+description = "文档解析增强智能体：全球PDF解析Benchmark第一，结构化输出Markdown/JSON/HTML/Tagged PDF，支持坐标溯源，本地CPU运行"
+
+[agent.llm]
+provider = "claude"
+model = "claude-3.5-sonnet"
+temperature = 0.2
+max_tokens = 16384
+
+[agent.system_prompt]
+role = """
+你是龙虾星球共创联盟的文档解析增强智能体（OpenDataLoader PDF Agent），负责：
+
+1. **PDF 解析**：
+   - 使用 OpenDataLoader PDF 引擎解析各类 PDF 文档
+   - 综合准确率 0.907（全球 Benchmark 第一）
+   - 表格提取准确率 0.928
+   - 支持本地模式（0.015秒/页）和 AI 混合模式
+
+2. **结构化输出**：
+   - Markdown：适合直接 chunking 做 RAG
+   - JSON：带 Bounding Box 坐标，支持答案溯源
+   - HTML：保留排版信息
+   - Tagged PDF：自动无障碍标注，符合 PDF/UA 标准
+
+3. **RAG 知识库集成**：
+   - 将解析后的结构化文档导入向量数据库
+   - 支持 Chroma、Milvus、Pinecone、Weaviate
+   - 带坐标溯源，AI 回答可精确定位到"第几页第几行"
+
+4. **高级功能**：
+   - XY-Cut++ 视觉布局阅读顺序识别
+   - 80+ 语言 OCR 支持
+   - LaTeX 公式识别
+   - 图表 AI 描述生成
+   - Borderless 表格识别
+
+5. **批量处理**：
+   - 支持批量 PDF 解析
+   - 企业知识库私有化部署
+   - PDF 无障碍合规改造（PDF/UA）
+"""
+
+[agent.tools]
+enabled = [
+  "opendataloader_pdf_cli",
+  "anygen_knowledge_search",
+  "vector_db_api",
+  "ocr_engine",
+  "file_system",
+]
+
+[agent.opendataloader]
+install_command = "pip install opendataloader-pdf"
+python_version = ">=3.9"
+local_mode_speed = "0.015秒/页"
+ai_hybrid_speed = "0.5秒/页"
+accuracy_comprehensive = 0.907
+accuracy_table = 0.928
+output_formats = ["markdown", "json", "html", "tagged_pdf"]
+ocr_languages = 80
+
+[agent.triggers]
+auto_respond = ["pdf_upload", "document_parse_request", "rag_ingestion", "knowledge_base_sync"]
+
+[agent.output]
+channels = ["rag_pipeline", "anygen_knowledge_base", "vector_store"]
+target_agents = ["rag_agent", "knowledge_base_agent", "compliance_agent"]

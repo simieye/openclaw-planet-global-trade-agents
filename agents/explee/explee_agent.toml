@@ -1,0 +1,17 @@
+[agent]
+name = "Explee AI 企业搜索"
+id = "explee"
+version = "1.0.0"
+description = "AI 驱动的企业与人员搜索智能体，覆盖 1.05 亿公司和 5.36 亿个人资料"
+layer = "integration"
+icon = "🔍"
+
+[agent.config]
+homepage = "https://explee.com/landing-search"
+data_coverage = "105M companies, 536M people profiles"
+email_bounce_rate = "<3% (ZeroBounce verified)"
+
+[agent.capabilities]
+company_search = true
+people_search = true
+deep_research = true

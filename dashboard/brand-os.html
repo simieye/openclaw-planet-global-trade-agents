@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simiaiclaw OS · 一万个硅基大脑 · 全量调度操作系统</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #080812;
+  color: #e0e0e0;
+  overflow-x: hidden;
+}
+
+/* ===== 英雄区域 ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(99,102,241,0.15) 0%, rgba(8,8,18,0) 70%);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(236,72,153,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(0,212,170,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(99,102,241,0.06) 0%, transparent 60%);
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(99,102,241,0.6);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+.particle:nth-child(2n) { background: rgba(0,212,170,0.5); animation-delay: -2s; }
+.particle:nth-child(3n) { background: rgba(236,72,153,0.5); animation-delay: -4s; }
+.particle:nth-child(4n) { background: rgba(255,107,53,0.5); animation-delay: -1s; }
+.particle:nth-child(5n) { background: rgba(139,92,246,0.5); animation-delay: -3s; }
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50% { transform: translateY(-30px) translateX(15px); opacity: 1; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  padding: 40px;
+}
+.hero-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.3);
+  color: #818cf8;
+}
+.hero h1 {
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 30%, #ec4899 60%, #00d4aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero h1 .highlight {
+  -webkit-text-fill-color: #00d4aa;
+}
+.hero-subtitle {
+  font-size: 20px;
+  color: #9ca3af;
+  margin-bottom: 40px;
+  line-height: 1.8;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-subtitle strong {
+  color: #e0e0e0;
+}
+
+/* ===== 统计条 ===== */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-value {
+  font-size: 36px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #818cf8, #00d4aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* ===== 引用块 ===== */
+.quote-block {
+  background: rgba(99,102,241,0.05);
+  border-left: 3px solid #6366f1;
+  padding: 20px 24px;
+  margin: 30px 0;
+  border-radius: 0 8px 8px 0;
+  text-align: left;
+}
+.quote-block p {
+  font-size: 16px;
+  color: #c4b5fd;
+  line-height: 1.7;
+  font-style: italic;
+}
+.quote-block .attribution {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 8px;
+  font-style: normal;
+}
+
+/* ===== 章节 ===== */
+.section {
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #f0f0f0;
+}
+.section-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 40px;
+}
+
+/* ===== 对比表格 ===== */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+.compare-card {
+  background: rgba(18,18,42,0.8);
+  border: 1px solid #1e1e3a;
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.3s;
+}
+.compare-card:hover {
+  border-color: #6366f1;
+  transform: translateY(-2px);
+}
+.compare-card .icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.compare-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+.compare-card p {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+.compare-card.old { border-left: 3px solid #ef4444; }
+.compare-card.new { border-left: 3px solid #22c55e; }
+.compare-card.our { border-left: 3px solid #6366f1; }
+
+/* ===== 架构图区域 ===== */
+.architecture {
+  background: rgba(18,18,42,0.4);
+  border: 1px solid #1e1e3a;
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 30px;
+}
+.arch-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #818cf8;
+}
+.arch-layer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+.arch-layer-label {
+  width: 120px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
+  font-weight: 600;
+}
+.arch-layer-content {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.arch-node {
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+.arch-node.accent { background: rgba(0,212,170,0.1); border-color: rgba(0,212,170,0.3); color: #5eead4; }
+.arch-node.pink { background: rgba(236,72,153,0.1); border-color: rgba(236,72,153,0.3); color: #f9a8d4; }
+.arch-node.orange { background: rgba(255,107,53,0.1); border-color: rgba(255,107,53,0.3); color: #fb923c; }
+
+/* ===== 核心能力卡片 ===== */
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+.cap-card {
+  background: rgba(18,18,42,0.6);
+  border: 1px solid #1e1e3a;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s;
+}
+.cap-card:hover {
+  border-color: rgba(99,102,241,0.5);
+  background: rgba(99,102,241,0.05);
+}
+.cap-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+.cap-card p {
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+.cap-card .tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 8px;
+  background: rgba(99,102,241,0.15);
+  color: #818cf8;
+}
+
+/* ===== 对齐论述 ===== */
+.alignment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+.alignment-card {
+  background: rgba(18,18,42,0.6);
+  border: 1px solid #1e1e3a;
+  border-radius: 12px;
+  padding: 24px;
+}
+.alignment-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #00d4aa;
+  margin-bottom: 8px;
+}
+.alignment-card p {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.7;
+}
+
+/* ===== CTA 区域 ===== */
+.cta-section {
+  text-align: center;
+  padding: 80px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(99,102,241,0.08) 100%);
+}
+.cta-section h2 {
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #818cf8, #00d4aa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-section p {
+  font-size: 16px;
+  color: #9ca3af;
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 32px; }
+  .stats-row { gap: 20px; }
+  .stat-value { font-size: 28px; }
+  .section { padding: 40px 20px; }
+  .section-title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 英雄区域 ===== -->
+<section class="hero">
+  <div class="particles">
+    <div class="particle" style="top:15%;left:10%;"></div>
+    <div class="particle" style="top:25%;left:85%;"></div>
+    <div class="particle" style="top:45%;left:20%;"></div>
+    <div class="particle" style="top:65%;left:75%;"></div>
+    <div class="particle" style="top:75%;left:30%;"></div>
+    <div class="particle" style="top:35%;left:55%;"></div>
+    <div class="particle" style="top:55%;left:40%;"></div>
+    <div class="particle" style="top:20%;left:60%;"></div>
+    <div class="particle" style="top:80%;left:50%;"></div>
+    <div class="particle" style="top:10%;left:40%;"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🦞 SIMIAICLAW OS v5.1</div>
+    <h1>一万个<span class="highlight">硅基大脑</span><br>全量调度操作系统</h1>
+    <p class="hero-subtitle">
+      微软 Build 2026 宣告了「<strong>Agent First</strong>」时代——不再做输入框里的聊天助手，<br>
+      而是直接成为控制所有自动化管线的<strong>全量调度操作系统</strong>。<br>
+      这与 <strong>Simiaiclaw OS</strong> 龙虾星球系统的愿景<strong>不谋而合</strong>。
+    </p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">100+</div>
+        <div class="stat-label">AI 智能体集群</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">1000+</div>
+        <div class="stat-label">Claude Skills</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">30+</div>
+        <div class="stat-label">平台连接器</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">118</div>
+        <div class="stat-label">SOP TaskFlow</div>
+      </div>
+    </div>
+    <div class="quote-block">
+      <p>"我们不再满足于做输入框里的聊天助手，而是直接做控制所有自动化管线的全量调度操作系统。"</p>
+      <div class="attribution">—— 微软 Build 2026 · Agent First 战略宣言</div>
+    </div>
+    <div class="quote-block" style="border-left-color:#00d4aa;">
+      <p>"Simiaiclaw OS 不是另一个 AI 工具，它是定义未来速度的硅基大脑网络——一万个 AI Agent 以涌现逻辑协同调度，实现从市场洞察到跨境执行的端到端全量自动化。"</p>
+      <div class="attribution">—— Simiaiclaw OS · 龙虾星球共创联盟</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 时代对比：从聊天助手到全量调度操作系统 ===== -->
+<section class="section">
+  <h2 class="section-title">从「聊天助手」到「全量调度操作系统」</h2>
+  <p class="section-subtitle">AI 平台的范式转移——微软与 Simiaiclaw OS 共同见证</p>
+  
+  <div class="comparison-grid">
+    <div class="compare-card old">
+      <div class="icon">💬</div>
+      <h3>旧范式：聊天助手</h3>
+      <p>
+        ChatGPT 式的输入框 AI<br>
+        一问一答，被动响应<br>
+        单点工具，缺乏上下文<br>
+        无法自主执行复杂任务<br>
+        人类全程参与每个步骤
+      </p>
+    </div>
+    <div class="compare-card new">
+      <div class="icon">🤖</div>
+      <h3>新范式：Agent 优先</h3>
+      <p>
+        Copilot / Scout / Autopilot<br>
+        主动监控、持续运行<br>
+        多 Agent 协同编排<br>
+        端到端自动化管线<br>
+        人类监督 + AI 自主执行
+      </p>
+    </div>
+    <div class="compare-card our">
+      <div class="icon">🦞</div>
+      <h3>Simiaiclaw OS 实践</h3>
+      <p>
+        100+ 智能体集群 · 1000+ Skills<br>
+        24x7 自主运行 · 跨平台调度<br>
+        8 层组织架构智能体协同<br>
+        118 SOP TaskFlow 全链路自动化<br>
+        AI 原生企业执行手册落地
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Simiaiclaw OS 架构 ===== -->
+<section class="section">
+  <h2 class="section-title">Simiaiclaw OS · 全量调度操作系统架构</h2>
+  <p class="section-subtitle">与微软 Agent 365 + MXC + Foundry 架构的同构设计</p>
+  
+  <div class="architecture">
+    <div class="arch-title">🧠 硅基大脑网络 · 八层架构</div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">战略决策层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node">Board CEO</div>
+        <div class="arch-node">Board CTO</div>
+        <div class="arch-node">Board CFO</div>
+        <div class="arch-node">Board CMO</div>
+        <div class="arch-node">Board COO</div>
+        <div class="arch-node accent">Vision Agent</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">市场情报层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node accent">Market Intel</div>
+        <div class="arch-node accent">Competitor</div>
+        <div class="arch-node accent">Trend</div>
+        <div class="arch-node accent">PR/SEM/Ads</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">品牌与内容层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node pink">Brand</div>
+        <div class="arch-node pink">Content</div>
+        <div class="arch-node pink">Video</div>
+        <div class="arch-node pink">Localization</div>
+        <div class="arch-node pink">Design</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">销售与增长层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node orange">Amazon</div>
+        <div class="arch-node orange">Shopify</div>
+        <div class="arch-node orange">TikTok Shop</div>
+        <div class="arch-node orange">Channel</div>
+        <div class="arch-node orange">CRM</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">运营执行层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node">Operations</div>
+        <div class="arch-node">Ads Ops</div>
+        <div class="arch-node">Churn</div>
+        <div class="arch-node">Retention</div>
+        <div class="arch-node">Marketplace</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">供应链层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node accent">Inventory</div>
+        <div class="arch-node accent">Logistics</div>
+        <div class="arch-node accent">Supplier</div>
+        <div class="arch-node accent">Quality</div>
+        <div class="arch-node accent">Order/DHL/FedEx</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">财务与合规层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node pink">Finance</div>
+        <div class="arch-node pink">Tax</div>
+        <div class="arch-node pink">Invoice</div>
+        <div class="arch-node pink">Payment</div>
+        <div class="arch-node pink">Cost Control</div>
+      </div>
+    </div>
+    
+    <div class="arch-layer">
+      <div class="arch-layer-label">基础设施层</div>
+      <div class="arch-layer-content">
+        <div class="arch-node orange">OpenClaw Engine</div>
+        <div class="arch-node orange">AnyGen Suite</div>
+        <div class="arch-node orange">HeyGen MCP</div>
+        <div class="arch-node orange">Composio 1000+</div>
+        <div class="arch-node orange">InsForge BaaS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 微软 Build 2026 与 Simiaiclaw OS 对齐 ===== -->
+<section class="section">
+  <h2 class="section-title">微软 Build 2026 与 Simiaiclaw OS 的「不谋而合」</h2>
+  <p class="section-subtitle">六大战略维度的深度对齐</p>
+  
+  <div class="alignment-grid">
+    <div class="alignment-card">
+      <h4>🎯 Agent First 战略</h4>
+      <p>微软：从 Copilot 到 Autopilot，Agent 成为第一公民<br>
+      Simiaiclaw：100+ Agent 集群，覆盖 Board → Supply Chain 全层级，8 层组织架构自治运行</p>
+    </div>
+    <div class="alignment-card">
+      <h4>🔄 多智能体编排</h4>
+      <p>微软：Copilot Studio 多 Agent Orchestration<br>
+      Simiaiclaw：118 SOP TaskFlow，Board 战略层 → Market 情报层 → Sales 执行层协同调度</p>
+    </div>
+    <div class="alignment-card">
+      <h4>🧠 上下文智能层</h4>
+      <p>微软：Microsoft IQ (Work IQ + Fabric IQ + Foundry IQ)<br>
+      Simiaiclaw：知识库 + InsForge BaaS + 智能体记忆系统，企业语义上下文全链路贯通</p>
+    </div>
+    <div class="alignment-card">
+      <h4>🛡️ 安全隔离与治理</h4>
+      <p>微软：MXC 沙箱 + Agent 365 + ACS 策略<br>
+      Simiaiclaw：Electron 沙箱 + 企业权限管理 + 1000+ Skills 安全审核</p>
+    </div>
+    <div class="alignment-card">
+      <h4>🔌 开放生态连接</h4>
+      <p>微软：MCP 协议 + 1000+ Composio Apps<br>
+      Simiaiclaw：Composio 1000+ 集成 + 30+ 平台连接器 + MCP/API 统一接入</p>
+    </div>
+    <div class="alignment-card">
+      <h4>🚀 从工具到操作系统</h4>
+      <p>微软：Windows 365 for Agents + Project Solara<br>
+      Simiaiclaw：Electron 桌面 OS 体验 + Dashboard 全量调度面板 + 一键 SOP 执行</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 核心能力 ===== -->
+<section class="section">
+  <h2 class="section-title">Simiaiclaw OS · 核心能力</h2>
+  <p class="section-subtitle">一万个硅基大脑的涌现逻辑网络</p>
+  
+  <div class="capability-grid">
+    <div class="cap-card">
+      <h4>🦞 龙虾星球智能体集群</h4>
+      <p>100+ AI Agent 覆盖 8 层组织架构，从 Board 战略层到 Supply Chain 执行层，实现端到端智能化调度</p>
+      <span class="tag">Agent Cluster</span>
+    </div>
+    <div class="cap-card">
+      <h4>⚡ ClawHub 技能市场</h4>
+      <p>1000+ Claude Skills + 49 电商专业技能 + 30+ 平台连接器，一键安装即用</p>
+      <span class="tag">Skill Marketplace</span>
+    </div>
+    <div class="cap-card">
+      <h4>🏭 跨境工厂出海 SOP</h4>
+      <p>118 TaskFlow 覆盖 TikTok Shop、Amazon、Shopify DTC 全链路增长体系，一键执行</p>
+      <span class="tag">SOP Automation</span>
+    </div>
+    <div class="cap-card">
+      <h4>🔌 全量平台连接</h4>
+      <p>Composio 1000+ Apps + 30+ 电商/社媒/ERP/CRM 连接器，MCP/API 统一协议接入</p>
+      <span class="tag">Platform Connect</span>
+    </div>
+    <div class="cap-card">
+      <h4>🧠 AI 大模型中枢</h4>
+      <p>Ollama 本地模型 + OpenAI + Claude + AnyGen + HeyGen 多引擎融合，智能路由调度</p>
+      <span class="tag">Multi-Model</span>
+    </div>
+    <div class="cap-card">
+      <h4>📊 KPI 运营看板</h4>
+      <p>全局指标监控、Agent 健康检查、SOP 执行追踪、知识库管理，一体化运营指挥中心</p>
+      <span class="tag">Operations Center</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section">
+  <h2>一万个硅基大脑，一个全量调度操作系统</h2>
+  <p>
+    微软 Build 2026 宣告了 Agent First 时代的到来。<br>
+    Simiaiclaw OS 已经准备好——以 100+ Agent、1000+ Skills、118 SOP、30+ 连接器的全量调度能力，<br>
+    成为跨境电商品牌出海的「下一代计算平台」。
+  </p>
+  <div class="stats-row" style="margin-top:20px;">
+    <div class="stat-item">
+      <div class="stat-value" style="font-size:24px;">v5.1</div>
+      <div class="stat-label">Simiaiclaw OS</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="font-size:24px;">2026.6</div>
+      <div class="stat-label">Build 2026 对齐</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" style="font-size:24px;">∞</div>
+      <div class="stat-label">硅基大脑网络</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

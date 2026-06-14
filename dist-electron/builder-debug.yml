@@ -4,6 +4,7 @@ x64:
     - '!build{,/**/*}'
     - main.js
     - preload.js
+    - composio-ipc.js
     - assets/**/*
     - node_modules/**/*
     - package.json
@@ -18,6 +19,7 @@ x64:
     - '**/*'
     - main.js
     - preload.js
+    - composio-ipc.js
     - assets/**/*
     - node_modules/**/*
     - package.json
@@ -27,6 +29,7 @@ arm64:
     - '!build{,/**/*}'
     - main.js
     - preload.js
+    - composio-ipc.js
     - assets/**/*
     - node_modules/**/*
     - package.json
@@ -41,6 +44,7 @@ arm64:
     - '**/*'
     - main.js
     - preload.js
+    - composio-ipc.js
     - assets/**/*
     - node_modules/**/*
     - package.json

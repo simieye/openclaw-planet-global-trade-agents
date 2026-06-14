@@ -1,8 +1,8 @@
 {
   "name": "lobster-planet-global-trade-agents",
   "productName": "龙虾星球共创联盟",
-  "version": "5.3.0",
-  "description": "Simiaiclaw OS · 一万个硅基大脑 · 全量调度操作系统 · SellerSprite 43 Tools · 30+ 真实平台连接器 · 全球社媒分发",
+  "version": "5.7.0",
+  "description": "Simiaiclaw OS · 能力中心连接器系统 · Agent-Reach 互联网之眼 · Revor 销售智能体 · 全球客户触达 · 80+ Skills · 43 Tools · 35 全球平台 · 统一管理面板",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -23,6 +23,7 @@
     "files": [
       "main.js",
       "preload.js",
+      "composio-ipc.js",
       "assets/**/*",
       "node_modules/**/*",
       "package.json"
@@ -112,7 +113,6 @@
     "dmg": {
       "title": "Lobster Planet Global Trade Agents",
       "icon": "../icons/icon.icns",
-      "background": "build/dmg-background.png",
       "contents": [
         {
           "x": 448,
